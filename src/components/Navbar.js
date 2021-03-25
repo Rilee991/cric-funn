@@ -1,9 +1,10 @@
-import { AppBar, Toolbar, Avatar, makeStyles, Button, IconButton, Drawer, Link, MenuItem } from "@material-ui/core";
+import { AppBar, Toolbar, Avatar, makeStyles, Button, IconButton, Drawer, Link, MenuItem, Grid } from "@material-ui/core";
 import MenuIcon from "@material-ui/icons/Menu";
 import { deepPurple } from '@material-ui/core/colors';
 import React, { useState, useEffect, useContext } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { toUpper } from 'lodash';
+import { AccountCircle, ExitToApp, MonetizationOnTwoTone, AccountBalanceWalletTwoTone } from '@material-ui/icons';
 
 import { ContextProvider } from '../Global/Context';
 import CricFunnLogo from '../images/logo1.png';
@@ -50,22 +51,25 @@ import CricFunnLogo from '../images/logo1.png';
         label: toUpper(username),
         href: "/profile",
         onClick: closeDrawer,
-        icon: (<Avatar style={{color: deepPurple[500], backgroundColor: deepPurple[500], width: "40%", height:80}}>{username.toUpperCase()}</Avatar>)
+        icon: (<AccountCircle color="primary" fontSize="large"/>)
       },
       {
         label: "MY BETS",
         href: "/bets",
-        onClick: closeDrawer
+        onClick: closeDrawer,
+        icon: (<AccountBalanceWalletTwoTone color="primary" fontSize="large"/>)
       },
       {
         label: `${points} POINTS`,
         href: "/",
-        disabled: true
+        disabled: true,
+        icon: (<MonetizationOnTwoTone color="disabled" fontSize="large"/>)
       },
       {
         label: "LOGOUT",
         href: "/",
-        onClick: handleLogout
+        onClick: handleLogout,
+        icon: (<ExitToApp color="error" fontSize="large"/>)
       },
     ];
     const { header, logo, menuButton, toolbar, drawerContainer, paper } = useStyles();
@@ -154,9 +158,18 @@ import CricFunnLogo from '../images/logo1.png';
             }}
             onClick = {onClick}
           >
-            <div style={{display: "flex"}}>
+            <Grid container direction="row">
+              <Grid item>
+                {icon}
+              </Grid>
+              
+              <Grid item style={{marginLeft:30}}>
+                <MenuItem disabled={disabled}>{label}</MenuItem>
+              </Grid>
+            </Grid>
+            {/* <div style={{display: "flex"}}>
               {icon ? icon : null}  <MenuItem disabled={disabled}>{label}</MenuItem>
-            </div>
+            </div> */}
           </Link>
         );
       });

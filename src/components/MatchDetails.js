@@ -36,12 +36,13 @@ function MatchDetails(props) {
                                 {matchDetails.score}
                             </span>
                         </Typography>
+                        {winnerTeam ? (
                         <Typography>
                             Result: {" "}
                             <span style={{fontStyle: "italic", fontWeight: "bold"}}>
                                 {winnerTeam} won.
                             </span>
-                        </Typography>
+                        </Typography>) : "" }
                     </> : "Score not present yet."}
                 </DialogContentText>
             </DialogContent>

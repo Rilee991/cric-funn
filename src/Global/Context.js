@@ -2,7 +2,7 @@ import { find } from 'lodash';
 import React, { createContext, useState, useEffect } from 'react';
 
 import { auth, db, storage } from '../config';
-import { getMatchDetails } from '../components/apis';
+import { getMatchDetailsForId } from '../components/apis';
 
 export const ContextProvider = createContext();
 
@@ -101,50 +101,45 @@ const Context = (props) => {
         });
     }
 
-    const updateUserInfo = (username, points, bets) => {
-        const unsettledBets = bets.filter(bet => {
-            if(bet.isSettled == false)
-                return bet;
-        }) || [];
-        let finalPoints = points;
-        console.log(unsettledBets);
-        unsettledBets.map(bet => {
-            const matchDetails = getMatchDetails(bet.unique_id);
-            if(matchDetails.winner_team) {
-                if(matchDetails.winner_team == bet.selectedTeam) {
-                    finalPoints += 2*bet.selectedPoints;
+    const updateUserInfo = async (username, points, bets) => {
+        try {
+            let finalPoints = points, betSettledCount = 0;
+
+            for(let i=0; i<bets.length;i++){
+                const bet = bets[i];
+                if(!bet.isSettled) {
+                    const matchDetails = await getMatchDetailsForId(bet.unique_id) || {};
+                    if(matchDetails.winner_team) {
+                        if(matchDetails.winner_team == bet.selectedTeam) {
+                            finalPoints += 2*bet.selectedPoints;
+                            bet.betWon = true;
+                        } else {
+                            bet.betWon = false;
+                        }
+                        bet.isSettled = true;
+                        betSettledCount++;
+                    }
                 }
-                bet.isSettled = true;
-
-                console.log("Unsettled Bets:", unsettledBets);
-
-                // db.collection("users").doc(username).update({
-                //     bets : newBets,
-                //     points: newPoints
-                // }).then(() => {
-                //     console.log("Document updated Successfully.");
-                //     setLoggedInUserDetails({
-                //         ...loggedInUserDetails,
-                //         bets: newBets,
-                //         points: newPoints
-                //     });
-                //     window.location.reload(false);
-                // }).catch(err => {
-                //     console.log("Error while updating user details:",err);
-                // });
+            };
+            if(betSettledCount) {
+                await db.collection("users").doc(username).update({
+                    bets,
+                    points: finalPoints
+                });
             }
-        });
-
-        return { latestPoints: points, latestBets: bets };
+            return { latestPoints: finalPoints, latestBets: bets };
+        } catch(err) {
+            console.log(err);
+        }
     }
 
     useEffect(async () => {
         setLoading(true);
         await auth.onAuthStateChanged(user => {
             if(user) {
-                db.collection("users").where("email", "==", user.email).get().then(userSnap => {
+                db.collection("users").where("email", "==", user.email).get().then(async userSnap => {
                     const { username, email, image, points, bets } = userSnap.docs[0].data();
-                    const { latestPoints = "", latestBets = [] } = updateUserInfo(username,points,bets);
+                    const { latestPoints = "", latestBets = [] } = await updateUserInfo(username,points,bets) || {};
                     setLoggedInUserDetails({
                         username,
                         email,
@@ -154,8 +149,8 @@ const Context = (props) => {
                     });
                 });
             }
-            setLoading(false);
         });
+        setLoading(false);
     },[]);
 //loggedInUserDetails, loading
     return (

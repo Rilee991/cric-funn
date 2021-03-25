@@ -8,10 +8,10 @@ import LoggedOutComponent from './LoggedOutComponent';
 function Auth() {
     const contextConsumer = useContext(ContextProvider) || {};
     const { loggedInUserDetails = {}, loading } = contextConsumer;
-console.log(loggedInUserDetails, loading);
+
     return (
         <>
-            { !isEmpty(loggedInUserDetails) ? <Home loggedInUserDetails={loggedInUserDetails}/> : <LoggedOutComponent /> }
+            { loading ? "Loading..." : (!isEmpty(loggedInUserDetails) ? <Home loggedInUserDetails={loggedInUserDetails}/> : <LoggedOutComponent />) }
         </>
     );
 }

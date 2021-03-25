@@ -42,7 +42,6 @@ function CricketCard(props) {
     const { bets = [] } = loggedInUserDetails;
     const { dateTimeGMT: matchTime, toss_winner_team: tossWinnerTeam, winner_team: winnerTeam, team1Abbreviation, team2Abbreviation, "team-1": team1, "team-2": team2, unique_id } = match;
     const [bettingDoneByUser, setBettingDoneByUser] = useState(false);
-    console.log("betting done by user:", bettingDoneByUser, " for unique_id:", unique_id);
     const team1Logo = getTeamLogo(team1Abbreviation);
     const team2Logo = getTeamLogo(team2Abbreviation);
     const [openDialogBox, setOpenDialogBox] = useState(false);
@@ -53,7 +52,6 @@ function CricketCard(props) {
     const [bettingOn, setBettingOn] = useState(moment() >= betStartTime && moment() <= betEndTime && !bettingDoneByUser);
     const [message, setMessage] = useState(moment() >= betEndTime ? `Betting for this match is closed.` : `Betting for this match will be opened from ${betStartTime.format("LLL")} to ${betEndTime.format("LLL")}`);
     const [severity, setSeverity] = useState("info");
-    console.log("betting ON:", bettingOn, " for unique_id:", unique_id);
 
     const root = {
         width: mobileView ? '100%' : '70%',
@@ -78,7 +76,7 @@ function CricketCard(props) {
         setMessage(`Betting for this match will be opened from ${betStartTime.format("LLL")} to ${betEndTime.format("LLL")}`);
         setSeverity("info");
       } else if(moment() >= betStartTime && moment() <= betEndTime) {
-        setMessage(`Betting is opened.`);
+        setMessage(`Betting is opened till ${betEndTime.format("LLL")}.`);
         setSeverity("success");
         if(bettingDone) {
           const bet = find(bets, {"unique_id": unique_id}) || {};

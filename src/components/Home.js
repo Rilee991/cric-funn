@@ -14,7 +14,8 @@ export default function Home() {
   const filterIplMatches = (matches) => {
     const iplTeamAbbreviation = ["RR", "KKR", "CSK", "MI", "RCB", "DC", "KXIP", "SRH"];
 
-    // matches = matches.splice(20,20); //TEMP
+    matches = matches.splice(0,20); //TEMP
+
     const result = matches.filter(match => {
       let { "team-1": team1, "team-2": team2 } = match;
       if(team1 == "Sunrisers Hyderabad") team1 = "Sun Risers Hyderabad";
