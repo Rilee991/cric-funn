@@ -1,4 +1,4 @@
-import { AppBar, Toolbar, Avatar, makeStyles, Button, IconButton, Drawer, Link, MenuItem, Grid } from "@material-ui/core";
+import { AppBar, Toolbar, Avatar, makeStyles, Button, IconButton, Drawer, SwipeableDrawer, Link, MenuItem, Grid, ListItem, ListItemIcon, ListItemText } from "@material-ui/core";
 import MenuIcon from "@material-ui/icons/Menu";
 import { deepPurple } from '@material-ui/core/colors';
 import React, { useState, useEffect, useContext } from "react";
@@ -46,18 +46,26 @@ import CricFunnLogo from '../images/logo1.png';
     const contextConsumer = useContext(ContextProvider);
     const { logout, loggedInUserDetails = {} } = contextConsumer;
     const { username = "...", points } = loggedInUserDetails;
+    const { header, logo, menuButton, toolbar, drawerContainer, paper } = useStyles();
+    const [state, setState] = useState({
+      mobileView: false,
+      drawerOpen: false,
+    });
+  
+    const { mobileView, drawerOpen } = state;
+
     const headersData = [
       {
         label: toUpper(username),
         href: "/profile",
         onClick: closeDrawer,
-        icon: (<AccountCircle color="primary" fontSize="large"/>)
+        icon: (<AccountCircle color={mobileView ? "primary": "inherit"} fontSize="large"/>)
       },
       {
         label: "MY BETS",
         href: "/bets",
         onClick: closeDrawer,
-        icon: (<AccountBalanceWalletTwoTone color="primary" fontSize="large"/>)
+        icon: (<AccountBalanceWalletTwoTone color={mobileView ? "primary": "inherit"} fontSize="large"/>)
       },
       {
         label: `${points} POINTS`,
@@ -72,13 +80,6 @@ import CricFunnLogo from '../images/logo1.png';
         icon: (<ExitToApp color="error" fontSize="large"/>)
       },
     ];
-    const { header, logo, menuButton, toolbar, drawerContainer, paper } = useStyles();
-    const [state, setState] = useState({
-      mobileView: false,
-      drawerOpen: false,
-    });
-  
-    const { mobileView, drawerOpen } = state;
   
     useEffect(() => {
       const setResponsiveness = () => {
@@ -129,7 +130,7 @@ import CricFunnLogo from '../images/logo1.png';
             <MenuIcon />
           </IconButton>
   
-          <Drawer
+          <SwipeableDrawer
             {...{
               anchor: "left",
               open: drawerOpen,
@@ -138,7 +139,7 @@ import CricFunnLogo from '../images/logo1.png';
             classes = {{paper: paper}}
           >
             <div className={drawerContainer}>{getDrawerChoices()}</div>
-          </Drawer>
+          </SwipeableDrawer>
   
           <div>{cricFunnLogo}</div>
         </Toolbar>
@@ -158,18 +159,10 @@ import CricFunnLogo from '../images/logo1.png';
             }}
             onClick = {onClick}
           >
-            <Grid container direction="row">
-              <Grid item>
-                {icon}
-              </Grid>
-              
-              <Grid item style={{marginLeft:30}}>
-                <MenuItem disabled={disabled}>{label}</MenuItem>
-              </Grid>
-            </Grid>
-            {/* <div style={{display: "flex"}}>
-              {icon ? icon : null}  <MenuItem disabled={disabled}>{label}</MenuItem>
-            </div> */}
+            <ListItem button key={label}>
+              <ListItemIcon>{icon}</ListItemIcon>
+              <ListItemText primary={label} />
+            </ListItem>
           </Link>
         );
       });
@@ -177,15 +170,12 @@ import CricFunnLogo from '../images/logo1.png';
   
     const cricFunnLogo = (
       <Link href="/">
-        {/* <Typography variant="h6" component="h1" className={logo}>
-          CricFunn
-        </Typography> */}
         <img src={CricFunnLogo} width={90} height={60}/>
       </Link>
     );
   
     const getMenuButtons = () => {
-      return headersData.map(({ label, href, disabled = false, onClick }) => {
+      return headersData.map(({ label, href, disabled = false, onClick, icon = "" }) => {
         return (
           <Button
             {...{
@@ -198,7 +188,10 @@ import CricFunnLogo from '../images/logo1.png';
               onClick: onClick
             }}
           >
-            {label}
+            <ListItem button key={label}>
+              <ListItemIcon color="primary">{icon}</ListItemIcon>
+              <ListItemText primary={label} />
+            </ListItem>
           </Button>
         );
       });
