@@ -51,10 +51,10 @@ const Context = (props) => {
                     points,
                     bets
                 });
+                setLoading(false);
             });
 
             setErrorMessage('');
-            setLoading(false);
         } catch (error) {
             console.log(error);
             setErrorMessage(error.message);
@@ -135,9 +135,9 @@ const Context = (props) => {
 
     useEffect(async () => {
         setLoading(true);
-        await auth.onAuthStateChanged(user => {
+        await auth.onAuthStateChanged(async user => {
             if(user) {
-                db.collection("users").where("email", "==", user.email).get().then(async userSnap => {
+                await db.collection("users").where("email", "==", user.email).get().then(async userSnap => {
                     const { username, email, image, points, bets } = userSnap.docs[0].data();
                     const { latestPoints = "", latestBets = [] } = await updateUserInfo(username,points,bets) || {};
                     setLoggedInUserDetails({
@@ -148,9 +148,12 @@ const Context = (props) => {
                         bets: latestBets
                     });
                 });
+                setLoading(false);
+            } else {
+                setLoggedInUserDetails({});
+                setLoading(false);
             }
         });
-        setLoading(false);
     },[]);
 //loggedInUserDetails, loading
     return (

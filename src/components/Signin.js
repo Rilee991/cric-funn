@@ -78,7 +78,7 @@ function Signin(props) {
 
     return (
         loading ? 
-            <Loader type="Puff" color="#00BFFF" height={100} width={200} timeout={5000} /> : 
+            <Loader type="Puff" color="#0008ff" height={100} width={200} timeout={5000} /> : 
         <>
             <Avatar className={classes.avatar}></Avatar>
             <Typography component="h1" variant="h5">

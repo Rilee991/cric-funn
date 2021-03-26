@@ -50,8 +50,9 @@ function CricketCard(props) {
     const betStartTime = moment(matchTime).subtract(24.5,"hours");
     const betEndTime = moment(matchTime).subtract(30,"minutes");
     const [bettingOn, setBettingOn] = useState(moment() >= betStartTime && moment() <= betEndTime && !bettingDoneByUser);
-    const [message, setMessage] = useState(moment() >= betEndTime ? `Betting for this match is closed.` : `Betting for this match will be opened from ${betStartTime.format("LLL")} to ${betEndTime.format("LLL")}`);
+    const [message, setMessage] = useState(moment() >= betEndTime ? `Betting for this match is CLOSED.` : `Betting for this match will be OPENED from ${betStartTime.format("LLL")} to ${betEndTime.format("LLL")}`);
     const [severity, setSeverity] = useState("info");
+    const [matchDetailsLoading, setMatchDetailsLoading] = useState(false);
 
     const root = {
         width: mobileView ? '100%' : '70%',
@@ -71,25 +72,35 @@ function CricketCard(props) {
       const bettingDone = flattenDeep(map(bets, "unique_id")).includes(unique_id);
       setBettingDoneByUser(bettingDone);
       setBettingOn(moment() >= betStartTime && moment() <= betEndTime && !bettingDone);
-      
+
       if(moment() < betStartTime) {
-        setMessage(`Betting for this match will be opened from ${betStartTime.format("LLL")} to ${betEndTime.format("LLL")}`);
+        setMessage(`Betting for this match will be OPENED from - ${betStartTime.format("LLL")} TO ${betEndTime.format("LLL")}`);
         setSeverity("info");
       } else if(moment() >= betStartTime && moment() <= betEndTime) {
-        setMessage(`Betting is opened till ${betEndTime.format("LLL")}.`);
+        setMessage(`Betting is OPENED TILL - ${betEndTime.format("LLL")}.`);
         setSeverity("success");
         if(bettingDone) {
           const bet = find(bets, {"unique_id": unique_id}) || {};
-          setMessage(`You've bet ${bet.selectedPoints} points on this match.`);
+          setMessage(`You've bet ${bet.selectedPoints} POINTS on this match.`);
           setSeverity("warning");
         }
       } else {
-        setMessage(`Betting for this match is closed.`);
+        setMessage(`Betting for this match is CLOSED. You DID NOT bet.`);
         setSeverity("error");
         if(bettingDone) {
           const bet = find(bets, {"unique_id": unique_id}) || {};
-          setMessage(`Betting Closed. You bet ${bet.selectedPoints} points on this match.`);
-          setSeverity("warning");
+          if(bet.isSettled) {
+            if(bet.betWon) {
+              setMessage(`Betting CLOSED. You WON ${bet.selectedPoints} POINTS on this match.`);
+              setSeverity("success");
+            } else {
+              setMessage(`Betting CLOSED. You LOST ${bet.selectedPoints} POINTS on this match.`);
+              setSeverity("error");
+            }
+          } else {
+            setMessage(`Betting CLOSED. You bet ${bet.selectedPoints} POINTS on this match.`);
+            setSeverity("warning");
+          }
         }
       }
       
@@ -105,13 +116,15 @@ function CricketCard(props) {
 
     const handleClick = (id) => {
       setOpenDialogBox(true);
+      setMatchDetailsLoading(true);
       getMatchDetails(id)
         .then(data => {
           setMatchDetails(data);
-          setOpenDialogBox(true);
+          setMatchDetailsLoading(false);
         })
         .catch(err => {
           console.log(err);
+          setMatchDetailsLoading(false);
         })
     }
 
@@ -168,7 +181,7 @@ function CricketCard(props) {
             {message}
           </Alert>
         </Card>
-        <MatchDetails matchDetails={matchDetails} toss={tossWinnerTeam} winnerTeam={winnerTeam} open={openDialogBox} handleClose={handleClose} team1Abbreviation={team1Abbreviation} team2Abbreviation={team2Abbreviation}/>
+        <MatchDetails matchDetailsLoading={matchDetailsLoading} matchDetails={matchDetails} toss={tossWinnerTeam} winnerTeam={winnerTeam} open={openDialogBox} handleClose={handleClose} team1Abbreviation={team1Abbreviation} team2Abbreviation={team2Abbreviation}/>
         <BettingDialog matchDetails={match} open={openBettingDialog} betEndTime={betEndTime} handleBettingCloseDialog={handleCloseBetting}/>
       </>
     );

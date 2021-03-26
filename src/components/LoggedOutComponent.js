@@ -12,14 +12,24 @@ import Signup from './Signup';
 
 function Copyright() {
   return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {'Copyright © '}
-      <Link color="inherit" href="#">
-        Cric-Funn
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
+    <Grid container justify="space-evenly" alignContent="space-around" direction="column">
+      <Grid item>
+        <Typography variant="body2" color="textSecondary" align="center">
+            {'Copyright © '}
+            <Link color="inherit" href="#">
+                Cric-Funn
+            </Link>{' '}
+            {new Date().getFullYear()}
+            {'.'}
+        </Typography>
+      </Grid>
+      <br/>
+      <Grid item>
+          <Typography variant="body2" color="textSecondary" align="center">
+              {'Author - Cypher33'}
+          </Typography>
+      </Grid>
+    </Grid>
   );
 }
 
