@@ -14,7 +14,7 @@ export default function Home() {
   const filterIplMatches = (matches) => {
     const iplTeamAbbreviation = ["RR", "KKR", "CSK", "MI", "RCB", "DC", "KXIP", "SRH"];
 
-    matches = matches.splice(0,20); //TEMP
+    matches = matches.splice(20,40); //TEMP
 
     const result = matches.filter(match => {
       let { "team-1": team1, "team-2": team2 } = match;

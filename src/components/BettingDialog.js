@@ -32,7 +32,8 @@ function BettingDialog(props) {
 
     const handleTeamChange = (event) => {
         setSelectedTeam(event.target.value);
-        if(isEmpty(selectedTeam) || isEmpty(selectedPoints) || selectedPoints > points) {
+        console.log(selectedTeam, selectedPoints, points);
+        if(isEmpty(event.target.value) || isEmpty(selectedPoints) || selectedPoints > points) {
             setDisableSave(true);
         } else {
             setDisableSave(false);
@@ -49,7 +50,7 @@ function BettingDialog(props) {
         }
 
         
-        if(isEmpty(selectedTeam) || isEmpty(event.target.value) || event.target.value > points) {
+        if(isEmpty(selectedTeam) || isEmpty(event.target.value) || event.target.value > points || event.target.value <= 0) {
             setDisableSave(true);
         } else {
             setDisableSave(false);
@@ -81,9 +82,11 @@ function BettingDialog(props) {
                             defaultValue="placeholder"
                             variant="outlined"
                             value={selectedTeam}
+                            displayEmpty
                             onChange={handleTeamChange}
+                            inputProps={{ 'aria-label': 'Without label' }}
                         >
-                            <MenuItem value="placeholder" disabled>Select Team</MenuItem>
+                            <MenuItem value="" disabled>Select Team</MenuItem>
                             <MenuItem value={team1}>{team1}</MenuItem>
                             <MenuItem value={team2}>{team2}</MenuItem>
                         </Select>
