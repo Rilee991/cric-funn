@@ -33,7 +33,7 @@ function Auth() {
                         <br/>
                         <Grid item>
                             <Typography variant="body2" color="textSecondary" align="center">
-                                {'Author - Cypher33'}
+                                {'Designed and Created by - Cypher33'}
                             </Typography>
                         </Grid>
                     </Grid>

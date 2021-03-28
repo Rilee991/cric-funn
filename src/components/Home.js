@@ -14,7 +14,7 @@ export default function Home() {
   const filterIplMatches = (matches) => {
     const iplTeamAbbreviation = ["RR", "KKR", "CSK", "MI", "RCB", "DC", "KXIP", "SRH"];
 
-    matches = matches.splice(20,40); //TEMP
+    // matches = matches.splice(20,40); //TEMP
 
     const result = matches.filter(match => {
       let { "team-1": team1, "team-2": team2 } = match;
@@ -25,9 +25,9 @@ export default function Home() {
       team1 = team1.match(/(\b\S)?/g).join("").toUpperCase();
       team2 = team2.match(/(\b\S)?/g).join("").toUpperCase();
 
-      match.team1Abbreviation = team1; //Temp
-      match.team2Abbreviation = team2; //Temp
-      return match; //Temp
+      // match.team1Abbreviation = team1; //Temp
+      // match.team2Abbreviation = team2; //Temp
+      // return match; //Temp
 
       if(iplTeamAbbreviation.includes(team1) && iplTeamAbbreviation.includes(team2)) {
         match.team1Abbreviation = team1;

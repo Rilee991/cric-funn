@@ -11,6 +11,7 @@ import { isEmpty } from 'lodash';
 import Loader from 'react-loader-spinner';
 
 import { ContextProvider } from '../Global/Context';
+import iplLogo from '../images/logo1.png';
 
 const useStyles = makeStyles((theme) => ({
     avatar: {
@@ -77,7 +78,8 @@ function Signup(props) {
         loading ? 
             <Loader type="Puff" color="#00BFFF" height={100} width={200} timeout={5000} /> : 
         <>
-            <Avatar className={classes.avatar}></Avatar>
+            {/* <Avatar className={classes.avatar}></Avatar> */}
+            <img src={iplLogo} style={{width: 150}}/>
             <Typography component="h1" variant="h5">
                 Sign Up
             </Typography>

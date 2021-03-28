@@ -4,8 +4,10 @@ import Link from '@material-ui/core/Link';
 import Paper from '@material-ui/core/Paper';
 import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
+import { ListItem, ListItemIcon, ListItemText, Button } from '@material-ui/core';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
+import { Facebook, LinkedIn, Twitter } from '@material-ui/icons';
 
 import Signin from './Signin';
 import Signup from './Signup';
@@ -26,8 +28,31 @@ function Copyright() {
       <br/>
       <Grid item>
           <Typography variant="body2" color="textSecondary" align="center">
-              {'Author - Cypher33'}
+            {'Designed and Created by - Cypher33'}
           </Typography>
+          <ListItem button style={{justifyContent:"center"}}>
+              <Button color="primary" onClick={() => window.open(
+                'https://www.facebook.com/StoneCypher33',
+                '_blank'
+              )}>
+                  <Facebook color="primary" fontSize="large" />
+              </Button>
+
+              <Button color="primary" onClick={() => window.open(
+                'https://www.linkedin.com/in/rohit-kumar-a92418141/',
+                '_blank'
+              )}>
+                  <LinkedIn color="primary" fontSize="large" />
+              </Button>
+
+              <Button color="primary" onClick={() => window.open(
+                'https://twitter.com/IamRohitKumar22',
+                '_blank'
+              )}>
+                  <Twitter color="primary" fontSize="large" />
+              </Button>
+          </ListItem>
+          
       </Grid>
     </Grid>
   );
