@@ -63,7 +63,7 @@ function BettingDialog(props) {
             window.location.reload(false);
             return;
         } else {
-            await betOnMatch({selectedTeam, selectedPoints, unique_id, isSettled: false, betWon: false, team1, team2});
+            await betOnMatch({selectedTeam, selectedPoints, unique_id, isSettled: false, betWon: false, team1, team2, betTime: new Date(), team1Abbreviation, team2Abbreviation});
             closeDialog();
         }
     }

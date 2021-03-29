@@ -57,8 +57,9 @@ import CricFunnLogo from '../images/logo1.png';
     const headersData = [
       {
         label: toUpper(username),
-        href: "/profile",
+        href: "/",
         onClick: closeDrawer,
+        disabled: true,
         icon: (<AccountCircle color={mobileView ? "primary": "inherit"} fontSize="large"/>)
       },
       {
@@ -155,7 +156,7 @@ import CricFunnLogo from '../images/logo1.png';
               to: href,
               color: "inherit",
               style: { textDecoration: "none" },
-              key: label
+              key: label,
             }}
             onClick = {onClick}
           >
