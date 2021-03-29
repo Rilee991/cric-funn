@@ -177,7 +177,7 @@ function CricketCard(props) {
               Let's Bet!
             </Button>
           </CardActions>
-          <Alert severity={severity}>
+          <Alert severity={severity} variant="standard">
             {message}
           </Alert>
         </Card>

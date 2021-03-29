@@ -1,9 +1,11 @@
 import React, { useState, useEffect, useContext } from 'react';
 
 import { ContextProvider } from '../Global/Context';
-import { Typography } from '@material-ui/core';
+import { Typography, Grid } from '@material-ui/core';
 import BetCard from './BetCard';
 import StatsCard from './StatsCard';
+import noBetsFound from '../images/no-data-found.jpg';
+import Alert from '@material-ui/lab/Alert';
 
 export default function MyBets() {
     const contextConsumer = useContext(ContextProvider);
@@ -34,7 +36,12 @@ export default function MyBets() {
             {bets.length ? bets.map((bet) => (
                 <BetCard key={bet.unique_id} mobileView={mobileView} bet={bet}/>
             ))  : 
-            <Typography>You have not bet in any matches yet.</Typography>}
+            <Alert severity="info" variant="filled" style={{width: mobileView ? "100%" : "70%"}}>
+                <Typography variant="overline">
+                    <b>You have not bet in any matches yet.</b>
+                </Typography>
+            </Alert>
+            }
         </div>
     );
 }
