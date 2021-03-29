@@ -12,11 +12,12 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Button from '@material-ui/core/Button';
 import { isEmpty } from 'lodash';
 import moment from 'moment';
+import { Alert } from '@material-ui/lab';
 
 import { ContextProvider } from '../Global/Context';
 
 function BettingDialog(props) {
-    const { matchDetails, open, handleBettingCloseDialog, betEndTime } = props;
+    const { matchDetails, open, handleBettingCloseDialog, betEndTime, mobileView } = props;
     const { team1Abbreviation, team2Abbreviation, "team-1": team1, "team-2": team2, unique_id } = matchDetails;
     const contextConsumer = useContext(ContextProvider);
     const { loggedInUserDetails, betOnMatch } = contextConsumer;
@@ -105,6 +106,12 @@ function BettingDialog(props) {
                         <Button fullWidth size="small" color="primary" variant="contained" disabled={disabledSave} onClick={() => betInTheMatch()}>
                             Save
                         </Button>
+                        <br/><br/>
+                        <Alert severity="warning" >
+                            <Typography variant="overline">
+                                <b>Once bet cannot be edited.</b>
+                            </Typography>
+                        </Alert>
                     </form>
                 </DialogContentText>
             </DialogContent>

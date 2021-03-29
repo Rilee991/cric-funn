@@ -182,7 +182,7 @@ function CricketCard(props) {
           </Alert>
         </Card>
         <MatchDetails matchDetailsLoading={matchDetailsLoading} matchDetails={matchDetails} toss={tossWinnerTeam} winnerTeam={winnerTeam} open={openDialogBox} handleClose={handleClose} team1Abbreviation={team1Abbreviation} team2Abbreviation={team2Abbreviation}/>
-        <BettingDialog matchDetails={match} open={openBettingDialog} betEndTime={betEndTime} handleBettingCloseDialog={handleCloseBetting}/>
+        <BettingDialog mobileView={mobileView} matchDetails={match} open={openBettingDialog} betEndTime={betEndTime} handleBettingCloseDialog={handleCloseBetting}/>
       </>
     );
 }
