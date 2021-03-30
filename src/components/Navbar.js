@@ -84,6 +84,7 @@ import CricFunnLogo from '../images/logo1.png';
   
     useEffect(() => {
       const setResponsiveness = () => {
+        
         return window.innerWidth < 900
           ? setState((prevState) => ({ ...prevState, mobileView: true }))
           : setState((prevState) => ({ ...prevState, mobileView: false }));

@@ -33,7 +33,7 @@ function BettingDialog(props) {
 
     const handleTeamChange = (event) => {
         setSelectedTeam(event.target.value);
-        console.log(selectedTeam, selectedPoints, points);
+        
         if(isEmpty(event.target.value) || isEmpty(selectedPoints) || selectedPoints > points) {
             setDisableSave(true);
         } else {

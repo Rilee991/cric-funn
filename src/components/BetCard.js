@@ -24,7 +24,7 @@ function BetCard(props) {
     const { betTime = "", team1, team2, selectedTeam, selectedPoints, isSettled, betWon, unique_id, team1Abbreviation, team2Abbreviation } = bet;
     const team1Logo = getTeamLogo(team1Abbreviation);
     const team2Logo = getTeamLogo(team2Abbreviation);
-    const [message, setMessage] = useState(isSettled ? (betWon ? `Bet CLOSED. You WON this bet for ${selectedPoints} POINTS.` : `Bet CLOSED. You LOST this bet for ${selectedPoints} POINTS.`) : `Bet IN PROGRESS.`);
+    const [message, setMessage] = useState(isSettled ? (betWon ? `Bet CLOSED. You WON this bet for ${selectedPoints} POINTS.` : `Bet CLOSED. You LOST this bet for ${selectedPoints} POINTS.`) : `Bet IN PROGRESS. You bet ${selectedPoints} POINTS.`);
     const [severity, setSeverity] = useState(isSettled ? (betWon ? `success` : `error`) : `warning`);
 
     const root = {
@@ -51,7 +51,7 @@ function BetCard(props) {
       else if(team == "RCB") return rcbLogo;
       else return rrLogo;
     }
-    console.log(moment(betTime.seconds).format("LLL"));
+    
     return (
       <>
         <Card style={root}>

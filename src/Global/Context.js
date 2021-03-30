@@ -1,4 +1,4 @@
-import { find } from 'lodash';
+import { find, isEmpty } from 'lodash';
 import React, { createContext, useState, useEffect } from 'react';
 
 import { auth, db, storage } from '../config';
@@ -101,6 +101,25 @@ const Context = (props) => {
         });
     }
 
+    const viewBetsData = async(id) => {
+        const result = [];
+        const userDocs = await db.collection("users").get();
+        userDocs.docs.map(user => {
+            const userData = user.data();
+            const { bets = [], username } = userData;
+            const betData = find(bets, {"unique_id": id}) || {};
+            if(!isEmpty(betData)) {
+                result.push({
+                    username,
+                    betTime: betData.betTime,
+                    betPoints: betData.selectedPoints,
+                    betTeam: betData.selectedTeam
+                });
+            }
+        });
+        return result;
+    }
+
     const updateUserInfo = async (username, points, bets) => {
         try {
             let finalPoints = points, betSettledCount = 0;
@@ -165,7 +184,8 @@ const Context = (props) => {
             signUp,
             signIn,
             logout,
-            betOnMatch
+            betOnMatch,
+            viewBetsData
         }}>
             {props.children}
         </ContextProvider.Provider>

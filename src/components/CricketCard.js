@@ -24,6 +24,7 @@ import MatchDetails from './MatchDetails';
 import { getMatchDetails } from './apis';
 import BettingDialog from './BettingDialog';
 import { ContextProvider } from '../Global/Context';
+import ViewBetsDialog from './ViewBetsDialog';
 
 // date: "2021-04-09T00:00:00.000Z"
 // dateTimeGMT: "2021-04-09T14:00:00.000Z"
@@ -46,10 +47,12 @@ function CricketCard(props) {
     const team2Logo = getTeamLogo(team2Abbreviation);
     const [openDialogBox, setOpenDialogBox] = useState(false);
     const [openBettingDialog, setOpenBettingDialog] = useState(false);
+    const [openViewBetsDialog, setOpenViewBetsDialog] = useState(false);
     const [matchDetails, setMatchDetails] = useState({});
     const betStartTime = moment(matchTime).subtract(24.5,"hours");
     const betEndTime = moment(matchTime).subtract(30,"minutes");
     const [bettingOn, setBettingOn] = useState(moment() >= betStartTime && moment() <= betEndTime && !bettingDoneByUser);
+    const [canViewBets, setCanViewBets] = useState(moment() > betEndTime);
     const [message, setMessage] = useState(moment() >= betEndTime ? `Betting for this match is CLOSED.` : `Betting for this match will be OPENED from ${betStartTime.format("LLL")} to ${betEndTime.format("LLL")}`);
     const [severity, setSeverity] = useState("info");
     const [matchDetailsLoading, setMatchDetailsLoading] = useState(false);
@@ -72,6 +75,7 @@ function CricketCard(props) {
       const bettingDone = flattenDeep(map(bets, "unique_id")).includes(unique_id);
       setBettingDoneByUser(bettingDone);
       setBettingOn(moment() >= betStartTime && moment() <= betEndTime && !bettingDone);
+      setCanViewBets(moment() > betEndTime);
 
       if(moment() < betStartTime) {
         setMessage(`Betting for this match will be OPENED from - ${betStartTime.format("LLL")} TO ${betEndTime.format("LLL")}`);
@@ -114,6 +118,10 @@ function CricketCard(props) {
       setOpenBettingDialog(false);
     }
 
+    const handleCloseViewBets = () => {
+      setOpenViewBetsDialog(false);
+    }
+
     const handleClick = (id) => {
       setOpenDialogBox(true);
       setMatchDetailsLoading(true);
@@ -130,6 +138,10 @@ function CricketCard(props) {
 
     const handleBetClick = () => {
       setOpenBettingDialog(true);
+    }
+
+    const handleViewBetClick = () => {
+      setOpenViewBetsDialog(true);
     }
 
     function getTeamLogo(team) {
@@ -150,7 +162,7 @@ function CricketCard(props) {
             <CardContent>
               <Grid container justify="center" spacing={4} alignContent="center" style={backgroundImage}>
                 <Grid item>
-                  <img src={team1Logo} style={{width: mobileView ? 110 : 150}}/>
+                  <img src={team1Logo} style={{width: mobileView ? 100 : 150}}/>
                 </Grid>
                 
                 <Grid item>
@@ -158,7 +170,7 @@ function CricketCard(props) {
                 </Grid>
                 
                 <Grid item>
-                  <img src={team2Logo} style={{width: mobileView ? 110 : 150}}/>  
+                  <img src={team2Logo} style={{width: mobileView ? 100 : 150}}/>  
                 </Grid>  
               </Grid>
               <Typography gutterBottom variant="h5" component="h2">
@@ -176,6 +188,9 @@ function CricketCard(props) {
             <Button size="small" color="primary" variant="contained" disabled={!bettingOn} onClick={() => handleBetClick()}>
               Let's Bet!
             </Button>
+            <Button size="small" color="primary" variant="contained" disabled={!canViewBets} onClick={() => handleViewBetClick(unique_id)}>
+              View Bets
+            </Button>
           </CardActions>
           <Alert severity={severity} variant="standard">
             {message}
@@ -183,6 +198,7 @@ function CricketCard(props) {
         </Card>
         <MatchDetails matchDetailsLoading={matchDetailsLoading} matchDetails={matchDetails} toss={tossWinnerTeam} winnerTeam={winnerTeam} open={openDialogBox} handleClose={handleClose} team1Abbreviation={team1Abbreviation} team2Abbreviation={team2Abbreviation}/>
         <BettingDialog mobileView={mobileView} matchDetails={match} open={openBettingDialog} betEndTime={betEndTime} handleBettingCloseDialog={handleCloseBetting}/>
+        <ViewBetsDialog mobileView={mobileView} matchDetails={match} open={openViewBetsDialog} handleBettingCloseDialog={handleCloseViewBets}/>
       </>
     );
 }
