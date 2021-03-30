@@ -162,7 +162,7 @@ function CricketCard(props) {
             <CardContent>
               <Grid container justify="center" spacing={4} alignContent="center" style={backgroundImage}>
                 <Grid item>
-                  <img src={team1Logo} style={{width: mobileView ? 100 : 150}}/>
+                  <img src={team1Logo} style={{width: mobileView ? 90 : 150}}/>
                 </Grid>
                 
                 <Grid item>
@@ -170,7 +170,7 @@ function CricketCard(props) {
                 </Grid>
                 
                 <Grid item>
-                  <img src={team2Logo} style={{width: mobileView ? 100 : 150}}/>  
+                  <img src={team2Logo} style={{width: mobileView ? 90 : 150}}/>  
                 </Grid>  
               </Grid>
               <Typography gutterBottom variant="h5" component="h2">
