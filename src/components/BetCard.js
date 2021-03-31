@@ -70,13 +70,13 @@ function BetCard(props) {
                   <img src={team2Logo} style={{width: mobileView ? 110 : 150}}/>  
                 </Grid>  
               </Grid>
-              <Typography gutterBottom variant="h5" component="h2">
-                <b>{team1} VS {team2}</b>
+              <Typography gutterBottom variant="overline" style={{fontSize: 20}} component="h2">
+                <b>{team1} VS. {team2}</b>
               </Typography>
-              <Typography variant="body1" color="textSecondary" component="p">
+              <Typography variant="overline" style={{fontSize: 13}} color="textSecondary" component="p">
                 Betting Time: <b>{betTime ? moment.unix(betTime.seconds).format("LLL") : "NA"}</b>
               </Typography>
-              <Typography variant="body1" color="textSecondary" component="p">
+              <Typography variant="overline" style={{fontSize: 13}} color="textSecondary" component="p">
                 Betting Team: <b>{selectedTeam}</b>
               </Typography>
             </CardContent>

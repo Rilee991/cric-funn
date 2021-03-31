@@ -11,7 +11,7 @@ function MatchDetails(props) {
 
     return (
         <Dialog open={open} onClose={closeDialog} aria-labelledby="responsive-dialog-title" maxWidth="xl">
-            <DialogTitle id="alert-dialog-title">{team1Abbreviation} vs {team2Abbreviation}</DialogTitle>
+            <DialogTitle id="alert-dialog-title"><Typography variant="overline" style={{fontSize: 15}}><b>Match Details - {team1Abbreviation} vs {team2Abbreviation}</b></Typography></DialogTitle>
             <hr/>
             {matchDetailsLoading ? (
                 <DialogContent>
@@ -33,7 +33,7 @@ function MatchDetails(props) {
             ) : (
                 <DialogContent>
                     <DialogContentText id="alert-dialog-description">
-                        <Typography>
+                        <Typography variant="overline">
                             Match Status: {" "}
                             <span style={{fontWeight: "bold"}}>
                                 {matchDetails.matchStarted ? "Started" : "Not Started Yet"}
@@ -42,29 +42,39 @@ function MatchDetails(props) {
                         {matchDetails.matchStarted ? 
                         <>
                             {   toss ? 
-                                <Typography>
-                                    Toss: {" "}
-                                    <span style={{fontStyle: "italic", fontWeight: "bold"}}>
-                                        { toss }
-                                    </span>
-                                </Typography> : ""
+                                <>
+                                    <br/>
+                                    <Typography variant="overline">
+                                        Toss: {" "}
+                                        <span style={{fontStyle: "italic", fontWeight: "bold"}}>
+                                            { toss }
+                                        </span>
+                                    </Typography> 
+                                </> : ""
+                                
                             }
                             {   matchDetails.score ? 
-                                <Typography>
-                                    Score: {" "}
-                                    <span style={{fontStyle: "italic", fontWeight: "bold"}}>
-                                        {matchDetails.score}
-                                    </span>
-                                </Typography> : ""
+                                <>
+                                    <br/>
+                                    <Typography variant="overline">
+                                        Score: {" "}
+                                        <span style={{fontStyle: "italic", fontWeight: "bold"}}>
+                                            {matchDetails.score}
+                                        </span>
+                                    </Typography> 
+                                </> : ""
                             }
-                            {winnerTeam ? (
-                            <Typography>
-                                Result: {" "}
-                                <span style={{fontStyle: "italic", fontWeight: "bold"}}>
-                                    {winnerTeam} won.
-                                </span>
-                            </Typography>) : "" }
-                        </> : "Match not started yet."}
+                            {   winnerTeam ? 
+                                <>
+                                    <br/>
+                                    <Typography variant="overline">
+                                        Result: {" "}
+                                        <span style={{fontStyle: "italic", fontWeight: "bold"}}>
+                                            {winnerTeam} won.
+                                        </span>
+                                    </Typography>
+                                </> : "" }
+                        </> : null}
                     </DialogContentText>
                 </DialogContent>
             )} 

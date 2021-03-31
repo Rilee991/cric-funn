@@ -71,7 +71,8 @@ function BettingDialog(props) {
 
     return (
         <Dialog open={open} onClose={closeDialog} aria-labelledby="responsive-dialog-title" maxWidth="xl">
-            <DialogTitle id="alert-dialog-title">Betting Match - {team1Abbreviation} vs {team2Abbreviation}</DialogTitle>
+            <DialogTitle id="alert-dialog-title"><Typography variant="overline" style={{fontSize: 15}}><b>Betting Match - {team1Abbreviation} vs {team2Abbreviation}</b></Typography></DialogTitle>
+            <hr/>
             <DialogContent>
                 <DialogContentText id="alert-dialog-description">
                     <form>
@@ -86,20 +87,22 @@ function BettingDialog(props) {
                             displayEmpty
                             onChange={handleTeamChange}
                             inputProps={{ 'aria-label': 'Without label' }}
+                            required
                         >
-                            <MenuItem value="" disabled>Select Team</MenuItem>
-                            <MenuItem value={team1}>{team1}</MenuItem>
-                            <MenuItem value={team2}>{team2}</MenuItem>
+                            <MenuItem value="" disabled><Typography variant="overline">Select Team</Typography></MenuItem>
+                            <MenuItem value={team1}><Typography variant="overline">{team1}</Typography></MenuItem>
+                            <MenuItem value={team2}><Typography variant="overline">{team2}</Typography></MenuItem>
                         </Select>
                         <br/><br/>
                         <TextField 
                             fullWidth 
                             type="number" 
                             id="outlined-basic" 
-                            label="Enter Betting Points" 
+                            label="Enter Betting Points"
                             variant="outlined"
                             value={selectedPoints}
                             onChange={handlePointsChange}
+                            required
                         />
                         {error ? <Typography variant="overline" color="error">{error}</Typography>: ""}
                         <br/><br/>

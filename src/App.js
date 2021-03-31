@@ -6,6 +6,7 @@ import Context from './Global/Context';
 import Auth from './components/Auth';
 import Header from './components/Header';
 import MyBets from './components/MyBets';
+import PointsTable from './components/PointsTable';
 
 function App() {
   return (
@@ -17,6 +18,9 @@ function App() {
         </Route> 
         <Route exact path="/bets">
           <MyBets/> 
+        </Route>
+        <Route exact path="/points-table">
+          <PointsTable exact />
         </Route>
       </Context>
     </Router>

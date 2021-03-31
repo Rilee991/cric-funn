@@ -45,13 +45,14 @@ function ViewBetsDialog(props) {
 
     return (
         <Dialog open={open} onClose={closeDialog} aria-labelledby="responsive-dialog-title" maxWidth="xl">
-            <DialogTitle id="alert-dialog-title">View Bets - {team1Abbreviation} vs {team2Abbreviation}</DialogTitle>
+            <DialogTitle id="alert-dialog-title"><Typography variant="overline" style={{fontSize: 15}}><b>View Bets - {team1Abbreviation} vs {team2Abbreviation}</b></Typography></DialogTitle>
+            <hr/>
             <DialogContent>
                 <DialogContentText id="alert-dialog-description">
                     {betsData.length ?  (
                         <TableContainer component={Paper}>
                             <Table aria-label="caption table">
-                                <caption>Sorted By Username</caption>
+                                <caption><Typography variant="overline">Sorted By Points</Typography></caption>
                                 <TableHead>
                                     <TableRow>
                                         <TableCell variant="footer">USERNAME</TableCell>

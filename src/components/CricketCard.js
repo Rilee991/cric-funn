@@ -173,11 +173,11 @@ function CricketCard(props) {
                   <img src={team2Logo} style={{width: mobileView ? 90 : 150}}/>  
                 </Grid>  
               </Grid>
-              <Typography gutterBottom variant="h5" component="h2">
-                <b>{team1} VS {team2}</b>
+              <Typography gutterBottom variant="overline" style={{fontSize: 20}} component="h2">
+                <b>{team1} VS. {team2}</b>
               </Typography>
-              <Typography variant="body2" color="textSecondary" component="p">
-                Start Time: {moment(matchTime).format("LLL")}
+              <Typography variant="overline" style={{fontSize: 13}} color="textSecondary" component="p">
+                <b>Start Time: {moment(matchTime).format("LLL")}</b>
               </Typography>
             </CardContent>
           </CardActionArea>
@@ -193,7 +193,7 @@ function CricketCard(props) {
             </Button>
           </CardActions>
           <Alert severity={severity} variant="standard">
-            {message}
+            <b>{message}</b>
           </Alert>
         </Card>
         <MatchDetails matchDetailsLoading={matchDetailsLoading} matchDetails={matchDetails} toss={tossWinnerTeam} winnerTeam={winnerTeam} open={openDialogBox} handleClose={handleClose} team1Abbreviation={team1Abbreviation} team2Abbreviation={team2Abbreviation}/>

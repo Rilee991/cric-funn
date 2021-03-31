@@ -23,7 +23,7 @@ function Auth() {
                         <Grid item>
                             <Typography variant="body2" color="textSecondary" align="center">
                                 {'Copyright © '}
-                                <Link color="inherit" href="#">
+                                <Link color="inherit" href="#" variant="overline">
                                     Cric-Funn
                                 </Link>{' '}
                                 {new Date().getFullYear()}
@@ -32,7 +32,7 @@ function Auth() {
                         </Grid>
                         <br/>
                         <Grid item>
-                            <Typography variant="body2" color="textSecondary" align="center">
+                            <Typography variant="overline" color="textSecondary" align="center">
                                 {'Designed and Created by - Cypher33'}
                             </Typography>
                         </Grid>

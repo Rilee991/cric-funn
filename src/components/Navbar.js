@@ -4,7 +4,7 @@ import { deepPurple } from '@material-ui/core/colors';
 import React, { useState, useEffect, useContext } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { toUpper } from 'lodash';
-import { AccountCircle, ExitToApp, MonetizationOnTwoTone, AccountBalanceWalletTwoTone } from '@material-ui/icons';
+import { AccountCircle, ExitToApp, MonetizationOnTwoTone, AccountBalanceWalletTwoTone, TableChart } from '@material-ui/icons';
 
 import { ContextProvider } from '../Global/Context';
 import CricFunnLogo from '../images/logo1.png';
@@ -73,6 +73,12 @@ import CricFunnLogo from '../images/logo1.png';
         href: "/",
         disabled: true,
         icon: (<MonetizationOnTwoTone color="disabled" fontSize="large"/>)
+      },
+      {
+        label: `POINTS TABLE`,
+        href: "/points-table",
+        onClick: closeDrawer,
+        icon: (<TableChart color="disabled" fontSize="large"/>)
       },
       {
         label: "LOGOUT",

@@ -83,7 +83,7 @@ function Signin(props) {
         <>
             {/* <Avatar className={classes.avatar}></Avatar> */}
             <img src={iplLogo} style={{width: 150}}/>
-            <Typography component="h1" variant="h5">
+            <Typography variant="button" style={{ fontSize: 25}}>
                 Sign in
             </Typography>
             <form className={classes.form} onSubmit={signInUser}>
@@ -125,13 +125,14 @@ function Signin(props) {
                 </Button>
                 <Grid container>
                     <Grid item>
-                        <Button onClick={toggleSignin}>
+                        <Button variant="text" onClick={toggleSignin}>
                             {"Don't have an account? Sign Up"}
                         </Button>
                     </Grid>
                 </Grid>
             </form>
-            <Snackbar open={open} autoHideDuration={4000} onClose={handleClose}>
+            
+            <Snackbar open={open} autoHideDuration={10000} onClose={handleClose}>
                 <MuiAlert onClose={handleClose} severity="error">
                     {errorMessage}
                 </MuiAlert>

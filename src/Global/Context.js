@@ -1,4 +1,4 @@
-import { find, isEmpty } from 'lodash';
+import { find, isEmpty, orderBy, sortBy } from 'lodash';
 import React, { createContext, useState, useEffect } from 'react';
 
 import { auth, db, storage } from '../config';
@@ -102,7 +102,7 @@ const Context = (props) => {
     }
 
     const viewBetsData = async(id) => {
-        const result = [];
+        let result = [];
         const userDocs = await db.collection("users").get();
         userDocs.docs.map(user => {
             const userData = user.data();
@@ -112,11 +112,47 @@ const Context = (props) => {
                 result.push({
                     username,
                     betTime: betData.betTime,
-                    betPoints: betData.selectedPoints,
+                    betPoints: parseInt(betData.selectedPoints),
                     betTeam: betData.selectedTeam
                 });
             }
         });
+
+        result = sortBy(result, ["betPoints"]);
+
+        return result;
+    }
+
+    const getPointsTableData = async() => {
+        let result = [];
+        const userDocs = await db.collection("users").get();
+        userDocs.docs.map(user => {
+            const userData = user.data();
+            const { bets = [], username, points, isDummyUser = false } = userData;
+            if(isDummyUser)    
+                return;
+            let won = 0, lost = 0, inprogress = 0;
+            bets.map(bet => {
+                if(bet.isSettled) {
+                    if(bet.betWon)  won++;
+                    else    lost++;
+                } else {
+                    inprogress++;
+                }
+            });
+
+            result.push({
+                username,
+                totalBets: won + lost + inprogress,
+                won,
+                lost,
+                inprogress,
+                points
+            });
+        });
+
+        result = orderBy(result, ["points"], "desc");
+
         return result;
     }
 
@@ -185,7 +221,8 @@ const Context = (props) => {
             signIn,
             logout,
             betOnMatch,
-            viewBetsData
+            viewBetsData,
+            getPointsTableData
         }}>
             {props.children}
         </ContextProvider.Provider>

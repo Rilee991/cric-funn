@@ -80,7 +80,7 @@ function Signup(props) {
         <>
             {/* <Avatar className={classes.avatar}></Avatar> */}
             <img src={iplLogo} style={{width: 150}}/>
-            <Typography component="h1" variant="h5">
+            <Typography component="h1" variant="button" style={{ fontSize: 25}}>
                 Sign Up
             </Typography>
             <form className={classes.form} onSubmit={signUpUser}>
