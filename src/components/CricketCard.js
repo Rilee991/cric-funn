@@ -41,7 +41,7 @@ function CricketCard(props) {
     const contextConsumer = useContext(ContextProvider);
     const { loggedInUserDetails } = contextConsumer;
     const { bets = [] } = loggedInUserDetails;
-    const { dateTimeGMT: matchTime, toss_winner_team: tossWinnerTeam, winner_team: winnerTeam, team1Abbreviation, team2Abbreviation, "team-1": team1, "team-2": team2, unique_id } = match;
+    const { dateTimeGMT: matchTime, toss_winner_team: tossWinnerTeam, winner_team: winnerTeam, team1Abbreviation, team2Abbreviation, "team-1": team1, "team-2": team2, unique_id, isNoResult, isBetDone } = match;
     const [bettingDoneByUser, setBettingDoneByUser] = useState(false);
     const team1Logo = getTeamLogo(team1Abbreviation);
     const team2Logo = getTeamLogo(team2Abbreviation);
@@ -73,6 +73,7 @@ function CricketCard(props) {
 
     useEffect(()=> {
       const bettingDone = flattenDeep(map(bets, "unique_id")).includes(unique_id);
+      const bet = find(bets, {"unique_id": unique_id}) || {};
       setBettingDoneByUser(bettingDone);
       setBettingOn(moment() >= betStartTime && moment() <= betEndTime && !bettingDone);
       setCanViewBets(moment() > betEndTime);
@@ -84,15 +85,16 @@ function CricketCard(props) {
         setMessage(`Betting is OPENED TILL - ${betEndTime.format("LLL")}.`);
         setSeverity("success");
         if(bettingDone) {
-          const bet = find(bets, {"unique_id": unique_id}) || {};
           setMessage(`You've bet ${bet.selectedPoints} POINTS on this match.`);
           setSeverity("warning");
         }
+      } else if(isNoResult) {
+        setMessage(`Betting is CLOSED. Match ended in NO RESULT. You've recieved ${bet.selectedPoints} POINTS on this match.`);
+        setSeverity("success");
       } else {
-        setMessage(`Betting for this match is CLOSED. You DID NOT bet.`);
+        setMessage(`Betting for this match is CLOSED.`);
         setSeverity("error");
         if(bettingDone) {
-          const bet = find(bets, {"unique_id": unique_id}) || {};
           if(bet.isSettled) {
             if(bet.betWon) {
               setMessage(`Betting CLOSED. You WON ${bet.selectedPoints} POINTS on this match.`);
@@ -152,7 +154,7 @@ function CricketCard(props) {
       else if(team == "MI") return miLogo;
       else if(team == "KXIP") return pkLogo;
       else if(team == "RCB") return rcbLogo;
-      else return rrLogo;
+      else return kkrLogo;
     }
 
     return (
@@ -160,17 +162,17 @@ function CricketCard(props) {
         <Card style={root}>
           <CardActionArea>
             <CardContent>
-              <Grid container justify="center" spacing={4} alignContent="center" style={backgroundImage}>
+              <Grid container justify="space-evenly" spacing={4} alignContent="center" style={backgroundImage} direction="row">
                 <Grid item>
-                  <img src={team1Logo} style={{width: mobileView ? 90 : 150}}/>
+                  <img src={team1Logo} style={{width: mobileView ? "8.5em" : 150, height: "auto"}}/>
                 </Grid>
                 
                 <Grid item>
-                  <img src={vsLogo} style={{width: mobileView ? 75 : 150}}/>
+                  <img src={vsLogo} style={{width: mobileView ? "5em" : 150, height: "auto"}}/>
                 </Grid>
                 
                 <Grid item>
-                  <img src={team2Logo} style={{width: mobileView ? 90 : 150}}/>  
+                  <img src={team2Logo} style={{width: mobileView ? "8.5em" : 150, height: "auto"}}/>  
                 </Grid>  
               </Grid>
               <Typography gutterBottom variant="overline" style={{fontSize: 20}} component="h2">

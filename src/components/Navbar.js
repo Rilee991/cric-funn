@@ -4,7 +4,7 @@ import { deepPurple } from '@material-ui/core/colors';
 import React, { useState, useEffect, useContext } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { toUpper } from 'lodash';
-import { AccountCircle, ExitToApp, MonetizationOnTwoTone, AccountBalanceWalletTwoTone, TableChart } from '@material-ui/icons';
+import { AccountCircle, ExitToApp, MonetizationOnTwoTone, AccountBalanceWalletTwoTone, TableChart, HomeRounded } from '@material-ui/icons';
 
 import { ContextProvider } from '../Global/Context';
 import CricFunnLogo from '../images/logo1.png';
@@ -45,7 +45,7 @@ import CricFunnLogo from '../images/logo1.png';
   export default function Navbar() {
     const contextConsumer = useContext(ContextProvider);
     const { logout, loggedInUserDetails = {} } = contextConsumer;
-    const { username = "...", points } = loggedInUserDetails;
+    const { username = "...", points, isAdmin = false } = loggedInUserDetails;
     const { header, logo, menuButton, toolbar, drawerContainer, paper } = useStyles();
     const [state, setState] = useState({
       mobileView: false,
@@ -78,15 +78,24 @@ import CricFunnLogo from '../images/logo1.png';
         label: `POINTS TABLE`,
         href: "/points-table",
         onClick: closeDrawer,
-        icon: (<TableChart color="disabled" fontSize="large"/>)
+        icon: (<TableChart color={mobileView ? "primary": "inherit"} fontSize="large"/>)
       },
       {
         label: "LOGOUT",
         href: "/",
         onClick: handleLogout,
         icon: (<ExitToApp color="error" fontSize="large"/>)
-      },
+      }
     ];
+
+    if(isAdmin) {
+      headersData.push({
+        label: `ADMIN RIGHTS`,
+        href: "/admin",
+        onClick: closeDrawer,
+        icon: (<HomeRounded color={mobileView ? "primary": "inherit"} fontSize="large"/>)
+      });
+    }
   
     useEffect(() => {
       const setResponsiveness = () => {

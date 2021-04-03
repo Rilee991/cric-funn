@@ -16,6 +16,8 @@ import { Alert } from '@material-ui/lab';
 
 import { ContextProvider } from '../Global/Context';
 
+const admin = require("firebase");
+
 function BettingDialog(props) {
     const { matchDetails, open, handleBettingCloseDialog, betEndTime, mobileView } = props;
     const { team1Abbreviation, team2Abbreviation, "team-1": team1, "team-2": team2, unique_id } = matchDetails;
@@ -64,7 +66,7 @@ function BettingDialog(props) {
             window.location.reload(false);
             return;
         } else {
-            await betOnMatch({selectedTeam, selectedPoints, unique_id, isSettled: false, betWon: false, team1, team2, betTime: new Date(), team1Abbreviation, team2Abbreviation});
+            await betOnMatch({selectedTeam, selectedPoints, unique_id, isBetDone: true, isNoResult: false, isSettled: false, betWon: false, team1, team2, betTime: admin.default.firestore.Timestamp.fromDate(new Date()), team1Abbreviation, team2Abbreviation});
             closeDialog();
         }
     }

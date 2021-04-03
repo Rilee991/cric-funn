@@ -14,10 +14,10 @@ export default function Home() {
   const filterIplMatches = (matches) => {
     const iplTeamAbbreviation = ["RR", "KKR", "CSK", "MI", "RCB", "DC", "KXIP", "SRH"];
 
-    matches = matches.splice(20,40); //TEMP
+    matches = matches.splice(0,60); //TEMP
 
     const result = matches.filter(match => {
-      let { "team-1": team1, "team-2": team2 } = match;
+      let { "team-1": team1, "team-2": team2, type = "" } = match;
       if(team1 == "Sunrisers Hyderabad") team1 = "Sun Risers Hyderabad";
       if(team2 == "Sunrisers Hyderabad") team2 = "Sun Risers Hyderabad";
       if(team1 == "Kings XI Punjab") team1 = "Kings X I Punjab";
@@ -27,7 +27,9 @@ export default function Home() {
 
       match.team1Abbreviation = team1; //Temp
       match.team2Abbreviation = team2; //Temp
-      return match; //Temp
+      if(type)
+        return match; //Temp
+      else return;
 
       if(iplTeamAbbreviation.includes(team1) && iplTeamAbbreviation.includes(team2)) {
         match.team1Abbreviation = team1;
@@ -35,6 +37,7 @@ export default function Home() {
         return match;
       }
     });
+
     return result;
   }
 

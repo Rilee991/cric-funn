@@ -7,6 +7,7 @@ import Auth from './components/Auth';
 import Header from './components/Header';
 import MyBets from './components/MyBets';
 import PointsTable from './components/PointsTable';
+import Admin from './components/Admin';
 
 function App() {
   return (
@@ -21,6 +22,9 @@ function App() {
         </Route>
         <Route exact path="/points-table">
           <PointsTable exact />
+        </Route>
+        <Route exact path="/admin">
+          <Admin exact />
         </Route>
       </Context>
     </Router>

@@ -5,9 +5,9 @@ import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import { Grid, Paper } from '@material-ui/core';
 
-import winLogo from '../images/win.png';
-import lossLogo from '../images/loss.png';
-import inProgressLogo from '../images/progress.png';
+import winLogo from '../images/win1.svg';
+import lossLogo from '../images/loss.svg';
+import inProgressLogo from '../images/inprogress.svg';
 import backGround from '../images/background.jpg';
 import { round } from 'lodash';
 
@@ -126,10 +126,10 @@ function StatsCard(props) {
                                 <Paper style={paper}>LAST 5 BETS RESULTS:  
                                     { last5Results.length == 0 ? "NO BETTING DONE" : last5Results.map(result => 
                                         (<>  {"  "}
-                                            {result == 'I' ? <img width={mobileView ? 15 : 13} src={inProgressLogo}/> 
+                                            {result == 'I' ? <img width={mobileView ? 15 : 18} src={inProgressLogo}/> 
                                             : 
-                                            result == 'W' ? <img width="21" src={winLogo} /> 
-                                            : <img width="13" src={lossLogo} />
+                                            result == 'W' ? <img width={mobileView ? 15 : 18} src={winLogo} /> 
+                                            : <img width={mobileView ? 15 : 18} src={lossLogo} />
                                             }
                                         </>)
                                         )

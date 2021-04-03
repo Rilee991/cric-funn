@@ -19,12 +19,29 @@ import pkLogo from '../images/pk.png';
 import vsLogo from '../images/vs.png';
 import backGround from '../images/background.jpg';
 
+const admin = require("firebase");
+
 function BetCard(props) {
     const { mobileView, bet = {} } = props;
-    const { betTime = "", team1, team2, selectedTeam, selectedPoints, isSettled, betWon, unique_id, team1Abbreviation, team2Abbreviation } = bet;
+    const { betTime = "", team1, team2, selectedTeam, selectedPoints, isSettled, betWon, isNoResult = false, unique_id, team1Abbreviation, team2Abbreviation, isBetDone } = bet;
     const team1Logo = getTeamLogo(team1Abbreviation);
     const team2Logo = getTeamLogo(team2Abbreviation);
-    const [message, setMessage] = useState(isSettled ? (betWon ? `Bet CLOSED. You WON this bet for ${selectedPoints} POINTS.` : `Bet CLOSED. You LOST this bet for ${selectedPoints} POINTS.`) : `Bet IN PROGRESS. You bet ${selectedPoints} POINTS.`);
+    console.log("timest:",admin.default.firestore.Timestamp.fromDate(new Date()) );
+    const [message, setMessage] = useState(
+      isSettled ? (
+        isNoResult ? 
+          (`Bet CLOSED. Match ended in NO RESULT. You RECIEVED all ${selectedPoints} POINTS.`) 
+            : 
+          (
+            betWon ? 
+              `Bet CLOSED. You WON this bet for ${selectedPoints} POINTS.` 
+                : 
+              `Bet CLOSED. You LOST this bet for ${selectedPoints} POINTS.`
+          )
+      ) 
+        : 
+      (`Bet IN PROGRESS. You bet ${selectedPoints} POINTS.`)
+    );
     const [severity, setSeverity] = useState(isSettled ? (betWon ? `success` : `error`) : `warning`);
 
     const root = {
@@ -85,7 +102,7 @@ function BetCard(props) {
             
           </CardActions>
           <Alert severity={severity}>
-            {message}
+            <b>{message}</b>
           </Alert>
         </Card>
       </>

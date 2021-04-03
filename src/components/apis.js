@@ -16,7 +16,7 @@ export const getMatchDetailsForId = async (id) => {
     const resp = await fetch(url);
     const data = await resp.json();
     const matches = data.matches;
-    const matchDetails = find(matches, {"unique_id": id});
+    const matchDetails = find(matches, {"unique_id": id}) || {};
     return matchDetails;
 }
 
