@@ -1,17 +1,14 @@
 import React, { useState, useContext } from 'react'
 import { makeStyles } from '@material-ui/core/styles';
-import Avatar from '@material-ui/core/Avatar';
-import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
-import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
-import Snackbar from '@material-ui/core/Snackbar';
+import { Button, TextField, Grid, Typography, Snackbar } from '@material-ui/core';
 import MuiAlert from '@material-ui/lab/Alert';
 import { isEmpty } from 'lodash';
 import Loader from 'react-loader-spinner';
 
 import { ContextProvider } from '../Global/Context';
-import iplLogo from '../images/logo1.png';
+import { loaderHeight, loaderWidth } from '../config';
+
+import iplLogo from '../images/logo.png';
 
 const useStyles = makeStyles((theme) => ({
     avatar: {
@@ -76,12 +73,11 @@ function Signup(props) {
 
     return (
         loading ? 
-            <Loader type="Puff" color="#00BFFF" height={100} width={200} timeout={5000} /> : 
+            <Loader type="Puff" color="#00BFFF" height={loaderHeight} width={loaderWidth} timeout={5000} /> : 
         <>
-            {/* <Avatar className={classes.avatar}></Avatar> */}
             <img src={iplLogo} style={{width: 150}}/>
-            <Typography component="h1" variant="button" style={{ fontSize: 25}}>
-                Sign Up
+            <Typography variant="overline" style={{ fontSize: 20, fontWeight: 500}}>
+                Sign up
             </Typography>
             <form className={classes.form} onSubmit={signUpUser}>
                 <TextField
@@ -92,6 +88,7 @@ function Signup(props) {
                     id="email"
                     label="Email Address"
                     name="email"
+                    type="email"
                     autoComplete="email"
                     autoFocus
                     value={inputs.email}
@@ -102,9 +99,9 @@ function Signup(props) {
                     margin="normal"
                     required
                     fullWidth
-                    name="username"
-                    label="Username"
                     id="username"
+                    label="Username"
+                    name="username"
                     autoComplete="username"
                     value={inputs.username}
                     onChange={handleInputs}
@@ -114,10 +111,10 @@ function Signup(props) {
                     margin="normal"
                     required
                     fullWidth
-                    name="password"
-                    label="Password"
-                    type="password"
                     id="password"
+                    label="Password"
+                    name="password"
+                    type="password"
                     autoComplete="current-password"
                     value={inputs.password}
                     onChange={handleInputs}
@@ -130,12 +127,16 @@ function Signup(props) {
                     color="primary"
                     className={classes.submit}
                 >
-                    Sign Up
+                    <Typography variant="overline" style={{ fontSize: 13, fontWeight: 500}}>
+                        Sign Up
+                    </Typography>
                 </Button>
                 <Grid container>
                     <Grid item>
-                        <Button onClick={toggleSignup}>
-                            {"Already have an account?  Log in!"}
+                        <Button variant="text" onClick={toggleSignup}>
+                            <Typography variant="overline" style={{ fontSize: 15, fontWeight: 500}}>
+                                {"Already have an account?  Log in!"}
+                            </Typography>
                         </Button>
                     </Grid>
                 </Grid>

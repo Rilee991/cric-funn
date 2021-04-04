@@ -1,11 +1,11 @@
 import React, { useContext } from 'react';
 import { isEmpty } from 'lodash';
-import Loader from 'react-loader-spinner';
 
 import { ContextProvider } from '../Global/Context';
-import Home from './Home';
+
 import LoggedOutComponent from './LoggedOutComponent';
-import { Grid, Typography, Link } from '@material-ui/core';
+import Home from './Home';
+import LoadingComponent from './LoadingComponent';
 
 function Auth() {
     const contextConsumer = useContext(ContextProvider) || {};
@@ -15,29 +15,7 @@ function Auth() {
         <>
             { loading ? 
             (
-                <>
-                    <Grid container justify="space-evenly" alignContent="space-around" direction="column">
-                        <Grid item>
-                            <Loader type="Puff" color="#0008ff" height={100} width={200} timeout={5000} />
-                        </Grid>
-                        <Grid item>
-                            <Typography variant="body2" color="textSecondary" align="center">
-                                {'Copyright © '}
-                                <Link color="inherit" href="#" variant="overline">
-                                    Cric-Funn
-                                </Link>{' '}
-                                {new Date().getFullYear()}
-                                {'.'}
-                            </Typography>
-                        </Grid>
-                        <br/>
-                        <Grid item>
-                            <Typography variant="overline" color="textSecondary" align="center">
-                                {'Designed and Created by - Cypher33'}
-                            </Typography>
-                        </Grid>
-                    </Grid>
-                </>
+                <LoadingComponent />
             )
             : (
                 !isEmpty(loggedInUserDetails) ? <Home loggedInUserDetails={loggedInUserDetails}/> : <LoggedOutComponent />

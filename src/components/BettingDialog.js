@@ -1,36 +1,27 @@
-import { Dialog, DialogContent, DialogContentText, DialogTitle, Switch, Typography, Select } from '@material-ui/core';
 import React, { useState, useContext } from 'react';
-import TextField from '@material-ui/core/TextField';
-import FormLabel from '@material-ui/core/FormLabel';
-import FormControl from '@material-ui/core/FormControl';
-import FormGroup from '@material-ui/core/FormGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormHelperText from '@material-ui/core/FormHelperText';
-import Grid from '@material-ui/core/Grid';
-import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
-import Button from '@material-ui/core/Button';
+import { Dialog, DialogContent, DialogContentText, DialogTitle, TextField, MenuItem, Button, Typography, Select } from '@material-ui/core';
+import { Alert } from '@material-ui/lab';
 import { isEmpty } from 'lodash';
 import moment from 'moment';
-import { Alert } from '@material-ui/lab';
 
 import { ContextProvider } from '../Global/Context';
+import { fontVariant } from '../config';
 
 const admin = require("firebase");
 
 function BettingDialog(props) {
-    const { matchDetails, open, handleBettingCloseDialog, betEndTime, mobileView } = props;
-    const { team1Abbreviation, team2Abbreviation, "team-1": team1, "team-2": team2, unique_id } = matchDetails;
+    const { matchDetails, open, handleClose, betEndTime, points } = props;
     const contextConsumer = useContext(ContextProvider);
-    const { loggedInUserDetails, betOnMatch } = contextConsumer;
-    const { points } = loggedInUserDetails;
+    const { betOnMatch } = contextConsumer;
+
+    const { team1Abbreviation, team2Abbreviation, "team-1": team1, "team-2": team2, unique_id } = matchDetails;
     const [selectedTeam, setSelectedTeam] = useState("");
-    const [selectedPoints, setSelectedPoints] = useState(0);
+    const [selectedPoints, setSelectedPoints] = useState("");
     const [error, setError] = useState("");
     const [disabledSave, setDisableSave] = useState(true);
 
     const closeDialog = () => {
-        handleBettingCloseDialog && handleBettingCloseDialog();
+        handleClose && handleClose();
     }
 
     const handleTeamChange = (event) => {
@@ -66,14 +57,37 @@ function BettingDialog(props) {
             window.location.reload(false);
             return;
         } else {
-            await betOnMatch({selectedTeam, selectedPoints, unique_id, isBetDone: true, isNoResult: false, isSettled: false, betWon: false, team1, team2, betTime: admin.default.firestore.Timestamp.fromDate(new Date()), team1Abbreviation, team2Abbreviation});
+            const betObject = {
+                selectedTeam, 
+                selectedPoints, 
+                unique_id, 
+                isBetDone: true, 
+                isNoResult: false, 
+                isSettled: false, 
+                betWon: false, 
+                team1,
+                team2,
+                betTime: admin.default.firestore.Timestamp.fromDate(new Date()),
+                team1Abbreviation,
+                team2Abbreviation
+            }
+
+            await betOnMatch(betObject);
             closeDialog();
         }
     }
 
     return (
         <Dialog open={open} onClose={closeDialog} aria-labelledby="responsive-dialog-title" maxWidth="xl">
-            <DialogTitle id="alert-dialog-title"><Typography variant="overline" style={{fontSize: 15}}><b>Betting Match - {team1Abbreviation} vs {team2Abbreviation}</b></Typography></DialogTitle>
+            <DialogTitle id="alert-dialog-title">
+                <Typography variant={fontVariant} style={{fontSize: 14}}>
+                    <b>Betting Match - {team1Abbreviation} vs {team2Abbreviation}</b>
+                </Typography>
+                <br/>
+                <Typography variant={fontVariant} style={{fontSize: 10}}>
+                    <b>Remaining Points: {points - selectedPoints}</b>
+                </Typography>
+            </DialogTitle>
             <hr/>
             <DialogContent>
                 <DialogContentText id="alert-dialog-description">
@@ -109,7 +123,9 @@ function BettingDialog(props) {
                         {error ? <Typography variant="overline" color="error">{error}</Typography>: ""}
                         <br/><br/>
                         <Button fullWidth size="small" color="primary" variant="contained" disabled={disabledSave} onClick={() => betInTheMatch()}>
-                            Save
+                            <Typography variant="overline" style={{ fontSize: 15, fontWeight: 500}}>
+                                {"Save"}
+                            </Typography>
                         </Button>
                         <br/><br/>
                         <Alert severity="warning" >

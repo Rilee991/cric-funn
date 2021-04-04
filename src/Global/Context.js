@@ -13,6 +13,7 @@ const Context = (props) => {
     const [loggedInUserDetails, setLoggedInUserDetails] = useState({});
     const [errorMessage, setErrorMessage] = useState('');
     const [loading, setLoading] = useState(true);
+    const [mobileView, setMobileView] = useState(false);
 
     const signUp = async (user) => {
         setLoading(true);
@@ -245,7 +246,18 @@ const Context = (props) => {
         }
     }
 
+    const checkMobileView = () => {
+        const setResponsiveness = () => {
+            return window.innerWidth < 900 ? setMobileView(true) : setMobileView(false);
+        }
+      
+        setResponsiveness();
+      
+        window.addEventListener("resize", () => setResponsiveness());
+    }
+
     useEffect(async () => {
+        checkMobileView();
         setLoading(true);
         await auth.onAuthStateChanged(async user => {
             if(user) {
@@ -274,6 +286,7 @@ const Context = (props) => {
             loggedInUserDetails,
             errorMessage,
             loading,
+            mobileView,
 
             signUp,
             signIn,

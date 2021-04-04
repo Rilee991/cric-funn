@@ -1,10 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+
+import { getMatches } from './apis';
+import { ContextProvider } from '../Global/Context';
 
 import CricketCard from './CricketCard';
-import { getMatches } from './apis';
 
 export default function Home() {
-  const [mobileView, setMobileView] = useState(true);
+  const contextConsumer = useContext(ContextProvider);
+  const { mobileView } = contextConsumer;
   const container = {
     width: "100%", 
     padding: mobileView ? "70px 0px" : "70px 200px"
@@ -41,30 +44,16 @@ export default function Home() {
     return result;
   }
 
-  useEffect(() => {
-    const setResponsiveness = () => {
-      return window.innerWidth < 900
-        ? setMobileView(true)
-        : setMobileView(false)
-    };
-
-    setResponsiveness();
-
-    window.addEventListener("resize", () => setResponsiveness());
-    getMatches()
-      .then(data => {
-        const matches = filterIplMatches(data.matches);
-        setMatches(matches);
-      })
-      .catch(err => {
-        console.log(err);
-      });
+  useEffect(async () => {
+    let matches = await getMatches();
+    matches = filterIplMatches(matches);
+    setMatches(matches);
   }, []);
 
   return (
     <div style={container}>
-      {matches.length ? matches.map((match) => (
-        <CricketCard key={match.unique_id} mobileView={mobileView} match={match}/>
+      {matches.length ? matches.map((match, index) => (
+        <CricketCard key={index} match={match}/>
       ))  : null}
     </div>
   );

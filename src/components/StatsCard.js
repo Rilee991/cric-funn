@@ -9,7 +9,7 @@ import winLogo from '../images/win1.svg';
 import lossLogo from '../images/loss.svg';
 import inProgressLogo from '../images/inprogress.svg';
 import backGround from '../images/background.jpg';
-import { round } from 'lodash';
+import { round, toUpper } from 'lodash';
 
 function StatsCard(props) {
     const { mobileView, bets = [], username = "", points = "" } = props;
@@ -79,7 +79,7 @@ function StatsCard(props) {
                     <div style={divRoot}>
                         <Grid container justify="center" spacing={4} alignContent="center" style={backgroundImage}>
                             <Grid item xs={10}>
-                                <Paper style={paper}>STATISTICS</Paper>
+                                <Paper style={paper}>STATISTICS - {toUpper(username)}</Paper>
                             </Grid>
 
                             <Grid container justify="center" spacing={5} alignContent="center">

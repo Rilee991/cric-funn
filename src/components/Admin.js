@@ -1,18 +1,9 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { withStyles, makeStyles } from '@material-ui/core/styles';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
-import { Typography, Button } from '@material-ui/core';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography, Button, Snackbar } from '@material-ui/core';
+import Alert from '@material-ui/lab/Alert';
 
 import { ContextProvider } from '../Global/Context';
-import wmLogo from '../images/wm.png';
-import Snackbar from '@material-ui/core/Snackbar';
-import Alert from '@material-ui/lab/Alert';
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -40,9 +31,8 @@ const useStyles = makeStyles({
 
 export default function Admin() {
     const contextConsumer = useContext(ContextProvider);
-    const { getPointsTableData, clearUsernameBetsData } = contextConsumer;
+    const { getPointsTableData, clearUsernameBetsData, mobileView } = contextConsumer;
     const classes = useStyles();
-    const [mobileView, setMobileView] = useState(true);
     const [tableData, setTableData] = useState([]);
     const [open, setOpen] = useState(false);
     
@@ -53,16 +43,6 @@ export default function Admin() {
     const [isClear, setIsClear] = useState(true);
 
     useEffect(async () => {
-        const setResponsiveness = () => {
-            return window.innerWidth < 900
-                ? setMobileView(true)
-                : setMobileView(false)
-        };
-
-        setResponsiveness();
-
-        window.addEventListener("resize", () => setResponsiveness());
-        
         const data = await getPointsTableData();
         setTableData(data);
     }, []);
@@ -85,7 +65,6 @@ export default function Admin() {
         <hr/>
         <TableContainer component={Paper}>
             <Table className={classes.table} aria-label="customized table caption">
-                {/* <caption><Typography variant="overline">Sorted By Points - Swipe left to see more</Typography></caption> */}
                 <TableHead>
                     <TableRow>
                         <StyledTableCell ><Typography variant="overline">Username</Typography></StyledTableCell>
@@ -102,11 +81,13 @@ export default function Admin() {
                 </TableBody>
             </Table>
         </TableContainer>
-        <Snackbar open={open} autoHideDuration={5000} onClose={handleClose}>
+        {isClear ? "" : (
+          <Snackbar open={open} autoHideDuration={5000} onClose={handleClose}>
             <Alert onClose={handleClose} severity="success">
                 Data is Cleared.
             </Alert>
-        </Snackbar>
+          </Snackbar>
+        )}
     </div>
   );
 }
