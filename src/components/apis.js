@@ -1,4 +1,5 @@
 import { find } from "lodash";
+import { db } from '../config';
 
 const API_KEY = "9mXZLYQYaVcA6KoInNpffahSTbC2";
 
@@ -34,5 +35,17 @@ export const getMatchDetails = async (id) => {
         return matchDetails;
     } catch(err) {
         console.log("Error in API getMatchDetails:", err);
+    }
+}
+
+export const updateUsername = async(username, newUsername) => {
+    try {
+        let userData = await db.collection("users").doc(username).get();
+        userData = await userData.data();
+
+        await db.collection("users").doc(newUsername).set(userData);
+        console.log(userData);
+    } catch(err) {
+        console.log(err);
     }
 }
