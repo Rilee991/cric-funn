@@ -1,6 +1,7 @@
 import React, { useState, useContext } from 'react'
 import { makeStyles } from '@material-ui/core/styles';
-import { Button, TextField, Grid, Typography, Snackbar } from '@material-ui/core';
+import { Button, TextField, Grid, Typography, Snackbar, InputAdornment, IconButton } from '@material-ui/core';
+import { Visibility, VisibilityOff } from '@material-ui/icons';
 import MuiAlert from '@material-ui/lab/Alert';
 import { isEmpty } from 'lodash';
 import Loader from 'react-loader-spinner';
@@ -29,16 +30,20 @@ function Signup(props) {
     const { handleToggle } = props;
     const contextConsumer = useContext(ContextProvider) || {};
     const { signUp, errorMessage, loading } = contextConsumer;
+    
     const [inputs, setInputs] = useState({
         username: '',
         email: '',
         password: ''
     });
     const [open, setOpen] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
 
     function toggleSignup() {
         handleToggle && handleToggle();
     }
+
+    const togglePasswordVisibility = () => setShowPassword(!showPassword);
 
     const handleInputs = (event) => {
         setInputs({
@@ -114,10 +119,22 @@ function Signup(props) {
                     id="password"
                     label="Password"
                     name="password"
-                    type="password"
+                    type={showPassword ? "text" : "password"}
                     autoComplete="current-password"
                     value={inputs.password}
                     onChange={handleInputs}
+                    InputProps={{
+                        endAdornment: (
+                            <InputAdornment>
+                                <IconButton
+                                    aria-label="toggle password visibility"
+                                    onClick={togglePasswordVisibility}
+                                >
+                                    {showPassword ? <Visibility /> : <VisibilityOff />}
+                                </IconButton>
+                            </InputAdornment>
+                        )
+                    }}
                 />
 
                 <Button

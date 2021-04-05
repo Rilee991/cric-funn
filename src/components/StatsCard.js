@@ -33,7 +33,7 @@ function StatsCard(props) {
         }
 
         if(last5Results.length > 5) {
-            last5Results.pop();
+            last5Results.shift();
         }
 
         totalPointsBet += parseInt(bet.selectedPoints);
