@@ -142,7 +142,7 @@ function Signin(props) {
                 <Grid container>
                     <Grid item>
                         <Button variant="text" onClick={toggleSignin}>
-                            <Typography variant="overline" style={{ fontSize: 15, fontWeight: 500}}>
+                            <Typography variant="overline" style={{ fontSize: 12, fontWeight: 500}}>
                                 {"Don't have an account? Sign Up"}
                             </Typography>
                         </Button>
