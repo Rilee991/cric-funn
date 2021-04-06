@@ -14,6 +14,7 @@ const Context = (props) => {
     const [errorMessage, setErrorMessage] = useState('');
     const [loading, setLoading] = useState(true);
     const [mobileView, setMobileView] = useState(false);
+    const [notifications, setNotifications] = useState([]);
 
     const signUp = async (user) => {
         setLoading(true);
@@ -32,10 +33,12 @@ const Context = (props) => {
             });
 
             setErrorMessage('');
+            setNotifications([]);
             setLoading(false);
         } catch (error) {
             console.log(error);
             setErrorMessage(error.message);
+            setNotifications([]);
             setLoading(false);
         }
     }
@@ -78,12 +81,18 @@ const Context = (props) => {
                 console.log(error);
                 setErrorMessage(error.message);
             });
+            setNotifications([]);
             setLoading(false);
         } catch (error) {
             console.log(error);
             setErrorMessage(error.message);
+            setNotifications([]);
             setLoading(false);
         }
+    }
+
+    const markNotificationsAsRead = () => {
+        setNotifications([]);
     }
 
     const betOnMatch = (betDetails) => {
@@ -176,7 +185,8 @@ const Context = (props) => {
     const updateUserInfo = async (username, points, bets) => {
         try {
             let finalPoints = points, betSettledCount = 0;
-
+            let notifications = [];
+            
             for(let i=0; i<bets.length; i++){
                 const bet = bets[i];
                 if(!bet.isSettled) {
@@ -187,6 +197,12 @@ const Context = (props) => {
                         finalPoints += parseInt(bet.selectedPoints);
                         betSettledCount++;
                         bet.isNoResult = true;
+                        notifications.push({
+                            title: "Phew! No Result!",
+                            body: `Your bet on ${moment.unix(bet.betTime.seconds).format("LLL")} for the match ${bet.team1} vs ${bet.team2} has been ended in NO Result!. You got ${bet.selectedPoints} POINTS.`,
+                            betWon: true,
+                            isNoResult: true
+                        });
                     } else if(matchDetails.winner_team) {
                         if(matchDetails.winner_team == bet.selectedTeam) {
                             finalPoints += 2*bet.selectedPoints;
@@ -197,6 +213,12 @@ const Context = (props) => {
                         bet.isSettled = true;
                         bet.isNoResult = false;
                         betSettledCount++;
+                        notifications.push({
+                            title: `You ${bet.betWon ? "Won" : "Lost"}!`,
+                            body: `Your bet on ${moment.unix(bet.betTime.seconds).format("LLL")} for the match ${bet.team1} vs ${bet.team2} has been ${bet.betWon ? "Won" : "Lost"}!. You ${bet.betWon ? "Won" : "Lost"} ${bet.selectedPoints} POINTS.`,
+                            betWon: bet.betWon,
+                            isNoResult: false
+                        });
                     }
                 }
             };
@@ -226,6 +248,12 @@ const Context = (props) => {
 
                         finalPoints -= 50;
                         betSettledCount++;
+                        notifications.push({
+                            title: `You Lost!`,
+                            body: `You did not bet for the match ${team1Abbreviation} vs ${team2Abbreviation}. You lost 50 POINTS.`,
+                            betWon: false,
+                            isNoResult: false
+                        });
                     }
                 } else {
                     break;
@@ -233,7 +261,7 @@ const Context = (props) => {
             }
 
             if(betSettledCount) {
-                console.log("Bets:", bets);
+                setNotifications(notifications);
                 await db.collection("users").doc(username).update({
                     bets,
                     points: finalPoints
@@ -287,6 +315,7 @@ const Context = (props) => {
             errorMessage,
             loading,
             mobileView,
+            notifications,
 
             signUp,
             signIn,
@@ -294,7 +323,8 @@ const Context = (props) => {
             betOnMatch,
             viewBetsData,
             getPointsTableData,
-            clearUsernameBetsData
+            clearUsernameBetsData,
+            markNotificationsAsRead
         }}>
             {props.children}
         </ContextProvider.Provider>

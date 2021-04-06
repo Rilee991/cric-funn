@@ -8,7 +8,7 @@ import { Grid, Paper } from '@material-ui/core';
 import winLogo from '../images/win1.svg';
 import lossLogo from '../images/loss.svg';
 import inProgressLogo from '../images/inprogress.svg';
-import backGround from '../images/background.jpg';
+import backGround from '../images/stats.jpg';
 import { round, toUpper } from 'lodash';
 
 function StatsCard(props) {
@@ -62,8 +62,8 @@ function StatsCard(props) {
     const backgroundImage = {
       backgroundImage: `url(${backGround})`, 
       backgroundRepeat:"no-repeat", 
-      backgroundSize: "100% 90%",
-      height: 350
+      backgroundSize: "inherit",
+      height: "auto"
     };
 
     const stylingText = {
