@@ -1,9 +1,9 @@
 import React from 'react';
 import { Dialog, DialogContent, DialogContentText, DialogTitle, Typography } from '@material-ui/core';
 
-import { fontVariant } from '../config';
+import { fontVariant } from '../../../config';
 
-import MatchDetailsLoader from './MatchDetailsLoader';
+import MatchDetailsLoader from '../../common/MatchDetailsLoader';
 
 function MatchDetails(props) {
     const { matchDetails, open, handleClose, team1Abbreviation, team2Abbreviation, toss = "", winnerTeam = "", isMatchDetailsLoading = false } = props;

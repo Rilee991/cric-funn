@@ -1,25 +1,14 @@
 import React, { useState } from 'react';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
-import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import moment from 'moment';
-import { Grid } from '@material-ui/core';
 import Alert from '@material-ui/lab/Alert';
 
-import kkrLogo from '../images/kkr.png';
-import rcbLogo from '../images/rcb.png';
-import srhLogo from '../images/srh.png';
-import cskLogo from '../images/csk.png';
-import dcLogo from '../images/dc.png';
-import rrLogo from '../images/rr.png';
-import miLogo from '../images/mi.png';
-import pkLogo from '../images/pk.png';
-import vsLogo from '../images/vs.png';
-import backGround from '../images/background.jpg';
-import MatchPic from './MatchPic';
-import { getMsgForInProgressBets, getMsgForLostBets, getMsgForNoResultBets, getMsgForWonBets, getTeamLogo } from '../config';
+import backGround from '../../../images/background.jpg';
+import MatchPic from '../../common/MatchPic';
+import { getMsgForInProgressBets, getMsgForLostBets, getMsgForNoResultBets, getMsgForWonBets, getTeamLogo } from '../../../config';
 
 const admin = require("firebase");
 

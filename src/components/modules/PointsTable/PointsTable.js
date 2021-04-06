@@ -2,9 +2,9 @@ import React, { useState, useEffect, useContext } from 'react';
 import { withStyles, makeStyles } from '@material-ui/core/styles';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography } from '@material-ui/core';
 
-import { ContextProvider } from '../Global/Context';
+import { ContextProvider } from '../../../Global/Context';
 
-import LoadingComponent from './LoadingComponent';
+import LoadingComponent from '../../common/LoadingComponent';
 
 const StyledTableCell = withStyles((theme) => ({
   head: {

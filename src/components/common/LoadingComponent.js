@@ -2,7 +2,7 @@ import React from 'react';
 import { Grid } from '@material-ui/core';
 import Loader from 'react-loader-spinner';
 
-import { loaderHeight, loaderWidth, themeColor } from '../config';
+import { loaderHeight, loaderWidth, themeColor } from '../../config';
 
 import Copyright from './Copyright';
 

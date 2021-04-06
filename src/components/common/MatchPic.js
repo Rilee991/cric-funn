@@ -1,8 +1,8 @@
 import React from 'react';
 import { Grid } from '@material-ui/core';
 
-import backGround from '../images/background.jpg';
-import vsLogo from '../images/vs.png';
+import backGround from '../../images/background.jpg';
+import vsLogo from '../../images/vs.png';
 
 function MatchPic(props) {
     const { team1Logo, team2Logo, mobileView } = props;

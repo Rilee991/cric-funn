@@ -4,10 +4,10 @@ import { Menu, Notifications, AccountCircle, ExitToApp, MonetizationOnTwoTone, A
 import { Link as RouterLink } from "react-router-dom";
 import { toUpper } from 'lodash';
 
-import { ContextProvider } from '../Global/Context';
-import { fontVariant, matchHeadingFontSize, themeColor } from '../config';
+import { ContextProvider } from '../../../Global/Context';
+import { fontVariant, matchHeadingFontSize, themeColor } from '../../../config';
 
-import cricFunnLogo from '../images/logo.png';
+import cricFunnLogo from '../../../images/logo.png';
   
 const useStyles = makeStyles(() => ({
   header: {

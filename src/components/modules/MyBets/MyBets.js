@@ -3,11 +3,11 @@ import React, { useContext } from 'react';
 import { Typography } from '@material-ui/core';
 import Alert from '@material-ui/lab/Alert';
 
-import { ContextProvider } from '../Global/Context';
+import { ContextProvider } from '../../../Global/Context';
 
 import BetCard from './BetCard';
 import StatsCard from './StatsCard';
-import LoadingComponent from './LoadingComponent';
+import LoadingComponent from '../../common/LoadingComponent';
 
 export default function MyBets() {
     const contextConsumer = useContext(ContextProvider);

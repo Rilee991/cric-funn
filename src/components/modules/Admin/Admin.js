@@ -3,7 +3,7 @@ import { withStyles, makeStyles } from '@material-ui/core/styles';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography, Button, Snackbar } from '@material-ui/core';
 import Alert from '@material-ui/lab/Alert';
 
-import { ContextProvider } from '../Global/Context';
+import { ContextProvider } from '../../../Global/Context';
 
 const StyledTableCell = withStyles((theme) => ({
   head: {

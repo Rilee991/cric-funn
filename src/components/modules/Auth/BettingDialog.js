@@ -4,8 +4,8 @@ import { Alert } from '@material-ui/lab';
 import { isEmpty } from 'lodash';
 import moment from 'moment';
 
-import { ContextProvider } from '../Global/Context';
-import { fontVariant } from '../config';
+import { ContextProvider } from '../../../Global/Context';
+import { fontVariant } from '../../../config';
 
 const admin = require("firebase");
 

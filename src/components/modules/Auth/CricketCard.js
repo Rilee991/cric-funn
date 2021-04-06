@@ -4,14 +4,14 @@ import Alert from '@material-ui/lab/Alert';
 import { find, isEmpty } from 'lodash';
 import moment from 'moment';
 
-import { ContextProvider } from '../Global/Context';
-import { getMatchDetails } from './apis';
-import { fontVariant, getFormattedTimeISOString, getMsgForClosedBets, getMsgForInProgressBets, getMsgForLostBets, getMsgForNoResultBets, getMsgForOpenBets, getMsgForUpcomingBets, getMsgForWonBets, getTeamLogo, matchHeadingFontSize } from '../config';
+import { ContextProvider } from '../../../Global/Context';
+import { getMatchDetails } from '../../apis';
+import { fontVariant, getFormattedTimeISOString, getMsgForClosedBets, getMsgForInProgressBets, getMsgForLostBets, getMsgForNoResultBets, getMsgForOpenBets, getMsgForUpcomingBets, getMsgForWonBets, getTeamLogo, matchHeadingFontSize } from '../../../config';
 
 import MatchDetails from './MatchDetails';
 import BettingDialog from './BettingDialog';
 import ViewBetsDialog from './ViewBetsDialog';
-import MatchPic from './MatchPic';
+import MatchPic from '../../common/MatchPic';
 
 function CricketCard(props) {
   

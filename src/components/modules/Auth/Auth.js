@@ -1,11 +1,11 @@
 import React, { useContext } from 'react';
 import { isEmpty } from 'lodash';
 
-import { ContextProvider } from '../Global/Context';
+import { ContextProvider } from '../../../Global/Context';
 
 import LoggedOutComponent from './LoggedOutComponent';
 import Home from './Home';
-import LoadingComponent from './LoadingComponent';
+import LoadingComponent from '../../common/LoadingComponent';
 
 function Auth() {
     const contextConsumer = useContext(ContextProvider) || {};

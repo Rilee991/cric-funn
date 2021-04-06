@@ -1,14 +1,10 @@
 import React from 'react';
-import Card from '@material-ui/core/Card';
-import CardActionArea from '@material-ui/core/CardActionArea';
-import CardContent from '@material-ui/core/CardContent';
-import Typography from '@material-ui/core/Typography';
-import { Grid, Paper } from '@material-ui/core';
+import { Grid, Paper, Card, Typography, CardContent, CardActionArea } from '@material-ui/core';
 
-import winLogo from '../images/win1.svg';
-import lossLogo from '../images/loss.svg';
-import inProgressLogo from '../images/inprogress.svg';
-import backGround from '../images/stats.jpg';
+import winLogo from '../../../images/win1.svg';
+import lossLogo from '../../../images/loss.svg';
+import inProgressLogo from '../../../images/inprogress.svg';
+import backGround from '../../../images/stats.jpg';
 import { round, toUpper } from 'lodash';
 
 function StatsCard(props) {

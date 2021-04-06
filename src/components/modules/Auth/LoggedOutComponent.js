@@ -5,8 +5,8 @@ import { makeStyles } from '@material-ui/core/styles';
 
 import Signin from './Signin';
 import Signup from './Signup';
-import Social from './Social';
-import Copyright from './Copyright';
+import Social from '../../common/Social';
+import Copyright from '../../common/Copyright';
 
 function Footer() {
   return (

@@ -6,10 +6,10 @@ import MuiAlert from '@material-ui/lab/Alert';
 import { isEmpty } from 'lodash';
 import Loader from 'react-loader-spinner';
 
-import { ContextProvider } from '../Global/Context';
-import { loaderHeight, loaderWidth } from '../config';
+import { ContextProvider } from '../../../Global/Context';
+import { loaderHeight, loaderWidth } from '../../../config';
 
-import iplLogo from '../images/logo.png';
+import iplLogo from '../../../images/logo.png';
 
 const useStyles = makeStyles((theme) => ({
     avatar: {
@@ -23,23 +23,28 @@ const useStyles = makeStyles((theme) => ({
     submit: {
       margin: theme.spacing(3, 0, 2),
     },
+    loader: {
+        display: 'flex',
+        '& > * + *': {
+        marginLeft: theme.spacing(2),
+        }
+    }
 }));
 
-function Signup(props) {
+function Signin(props) {
     const classes = useStyles();
     const { handleToggle } = props;
     const contextConsumer = useContext(ContextProvider) || {};
-    const { signUp, errorMessage, loading } = contextConsumer;
-    
+    const { signIn, errorMessage, loading } = contextConsumer;
+
     const [inputs, setInputs] = useState({
-        username: '',
         email: '',
         password: ''
     });
     const [open, setOpen] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
 
-    function toggleSignup() {
+    function toggleSignin() {
         handleToggle && handleToggle();
     }
 
@@ -52,12 +57,10 @@ function Signup(props) {
         });
     }
 
-    const signUpUser = (event) => {
+    const signInUser = (event) => {
         event.preventDefault();
-
-        signUp(inputs);
+        signIn(inputs);
         setInputs({
-            username: '',
             email: '',
             password: ''
         });
@@ -74,17 +77,17 @@ function Signup(props) {
         }
     
         setOpen(false);
-      };
+    }
 
     return (
         loading ? 
-            <Loader type="Puff" color="#00BFFF" height={loaderHeight} width={loaderWidth} timeout={5000} /> : 
+            <Loader type="Puff" color="#0008ff" height={loaderHeight} width={loaderWidth} timeout={5000} /> : 
         <>
             <img src={iplLogo} style={{width: 150}}/>
             <Typography variant="overline" style={{ fontSize: 20, fontWeight: 500}}>
-                Sign up
+                Sign in
             </Typography>
-            <form className={classes.form} onSubmit={signUpUser}>
+            <form className={classes.form} onSubmit={signInUser}>
                 <TextField
                     variant="outlined"
                     margin="normal"
@@ -97,18 +100,6 @@ function Signup(props) {
                     autoComplete="email"
                     autoFocus
                     value={inputs.email}
-                    onChange={handleInputs}
-                />
-                <TextField
-                    variant="outlined"
-                    margin="normal"
-                    required
-                    fullWidth
-                    id="username"
-                    label="Username"
-                    name="username"
-                    autoComplete="username"
-                    value={inputs.username}
                     onChange={handleInputs}
                 />
                 <TextField
@@ -145,20 +136,21 @@ function Signup(props) {
                     className={classes.submit}
                 >
                     <Typography variant="overline" style={{ fontSize: 13, fontWeight: 500}}>
-                        Sign Up
+                        Sign In
                     </Typography>
                 </Button>
                 <Grid container>
                     <Grid item>
-                        <Button variant="text" onClick={toggleSignup}>
+                        <Button variant="text" onClick={toggleSignin}>
                             <Typography variant="overline" style={{ fontSize: 15, fontWeight: 500}}>
-                                {"Already have an account?  Log in!"}
+                                {"Don't have an account? Sign Up"}
                             </Typography>
                         </Button>
                     </Grid>
                 </Grid>
             </form>
-            <Snackbar open={open} autoHideDuration={4000} onClose={handleClose}>
+            
+            <Snackbar open={open} autoHideDuration={10000} onClose={handleClose}>
                 <MuiAlert onClose={handleClose} severity="error">
                     {errorMessage}
                 </MuiAlert>
@@ -167,4 +159,4 @@ function Signup(props) {
     )
 }
 
-export default Signup;
+export default Signin
