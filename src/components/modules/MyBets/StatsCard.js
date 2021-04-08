@@ -1,35 +1,40 @@
 import React from 'react';
 import { Grid, Paper, Card, Typography, CardContent, CardActionArea } from '@material-ui/core';
+import { round, toUpper, upperCase } from 'lodash';
+import { WhatsappIcon, WhatsappShareButton } from 'react-share';
 
 import winLogo from '../../../images/win1.svg';
 import lossLogo from '../../../images/loss.svg';
 import inProgressLogo from '../../../images/inprogress.svg';
 import backGround from '../../../images/stats.jpg';
-import { round, toUpper } from 'lodash';
 
 function StatsCard(props) {
     const { mobileView, bets = [], username = "", points = "" } = props;
 
     let totalBets = 0, winBets = 0, lostBets = 0, inProgressBets = 0, accuracy = 0.00, avgBettingPoints = 0.00, 
-        totalSettledBets = 0, totalPointsBet = 0, last5Results = [];
+        totalSettledBets = 0, totalPointsBet = 0, last5Results = [], last5ResultsString = "";
 
     bets.map(bet => {
         if(bet.isSettled) {
             if(bet.betWon) {
                 winBets++;
                 last5Results.push('W');
+                last5ResultsString += 'W';
             } else {
                 lostBets++;
                 last5Results.push('L');
+                last5ResultsString += 'L';
             }
             totalSettledBets++;
         } else {
             inProgressBets++;
             last5Results.push('I');
+            last5ResultsString += 'I';
         }
 
         if(last5Results.length > 5) {
             last5Results.shift();
+            last5ResultsString = last5ResultsString.substr(1);
         }
 
         totalPointsBet += parseInt(bet.selectedPoints);
@@ -67,6 +72,9 @@ function StatsCard(props) {
         color:"white"
     }
 
+    const shareTitle = `*${upperCase(username)}'s Statistics*\n-------------------------`;
+    const shareBody = `*Total Bets Done: ${totalBets}*\n*Bets Won: ${winBets}*\n*Bets Lost: ${lostBets}*\n*Bets In-Progress: ${inProgressBets}*\n*Accuracy: ${accuracy}%*\n*Points: ${points}*\n*Last 5 Bets Form: ${last5ResultsString}*\n\nCric-Funn - Boiz's Official Betting App`;
+
     return (
       <>
         <Card style={root}>
@@ -75,7 +83,16 @@ function StatsCard(props) {
                     <div style={divRoot}>
                         <Grid container justify="center" spacing={4} alignContent="center" style={backgroundImage}>
                             <Grid item xs={10}>
-                                <Paper style={paper}>STATISTICS - {toUpper(username)}</Paper>
+                                <Paper style={paper}>
+                                    <WhatsappShareButton 
+                                        style={{float: "right", justifyContent:"center", alignContent: "center"}}
+                                        title={shareTitle}
+                                        separator={"\n"}
+                                        children={(<WhatsappIcon size={mobileView ? "3vh" : "4vh"} round={true}/>)}
+                                        url={shareBody}
+                                    />
+                                    STATISTICS - {toUpper(username)}
+                                </Paper>
                             </Grid>
 
                             <Grid container justify="center" spacing={5} alignContent="center">
@@ -119,7 +136,7 @@ function StatsCard(props) {
                             </Grid>
 
                             <Grid item xs={10}>
-                                <Paper style={paper}>LAST 5 BETS RESULTS:  
+                                <Paper style={paper}>LAST 5 BETS FORM:  
                                     { last5Results.length == 0 ? "NO BETTING DONE" : last5Results.map(result => 
                                         (<>  {"  "}
                                             {result == 'I' ? <img width={mobileView ? 15 : 18} src={inProgressLogo}/> 

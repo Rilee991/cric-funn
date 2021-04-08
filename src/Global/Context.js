@@ -2,7 +2,7 @@ import { find, isEmpty, orderBy, sortBy } from 'lodash';
 import React, { createContext, useState, useEffect } from 'react';
 
 import { auth, db, storage, iplMatches } from '../config';
-import { getMatchDetailsForId } from '../components/apis';
+import { getMatchDetailsForId, updateUsername } from '../components/apis';
 import moment from 'moment';
 const admin = require('firebase');
 

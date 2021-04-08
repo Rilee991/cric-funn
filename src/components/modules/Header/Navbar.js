@@ -55,7 +55,7 @@ const useStyles = makeStyles(() => ({
         label: `${points} POINTS`,
         href: "/",
         disabled: true,
-        icon: (<MonetizationOnTwoTone color="disabled" fontSize="large"/>)
+        icon: (<MonetizationOnTwoTone color={mobileView ? "primary": "inherit"} fontSize="large"/>)
       },
       {
         label: `POINTS TABLE`,

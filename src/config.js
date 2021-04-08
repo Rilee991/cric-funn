@@ -49,7 +49,7 @@ function getTeamLogo(teamAbbreviation) {
     else if(teamAbbreviation == "DC") return dcLogo;
     else if(teamAbbreviation == "CSK") return cskLogo;
     else if(teamAbbreviation == "MI") return miLogo;
-    else if(teamAbbreviation == "KXIP") return pkLogo;
+    else if(teamAbbreviation == "PBKS") return pkLogo;
     else if(teamAbbreviation == "RCB") return rcbLogo;
     else return rrLogo;
 }
