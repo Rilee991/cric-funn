@@ -53,8 +53,9 @@ const useStyles = makeStyles(() => ({
       },
       {
         label: `${points} POINTS`,
-        href: "/",
-        disabled: true,
+        href: "/points",
+        disabled: false,
+        onClick: closeDrawer,
         icon: (<MonetizationOnTwoTone color={mobileView ? "primary": "inherit"} fontSize="large"/>)
       },
       {

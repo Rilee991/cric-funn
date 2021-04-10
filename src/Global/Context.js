@@ -119,15 +119,17 @@ const Context = (props) => {
         const userDocs = await db.collection("users").get();
         userDocs.docs.map(user => {
             const userData = user.data();
-            const { bets = [], username } = userData;
-            const betData = find(bets, {"unique_id": id}) || {};
-            if(!isEmpty(betData)) {
-                result.push({
-                    username,
-                    betTime: betData.betTime,
-                    betPoints: parseInt(betData.selectedPoints),
-                    betTeam: betData.selectedTeam
-                });
+            const { bets = [], username, isDummyUser = false } = userData;
+            if(!isDummyUser) {
+                const betData = find(bets, {"unique_id": id}) || {};
+                if(!isEmpty(betData)) {
+                    result.push({
+                        username,
+                        betTime: betData.betTime,
+                        betPoints: parseInt(betData.selectedPoints),
+                        betTeam: betData.selectedTeam
+                    });
+                }
             }
         });
 

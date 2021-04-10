@@ -20,7 +20,6 @@ export default function Home() {
     // matches = matches.splice(0,60); //TEMP
 
     const result = matches.filter(match => {
-      console.log(match);
       let { "team-1": team1, "team-2": team2, type = "" } = match;
       if(team1 == "Sunrisers Hyderabad") team1 = "Sun Risers Hyderabad";
       if(team2 == "Sunrisers Hyderabad") team2 = "Sun Risers Hyderabad";

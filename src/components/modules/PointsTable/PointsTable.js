@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { withStyles, makeStyles } from '@material-ui/core/styles';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography } from '@material-ui/core';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography, Badge, Avatar, Grid } from '@material-ui/core';
 
 import { ContextProvider } from '../../../Global/Context';
 
@@ -10,16 +10,22 @@ const StyledTableCell = withStyles((theme) => ({
   head: {
     backgroundColor: theme.palette.common.black,
     color: theme.palette.common.white,
+    borderRightWidth: 1,
+    borderRightColor: theme.palette.grey[300],
+    borderRightStyle: "solid",
   },
   body: {
     fontSize: 14,
+    borderRightWidth: 1,
+    borderRightColor: theme.palette.grey[300],
+    borderRightStyle: "solid"
   },
 }))(TableCell);
 
 const StyledTableRow = withStyles((theme) => ({
   root: {
     '&:nth-of-type(odd)': {
-      backgroundColor: theme.palette.action.hover,
+      backgroundColor: theme.palette.action.hover
     },
   },
 }))(TableRow);
@@ -32,7 +38,8 @@ const useStyles = makeStyles({
 
 export default function PointsTable() {
     const contextConsumer = useContext(ContextProvider);
-    const { getPointsTableData, mobileView, loading } = contextConsumer;
+    const { getPointsTableData, mobileView, loading, loggedInUserDetails } = contextConsumer;
+    const { image } = loggedInUserDetails;
     const classes = useStyles();
     const [tableData, setTableData] = useState([]);
     const container = {
@@ -44,6 +51,21 @@ export default function PointsTable() {
     const data = await getPointsTableData();
     setTableData(data);
   }, []);
+
+  function getColor(rank) {
+    if(rank == 1)
+      return "#FFD700";
+    else if(rank == 2)
+      return "silver";
+  }
+
+  function getUsernameRow(username, rank) {
+    return (
+       <Badge badgeContent={rank} color={rank == 1 ? "primary" : (rank == 2 ? "secondary" : "error")} component="p" anchorOrigin={{vertical: 'top',horizontal: 'left'}}>
+         <Typography>{username}</Typography>
+       </Badge>
+      );
+  }
 
   function getPointsTable() {
     return (
@@ -65,8 +87,8 @@ export default function PointsTable() {
                 </TableHead>
                 <TableBody>
                     {tableData.length ? tableData.map((row, index) => (
-                        <StyledTableRow key={index}>
-                            <StyledTableCell component="th" scope="row">{row.username}</StyledTableCell>
+                        <StyledTableRow key={row.username} style={{backgroundColor: getColor(index+1)}}>
+                            <StyledTableCell component="th" scope="row">{getUsernameRow(row.username,index+1)}</StyledTableCell>
                             <StyledTableCell align="center">{row.totalBets}</StyledTableCell>
                             <StyledTableCell align="center">{row.won}</StyledTableCell>
                             <StyledTableCell align="center">{row.lost}</StyledTableCell>

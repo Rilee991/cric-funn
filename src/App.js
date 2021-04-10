@@ -8,6 +8,7 @@ import Header from './components/modules/Header/Header';
 import MyBets from './components/modules/MyBets/MyBets';
 import PointsTable from './components/modules/PointsTable/PointsTable';
 import Admin from './components/modules/Admin/Admin';
+import Graph from './components/modules/Points/Graph';
 
 function App() {
   return (
@@ -25,6 +26,9 @@ function App() {
         </Route>
         <Route exact path="/admin">
           <Admin exact />
+        </Route>
+        <Route exact path="/points">
+          <Graph exact />
         </Route>
       </Context>
     </Router>
