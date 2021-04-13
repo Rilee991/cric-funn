@@ -5,40 +5,46 @@ import { WhatsappIcon, WhatsappShareButton } from 'react-share';
 
 import winLogo from '../../../images/win1.svg';
 import lossLogo from '../../../images/loss.svg';
+import penalizedLogo from '../../../images/penalty.svg';
 import inProgressLogo from '../../../images/inprogress.svg';
 import backGround from '../../../images/stats.jpg';
 
 function StatsCard(props) {
     const { mobileView, bets = [], username = "", points = "" } = props;
 
-    let totalBets = 0, winBets = 0, lostBets = 0, inProgressBets = 0, accuracy = 0.00, avgBettingPoints = 0.00, 
+    let totalBets = 0, winBets = 0, lostBets = 0, inProgressBets = 0, penalizedBets = 0, accuracy = 0.00, avgBettingPoints = 0.00, 
         totalSettledBets = 0, totalPointsBet = 0, last5Results = [], last5ResultsString = "";
 
     bets.map(bet => {
-        if(bet.isSettled) {
-            if(bet.betWon) {
-                winBets++;
-                last5Results.push('W');
-                last5ResultsString += 'W';
+        if(bet.isBetDone) {
+            if(bet.isSettled) {
+                if(bet.betWon) {
+                    winBets++;
+                    last5Results.push('W');
+                    last5ResultsString += 'W';
+                } else {
+                    lostBets++;
+                    last5Results.push('L');
+                    last5ResultsString += 'L';
+                }
+                totalSettledBets++;
             } else {
-                lostBets++;
-                last5Results.push('L');
-                last5ResultsString += 'L';
+                inProgressBets++;
+                last5Results.push('I');
+                last5ResultsString += 'I';
             }
-            totalSettledBets++;
+            totalBets++;
+            totalPointsBet += parseInt(bet.selectedPoints);
         } else {
-            inProgressBets++;
-            last5Results.push('I');
-            last5ResultsString += 'I';
+            penalizedBets++;
+            last5Results.push('F');
+            last5ResultsString += 'F';
         }
 
         if(last5Results.length > 5) {
             last5Results.shift();
             last5ResultsString = last5ResultsString.substr(1);
         }
-
-        totalPointsBet += parseInt(bet.selectedPoints);
-        totalBets++;
     });
 
     accuracy = round(winBets/totalSettledBets,2) * 100 || 0;
@@ -73,7 +79,7 @@ function StatsCard(props) {
     }
 
     const shareTitle = `*${upperCase(username)}'s Statistics*\n-------------------------`;
-    const shareBody = `*Total Bets Done: ${totalBets}*\n*Bets Won: ${winBets}*\n*Bets Lost: ${lostBets}*\n*Bets In-Progress: ${inProgressBets}*\n*Accuracy: ${accuracy}%*\n*Points: ${points}*\n*Last 5 Bets Form: ${last5ResultsString}*\n\nCric-Funn - Boiz's Official Betting App`;
+    const shareBody = `*Total Bets Done: ${totalBets}*\n*Bets Won: ${winBets}*\n*Bets Lost: ${lostBets}*\n*Bets In-Progress: ${inProgressBets}*\n*Bets Penalized: ${penalizedBets}*\n*Accuracy: ${accuracy}%*\n*Points: ${points}*\n*Last 5 Bets Form: ${last5ResultsString}*\n\nCric-Funn - Boiz's Official Betting App`;
 
     return (
       <>
@@ -116,6 +122,11 @@ function StatsCard(props) {
                                         Bets In-Progress: {inProgressBets}
                                     </Typography>
                                 </Grid>
+                                <Grid item xs={4}>
+                                    <Typography style={stylingText} gutterBottom variant="overline" component="animate">
+                                        Bets Fined: {penalizedBets}
+                                    </Typography>
+                                </Grid>
                                 <Grid item xs={3}>
                                     <Typography style={stylingText} gutterBottom variant= "overline" component="animate">
                                         Accuracy: {accuracy}%
@@ -142,7 +153,10 @@ function StatsCard(props) {
                                             {result == 'I' ? <img width={mobileView ? 15 : 18} src={inProgressLogo}/> 
                                             : 
                                             result == 'W' ? <img width={mobileView ? 15 : 18} src={winLogo} /> 
-                                            : <img width={mobileView ? 15 : 18} src={lossLogo} />
+                                            : 
+                                            result == 'L' ? <img width={mobileView ? 15 : 18} src={lossLogo} />
+                                            :
+                                            <img width={mobileView ? 15 : 18} src={penalizedLogo} />
                                             }
                                         </>)
                                         )

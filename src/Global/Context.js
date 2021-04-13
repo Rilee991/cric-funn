@@ -146,22 +146,28 @@ const Context = (props) => {
             const { bets = [], username, points, isDummyUser = false } = userData;
             if(isDummyUser)    
                 return;
-            let won = 0, lost = 0, inprogress = 0;
+            let won = 0, lost = 0, inprogress = 0, totalBets = 0, penalized = 0;
             bets.map(bet => {
-                if(bet.isSettled) {
-                    if(bet.betWon)  won++;
-                    else    lost++;
+                if(bet.isBetDone) {
+                    if(bet.isSettled) {
+                        if(bet.betWon)  won++;
+                        else    lost++;
+                    } else {
+                        inprogress++;
+                    }
+                    totalBets++;
                 } else {
-                    inprogress++;
+                    penalized++;
                 }
             });
 
             result.push({
                 username,
-                totalBets: won + lost + inprogress,
+                totalBets,
                 won,
                 lost,
                 inprogress,
+                penalized,
                 points
             });
         });
