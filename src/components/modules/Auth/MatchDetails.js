@@ -6,63 +6,35 @@ import { fontVariant } from '../../../config';
 import MatchDetailsLoader from '../../common/MatchDetailsLoader';
 
 function MatchDetails(props) {
-    const { matchDetails, open, handleClose, team1Abbreviation, team2Abbreviation, toss = "", winnerTeam = "", isMatchDetailsLoading = false } = props;
-    const { matchStarted = "", score = "" } = matchDetails;
+    const { matchDetails, open, handleClose, team1Abbreviation, team2Abbreviation, isMatchDetailsLoading = false } = props;
+    const { score = [], status = "" } = matchDetails;
 
     const closeDialog = () => {
         handleClose && handleClose();
     }
 
-    function getDetailsCard() {
+    const getDetailsCard = () => {
         return (
             <DialogContent>
                 <DialogContentText id="alert-dialog-description">
-                    <Typography variant={fontVariant}>
-                        Match Status: {" "}
-                        <span style={{fontWeight: "bold", fontStyle: "italic"}}>
-                            {matchStarted ? "Started." : "Not Started Yet."}
-                        </span>
-                    </Typography>
-                    {   matchStarted ? (
+                    <> {   
+                        score ? 
                             <>
-                                {   toss ? 
-                                    <>
-                                        <br/>
-                                        <Typography variant={fontVariant}>
-                                            Toss: {" "}
-                                            <span style={{fontStyle: "italic", fontWeight: "bold"}}>
-                                                { toss }
-                                            </span>
-                                        </Typography> 
-                                    </> : null
-                                    
-                                }
-                                {   score ? 
-                                    <>
-                                        <br/>
-                                        <Typography variant={fontVariant}>
-                                            Score: {" "}
-                                            <span style={{fontStyle: "italic", fontWeight: "bold"}}>
-                                                {score}
-                                            </span>
-                                        </Typography> 
-                                    </> : null
-                                }
-                                {   winnerTeam ? 
-                                    <>
-                                        <br/>
-                                        <Typography variant={fontVariant}>
-                                            Result: {" "}
-                                            <span style={{fontStyle: "italic", fontWeight: "bold"}}>
-                                                {winnerTeam} won.
-                                            </span>
-                                        </Typography>
-                                    </> : null 
-                                }
-                            </>
-                        ) : 
-                        null
-                    }
+                                <br/>
+                                <Typography variant={fontVariant}>
+                                    Score: {" "}
+                                    <span style={{fontStyle: "italic", fontWeight: "bold"}}>
+                                        {score}
+                                    </span>
+                                </Typography> 
+                            </> : null
+                    } <Typography variant={fontVariant}>
+                        Match Status: {" "}
+                            <span style={{fontWeight: "bold", fontStyle: "italic"}}>
+                                {status}
+                            </span>
+                        </Typography>
+                    </>
                 </DialogContentText>
             </DialogContent>
         );
@@ -72,7 +44,7 @@ function MatchDetails(props) {
         <Dialog open={open} onClose={closeDialog} aria-labelledby="responsive-dialog-title" maxWidth="xl">
             <DialogTitle id="alert-dialog-title">
                 <Typography variant={fontVariant} style={{fontSize: 14}}>
-                    <b>Match Details - {team1Abbreviation} vs {team2Abbreviation}</b>
+                    <b>{team1Abbreviation} vs {team2Abbreviation} - Details </b>
                 </Typography>
             </DialogTitle>
             <hr/>
