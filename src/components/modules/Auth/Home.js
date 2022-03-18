@@ -5,7 +5,7 @@ import { ContextProvider } from '../../../Global/Context';
 
 import CricketCard from './CricketCard';
 
-export default function Home() {
+const Home = () => {
   const contextConsumer = useContext(ContextProvider);
   const { mobileView } = contextConsumer;
   const container = {
@@ -15,31 +15,20 @@ export default function Home() {
   const [matches, setMatches] = useState([]);
 
   const filterIplMatches = (matches) => {
-    const iplTeamAbbreviation = ["RR", "KKR", "CSK", "MI", "RCB", "DC", "PBKS", "SRH"];
-
-    // matches = matches.splice(0,60); //TEMP
+    const iplTeamAbbreviation = ["CSK", "DC", "GT", "KKR", "LSG", "MI", "PBKS", "RCB", "RR", "SRH"];
 
     const result = matches.filter(match => {
-      let { "team-1": team1, "team-2": team2, type = "" } = match;
+      const { teams } = match;
+      let team1 = teams[0], team2 = teams[1];
+
       if(team1 == "Sunrisers Hyderabad") team1 = "Sun Risers Hyderabad";
       if(team2 == "Sunrisers Hyderabad") team2 = "Sun Risers Hyderabad";
-      if(team1 == "Punjab Kings" || team1 == "Kings XI Punjab") {
-        team1 = "Punja B King S";
-        match.team1 = "Punjab Kings";
-      }
-      if(team2 == "Punjab Kings" || team2 == "Kings XI Punjab") {
-        team2 = "Punja B King S";
-        match.team2 = "Punjab Kings";
-      }
+      if(team1 == "Punjab Kings") team1 = "Punja B King S";
+      if(team2 == "Punjab Kings") team2 = "Punja B King S";
+      
       team1 = team1.match(/(\b\S)?/g).join("").toUpperCase();
       team2 = team2.match(/(\b\S)?/g).join("").toUpperCase();
-
-      // match.team1Abbreviation = team1; //Temp
-      // match.team2Abbreviation = team2; //Temp
-      // if(type)
-      //   return match; //Temp
-      // else return;
-
+      
       if(iplTeamAbbreviation.includes(team1) && iplTeamAbbreviation.includes(team2)) {
         match.team1Abbreviation = team1;
         match.team2Abbreviation = team2;
@@ -64,3 +53,5 @@ export default function Home() {
     </div>
   );
 }
+
+export default Home;
