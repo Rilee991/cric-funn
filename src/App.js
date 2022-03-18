@@ -10,7 +10,7 @@ import PointsTable from './components/modules/PointsTable/PointsTable';
 import Admin from './components/modules/Admin/Admin';
 import Graph from './components/modules/Points/Graph';
 
-function App() {
+const App = () => {
   return (
     <Router>
       <Context>

@@ -47,7 +47,7 @@ const Context = (props) => {
         setLoading(true);
         const { email, password } = user;
         try {
-            const resp = await auth.signInWithEmailAndPassword(email, password);
+            await auth.signInWithEmailAndPassword(email, password);
             db.collection("users").where("email", "==", email).get().then(userSnap => {
                 const { username, email, image, points, bets = [], isAdmin = false } = userSnap.docs[0].data();
                 setLoggedInUserDetails({
@@ -72,7 +72,7 @@ const Context = (props) => {
     const logout = async () => {
         setLoading(true);
         try {
-            const resp = await auth.signOut()
+            await auth.signOut()
             .then(() => {
                 setLoggedInUserDetails({});
                 setErrorMessage('');
