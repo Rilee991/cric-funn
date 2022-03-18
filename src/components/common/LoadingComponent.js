@@ -1,21 +1,23 @@
 import React from 'react';
 import { Grid } from '@material-ui/core';
-import Loader from 'react-loader-spinner';
+import { GridLoader } from 'react-spinners';
 
-import { loaderHeight, loaderWidth, themeColor } from '../../config';
+import { themeColor } from '../../config';
 
 import Copyright from './Copyright';
 
-function LoadingComponent() {
+const LoadingComponent = () => {
     return (
         <Grid container justify="center" alignContent="center" direction="column">
-            <Grid item justify="center">
-                <Loader type="Puff" color={themeColor} height={loaderHeight} width={loaderWidth} timeout={5000} />
-            </Grid>
-
-            <Grid item>
-                <Copyright />
-            </Grid>
+            <br/><br/><br/><br/><br/><br/>
+            <div>
+                <Grid item justify="center" alignItems="center" alignContent="center">
+                    <GridLoader color={themeColor} size={30} speedMultiplier={0.7}/>
+                </Grid>
+                <Grid item>
+                    <Copyright />
+                </Grid>
+            </div>
         </Grid>
     )
 }

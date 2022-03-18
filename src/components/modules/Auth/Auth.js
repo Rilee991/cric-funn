@@ -7,20 +7,16 @@ import LoggedOutComponent from './LoggedOutComponent';
 import Home from './Home';
 import LoadingComponent from '../../common/LoadingComponent';
 
-function Auth() {
+const Auth = () => {
     const contextConsumer = useContext(ContextProvider) || {};
     const { loggedInUserDetails = {}, loading } = contextConsumer;
 
     return (
-        <>
-            { loading ? 
-            (
-                <LoadingComponent />
-            )
-            : (
-                !isEmpty(loggedInUserDetails) ? <Home loggedInUserDetails={loggedInUserDetails}/> : <LoggedOutComponent />
-            ) }
-        </>
+        <> { 
+            loading ? ( <LoadingComponent /> )
+            : (!isEmpty(loggedInUserDetails) ? <Home loggedInUserDetails={loggedInUserDetails}/> : 
+                <LoggedOutComponent />)
+        } </>
     );
 }
 export default Auth;

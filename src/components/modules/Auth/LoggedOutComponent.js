@@ -40,7 +40,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-export default function LoggedOutComponent() {
+const LoggedOutComponent = () => {
   const classes = useStyles();
   const [toggleLogin, setToggleLogin] = useState(true);
 
@@ -67,3 +67,5 @@ export default function LoggedOutComponent() {
     </Grid>
   );
 }
+
+export default LoggedOutComponent;
