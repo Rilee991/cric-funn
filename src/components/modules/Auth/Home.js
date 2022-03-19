@@ -18,8 +18,9 @@ const Home = () => {
     const iplTeamAbbreviation = ["CSK", "DC", "GT", "KKR", "LSG", "MI", "PBKS", "RCB", "RR", "SRH"];
 
     const result = matches.filter(match => {
-      const { teams } = match;
+      const { teams, dateTimeGMT } = match;
       let team1 = teams[0], team2 = teams[1];
+      match.dateTimeGMT = dateTimeGMT+'Z';
 
       if(team1 == "Sunrisers Hyderabad") team1 = "Sun Risers Hyderabad";
       if(team2 == "Sunrisers Hyderabad") team2 = "Sun Risers Hyderabad";

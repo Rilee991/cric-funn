@@ -9,6 +9,8 @@ import dcLogo from './images/dc.png';
 import rrLogo from './images/rr.png';
 import miLogo from './images/mi.png';
 import pkLogo from './images/pk.png';
+import lsgLogo from './images/lsg.png';
+import gtLogo from './images/gt.png';
 
 const firebaseConfig = {
     apiKey: "AIzaSyBFK-Ls496ycWWk5LCbxsN_CrEc234uJWc",
@@ -51,6 +53,8 @@ function getTeamLogo(teamAbbreviation) {
     else if(teamAbbreviation == "MI") return miLogo;
     else if(teamAbbreviation == "PBKS") return pkLogo;
     else if(teamAbbreviation == "RCB") return rcbLogo;
+    else if(teamAbbreviation == "LSG") return lsgLogo;
+    else if(teamAbbreviation == "GT") return gtLogo;
     else return rrLogo;
 }
 
