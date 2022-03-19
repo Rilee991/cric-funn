@@ -4,7 +4,7 @@ import { db } from '../config';
 const API_KEY = "e5dc35f0-1ff0-422f-b494-9999047708de";
 
 export const getMatches = async () => {
-    const url = `https://api.cricapi.com/v1/matches?apikey=${API_KEY}&offset=75 `;
+    const url = `https://api.cricapi.com/v1/matches?apikey=${API_KEY}&offset=0 `;
 
     try {
         let response = await fetch(url);
@@ -18,13 +18,45 @@ export const getMatches = async () => {
     }
 }
 
+// "data": {
+//     "id": "f560b9f9-9859-47f0-be8c-5d5b80eded8e",
+//     "name": "Knights vs Lions, 10th Match",
+//     "matchType": "odi",
+//     "status": "Knights won by 1 wkt",
+//     "venue": "Mangaung Oval, Bloemfontein",
+//     "date": "2022-03-16",
+//     "dateTimeGMT": "2022-03-16T11:00:00",
+//     "teams": [
+//       "Knights",
+//       "Lions"
+//     ],
+//     "score": [
+//       {
+//         "r": 241,
+//         "w": 9,
+//         "o": 49.5,
+//         "inning": "Lions Inning 1"
+//       },
+//       {
+//         "r": 240,
+//         "w": 6,
+//         "o": 50,
+//         "inning": "Knights Inning 1"
+//       }
+//     ],
+//     "tossWinner": "Lions",
+//     "tossChoice": "bat",
+//     "matchWinner": "Knights",
+//     "series_id": "018424f3-890f-4f4d-a9e0-c18f52004edd",
+//     "fantasyEnabled": false,
+//     "hasSquad": true
+//   },
 export const getMatchDetailsForId = async (id) => {
-    const url = `https://cricapi.com/api/matches/${API_KEY}`;
-
+    const url = `https://api.cricapi.com/v1/match_info?apikey=${API_KEY}&offset=0&id=${id}`;
     const resp = await fetch(url);
     const data = await resp.json();
-    const matches = data.matches;
-    const matchDetails = find(matches, {"unique_id": id}) || {};
+    const matchDetails = data.data;
+
     return matchDetails;
 }
 

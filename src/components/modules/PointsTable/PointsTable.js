@@ -1,10 +1,12 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { withStyles, makeStyles } from '@material-ui/core/styles';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography, Badge, Avatar, Grid } from '@material-ui/core';
+import { Row, Col, Container } from 'reactstrap';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography, Badge, Avatar, Grid, Card, CardActionArea, CardContent, GridList } from '@material-ui/core';
 
 import { ContextProvider } from '../../../Global/Context';
 
 import LoadingComponent from '../../common/LoadingComponent';
+import { themeColor } from '../../../config';
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -62,7 +64,7 @@ export default function PointsTable() {
   function getUsernameRow(username, rank) {
     return (
        <Badge badgeContent={rank} color={rank == 1 ? "primary" : (rank == 2 ? "secondary" : "error")} component="p" anchorOrigin={{vertical: 'top',horizontal: 'left'}}>
-         <Typography>{username}</Typography>
+         <Typography><b>{username}</b></Typography>
        </Badge>
       );
   }
@@ -103,12 +105,58 @@ export default function PointsTable() {
     );
   }
 
+  const root = {
+    marginBottom: "50px"
+  }
+
+  const getContent = () => {
+    return (
+      <div style={{ flexGrow: 1}}>
+        <Grid container spacing={3} direction="row">
+          <Grid item xs={1} style={{ fontWeight: 400, fontSize: mobileView ? "7vh" : "15vh", fontStyle:"italic"}}>
+            <p>1.</p>
+          </Grid>
+          <Grid container item xs={11} direction="column">
+            <Grid item xs={8} style={{ fontWeight: 400, fontSize: mobileView ? "3vh" : "5vh", fontStyle:"italic", alignContent: "center"}}>
+              <p>CYPHER33 - 569 Points</p>
+            </Grid>
+            <Grid item xs={3} style={{ fontWeight: 400, fontSize: "2vh", fontStyle:"italic"}}>
+              <p>Attributes</p>
+            </Grid>
+          </Grid>
+        </Grid>
+      </div>
+    );
+  }
+
+  const getAltPtsTable = () => {
+    console.log(tableData);
+    return(
+      tableData && tableData.length ?
+      tableData.map((data, idx) => {
+        return (
+          <Card style={root} key={idx}>
+            <CardActionArea>
+              <CardContent>
+                {getContent()}
+              </CardContent>
+            </CardActionArea>
+          </Card>
+        );
+      })
+      : null
+    );
+  }
+
   return (
     loading ? (
       <LoadingComponent />
     ) :
     (
       getPointsTable()
+      // <div style={{ width: "100%", padding: mobileView ? "70px 0px" : "70px 200px"}}>
+      //   {getAltPtsTable()}
+      // </div>
     )
   );
 }

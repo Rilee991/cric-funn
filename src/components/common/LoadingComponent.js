@@ -10,14 +10,12 @@ const LoadingComponent = () => {
     return (
         <Grid container justify="center" alignContent="center" direction="column">
             <br/><br/><br/><br/><br/><br/>
-            <div>
-                <Grid item justify="center" alignItems="center" alignContent="center">
-                    <GridLoader color={themeColor} size={30} speedMultiplier={0.7}/>
-                </Grid>
-                <Grid item>
-                    <Copyright />
-                </Grid>
-            </div>
+            <Grid item justify="center" alignItems="center" alignContent="center">
+                <GridLoader color={themeColor} size={30} speedMultiplier={0.7}/>
+            </Grid>
+            <Grid item>
+                <Copyright />
+            </Grid>
         </Grid>
     )
 }

@@ -4,10 +4,11 @@ import { getMatches } from '../../apis';
 import { ContextProvider } from '../../../Global/Context';
 
 import CricketCard from './CricketCard';
+import LoadingComponent from '../../common/LoadingComponent';
 
 const Home = () => {
   const contextConsumer = useContext(ContextProvider);
-  const { mobileView } = contextConsumer;
+  const { mobileView, } = contextConsumer;
   const container = {
     width: "100%", 
     padding: mobileView ? "70px 0px" : "70px 200px"
@@ -30,11 +31,11 @@ const Home = () => {
       team1 = team1.match(/(\b\S)?/g).join("").toUpperCase();
       team2 = team2.match(/(\b\S)?/g).join("").toUpperCase();
       
-      if(iplTeamAbbreviation.includes(team1) && iplTeamAbbreviation.includes(team2)) {
+      // if(iplTeamAbbreviation.includes(team1) && iplTeamAbbreviation.includes(team2)) {
         match.team1Abbreviation = team1;
         match.team2Abbreviation = team2;
         return match;
-      }
+      // }
     });
 
     return result;
@@ -50,7 +51,7 @@ const Home = () => {
     <div style={container}>
       {matches.length ? matches.map((match, index) => (
         <CricketCard key={index} match={match}/>
-      ))  : null}
+      ))  : <LoadingComponent /> }
     </div>
   );
 }

@@ -59,17 +59,17 @@ function BettingDialog(props) {
             return;
         } else {
             const betObject = {
-                selectedTeam, 
-                selectedPoints, 
-                matchId, 
-                isBetDone: true, 
-                isNoResult: false, 
-                isSettled: false, 
-                betWon: false, 
-                team1,
-                team2,
                 betTime: admin.default.firestore.Timestamp.fromDate(new Date()),
+                betWon: false,
+                isBetDone: true,
+                isNoResult: false,
+                isSettled: false, 
+                matchId,    
+                selectedPoints,
+                selectedTeam,  
+                team1,
                 team1Abbreviation,
+                team2,
                 team2Abbreviation
             }
 

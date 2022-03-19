@@ -28,7 +28,7 @@ const CricketCard = (props) => {
   const [openLetsBetDialogBox, setOpenLetsBetDialogBox] = useState(false);
   const [openViewBetsDialogBox, setOpenViewBetsDialogBox] = useState(false);
   
-  const betStartTime = moment(matchTime).subtract(12,"hours");
+  const betStartTime = moment(matchTime).subtract(30,"hours");
   const betEndTime = moment(matchTime).subtract(45,"minutes");
   const team1Logo = getTeamLogo(team1Abbreviation);
   const team2Logo = getTeamLogo(team2Abbreviation);
@@ -48,7 +48,7 @@ const CricketCard = (props) => {
   };
 
     useEffect(()=> {
-      const bet = find(bets, { "id": matchId }) || {};
+      const bet = find(bets, { "matchId": matchId }) || {};
       const { selectedPoints, isNoResult, isSettled, betWon } = bet;
       const bettingDone = isEmpty(bet) ? false : true;
 

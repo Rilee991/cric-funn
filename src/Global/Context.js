@@ -2,7 +2,7 @@ import { find, isEmpty, orderBy, sortBy } from 'lodash';
 import React, { createContext, useState, useEffect } from 'react';
 
 import { auth, db, storage, iplMatches } from '../config';
-import { getMatchDetailsForId, updateUsername } from '../components/apis';
+import { getMatchDetailsForId, getMatches } from '../components/apis';
 import moment from 'moment';
 const admin = require('firebase');
 
@@ -99,8 +99,9 @@ const Context = (props) => {
         const { username, bets, points } = loggedInUserDetails;
         const newBets = [...bets, betDetails];
         const newPoints = points - betDetails.selectedPoints;
+
         db.collection("users").doc(username).update({
-            bets : newBets,
+            bets: newBets,
             points: newPoints
         }).then(() => {
             console.log("Document updated Successfully.");
@@ -121,7 +122,7 @@ const Context = (props) => {
             const userData = user.data();
             const { bets = [], username, isDummyUser = false } = userData;
             if(!isDummyUser) {
-                const betData = find(bets, {"unique_id": id}) || {};
+                const betData = find(bets, {"matchId": id}) || {};
                 if(!isEmpty(betData)) {
                     result.push({
                         username,
@@ -194,49 +195,50 @@ const Context = (props) => {
         try {
             let finalPoints = points, betSettledCount = 0;
             let notifications = [];
-            
-            for(let i=0; i<bets.length; i++){
+            for(let i=0; i<bets.length; i++) {
                 const bet = bets[i];
                 if(!bet.isSettled) {
-                    const matchDetails = await getMatchDetailsForId(bet.unique_id) || {};
-                    if(isEmpty(matchDetails)) {
-                        bet.isSettled = true;
-                        bet.betWon = true;
-                        finalPoints += parseInt(bet.selectedPoints);
-                        betSettledCount++;
-                        bet.isNoResult = true;
-                        notifications.push({
-                            title: "Phew! No Result!",
-                            body: `Your bet on ${moment.unix(bet.betTime.seconds).format("LLL")} for the match ${bet.team1} vs ${bet.team2} has been ended in NO Result!. You got ${bet.selectedPoints} POINTS.`,
-                            betWon: true,
-                            isNoResult: true
-                        });
-                    } else if(matchDetails.winner_team) {
-                        if(matchDetails.winner_team == bet.selectedTeam) {
-                            finalPoints += 2*bet.selectedPoints;
+                    const matchDetails = await getMatchDetailsForId(bet.matchId) || {};
+                    if(!isEmpty(matchDetails.matchWinner)) {
+                        if(matchDetails.matchWinner == "No Winner") {
+                            bet.isSettled = true;
                             bet.betWon = true;
+                            finalPoints += parseInt(bet.selectedPoints);
+                            betSettledCount++;
+                            bet.isNoResult = true;
+                            notifications.push({
+                                title: "Phew! No Result!",
+                                body: `Your bet on ${moment.unix(bet.betTime.seconds).format("LLL")} for the match ${bet.team1} vs ${bet.team2} has been ended in NO Result!. You got ${bet.selectedPoints} POINTS.`,
+                                betWon: true,
+                                isNoResult: true
+                            });
                         } else {
-                            bet.betWon = false;
+                            if(matchDetails.matchWinner == bet.selectedTeam) {
+                                finalPoints += 2*bet.selectedPoints;
+                                bet.betWon = true;
+                            } else {
+                                bet.betWon = false;
+                            }
+                            bet.isSettled = true;
+                            bet.isNoResult = false;
+                            betSettledCount++;
+                            notifications.push({
+                                title: `You ${bet.betWon ? "Won" : "Lost"}!`,
+                                body: `Your bet on ${moment.unix(bet.betTime.seconds).format("LLL")} for the match ${bet.team1} vs ${bet.team2} has been ${bet.betWon ? "Won" : "Lost"}!. You ${bet.betWon ? "Won" : "Lost"} ${bet.selectedPoints} POINTS.`,
+                                betWon: bet.betWon,
+                                isNoResult: false
+                            });
                         }
-                        bet.isSettled = true;
-                        bet.isNoResult = false;
-                        betSettledCount++;
-                        notifications.push({
-                            title: `You ${bet.betWon ? "Won" : "Lost"}!`,
-                            body: `Your bet on ${moment.unix(bet.betTime.seconds).format("LLL")} for the match ${bet.team1} vs ${bet.team2} has been ${bet.betWon ? "Won" : "Lost"}!. You ${bet.betWon ? "Won" : "Lost"} ${bet.selectedPoints} POINTS.`,
-                            betWon: bet.betWon,
-                            isNoResult: false
-                        });
                     }
                 }
             };
 
             for(let j=0; j<iplMatches.length; j++) {
                 const match = iplMatches[j];
-                const { dateTimeGMT: matchTime, unique_id, "team-1": team1, "team-2": team2, team1Abbreviation, team2Abbreviation } = match;
+                const { dateTimeGMT: matchTime, id: matchId, team1, team2, team1Abbreviation, team2Abbreviation } = match;
                 const betEndTime = moment(matchTime).subtract(30,"minutes");
                 if(moment() > betEndTime) {
-                    const betData = find(bets, {"unique_id": unique_id}) || {};
+                    const betData = find(bets, {"matchId": matchId}) || {};
 
                     if(isEmpty(betData)) {
                         bets.push({
@@ -250,7 +252,7 @@ const Context = (props) => {
                             team2: team2,
                             team1Abbreviation: team1Abbreviation,
                             team2Abbreviation: team2Abbreviation,
-                            unique_id: unique_id,
+                            matchId: matchId,
                             isNoResult: false
                         });
 
@@ -275,7 +277,7 @@ const Context = (props) => {
                     points: finalPoints
                 });
             }
-
+            
             return { latestPoints: finalPoints, latestBets: bets };
         } catch(err) {
             console.log(err);
@@ -316,7 +318,7 @@ const Context = (props) => {
             }
         });
     },[]);
-//loggedInUserDetails, loading
+
     return (
         <ContextProvider.Provider value={{
             loggedInUserDetails,
@@ -332,7 +334,7 @@ const Context = (props) => {
             viewBetsData,
             getPointsTableData,
             clearUsernameBetsData,
-            markNotificationsAsRead
+            markNotificationsAsRead,
         }}>
             {props.children}
         </ContextProvider.Provider>

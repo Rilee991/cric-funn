@@ -5,7 +5,7 @@ import { fontVariant } from '../../../config';
 
 import MatchDetailsLoader from '../../common/MatchDetailsLoader';
 
-function MatchDetails(props) {
+const MatchDetails = (props) => {
     const { matchDetails, open, handleClose, team1Abbreviation, team2Abbreviation, isMatchDetailsLoading = false } = props;
     const { score = [], status = "" } = matchDetails;
 
@@ -17,19 +17,20 @@ function MatchDetails(props) {
         return (
             <DialogContent>
                 <DialogContentText id="alert-dialog-description">
-                    <> {   
-                        score ? 
+                    <> 
+                        { score.length ? 
                             <>
-                                <br/>
                                 <Typography variant={fontVariant}>
-                                    Score: {" "}
                                     <span style={{fontStyle: "italic", fontWeight: "bold"}}>
-                                        {score}
+                                        {`${score[0].inning.replace(' Inning 1','')}: ${score[0].r}/${score[0].w} (${score[0].o})`}
+                                        <br/>
+                                        {`${score[1].inning.replace(' Inning 1','')}: ${score[1].r}/${score[1].w} (${score[1].o})`}
+                                        <br/>
                                     </span>
                                 </Typography> 
                             </> : null
-                    } <Typography variant={fontVariant}>
-                        Match Status: {" "}
+                        } 
+                        <Typography variant={fontVariant}>
                             <span style={{fontWeight: "bold", fontStyle: "italic"}}>
                                 {status}
                             </span>

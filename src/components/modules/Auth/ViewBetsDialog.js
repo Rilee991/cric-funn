@@ -8,7 +8,7 @@ const ViewBetsDialog = (props) => {
     const contextConsumer = useContext(ContextProvider);
     const { viewBetsData } = contextConsumer;
 
-    const { team1Abbreviation, team2Abbreviation, unique_id } = matchDetails;
+    const { team1Abbreviation, team2Abbreviation, id: matchId } = matchDetails;
     const [betsData, setBetsData] = useState([]);
 
     const closeDialog = () => {
@@ -16,7 +16,8 @@ const ViewBetsDialog = (props) => {
     }
 
     const viewBets = async() => {
-        const data = await viewBetsData(unique_id);
+        const data = await viewBetsData(matchId);
+        console.log(data);
         setBetsData(data);
     }
 
