@@ -1,16 +1,18 @@
-import { find } from "lodash";
+import { find, get, sortBy } from "lodash";
 import { db } from '../config';
 
-const API_KEY = "9mXZLYQYaVcA6KoInNpffahSTbC2";
+const API_KEY = "e5dc35f0-1ff0-422f-b494-9999047708de";
 
 export const getMatches = async () => {
-    const url = `https://cricapi.com/api/matches/${API_KEY}`;
+    const url = `https://api.cricapi.com/v1/matches?apikey=${API_KEY}&offset=75 `;
 
     try {
-        let data = await fetch(url);
-        data = await data.json() || {};
-        const { matches = [] } = data;
-        return matches;
+        let response = await fetch(url);
+        response = await response.json();
+        const matches = get(response,'data',[]);
+        const sortedMatches = sortBy(matches, ['dateTimeGMT']);
+
+        return sortedMatches;
     } catch (err) {
         console.log("Error in API getMatches:", err);
     }
@@ -27,12 +29,14 @@ export const getMatchDetailsForId = async (id) => {
 }
 
 export const getMatchDetails = async (id) => {
-    const url = `https://cricapi.com/api/cricketScore?apikey=${API_KEY}&unique_id=${id}`;
+    const url = `https://api.cricapi.com/v1/match_info?apikey=${API_KEY}&offset=0&id=${id}`;
 
     try {
         const data = await fetch(url);
         const matchDetails = await data.json();
-        return matchDetails;
+        const details = get(matchDetails,'data',{});
+
+        return details;
     } catch(err) {
         console.log("Error in API getMatchDetails:", err);
     }

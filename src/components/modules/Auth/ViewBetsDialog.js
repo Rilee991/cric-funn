@@ -3,7 +3,7 @@ import { Dialog, DialogContent, DialogContentText, DialogTitle, Table, TableBody
 
 import { ContextProvider } from '../../../Global/Context';
 
-function ViewBetsDialog(props) {
+const ViewBetsDialog = (props) => {
     const { matchDetails, open, handleClose } = props;
     const contextConsumer = useContext(ContextProvider);
     const { viewBetsData } = contextConsumer;
@@ -54,19 +54,16 @@ function ViewBetsDialog(props) {
         <Dialog open={open} onClose={closeDialog} aria-labelledby="responsive-dialog-title" maxWidth="xl">
             <DialogTitle id="alert-dialog-title">
                 <Typography variant="overline" style={{fontSize: 14}}>
-                    <b>View Bets - {team1Abbreviation} vs {team2Abbreviation}</b>
+                    <b>{team1Abbreviation} vs {team2Abbreviation} - View Bets</b>
                 </Typography>
             </DialogTitle>
             <hr/>
             <DialogContent>
-                <DialogContentText id="alert-dialog-description">
-                    {   betsData.length ? (
-                            getBetsTable()
-                        ) : (
-                            <Typography variant="overline" align="center">No Bets Done.</Typography>
-                        )
-                    }
-                </DialogContentText>
+                <DialogContentText id="alert-dialog-description">{   
+                    betsData.length ? 
+                    ( getBetsTable() ) : 
+                    ( <Typography variant="body" align="center">No bets has been made.</Typography> )
+                } </DialogContentText>
             </DialogContent>
         </Dialog>
     );

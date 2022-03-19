@@ -5,7 +5,7 @@ import { isEmpty } from 'lodash';
 import moment from 'moment';
 
 import { ContextProvider } from '../../../Global/Context';
-import { fontVariant } from '../../../config';
+import { fontVariant, themeColor } from '../../../config';
 
 const admin = require("firebase");
 
@@ -14,7 +14,8 @@ function BettingDialog(props) {
     const contextConsumer = useContext(ContextProvider);
     const { betOnMatch } = contextConsumer;
 
-    const { team1Abbreviation, team2Abbreviation, "team-1": team1, "team-2": team2, unique_id } = matchDetails;
+    const { team1Abbreviation, team2Abbreviation, teams, id: matchId } = matchDetails;
+    const team1 = teams[0], team2 = teams[1];
     const [selectedTeam, setSelectedTeam] = useState("");
     const [selectedPoints, setSelectedPoints] = useState("");
     const [error, setError] = useState("");
@@ -60,7 +61,7 @@ function BettingDialog(props) {
             const betObject = {
                 selectedTeam, 
                 selectedPoints, 
-                unique_id, 
+                matchId, 
                 isBetDone: true, 
                 isNoResult: false, 
                 isSettled: false, 
@@ -81,7 +82,7 @@ function BettingDialog(props) {
         <Dialog open={open} onClose={closeDialog} aria-labelledby="responsive-dialog-title" maxWidth="xl">
             <DialogTitle id="alert-dialog-title">
                 <Typography variant={fontVariant} style={{fontSize: 14}}>
-                    <b>Betting Match - {team1Abbreviation} vs {team2Abbreviation}</b>
+                    <b>{team1Abbreviation} vs {team2Abbreviation} - Betting Window</b>
                 </Typography>
                 <br/>
                 <Typography variant={fontVariant} style={{fontSize: 10}}>
@@ -122,14 +123,14 @@ function BettingDialog(props) {
                         />
                         {error ? <Typography variant="overline" color="error">{error}</Typography>: ""}
                         <br/><br/>
-                        <Button fullWidth size="small" color="primary" variant="contained" disabled={disabledSave} onClick={() => betInTheMatch()}>
+                        <Button fullWidth size="small" style={{ backgroundColor: !disabledSave ? themeColor : 'grey', color: "white" }} variant="contained" disabled={disabledSave} onClick={() => betInTheMatch()}>
                             <Typography variant="overline" style={{ fontSize: 15, fontWeight: 500}}>
                                 {"Save"}
                             </Typography>
                         </Button>
                         <br/><br/>
                         <Alert severity="warning" >
-                            <Typography variant="overline">
+                            <Typography variant="body">
                                 <b>Once bet cannot be edited.</b>
                             </Typography>
                         </Alert>

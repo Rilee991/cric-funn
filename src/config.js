@@ -54,11 +54,11 @@ function getTeamLogo(teamAbbreviation) {
     else return rrLogo;
 }
 
-const fontVariant = "overline";
+const fontVariant = "button";
 const matchHeadingFontSize = 20;
 
 function getFormattedTimeISOString(date) {
-    return moment(date).format("LLL");
+    return moment(date).format("lll");
 }
 
 function getMsgForUpcomingBets(startTime, endTime) {
