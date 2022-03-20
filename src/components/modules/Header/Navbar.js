@@ -53,23 +53,23 @@ const Navbar = () => {
     onClick: closeDrawer,
     icon: (<AccountCircle style={{ color: mobileView ? themeColor : "inherit" }} fontSize="default" />)
   }, {
-    label: "My Bets",
+    label: "MY BETS",
     href: "/bets",
     onClick: closeDrawer,
     icon: (<CasinoRounded style={{ color: mobileView ? themeColor : "inherit" }} fontSize="default"/>)
   }, {
-    label: `${points} Points`,
+    label: `${points} POINTS`,
     href: "/points",
     disabled: false,
     onClick: closeDrawer,
     icon: (<InsertChartRounded style={{ color: mobileView ? themeColor : "inherit" }} fontSize="default"/>)
   }, {
-    label: `Points Table`,
+    label: `POINTS TABLE`,
     href: "/points-table",
     onClick: closeDrawer,
     icon: (<ListAltRounded style={{ color: mobileView ? themeColor : "inherit" }} fontSize="default"/>)
   }, {
-    label: "Logout",
+    label: "LOGOUT",
     href: "/",
     onClick: handleLogout,
     icon: (<ExitToAppRounded style={{ color: mobileView ? themeColor : "inherit" }} fontSize="default"/>)

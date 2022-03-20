@@ -17,7 +17,6 @@ const ViewBetsDialog = (props) => {
 
     const viewBets = async() => {
         const data = await viewBetsData(matchId);
-        console.log(data);
         setBetsData(data);
     }
 

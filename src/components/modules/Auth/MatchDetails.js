@@ -22,10 +22,12 @@ const MatchDetails = (props) => {
                             <>
                                 <Typography variant={fontVariant}>
                                     <span style={{fontStyle: "italic", fontWeight: "bold"}}>
-                                        {`${score[0].inning.replace(' Inning 1','')}: ${score[0].r}/${score[0].w} (${score[0].o})`}
-                                        <br/>
-                                        {`${score[1].inning.replace(' Inning 1','')}: ${score[1].r}/${score[1].w} (${score[1].o})`}
-                                        <br/>
+                                        {score.map(sc => (
+                                            <>
+                                                {`${sc.inning.replace(' Inning 1','')}: ${sc.r}/${sc.w} (${sc.o})`}
+                                                <br/>
+                                            </>
+                                        ))}
                                     </span>
                                 </Typography> 
                             </> : null

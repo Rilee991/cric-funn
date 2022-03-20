@@ -130,7 +130,6 @@ export default function PointsTable() {
   }
 
   const getAltPtsTable = () => {
-    console.log(tableData);
     return(
       tableData && tableData.length ?
       tableData.map((data, idx) => {
