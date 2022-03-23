@@ -29,7 +29,8 @@ const Context = (props) => {
                 password,
                 image,
                 points,
-                bets
+                bets,
+                isDummyUser: true
             });
 
             setErrorMessage('');
