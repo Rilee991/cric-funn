@@ -28,8 +28,8 @@ const CricketCard = (props) => {
   const [openLetsBetDialogBox, setOpenLetsBetDialogBox] = useState(false);
   const [openViewBetsDialogBox, setOpenViewBetsDialogBox] = useState(false);
   
-  const betStartTime = moment(matchTime).subtract(30,"hours");
-  const betEndTime = moment(matchTime).subtract(45,"minutes");
+  const betStartTime = moment(matchTime).subtract(24,"hours");
+  const betEndTime = moment(matchTime).subtract(25,"minutes");
   const team1Logo = getTeamLogo(team1Abbreviation);
   const team2Logo = getTeamLogo(team2Abbreviation);
   
@@ -131,14 +131,12 @@ const CricketCard = (props) => {
               <Typography variant={fontVariant} style={{fontSize: 13}} color="textSecondary" component="p">
                 <b>Venue: {venue}</b>
               </Typography>
-              { status === "Match not started" ? 
-                <Typography variant={fontVariant} style={{fontSize: 13}} color="textSecondary" component="p">
-                  <b>Start Time: {getFormattedTimeISOString(matchTime)}</b>
-                </Typography> :
-                <Typography variant={fontVariant} style={{fontSize: 13}} color="textSecondary" component="p">
-                  <b>{status}</b>
-                </Typography>
-              }
+              <Typography variant={fontVariant} style={{fontSize: 13}} color="textSecondary" component="p">
+                <b>Start Time: {getFormattedTimeISOString(matchTime)}</b>
+              </Typography>
+              <Typography variant={fontVariant} style={{fontSize: 13}} color="textSecondary" component="p">
+                <b>{status}</b>
+              </Typography>
             </CardContent>
           </CardActionArea>
 

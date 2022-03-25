@@ -20,6 +20,7 @@ function BettingDialog(props) {
     const [selectedPoints, setSelectedPoints] = useState("");
     const [error, setError] = useState("");
     const [disabledSave, setDisableSave] = useState(true);
+    const minBetPoints = points > 400 ? 200 : (points > 150 ? 100 : 1);
 
     const closeDialog = () => {
         handleClose && handleClose();
@@ -45,7 +46,7 @@ function BettingDialog(props) {
         }
 
         
-        if(isEmpty(selectedTeam) || isEmpty(event.target.value) || event.target.value > points || event.target.value <= 0) {
+        if(isEmpty(selectedTeam) || isEmpty(event.target.value) || event.target.value > points || event.target.value <= 0 || event.target.value < minBetPoints) {
             setDisableSave(true);
         } else {
             setDisableSave(false);
@@ -86,7 +87,8 @@ function BettingDialog(props) {
                 </Typography>
                 <br/>
                 <Typography variant={fontVariant} style={{fontSize: 10}}>
-                    <b>Remaining Points: {points - selectedPoints}</b>
+                    <b>Remaining Points: {points - selectedPoints}</b><br/>
+                    <b>Minimum Bet Points: {minBetPoints}</b>
                 </Typography>
             </DialogTitle>
             <hr/>

@@ -1,5 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { Dialog, DialogContent, DialogContentText, DialogTitle, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography } from '@material-ui/core';
+import moment from 'moment';
 
 import { ContextProvider } from '../../../Global/Context';
 
@@ -34,6 +35,7 @@ const ViewBetsDialog = (props) => {
                             <TableCell variant="footer">USERNAME</TableCell>
                             <TableCell align="center" variant="footer">TEAM</TableCell>
                             <TableCell align="center" variant="footer">POINTS</TableCell>
+                            <TableCell align="center" variant="footer">TIME</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -42,6 +44,7 @@ const ViewBetsDialog = (props) => {
                                 <TableCell component="th" scope="row">{eachBet.username}</TableCell>
                                 <TableCell align="center">{eachBet.betTeam}</TableCell>
                                 <TableCell align="center">{eachBet.betPoints}</TableCell>
+                                <TableCell align="center">{eachBet.betTime ? moment.unix(eachBet.betTime.seconds).format("LLL") : "NA"}</TableCell>
                             </TableRow>
                         ))}
                     </TableBody>
