@@ -180,7 +180,7 @@ const Context = (props) => {
     }
 
     const clearUsernameBetsData = async(username) => {
-        const resp = await db.collection("users").doc(username).update({
+        await db.collection("users").doc(username).update({
             bets: [],
             points: 2000
         });

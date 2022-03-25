@@ -1,18 +1,24 @@
-import { find, get, sortBy } from "lodash";
+import { get, sortBy } from "lodash";
+import moment from "moment";
 import { db } from '../config';
 
 const API_KEY = "e5dc35f0-1ff0-422f-b494-9999047708de";
 
 export const getMatches = async () => {
-    const url = `https://api.cricapi.com/v1/matches?apikey=${API_KEY}&offset=0 `;
-
+    const url = `https://api.cricapi.com/v1/series_info?apikey=${API_KEY}&offset=0&id=47b54677-34de-4378-9019-154e82b9cc1a`;
     try {
         let response = await fetch(url);
         response = await response.json();
-        const matches = get(response,'data',[]);
+        const matches = get(response,'data.matchList',[]);
         const sortedMatches = sortBy(matches, ['dateTimeGMT']);
+        const filteredMatches = sortedMatches.filter(match => {
+            match.dateTimeGMT = match.dateTimeGMT + 'Z';
 
-        return sortedMatches;
+            if(moment(match.dateTimeGMT).add(2 ,'days').isSameOrAfter(moment()))   return true;
+            return false;
+        }) || [];
+
+        return filteredMatches;
     } catch (err) {
         console.log("Error in API getMatches:", err);
     }

@@ -29,7 +29,7 @@ const CricketCard = (props) => {
   const [openViewBetsDialogBox, setOpenViewBetsDialogBox] = useState(false);
   
   const betStartTime = moment(matchTime).subtract(24,"hours");
-  const betEndTime = moment(matchTime).subtract(25,"minutes");
+  const betEndTime = moment(matchTime).subtract(27,"minutes");
   const team1Logo = getTeamLogo(team1Abbreviation);
   const team2Logo = getTeamLogo(team2Abbreviation);
   
