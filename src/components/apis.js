@@ -14,7 +14,11 @@ export const getMatches = async () => {
         const filteredMatches = sortedMatches.filter(match => {
             match.dateTimeGMT = match.dateTimeGMT + 'Z';
 
+            if(match.id == '341e6690-ece0-4dce-83fc-91effbb28eb3')
+                match.name = 'Chennai Super Kings vs Kolkata Knight Riders, Match 1';
+
             if(moment(match.dateTimeGMT).add(2 ,'days').isSameOrAfter(moment()))   return true;
+
             return false;
         }) || [];
 

@@ -23,27 +23,28 @@ const useStyles = makeStyles((theme) => ({
     submit: {
       margin: theme.spacing(3, 0, 2),
     },
+    loader: {
+        display: 'flex',
+        '& > * + *': {
+        marginLeft: theme.spacing(2),
+        }
+    }
 }));
 
-function Signup(props) {
+const ForgotPassword = (props) => {
     const classes = useStyles();
     const { handleToggle } = props;
     const contextConsumer = useContext(ContextProvider) || {};
-    const { signUp, errorMessage, loading } = contextConsumer;
-    
+    const { sendResetPasswordEmail, errorMessage, loading } = contextConsumer;
+
     const [inputs, setInputs] = useState({
-        username: '',
-        email: '',
-        password: ''
+        email: ''
     });
     const [open, setOpen] = useState(false);
-    const [showPassword, setShowPassword] = useState(false);
 
-    function toggleSignup() {
+    function toggleSignin() {
         handleToggle && handleToggle("login");
     }
-
-    const togglePasswordVisibility = () => setShowPassword(!showPassword);
 
     const handleInputs = (event) => {
         setInputs({
@@ -52,14 +53,11 @@ function Signup(props) {
         });
     }
 
-    const signUpUser = (event) => {
+    const saveResetPasswordEmail = (event) => {
         event.preventDefault();
-
-        signUp(inputs);
+        sendResetPasswordEmail(inputs);
         setInputs({
-            username: '',
-            email: '',
-            password: ''
+            email: ''
         });
 
         if(!isEmpty(errorMessage)) {
@@ -74,17 +72,17 @@ function Signup(props) {
         }
     
         setOpen(false);
-      };
+    }
 
     return (
         loading ? 
-            <Loader type="Puff" color="#00BFFF" height={loaderHeight} width={loaderWidth} timeout={5000} /> : 
+            <Loader type="Puff" color="#0008ff" height={loaderHeight} width={loaderWidth} timeout={5000} /> : 
         <>
             <img src={iplLogo} style={{width: 150}}/>
             <Typography variant="overline" style={{ fontSize: 20, fontWeight: 500}}>
-                Sign up
+                Forgot Password
             </Typography>
-            <form className={classes.form} onSubmit={signUpUser}>
+            <form className={classes.form} onSubmit={saveResetPasswordEmail}>
                 <TextField
                     variant="outlined"
                     margin="normal"
@@ -99,43 +97,6 @@ function Signup(props) {
                     value={inputs.email}
                     onChange={handleInputs}
                 />
-                <TextField
-                    variant="outlined"
-                    margin="normal"
-                    required
-                    fullWidth
-                    id="username"
-                    label="Username"
-                    name="username"
-                    autoComplete="username"
-                    value={inputs.username}
-                    onChange={handleInputs}
-                />
-                <TextField
-                    variant="outlined"
-                    margin="normal"
-                    required
-                    fullWidth
-                    id="password"
-                    label="Password"
-                    name="password"
-                    type={showPassword ? "text" : "password"}
-                    autoComplete="current-password"
-                    value={inputs.password}
-                    onChange={handleInputs}
-                    InputProps={{
-                        endAdornment: (
-                            <InputAdornment>
-                                <IconButton
-                                    aria-label="toggle password visibility"
-                                    onClick={togglePasswordVisibility}
-                                >
-                                    {showPassword ? <Visibility /> : <VisibilityOff />}
-                                </IconButton>
-                            </InputAdornment>
-                        )
-                    }}
-                />
 
                 <Button
                     type="submit"
@@ -145,26 +106,27 @@ function Signup(props) {
                     className={classes.submit}
                 >
                     <Typography variant="overline" style={{ fontSize: 13, fontWeight: 500}}>
-                        Sign Up
+                        Send Mail
                     </Typography>
                 </Button>
-                <Grid container>
-                    <Grid item>
-                        <Button variant="text" onClick={toggleSignup}>
+                <Grid container spacing={2}>
+                    <Grid item xs>
+                        <Button variant="text" onClick={toggleSignin}>
                             <Typography variant="overline" style={{ fontSize: 12, fontWeight: 500}}>
-                                {"Already have an account?  Log in!"}
+                                {"Back to Login"}
                             </Typography>
                         </Button>
                     </Grid>
                 </Grid>
             </form>
-            <Snackbar open={open} autoHideDuration={4000} onClose={handleClose}>
+            
+            <Snackbar open={open} autoHideDuration={10000} onClose={handleClose}>
                 <MuiAlert onClose={handleClose} severity="error">
                     {errorMessage}
                 </MuiAlert>
             </Snackbar>
         </>
-    )
+    );
 }
 
-export default Signup;
+export default ForgotPassword;

@@ -7,7 +7,7 @@ import { isEmpty } from 'lodash';
 import Loader from 'react-loader-spinner';
 
 import { ContextProvider } from '../../../Global/Context';
-import { loaderHeight, loaderWidth } from '../../../config';
+import { loaderHeight, loaderWidth, themeColor } from '../../../config';
 
 import iplLogo from '../../../images/logo.png';
 
@@ -45,7 +45,11 @@ function Signin(props) {
     const [showPassword, setShowPassword] = useState(false);
 
     function toggleSignin() {
-        handleToggle && handleToggle();
+        handleToggle && handleToggle("signup");
+    }
+
+    const toggleForgotPassword = () => {
+        handleToggle && handleToggle("password")
     }
 
     const togglePasswordVisibility = () => setShowPassword(!showPassword);
@@ -132,18 +136,25 @@ function Signin(props) {
                     type="submit"
                     fullWidth
                     variant="contained"
-                    color="primary"
+                    style={{ backgroundColor: themeColor, color: "white" }}
                     className={classes.submit}
                 >
                     <Typography variant="overline" style={{ fontSize: 13, fontWeight: 500}}>
                         Sign In
                     </Typography>
                 </Button>
-                <Grid container>
-                    <Grid item>
+                <Grid container spacing={2}>
+                    <Grid item xs>
                         <Button variant="text" onClick={toggleSignin}>
                             <Typography variant="overline" style={{ fontSize: 12, fontWeight: 500}}>
                                 {"Don't have an account? Sign Up"}
+                            </Typography>
+                        </Button>
+                    </Grid>
+                    <Grid container xs justify="flex-end">
+                        <Button variant="text" onClick={toggleForgotPassword}>
+                            <Typography variant="overline" style={{ fontSize: 12, fontWeight: 500}}>
+                                {"Forgot Password?"}
                             </Typography>
                         </Button>
                     </Grid>
@@ -159,4 +170,4 @@ function Signin(props) {
     )
 }
 
-export default Signin
+export default Signin;

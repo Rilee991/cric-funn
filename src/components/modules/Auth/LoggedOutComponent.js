@@ -7,6 +7,7 @@ import Signin from './Signin';
 import Signup from './Signup';
 import Social from '../../common/Social';
 import Copyright from '../../common/Copyright';
+import ForgotPassword from './ForgotPassword';
 
 function Footer() {
   return (
@@ -42,10 +43,10 @@ const useStyles = makeStyles((theme) => ({
 
 const LoggedOutComponent = () => {
   const classes = useStyles();
-  const [toggleLogin, setToggleLogin] = useState(true);
+  const [toggleLogin, setToggleLogin] = useState("login");
 
-  function handleToggle() {
-      setToggleLogin(!toggleLogin);
+  function handleToggle(page) {
+      setToggleLogin(page);
   }
 
   return (
@@ -54,10 +55,11 @@ const LoggedOutComponent = () => {
       <Grid item xs={false} sm={4} md={7} className={classes.image} />
       <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
         <div className={classes.paper}>
-            { toggleLogin ? 
+            { toggleLogin === "login" ? 
                 <Signin handleToggle={handleToggle}/> 
-              : 
-                <Signup handleToggle={handleToggle}/>
+              : (toggleLogin === "signup" ?
+                <Signup handleToggle={handleToggle}/> 
+              : <ForgotPassword handleToggle={handleToggle} /> )
             }
             <Box mt={5}>
                 <Footer />

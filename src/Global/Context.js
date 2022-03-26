@@ -70,6 +70,19 @@ const Context = (props) => {
         }
     }
 
+    const sendResetPasswordEmail = async (user) => {
+        setLoading(true);
+        const { email } = user;
+        try {
+            await auth.sendPasswordResetEmail(email);
+            setErrorMessage('');
+        } catch (error) {
+            console.log(error);
+            setErrorMessage(error.message);
+        }
+        setLoading(false);
+    }
+
     const logout = async () => {
         setLoading(true);
         try {
@@ -336,6 +349,7 @@ const Context = (props) => {
             getPointsTableData,
             clearUsernameBetsData,
             markNotificationsAsRead,
+            sendResetPasswordEmail
         }}>
             {props.children}
         </ContextProvider.Provider>
