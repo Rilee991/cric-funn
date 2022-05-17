@@ -19,6 +19,7 @@ const CricketCard = (props) => {
   const { loggedInUserDetails, mobileView } = contextConsumer;
   
   const { bets = [], points } = loggedInUserDetails;
+
   const { dateTimeGMT: matchTime, id: matchId, name: matchTitle, team1Abbreviation, team2Abbreviation, status, venue } = match;
   
   const [bettingDoneByUser, setBettingDoneByUser] = useState(false);
@@ -49,7 +50,7 @@ const CricketCard = (props) => {
 
     useEffect(()=> {
       const bet = find(bets, { "matchId": matchId }) || {};
-      const { selectedPoints, isNoResult, isSettled, betWon } = bet;
+      const { selectedPoints, isNoResult, isSettled, betWon, selectedTeam } = bet;
       const bettingDone = isEmpty(bet) ? false : true;
 
       setBettingDoneByUser(bettingDone);
@@ -63,11 +64,11 @@ const CricketCard = (props) => {
         setMessage(getMsgForOpenBets(betEndTime));
         setSeverity("success");
         if(bettingDone) {
-          setMessage(getMsgForInProgressBets(selectedPoints));
+          setMessage(getMsgForInProgressBets(selectedPoints, selectedTeam));
           setSeverity("warning");
         }
       } else if(isNoResult) {
-        setMessage(getMsgForNoResultBets(selectedPoints));
+        setMessage(getMsgForNoResultBets(selectedPoints, selectedTeam));
         setSeverity("success");
       } else {
         setMessage(getMsgForClosedBets());
@@ -75,14 +76,14 @@ const CricketCard = (props) => {
         if(bettingDone) {
           if(isSettled) {
             if(betWon) {
-              setMessage(getMsgForWonBets(selectedPoints));
+              setMessage(getMsgForWonBets(selectedPoints, selectedTeam));
               setSeverity("success");
             } else {
-              setMessage(getMsgForLostBets(selectedPoints));
+              setMessage(getMsgForLostBets(selectedPoints, selectedTeam));
               setSeverity("error");
             }
           } else {
-            setMessage(getMsgForInProgressBets(selectedPoints));
+            setMessage(getMsgForInProgressBets(selectedPoints, selectedTeam));
             setSeverity("warning");
           }
         }

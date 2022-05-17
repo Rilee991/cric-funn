@@ -14,8 +14,18 @@ export const getMatches = async () => {
         const filteredMatches = sortedMatches.filter(match => {
             match.dateTimeGMT = match.dateTimeGMT + 'Z';
 
-            if(match.id == '341e6690-ece0-4dce-83fc-91effbb28eb3')
-                match.name = 'Chennai Super Kings vs Kolkata Knight Riders, Match 1';
+            if (match.name.split(" ").length <= 5) {
+                match.name = match.name.replace('Chennai', 'Chennai Super Kings');
+                match.name = match.name.replace('Kolkata', 'Kolkata Kinght Riders');
+                match.name = match.name.replace('Delhi', 'Delhi Capitals');
+                match.name = match.name.replace('Mumbai', 'Mumbai Indians');
+                match.name = match.name.replace('Punjab', 'Punjab Kings');
+                match.name = match.name.replace('Rajasthan', 'Rajasthan Royals');
+                match.name = match.name.replace('Bangalore', 'Royal Challengers Bangalore');
+                match.name = match.name.replace('Hyderabad', 'Sunrisers Hyderabad');
+                match.name = match.name.replace('Gujarat', 'Gujarat Titans');
+                match.name = match.name.replace('Lucknow', 'Lucknow Super Giants');
+            }
 
             if(moment(match.dateTimeGMT).add(2 ,'days').isSameOrAfter(moment()))   return true;
 
@@ -90,7 +100,6 @@ export const updateUsername = async(username, newUsername) => {
         userData = await userData.data();
 
         await db.collection("users").doc(newUsername).set(userData);
-        console.log(userData);
     } catch(err) {
         console.log(err);
     }

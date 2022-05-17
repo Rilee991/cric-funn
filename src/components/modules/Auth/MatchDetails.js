@@ -20,9 +20,9 @@ const MatchDetails = (props) => {
         team = team.replace(' Inning 1','');
         team = team.replace(' Inning 2','');
         
-        if(team === team1)  return team2;
+        if(team === team1)  return team1;
 
-        return team1;
+        return team2;
     }
 
     const getDetailsCard = () => {

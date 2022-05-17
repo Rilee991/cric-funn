@@ -34,13 +34,13 @@ const StyledTableRow = withStyles((theme) => ({
 
 const useStyles = makeStyles({
   table: {
-    minWidth: "100%",
+    minWidth: 700,
   },
 });
 
-export default function PointsTable() {
+export default function TeamStatsTable() {
     const contextConsumer = useContext(ContextProvider);
-    const { getPointsTableData, mobileView, loading, loggedInUserDetails } = contextConsumer;
+    const { getTeamStatsData, mobileView, loading, loggedInUserDetails } = contextConsumer;
     const { image } = loggedInUserDetails;
     const classes = useStyles();
     const [tableData, setTableData] = useState([]);
@@ -50,8 +50,9 @@ export default function PointsTable() {
     };
 
   useEffect(async () => {
-    const data = await getPointsTableData();
+    const data = await getTeamStatsData();
     setTableData(data);
+
   }, []);
 
   function getColor(rank, isOut) {
@@ -72,30 +73,36 @@ export default function PointsTable() {
   function getPointsTable() {
     return (
       <div style={container}>
-        <Typography variant="overline" style={{fontSize: 20}}>POINTS TABLE</Typography>
+        <Typography variant="overline" style={{fontSize: 20}}>TEAM STATS TABLE</Typography>
         <hr/>
         <TableContainer component={Paper}>
             <Table className={classes.table} aria-label="customized table caption">
-                <caption><Typography variant="overline">Sorted By Points - Swipe left to see more</Typography></caption>
+                <caption><Typography variant="overline">Sorted By Team - Swipe left to see more</Typography></caption>
                 <TableHead>
                     <TableRow>
-                        <StyledTableCell ><Typography variant="overline">Username</Typography></StyledTableCell>
-                        <StyledTableCell align="center"><Typography variant="overline">Bets</Typography></StyledTableCell>
-                        <StyledTableCell align="center"><Typography variant="overline">Won</Typography></StyledTableCell>
-                        <StyledTableCell align="center"><Typography variant="overline">Lost</Typography></StyledTableCell>
-                        <StyledTableCell align="center"><Typography variant="overline">In-Progress</Typography></StyledTableCell>
-                        <StyledTableCell align="center"><Typography variant="overline">Points</Typography></StyledTableCell>
+                        <StyledTableCell ><Typography variant="overline">Team Name</Typography></StyledTableCell>
+                        <StyledTableCell align="center"><Typography variant="overline">Bets Done</Typography></StyledTableCell>
+                        <StyledTableCell align="center"><Typography variant="overline">Bets Won</Typography></StyledTableCell>
+                        <StyledTableCell align="center"><Typography variant="overline">Bets Lost</Typography></StyledTableCell>
+                        <StyledTableCell align="center"><Typography variant="overline">Bets In-Progress</Typography></StyledTableCell>
+                        <StyledTableCell align="center"><Typography variant="overline">Points Bet</Typography></StyledTableCell>
+                        <StyledTableCell align="center"><Typography variant="overline">Points Won</Typography></StyledTableCell>
+                        <StyledTableCell align="center"><Typography variant="overline">Points Lost</Typography></StyledTableCell>
+                        <StyledTableCell align="center"><Typography variant="overline">Points In-Progress</Typography></StyledTableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
                     {tableData.length ? tableData.map((row, index) => (
-                        <StyledTableRow key={row.username} style={{backgroundColor: getColor(index+1, row.isOut)}}>
-                            <StyledTableCell component="th" scope="row">{getUsernameRow(row.username,index+1)}</StyledTableCell>
-                            <StyledTableCell align="center">{row.totalBets}</StyledTableCell>
-                            <StyledTableCell align="center">{row.won}</StyledTableCell>
-                            <StyledTableCell align="center">{row.lost}</StyledTableCell>
-                            <StyledTableCell align="center">{row.inprogress}</StyledTableCell>
-                            <StyledTableCell align="center">{row.points}</StyledTableCell>
+                        <StyledTableRow key={row.teamName} style={{backgroundColor: getColor(index+3, row.isOut)}}>
+                            <StyledTableCell component="th" scope="row">{row.teamName}</StyledTableCell>
+                            <StyledTableCell align="center">{row.betsDone}</StyledTableCell>
+                            <StyledTableCell align="center">{row.betsWon}</StyledTableCell>
+                            <StyledTableCell align="center">{row.betsLost}</StyledTableCell>
+                            <StyledTableCell align="center">{row.betsInProgress}</StyledTableCell>
+                            <StyledTableCell align="center">{row.totalPts}</StyledTableCell>
+                            <StyledTableCell align="center">{row.wonPts}</StyledTableCell>
+                            <StyledTableCell align="center">{row.lostPts}</StyledTableCell>
+                            <StyledTableCell align="center">{row.inprogressPts}</StyledTableCell>
                         </StyledTableRow>
                     )) : <div style={{justifyContent: "center", alignContent: "center"}}><Typography variant="overline" style={{fontSize: 15}}>Loading Data Please wait...</Typography></div>}
                 </TableBody>
@@ -110,6 +117,7 @@ export default function PointsTable() {
   }
 
   const getContent = (data, rank) => {
+
     return (
       <div style={{ flexGrow: 1}}>
         <Grid container spacing={1}>

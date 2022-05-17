@@ -2,7 +2,7 @@ import React, { useState, useContext } from "react";
 import { AppBar, Toolbar, makeStyles, Button, IconButton, SwipeableDrawer, Link, ListItem, ListItemIcon, 
   ListItemText, Badge, Typography, Card, CardActionArea, CardContent } from "@material-ui/core";
 import { MenuOpenRounded, AccountCircle, ExitToAppRounded, ListAltRounded, InsertChartRounded, 
-  SettingsRounded, NotificationsActiveSharp, CasinoRounded } from '@material-ui/icons';
+  SettingsRounded, NotificationsActiveSharp, CasinoRounded, InsertChartTwoTone } from '@material-ui/icons';
 import { Link as RouterLink } from "react-router-dom";
 
 import { ContextProvider } from '../../../Global/Context';
@@ -48,7 +48,7 @@ const Navbar = () => {
   }
 
   const headersData = [{
-    label: username,
+    label: `${username} (${points} POINTS)`,
     href: "/",
     onClick: closeDrawer,
     icon: (<AccountCircle style={{ color: mobileView ? themeColor : "inherit" }} fontSize="default" />)
@@ -58,11 +58,17 @@ const Navbar = () => {
     onClick: closeDrawer,
     icon: (<CasinoRounded style={{ color: mobileView ? themeColor : "inherit" }} fontSize="default"/>)
   }, {
-    label: `${points} POINTS`,
+    label: `STATS`,
     href: "/points",
     disabled: false,
     onClick: closeDrawer,
     icon: (<InsertChartRounded style={{ color: mobileView ? themeColor : "inherit" }} fontSize="default"/>)
+  }, {
+    label: `GLOBAL STATS`,
+    href: "/global-stats",
+    disabled: false,
+    onClick: closeDrawer,
+    icon: (<InsertChartTwoTone style={{ color: mobileView ? themeColor : "inherit" }} fontSize="default"/>)
   }, {
     label: `POINTS TABLE`,
     href: "/points-table",

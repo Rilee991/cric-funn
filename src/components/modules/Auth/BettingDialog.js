@@ -11,6 +11,7 @@ const admin = require("firebase");
 
 function BettingDialog(props) {
     const { matchDetails, open, handleClose, betEndTime, points } = props;
+
     const contextConsumer = useContext(ContextProvider);
     const { betOnMatch } = contextConsumer;
 
@@ -20,7 +21,6 @@ function BettingDialog(props) {
     const [selectedPoints, setSelectedPoints] = useState("");
     const [error, setError] = useState("");
     const [disabledSave, setDisableSave] = useState(true);
-    const minBetPoints = points > 400 ? 200 : (points > 150 ? 100 : 1);
 
     const closeDialog = () => {
         handleClose && handleClose();
@@ -46,7 +46,7 @@ function BettingDialog(props) {
         }
 
         
-        if(isEmpty(selectedTeam) || isEmpty(event.target.value) || event.target.value > points || event.target.value <= 0 || event.target.value < minBetPoints) {
+        if(isEmpty(selectedTeam) || isEmpty(event.target.value) || event.target.value > points || event.target.value <= 0) {
             setDisableSave(true);
         } else {
             setDisableSave(false);
@@ -88,7 +88,6 @@ function BettingDialog(props) {
                 <br/>
                 <Typography variant={fontVariant} style={{fontSize: 10}}>
                     <b>Remaining Points: {points - selectedPoints}</b><br/>
-                    <b>Minimum Bet Points: {minBetPoints}</b>
                 </Typography>
             </DialogTitle>
             <hr/>

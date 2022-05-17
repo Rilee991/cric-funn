@@ -9,6 +9,7 @@ import MyBets from './components/modules/MyBets/MyBets';
 import PointsTable from './components/modules/PointsTable/PointsTable';
 import Admin from './components/modules/Admin/Admin';
 import Graph from './components/modules/Points/Graph';
+import GlobalStats from './components/modules/GlobalStats/GlobalStats';
 
 const App = () => {
   return (
@@ -29,6 +30,9 @@ const App = () => {
         </Route>
         <Route exact path="/points">
           <Graph exact />
+        </Route>
+        <Route exact path="/global-stats">
+          <GlobalStats exact />
         </Route>
       </Context>
     </Router>
