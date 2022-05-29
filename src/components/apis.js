@@ -71,7 +71,7 @@ export const getMatches = async () => {
 //     "fantasyEnabled": false,
 //     "hasSquad": true
 //   },
-export const getMatchDetailsForId = async (id) => {
+export const getMatchDetailsById = async (id) => {
     const url = `https://api.cricapi.com/v1/match_info?apikey=${API_KEY}&offset=0&id=${id}`;
     const resp = await fetch(url);
     const data = await resp.json();

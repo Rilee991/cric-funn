@@ -35,6 +35,9 @@ const storage = firebase.storage();
 const themeColor = "#4B0082";
 const loaderHeight = 100;
 const loaderWidth = 250;
+const DEFAULT_START_POINTS = 2000;
+const DEFAULT_PROFILE_IMAGE = "https://firebasestorage.googleapis.com/v0/b/cric-funn.appspot.com/o/defaultImages%2Fdefault.png?alt=media&token=9ccd045b-3ece-4d06-babf-04c267c38d40";
+    
 
 function getTeamLogo(teamAbbreviation) {
     if(teamAbbreviation == "SRH") return srhLogo;
@@ -49,7 +52,7 @@ function getTeamLogo(teamAbbreviation) {
     else return rrLogo;
 }
 
-const teamNames = ["Chennai Super Kings", "Delhi Capitals", "Kolkata Knight Riders", "Sunrisers Hyderabad",
+const TEAM_NAMES = ["Chennai Super Kings", "Delhi Capitals", "Kolkata Knight Riders", "Sunrisers Hyderabad",
     "Mumbai Indians", "Rajasthan Royals", "Gujarat Titans", "Lucknow Super Giants", "Punjab Kings", 
     "Royal Challengers Bangalore", "No Betting Done."
 ]
@@ -105,7 +108,9 @@ export {
     loaderWidth,
     matchHeadingFontSize,
     fontVariant,
-    teamNames,
+    TEAM_NAMES,
+    DEFAULT_START_POINTS,
+    DEFAULT_PROFILE_IMAGE,
 
     getTeamLogo,
     getFormattedTimeISOString,
