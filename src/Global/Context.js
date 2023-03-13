@@ -1,73 +1,79 @@
-import { each, find, flattenDeep, get, isEmpty, orderBy, round, sortBy } from 'lodash';
+import { each, find, flattenDeep, isEmpty, orderBy, round, sortBy } from 'lodash';
 import React, { createContext, useState, useEffect } from 'react';
-import moment from 'moment';
+import emailChecker from 'mailchecker';
 
-import { auth, db, storage, iplMatches, DEFAULT_PROFILE_IMAGE, DEFAULT_START_POINTS, TEAM_NAMES } from '../config';
+import { auth, db, storage, iplMatches, teamNames, getFormattedFirebaseTime, logger } from '../config';
 import { getMatchDetailsById, getMatches } from '../components/apis';
-import { createUserInDb, getFormattedTimeFromSeconds, getIsMobileView, getUserFromKey, setResponsiveness, updateUserDetailsByUsername } from './Utils';
+import moment from 'moment';
 const admin = require('firebase');
 
 export const ContextProvider = createContext();
 
 const Context = (props) => {
-    const [loading, setLoading] = useState(true);
+    const DEFAULT_PROFILE_IMAGE = "https://firebasestorage.googleapis.com/v0/b/cric-funn.appspot.com/o/defaultImages%2Fdefault.png?alt=media&token=9ccd045b-3ece-4d06-babf-04c267c38d40";
     const [loggedInUserDetails, setLoggedInUserDetails] = useState({});
-    const [pointsTableData, setPointsTableData] = useState([]);
-    const [errorMessage, setErrorMessage] = useState("");
+    const [errorMessage, setErrorMessage] = useState('');
+    const [loading, setLoading] = useState(true);
     const [mobileView, setMobileView] = useState(false);
     const [notifications, setNotifications] = useState([]);
 
-    const signUp = async (userDetails) => {
+    const signUp = async (user) => {
         setLoading(true);
+        const { username, email, password } = user;
         try {
-            const { username, email, password } = userDetails;
-            await auth.createUserWithEmailAndPassword(email, password);
-            auth.currentUser.updateProfile({ displayName: username });
+            const isValidEmail = await emailChecker.isValid(email);
 
-            const loggedInUserDetails = {
-                bets: [],
+            if(!isValidEmail) throw new Error(`Email is invalid. Please don't try to be oversmart.`);
+
+            const resp = await auth.createUserWithEmailAndPassword(email, password);
+            resp.user.updateProfile({displayName: username});
+            const points = 2000, image = DEFAULT_PROFILE_IMAGE, bets = [];
+            db.collection("users").doc(username).set({
+                username,
                 email,
-                isAdmin: false,
-                isDummyUser: true,
-                isEliminated: false,
                 password,
-                points: DEFAULT_START_POINTS,
-                profilePic: DEFAULT_PROFILE_IMAGE,
-                username
-            };
-            
-            createUserInDb(loggedInUserDetails);
+                image,
+                points,
+                bets,
+                isDummyUser: true
+            });
+
+            setErrorMessage('');
+            setNotifications([]);
+            setLoading(false);
         } catch (error) {
+            logger.logEvent("Signup", { ...user });
             console.log(error);
-            setErrorMessage(`Sign Up failed with error code: ${error.code} and error: ${error.message}`);
+            setErrorMessage(error.message);
+            setNotifications([]);
+            setLoading(false);
         }
-        setLoading(false);
     }
 
-    const signIn = async (userDetails) => {
+    const signIn = async (user) => {
         setLoading(true);
-        const { email, password } = userDetails;
+        const { email, password } = user;
         try {
             await auth.signInWithEmailAndPassword(email, password);
-            const userSnapshot = await getUserFromKey("email", email);
-            const docs = !isEmpty(userSnapshot.docs) ? userSnapshot.docs[0].data() : {};
-            const { bets, email, isAdmin, isDummyUser, isEliminated, points, profilePic, username } = docs;
-            
-            setLoggedInUserDetails({
-                bets,
-                email,
-                isAdmin,
-                isDummyUser,
-                isEliminated,
-                points,
-                profilePic,
-                username
+            db.collection("users").where("email", "==", email).get().then(userSnap => {
+                const { username, email, image, points, bets = [], isAdmin = false } = userSnap.docs[0].data();
+                setLoggedInUserDetails({
+                    username,
+                    email,
+                    image,
+                    points,
+                    bets,
+                    isAdmin
+                });
+                setLoading(false);
             });
+
+            setErrorMessage('');
         } catch (error) {
             console.log(error);
             setErrorMessage(error.message);
+            setLoading(false);
         }
-        setLoading(false);
     }
 
     const sendResetPasswordEmail = async (user) => {
@@ -75,6 +81,7 @@ const Context = (props) => {
         const { email } = user;
         try {
             await auth.sendPasswordResetEmail(email);
+            setErrorMessage('');
         } catch (error) {
             console.log(error);
             setErrorMessage(error.message);
@@ -85,50 +92,57 @@ const Context = (props) => {
     const logout = async () => {
         setLoading(true);
         try {
-            await auth.signOut();
-            setLoggedInUserDetails({});
+            await auth.signOut()
+            .then(() => {
+                setLoggedInUserDetails({});
+                setErrorMessage('');
+            })
+            .catch(error => {
+                console.log(error);
+                setErrorMessage(error.message);
+            });
+            setNotifications([]);
+            setLoading(false);
         } catch (error) {
             console.log(error);
             setErrorMessage(error.message);
+            setNotifications([]);
+            setLoading(false);
         }
-        setNotifications([]);
-        setLoading(false);
     }
 
     const markNotificationsAsRead = () => {
         setNotifications([]);
     }
 
-    const betOnMatch = async (betDetails) => {
+    const betOnMatch = (betDetails) => {
         const { username, bets, points } = loggedInUserDetails;
-        bets = [ ...bets, betDetails ];
-        points = points - parseInt(betDetails.selectedPoints);
-        
-        try {
-            await updateUserDetailsByUsername(username, { bets, points });
+        const newBets = [...bets, betDetails];
+        const newPoints = points - betDetails.selectedPoints;
+
+        db.collection("users").doc(username).update({
+            bets: newBets,
+            points: newPoints
+        }).then(() => {
+            console.log("Document updated Successfully.");
             setLoggedInUserDetails({
                 ...loggedInUserDetails,
-                bets,
-                points
+                bets: newBets,
+                points: newPoints
             });
-        } catch (err) {
-            console.log(err);
-            setErrorMessage(err.message);
-        }
+        }).catch(err => {
+            console.log("Error while updating user details:",err);
+        });
     }
 
-    const viewBetsData = async (matchId) => {
+    const viewBetsData = async(id) => {
         let result = [];
-        const userSnapshot = await getUserFromKey("username", "all");
-        const userDetails = !isEmpty(userSnapshot.docs) ? userSnapshot.docs : [];
-        
-        userDetails.map(eachUser => {
-            const userData = eachUser.data();
+        const userDocs = await db.collection("users").get();
+        userDocs.docs.map(user => {
+            const userData = user.data();
             const { bets = [], username, isDummyUser = false } = userData;
-            
             if(!isDummyUser) {
-                const betData = find(bets, { matchId }) || {};
-                
+                const betData = find(bets, {"matchId": id}) || {};
                 if(!isEmpty(betData)) {
                     result.push({
                         username,
@@ -146,48 +160,43 @@ const Context = (props) => {
     }
 
     const getPointsTableData = async() => {
-        let pointsTableData = [];
-        const userSnapshot = await getUserFromKey("username", "all");
-        const docs = !isEmpty(userSnapshot.docs) ? userSnapshot.docs : [];
-
-        docs.map(eachUser => {
-            const userData = eachUser.data();
-            const { bets = [], username, points, isDummyUser = false, isEliminated = false } = userData;
-
-            if(!isDummyUser) {
-                let won = 0, lost = 0, inprogress = 0, totalBets = 0, penalized = 0;
-                
-                bets.map(eachBet => {
-                    if(eachBet.isBetDone) {
-                        if(eachBet.isSettled) {
-                            if(eachBet.betWon)  won++;
-                            else    lost++;
-                        } else {
-                            inprogress++;
-                        }
-                        totalBets++;
+        let result = [];
+        const userDocs = await db.collection("users").get();
+        userDocs.docs.map(user => {
+            const userData = user.data();
+            const { bets = [], username, points, isDummyUser = false } = userData;
+            if(isDummyUser)    
+                return;
+            let won = 0, lost = 0, inprogress = 0, totalBets = 0, penalized = 0;
+            bets.map(bet => {
+                if(bet.isBetDone) {
+                    if(bet.isSettled) {
+                        if(bet.betWon)  won++;
+                        else    lost++;
                     } else {
-                        penalized++;
+                        inprogress++;
                     }
-                });
+                    totalBets++;
+                } else {
+                    penalized++;
+                }
+            });
 
-                pointsTableData.push({
-                    username,
-                    totalBets,
-                    won,
-                    lost,
-                    inprogress,
-                    penalized,
-                    points,
-                    isEliminated
-                });
-            }
+            result.push({
+                username,
+                totalBets,
+                won,
+                lost,
+                inprogress,
+                penalized,
+                points,
+                isOut: (inprogress === 0 && points === 0) ? true : false
+            });
         });
 
-        pointsTableData = orderBy(pointsTableData, ["points", "won", "lost", "username"], ["desc", "desc", "asc", "asc"]);
-        setPointsTableData(pointsTableData);
+        result = orderBy(result, ["points", "totalBets", "won", "username"], ["desc", "desc", "desc", "asc"]);
 
-        return pointsTableData;
+        return result;
     }
 
     const getAllUsersData = async () => {
@@ -311,240 +320,295 @@ const Context = (props) => {
         }
     }
 
-    const getTeamStatsData = async (username) => {
-        // let result = [], pointsPenalized = 0, betsPenalized = 0;
-        // const userSnapshot = await getUserFromKey("username", username);
-        // const docs = !isEmpty(userSnapshot.docs) ? userSnapshot.docs : [];
+    const getTeamStatsData = async () => {
+        if(loggedInUserDetails && loggedInUserDetails.username) {
+            let result = [];
+            const userDocs = await db.collection("users").where("username", "==", loggedInUserDetails.username).get();
 
-        // docs.map(user => {
-        //     const userData = user.data();
-        //     const { bets = [] } = userData;
-            
-        //     TEAM_NAMES.map(team => {
-        //         const qualifedBets = bets.filter(bet => bet.selectedTeam === team);
-        //         let betsDone = 0, betsWon = 0, betsLost = 0, betsInProgress = 0, totalPts = 0, wonPts = 0, lostPts = 0, inprogressPts = 0;
-        //         qualifedBets.map(bet => {
-        //             if(bet.isBetDone) {
-        //                 if(bet.isSettled) {
-        //                     if(bet.betWon) {
-        //                         betsWon++;
-        //                         wonPts += parseInt(bet.selectedPoints);
-        //                     } else {
-        //                         betsLost++;
-        //                         lostPts += parseInt(bet.selectedPoints);
-        //                     }
-        //                 } else {
-        //                     betsInProgress++;
-        //                     inprogressPts += parseInt(bet.selectedPoints);
-        //                 }
-        //                 betsDone++;
-        //                 totalPts += parseInt(bet.selectedPoints);
-        //             } else {
-        //                 betsPenalized++;
-        //                 penalizedPts += parseInt(bet.selectedPoints);
-        //             }
-        //         });
+            let penalizedPts = 0, betsPenalized = 0;
+            userDocs.docs.map(user => {
+                const userData = user.data();
+                const { bets = [] } = userData;
+                
+                teamNames.map(team => {
+                    const qualifedBets = bets.filter(bet => bet.selectedTeam === team);
+                    let betsDone = 0, betsWon = 0, betsLost = 0, betsInProgress = 0, totalPts = 0, wonPts = 0, lostPts = 0, inprogressPts = 0;
+                    qualifedBets.map(bet => {
+                        if(bet.isBetDone) {
+                            if(bet.isSettled) {
+                                if(bet.betWon) {
+                                    betsWon++;
+                                    wonPts += parseInt(bet.selectedPoints);
+                                } else {
+                                    betsLost++;
+                                    lostPts += parseInt(bet.selectedPoints);
+                                }
+                            } else {
+                                betsInProgress++;
+                                inprogressPts += parseInt(bet.selectedPoints);
+                            }
+                            betsDone++;
+                            totalPts += parseInt(bet.selectedPoints);
+                        } else {
+                            betsPenalized++;
+                            penalizedPts += parseInt(bet.selectedPoints);
+                        }
+                    });
 
-        //         if(team !== "No Betting Done.") {
-        //             result.push({
-        //                 teamName: team,
-        //                 betsDone,
-        //                 betsWon,
-        //                 betsLost,
-        //                 betsInProgress,
-        //                 totalPts,
-        //                 wonPts,
-        //                 lostPts,
-        //                 inprogressPts,
-        //             });
-        //         }
-        //     });
-        // });
+                    if(team !== "No Betting Done.") {
+                        result.push({
+                            teamName: team,
+                            betsDone,
+                            betsWon,
+                            betsLost,
+                            betsInProgress,
+                            totalPts,
+                            wonPts,
+                            lostPts,
+                            inprogressPts,
+                        });
+                    }
+                });
+            });
 
-        // result = orderBy(result, ["teamName"], ["asc"]);
+            result = orderBy(result, ["teamName"], ["asc"]);
 
-        // result.push({
-        //     teamName: "Penalized",
-        //     betsDone: betsPenalized,
-        //     betsWon: 0,
-        //     betsLost: betsPenalized,
-        //     betsInProgress: 0,
-        //     totalPts: penalizedPts,
-        //     wonPts: 0,
-        //     lostPts: penalizedPts,
-        //     inprogressPts: 0,
-        // });
+            result.push({
+                teamName: "Penalized",
+                betsDone: betsPenalized,
+                betsWon: 0,
+                betsLost: betsPenalized,
+                betsInProgress: 0,
+                totalPts: penalizedPts,
+                wonPts: 0,
+                lostPts: penalizedPts,
+                inprogressPts: 0,
+            });
 
-        // return result;
+            return result;
+        }
+
+        return [];
     }
 
     const clearUsernameBetsData = async(username) => {
-        const updatedDetails = { bets: [], points: 2000, isEliminated: false };
-        await updateUserDetailsByUsername(username, updatedDetails);
+        await db.collection("users").doc(username).update({
+            bets: [],
+            points: 2000
+        });
 
         setLoggedInUserDetails({
             ...loggedInUserDetails,
-            ...updatedDetails
+            bets: [],
+            points: 2000
         });
     }
 
     const syncUsernameBetsData = async (username) => {
         try {
-            let userSnapshot = await getUserFromKey("username", username);
-            const userDetails = !isEmpty(userSnapshot.docs) ? userSnapshot.docs[0].data() : {};
+            let userDetails = await db.collection("users").where("username", "==", username).get();
+            userDetails = await userDetails.docs[0].data();
             const { bets = [], points = 0 } = userDetails;
+            let finalPoints = points;
+            let inprogressBets = 0;
 
-            const { latestIsEliminated = false, latestBets = [], latestPoints = 0 } = await syncBetsData(bets, points, username) || {};
+            for(let i=0; i<bets.length; i++) {
+                const bet = bets[i];
+                if(!bet.isSettled) {
+                    const matchDetails = await getMatchDetailsById(bet.matchId) || {};
+                    if(!isEmpty(matchDetails.matchWinner)) {
+                        if(matchDetails.matchWinner == "No Winner") {
+                            bet.isSettled = true;
+                            bet.betWon = true;
+                            finalPoints += parseInt(bet.selectedPoints);
+                            bet.isNoResult = true;
+                        } else {
+                            if(matchDetails.matchWinner == bet.selectedTeam) {
+                                finalPoints += 2*bet.selectedPoints;
+                                bet.betWon = true;
+                            } else {
+                                bet.betWon = false;
+                            }
+                            bet.isSettled = true;
+                            bet.isNoResult = false;
+                        }
+                    } else {
+                        inprogressBets++;
+                    }
+                }
+            }
 
-            await updateUserDetailsByUsername(username, { bets: latestBets, points: latestPoints, isEliminated: latestIsEliminated });
+            for(let j=0; j<iplMatches.length; j++) {
+                const match = iplMatches[j];
+                const { dateTimeGMT: matchTime, id: matchId, team1, team2, team1Abbreviation, team2Abbreviation } = match;
+                const betEndTime = moment(matchTime).subtract(30,"minutes");
+                if(moment() > betEndTime && finalPoints > 0) {
+                    const betData = find(bets, {"matchId": matchId}) || {};
+                    const isOut = (inprogressBets === 0 && finalPoints === 0) ? true : false;
+
+                    if(isEmpty(betData)) {
+                        bets.push({
+                            betTime: admin.default.firestore.Timestamp.fromDate(new Date()),
+                            betWon: false,
+                            isSettled: true,
+                            isBetDone: false,
+                            selectedPoints: isOut ? 0 : 50,
+                            selectedTeam: "No Betting Done.",
+                            team1: team1,
+                            team2: team2,
+                            team1Abbreviation: team1Abbreviation,
+                            team2Abbreviation: team2Abbreviation,
+                            matchId: matchId,
+                            isNoResult: false
+                        });
+
+                        finalPoints = Math.max(finalPoints-50, 0);
+                    }
+                } else {
+                    break;
+                }
+            }
+
+            await db.collection("users").doc(username).update({
+                bets,
+                points: finalPoints
+            });
         } catch (err) {
             console.log(err);
         }
     }
 
-    const syncUnsettledBets = async (bets, betSettledCount, finalPoints, inprogressBets, notifications) => {
-        for(let i=0; i<bets.length; i++) {
-            const bet = bets[i];
-            if(!bet.isSettled) {
-                const matchDetails = await getMatchDetailsById(bet.matchId) || {};
-                
-                if(!isEmpty(matchDetails.matchWinner)) {
-                    bet.isSettled = true;
-                    betSettledCount++;
-                    if(matchDetails.matchWinner == "No Winner") {
-                        bet.betWon = true;
-                        bet.isNoResult = true;
-                        finalPoints += parseInt(bet.selectedPoints);
-                        notifications.push({
-                            title: "Phew! No Result!",
-                            body: `Your bet on ${getFormattedTimeFromSeconds(bet.betTime.seconds)} for the match ${bet.team1} vs ${bet.team2} has been ended in NO Result!. You got back ${bet.selectedPoints} POINTS.`,
-                            betWon: true,
-                            isNoResult: true
-                        });
-                    } else {
-                        bet.isNoResult = false;
-                        if(matchDetails.matchWinner == bet.selectedTeam) {
-                            bet.betWon = true;
-                            finalPoints += 2*bet.selectedPoints;
-                        } else {
-                            bet.betWon = false;
-                        }
-                        notifications.push({
-                            title: `You ${bet.betWon ? "Won" : "Lost"}!`,
-                            body: `Your bet on ${getFormattedTimeFromSeconds(bet.betTime.seconds)} for the match ${bet.team1} vs ${bet.team2} has been ${bet.betWon ? "Won" : "Lost"}!. You ${bet.betWon ? "Won" : "Lost"} ${bet.selectedPoints} POINTS.`,
-                            betWon: bet.betWon,
-                            isNoResult: false
-                        });
-                    }
-                } else {
-                    inprogressBets++;
-                }
-            }
-        }
-    }
-
-    const syncMissedBets = (bets, betSettledCount, finalPoints, inprogressBets) => {
-        let isEliminated = false;
-        
-        for(let j=0; j<iplMatches.length; j++) {
-            const match = iplMatches[j];
-            const { dateTimeGMT: matchTime, id: matchId, team1, team2, team1Abbreviation, team2Abbreviation } = match;
-            const betEndTime = moment(matchTime).subtract(30,"minutes");
-            
-            if(moment() > betEndTime) {
-                const betData = find(bets, {"matchId": matchId}) || {};
-                isEliminated = (inprogressBets === 0 && finalPoints === 0) ? true : false;
-
-                if(isEmpty(betData)) {
-                    bets.push({
-                        betTime: admin.default.firestore.Timestamp.fromDate(new Date()),
-                        betWon: false,
-                        isSettled: true,
-                        isBetDone: false,
-                        selectedPoints: isEliminated ? 0 : 50,
-                        selectedTeam: "No Betting Done.",
-                        team1: team1,
-                        team2: team2,
-                        team1Abbreviation: team1Abbreviation,
-                        team2Abbreviation: team2Abbreviation,
-                        matchId: matchId,
-                        isNoResult: false
-                    });
-
-                    finalPoints = Math.max(finalPoints-50,0);
-                    betSettledCount++;
-                    
-                    if(!isEliminated) {
-                        notifications.push({
-                            title: `You Lost!`,
-                            body: `You did not bet for the match ${team1Abbreviation} vs ${team2Abbreviation}. You lost 50 POINTS.`,
-                            betWon: false,
-                            isNoResult: false
-                        });
-                    }
-                }
-            } else {
-                break;
-            }
-        }
-
-        return isEliminated;
-    }
-
-    const syncBetsData = async (bets, points, username) => {
+    const updateUserInfo = async (username, points, bets) => {
         try {
             let finalPoints = points, betSettledCount = 0;
             let notifications = [];
             let inprogressBets = 0;
-            
-            await syncUnsettledBets(bets, betSettledCount, finalPoints, inprogressBets, notifications);
-            const isEliminated = syncMissedBets(bets, betSettledCount, finalPoints, inprogressBets);
+            for(let i=0; i<bets.length; i++) {
+                const bet = bets[i];
+                if(!bet.isSettled) {
+                    const matchDetails = await getMatchDetailsById(bet.matchId) || {};
+                    if(!isEmpty(matchDetails.matchWinner)) {
+                        if(matchDetails.matchWinner == "No Winner") {
+                            bet.isSettled = true;
+                            bet.betWon = true;
+                            finalPoints += parseInt(bet.selectedPoints);
+                            betSettledCount++;
+                            bet.isNoResult = true;
+                            notifications.push({
+                                title: "Phew! No Result!",
+                                body: `Your bet on ${moment.unix(bet.betTime.seconds).format("LLL")} for the match ${bet.team1} vs ${bet.team2} has been ended in NO Result!. You got ${bet.selectedPoints} POINTS.`,
+                                betWon: true,
+                                isNoResult: true
+                            });
+                        } else {
+                            if(matchDetails.matchWinner == bet.selectedTeam) {
+                                finalPoints += 2*bet.selectedPoints;
+                                bet.betWon = true;
+                            } else {
+                                bet.betWon = false;
+                            }
+                            bet.isSettled = true;
+                            bet.isNoResult = false;
+                            betSettledCount++;
+                            notifications.push({
+                                title: `You ${bet.betWon ? "Won" : "Lost"}!`,
+                                body: `Your bet on ${moment.unix(bet.betTime.seconds).format("LLL")} for the match ${bet.team1} vs ${bet.team2} has been ${bet.betWon ? "Won" : "Lost"}!. You ${bet.betWon ? "Won" : "Lost"} ${bet.selectedPoints} POINTS.`,
+                                betWon: bet.betWon,
+                                isNoResult: false
+                            });
+                        }
+                    } else {
+                        inprogressBets++;
+                    }
+                }
+            };
+
+            for(let j=0; j<iplMatches.length; j++) {
+                const match = iplMatches[j];
+                const { dateTimeGMT: matchTime, id: matchId, team1, team2, team1Abbreviation, team2Abbreviation } = match;
+                const betEndTime = moment(matchTime).subtract(30,"minutes");
+                if(moment() > betEndTime) {
+                    const betData = find(bets, {"matchId": matchId}) || {};
+                    const isOut = (inprogressBets === 0 && finalPoints === 0) ? true : false;
+
+                    if(isEmpty(betData)) {
+                        bets.push({
+                            betTime: admin.default.firestore.Timestamp.fromDate(new Date()),
+                            betWon: false,
+                            isSettled: true,
+                            isBetDone: false,
+                            selectedPoints: isOut ? 0 : 50,
+                            selectedTeam: "No Betting Done.",
+                            team1: team1,
+                            team2: team2,
+                            team1Abbreviation: team1Abbreviation,
+                            team2Abbreviation: team2Abbreviation,
+                            matchId: matchId,
+                            isNoResult: false
+                        });
+
+                        finalPoints = Math.max(finalPoints-50,0);
+                        betSettledCount++;
+                        if(!isOut) {
+                            notifications.push({
+                                title: `You Lost!`,
+                                body: `You did not bet for the match ${team1Abbreviation} vs ${team2Abbreviation}. You lost 50 POINTS.`,
+                                betWon: false,
+                                isNoResult: false
+                            });
+                        }
+                    }
+                } else {
+                    break;
+                }
+            }
 
             if(betSettledCount) {
                 setNotifications(notifications);
-                await updateUserDetailsByUsername(username, { bets, points: finalPoints, isEliminated });
+                await db.collection("users").doc(username).update({
+                    bets,
+                    points: finalPoints
+                });
             }
-            
-            return { latestIsEliminated: isEliminated, latestBets: bets, latestPoints: finalPoints };
+            return { latestPoints: finalPoints, latestBets: bets };
         } catch(err) {
             console.log(err);
         }
     }
 
-    const checkMobileView = () => {      
-        const mobileView = getIsMobileView();
-        setMobileView(mobileView);
-    }
-
-    const handleAuthStateChange = async (user) => {
-        setLoggedInUserDetails({});
-        
-        if(user) {
-            const userSnapshot = await getUserFromKey("email", user.email); 
-            const userDetails = !isEmpty(userSnapshot.docs) ? userSnapshot.docs[0].data() : {};
-            const { bets, email, isAdmin = false, isDummyUser = false, isEliminated = false, points, profilePic, username } = userDetails;
-            
-            const { latestIsEliminated = false, latestBets = [], latestPoints = 0 } = await syncBetsData(bets, points, username) || {};
-            
-            setLoggedInUserDetails({
-                bets: latestBets,
-                email,
-                isAdmin,
-                isDummyUser,
-                isEliminated: latestIsEliminated,
-                points: latestPoints,
-                profilePic,
-                username
-            });
+    const checkMobileView = () => {
+        const setResponsiveness = () => {
+            return window.innerWidth < 900 ? setMobileView(true) : setMobileView(false);
         }
+      
+        setResponsiveness();
+      
+        window.addEventListener("resize", () => setResponsiveness());
     }
 
     useEffect(async () => {
-        setLoading(true);
-        window.addEventListener("resize", () => checkMobileView());
         checkMobileView();
-        auth.onAuthStateChanged(handleAuthStateChange);
-        setLoading(false);
+        setLoading(true);
+        await auth.onAuthStateChanged(async user => {
+            if(user) {
+                await db.collection("users").where("email", "==", user.email).get().then(async userSnap => {
+                    const { username, email, image, points, bets, isAdmin = false } = userSnap.docs[0].data();
+                    const { latestPoints = points, latestBets = [] } =  await updateUserInfo(username,points,bets) || {};
+                    setLoggedInUserDetails({
+                        username,
+                        email,
+                        image,
+                        points: latestPoints,
+                        bets: latestBets,
+                        isAdmin
+                    });
+                });
+                setLoading(false);
+            } else {
+                setLoggedInUserDetails({});
+                setLoading(false);
+            }
+        });
     },[]);
 
     return (

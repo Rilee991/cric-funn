@@ -18,9 +18,9 @@ function MatchPic(props) {
     };
     
     return (
-        <Grid container justify="space-evenly" spacing={4} alignContent="center" style={backgroundImage} direction="row">
+        <Grid container justify="space-evenly" spacing={4} alignContent="center" style={{ ...backgroundImage, backgroundBlendMode: "normal", backgroundColor: "" }} direction="row">
             <Grid item>
-                <img src={team1Logo} style={{width: mobileView ? "6.5em" : 150, height: "auto"}}/>
+                <img src={team1Logo} style={{width: mobileView ? "6.5em" : 150, height: "auto", mixBlendMode: isNightMatch ? "lighten" : "hard-light"}}/>
             </Grid>
             
             <Grid item>
@@ -28,7 +28,7 @@ function MatchPic(props) {
             </Grid>
             
             <Grid item>
-                <img src={team2Logo} style={{width: mobileView ? "6.5em" : 150, height: "auto"}}/>  
+                <img src={team2Logo} style={{width: mobileView ? "6.5em" : 150, height: "auto", mixBlendMode: isNightMatch ? "lighten" : "hard-light"}}/>  
             </Grid>  
         </Grid>
     );

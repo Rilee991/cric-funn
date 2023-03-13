@@ -3,9 +3,49 @@ import moment from "moment";
 import { db } from '../config';
 
 const API_KEY = "e5dc35f0-1ff0-422f-b494-9999047708de";
+const SERIES_ID = "c75f8952-74d4-416f-b7b4-7da4b4e3ae6e";
+
+export const userDump = async () => {
+    const resp = await db.collection("users").get();
+    const usersData = await resp.docs;
+    console.log('Dump starting');
+
+    usersData.forEach(async user => {
+        const data = user.data();
+
+        await db.collection("users_2022_ipl_dump").doc(data.username).set({
+            bets: data.bets || [],
+            email: data.email || "",
+            image: data.image || "",
+            isAdmin: data.isAdmin || false,
+            isDummyUser: data.isDummyUser || false,
+            password: data.password || "",
+            points: data.points || -1,
+            username: data.username || ""
+        });
+    });
+    console.log('Dump completed');
+}
+
+export const clearBetsData = async () => {
+    const resp = await db.collection("users").get();
+    const usersData = await resp.docs;
+    console.log('Clearing starting');
+
+    usersData.forEach(async user => {
+        const data = user.data();
+        const isDummyUser = !(["Broly", "Cypher33", "SD", "ashu", "desmond", "kelly"].includes(data.username));
+        await db.collection("users").doc(data.username).update({
+            bets: [],
+            points: 2000,
+            isDummyUser: isDummyUser
+        });
+    });
+    console.log('Clearing completed');
+}
 
 export const getMatches = async () => {
-    const url = `https://api.cricapi.com/v1/series_info?apikey=${API_KEY}&offset=0&id=47b54677-34de-4378-9019-154e82b9cc1a`;
+    const url = `https://api.cricapi.com/v1/series_info?apikey=${API_KEY}&offset=0&id=${SERIES_ID}`;
     try {
         let response = await fetch(url);
         response = await response.json();
@@ -13,19 +53,6 @@ export const getMatches = async () => {
         const sortedMatches = sortBy(matches, ['dateTimeGMT']);
         const filteredMatches = sortedMatches.filter(match => {
             match.dateTimeGMT = match.dateTimeGMT + 'Z';
-
-            if (match.name.split(" ").length <= 5) {
-                match.name = match.name.replace('Chennai', 'Chennai Super Kings');
-                match.name = match.name.replace('Kolkata', 'Kolkata Kinght Riders');
-                match.name = match.name.replace('Delhi', 'Delhi Capitals');
-                match.name = match.name.replace('Mumbai', 'Mumbai Indians');
-                match.name = match.name.replace('Punjab', 'Punjab Kings');
-                match.name = match.name.replace('Rajasthan', 'Rajasthan Royals');
-                match.name = match.name.replace('Bangalore', 'Royal Challengers Bangalore');
-                match.name = match.name.replace('Hyderabad', 'Sunrisers Hyderabad');
-                match.name = match.name.replace('Gujarat', 'Gujarat Titans');
-                match.name = match.name.replace('Lucknow', 'Lucknow Super Giants');
-            }
 
             if(moment(match.dateTimeGMT).add(2 ,'days').isSameOrAfter(moment()))   return true;
 

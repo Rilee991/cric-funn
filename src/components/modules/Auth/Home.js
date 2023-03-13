@@ -1,10 +1,35 @@
 import React, { useState, useEffect, useContext } from 'react';
 
-import { getMatches } from '../../apis';
+import { clearBetsData, getMatches, userDump } from '../../apis';
 import { ContextProvider } from '../../../Global/Context';
 
 import CricketCard from './CricketCard';
 import LoadingComponent from '../../common/LoadingComponent';
+
+// {
+//     "id":"048d4bdf-88de-4981-b330-03ceb18eb6a1",
+//     "name":"Punjab Kings vs Rajasthan Royals, 66th Match",
+//     "matchType":"t20",
+//     "status":"Match not started",
+//     "venue":"Himachal Pradesh Cricket Association Stadium, Dharamsala",
+//     "date":"2023-05-19",
+//     "dateTimeGMT":"2023-05-19T14:00:00",
+//     "teams":["Punjab Kings","Rajasthan Royals"],
+//     "teamInfo":[{
+//         "name":"Punjab Kings",
+//         "shortname":"PBKS",
+//         "img":"https://g.cricapi.com/img/teams/247-637852956959778791.png"
+//     },{
+//         "name":"Rajasthan Royals",
+//         "shortname":"RR",
+//         "img":"https://g.cricapi.com/img/teams/251-637852956607161886.png"
+//     }],
+//     "fantasyEnabled":false,
+//     "bbbEnabled":false,
+//     "hasSquad":true,
+//     "matchStarted":false,
+//     "matchEnded":false
+// }
 
 const Home = () => {
   const contextConsumer = useContext(ContextProvider);
@@ -44,6 +69,7 @@ const Home = () => {
     let matches = await getMatches();
     matches = filterIplMatches(matches);
     setMatches(matches);
+    // await clearBetsData();
   }, []);
 
   return (

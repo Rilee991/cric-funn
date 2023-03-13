@@ -20,7 +20,7 @@ const CricketCard = (props) => {
   
   const { bets = [], points } = loggedInUserDetails;
 
-  const { dateTimeGMT: matchTime, id: matchId, name: matchTitle, team1Abbreviation, team2Abbreviation, status, venue } = match;
+  const { dateTimeGMT: matchTime, id: matchId, name: matchTitle, team1Abbreviation, teamInfo, team2Abbreviation, status, venue } = match;
   
   const [bettingDoneByUser, setBettingDoneByUser] = useState(false);
   const [matchDetails, setMatchDetails] = useState({});

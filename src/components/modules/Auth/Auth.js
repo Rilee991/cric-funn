@@ -12,7 +12,7 @@ const Auth = () => {
     const { loggedInUserDetails = {}, loading } = contextConsumer;
 
     return (
-        <> { 
+        <> {
             loading ? ( <LoadingComponent /> )
             : (!isEmpty(loggedInUserDetails) ? <Home loggedInUserDetails={loggedInUserDetails}/> : 
                 <LoggedOutComponent />)
