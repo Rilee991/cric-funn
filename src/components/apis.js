@@ -1,6 +1,6 @@
-import { get, sortBy } from "lodash";
+import { get, isEmpty, sortBy } from "lodash";
 import moment from "moment";
-import { db } from '../config';
+import { db, iplMatches, firebase } from '../config';
 
 const API_KEY = "e5dc35f0-1ff0-422f-b494-9999047708de";
 const SERIES_ID = "c75f8952-74d4-416f-b7b4-7da4b4e3ae6e";
@@ -51,13 +51,31 @@ export const getMatches = async () => {
         response = await response.json();
         const matches = get(response,'data.matchList',[]);
         const sortedMatches = sortBy(matches, ['dateTimeGMT']);
-        const filteredMatches = sortedMatches.filter(match => {
+        let stopOddsChecker = false;
+        const filteredMatches = [];
+
+        for(const match of sortedMatches) {
             match.dateTimeGMT = match.dateTimeGMT + 'Z';
 
-            if(moment(match.dateTimeGMT).add(2 ,'days').isSameOrAfter(moment()))   return true;
+            const isIncludedMatch = (moment(match.dateTimeGMT).add(2 ,'days').isSameOrAfter(moment()));
 
-            return false;
-        }) || [];
+            if(!isIncludedMatch)  continue;
+            
+            if(!stopOddsChecker) {
+                const matchDb = await db.collection("ipl_matches").doc(match.id).get();
+                const data = matchDb.data();
+                const odds = get(data, 'odds', []);
+
+                console.log(`${match.name}, Odds: ${odds}`);
+                if(isEmpty(odds)) {
+                    stopOddsChecker = true;
+                } else {
+                    match.odds = odds;
+                }
+            }
+
+            filteredMatches.push(match);
+        };
 
         return filteredMatches;
     } catch (err) {
@@ -130,4 +148,20 @@ export const updateUsername = async(username, newUsername) => {
     } catch(err) {
         console.log(err);
     }
+}
+
+export const saveIplMatchesInDb = async () => {
+    for(const eachMatch of iplMatches) {
+        await db.collection("ipl_matches").doc(eachMatch.id).set({
+            ...eachMatch,
+            updatedAt: firebase.firestore.Timestamp.fromDate(new Date())
+        });
+    }
+}
+
+export const getIplMatches = async () => {
+    const resp = await db.collection("ipl_matches").where("dateTimeGMT","<=",new Date("04-04-2023").toISOString()).get();
+    const matches = resp.docs.map(match => match.data());
+
+    return matches;
 }

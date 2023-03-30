@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 
-import { clearBetsData, getMatches, userDump } from '../../apis';
+import { clearBetsData, getMatches, userDump, saveIplMatchesInDb } from '../../apis';
 import { ContextProvider } from '../../../Global/Context';
 
 import CricketCard from './CricketCard';
@@ -69,6 +69,8 @@ const Home = () => {
     let matches = await getMatches();
     matches = filterIplMatches(matches);
     setMatches(matches);
+    // console.log(JSON.stringify(matches));
+    // await saveIplMatchesInDb();
     // await clearBetsData();
   }, []);
 

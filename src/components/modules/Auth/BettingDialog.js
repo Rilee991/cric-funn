@@ -15,7 +15,7 @@ function BettingDialog(props) {
     const contextConsumer = useContext(ContextProvider);
     const { betOnMatch } = contextConsumer;
 
-    const { team1Abbreviation, team2Abbreviation, teams, id: matchId } = matchDetails;
+    const { team1Abbreviation, team2Abbreviation, teams, id: matchId, odds } = matchDetails;
     const team1 = teams[0], team2 = teams[1];
     const [selectedTeam, setSelectedTeam] = useState("");
     const [selectedPoints, setSelectedPoints] = useState("");
@@ -71,6 +71,10 @@ function BettingDialog(props) {
                 team1,
                 team1Abbreviation,
                 team2,
+                odds: {
+                    [odds[0].name]: odds[0].price,
+                    [odds[1].name]: odds[1].price,
+                },
                 team2Abbreviation
             }
 

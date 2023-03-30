@@ -20,7 +20,7 @@ const CricketCard = (props) => {
   
   const { bets = [], points } = loggedInUserDetails;
 
-  const { dateTimeGMT: matchTime, id: matchId, name: matchTitle, team1Abbreviation, teamInfo, team2Abbreviation, status, venue } = match;
+  const { dateTimeGMT: matchTime, id: matchId, name: matchTitle, team1Abbreviation, teamInfo, team2Abbreviation, status, venue, odds = [] } = match;
   
   const [bettingDoneByUser, setBettingDoneByUser] = useState(false);
   const [matchDetails, setMatchDetails] = useState({});
@@ -30,7 +30,7 @@ const CricketCard = (props) => {
   const [openViewBetsDialogBox, setOpenViewBetsDialogBox] = useState(false);
   
   const betStartTime = moment(matchTime).subtract(24,"hours");
-  const betEndTime = moment(matchTime).subtract(27,"minutes");
+  const betEndTime = moment(matchTime).subtract(30,"minutes");
   const team1Logo = getTeamLogo(team1Abbreviation);
   const team2Logo = getTeamLogo(team2Abbreviation);
   
@@ -138,15 +138,18 @@ const CricketCard = (props) => {
               <Typography variant={fontVariant} style={{fontSize: 13}} color="textSecondary" component="p">
                 <b>{status}</b>
               </Typography>
+              <Typography variant={fontVariant} style={{fontSize: 13}} color="textSecondary" component="p">
+                <b>{isEmpty(odds) ? `Odds updation in progress...` : `${odds[0].name}: ${odds[0].price}, ${odds[1].name}: ${odds[1].price}`  }</b>
+              </Typography>
             </CardContent>
           </CardActionArea>
 
           <CardActions>
-            <Button size="small" style={{ backgroundColor: themeColor, color: "white" }} variant="contained" onClick={() => handleOnClickMatchDetails(matchId)}>
+            {/* <Button size="small" style={{ backgroundColor: themeColor, color: "white" }} variant="contained" onClick={() => handleOnClickMatchDetails(matchId)}>
               <Typography variant="overline">
                 {"Match Details"}
               </Typography>
-            </Button>
+            </Button> */}
             <Button size="small" style={{ backgroundColor: bettingOn ? themeColor : 'grey', color: "white" }} variant="contained" disabled={bettingOn ? false : true} onClick={() => handleOnClickLetsBet()}>
               <Typography variant="overline">
                 {"Let's Bet"}

@@ -2,8 +2,8 @@ import { each, find, flattenDeep, isEmpty, orderBy, round, sortBy } from 'lodash
 import React, { createContext, useState, useEffect } from 'react';
 import emailChecker from 'mailchecker';
 
-import { auth, db, storage, iplMatches, teamNames, getFormattedFirebaseTime, logger } from '../config';
-import { getMatchDetailsById, getMatches } from '../components/apis';
+import { auth, db, storage, teamNames, getFormattedFirebaseTime, logger, iplMatches } from '../config';
+import { getMatchDetailsById, getMatches, getIplMatches } from '../components/apis';
 import moment from 'moment';
 const admin = require('firebase');
 
@@ -424,7 +424,7 @@ const Context = (props) => {
                             bet.isNoResult = true;
                         } else {
                             if(matchDetails.matchWinner == bet.selectedTeam) {
-                                finalPoints += 2*bet.selectedPoints;
+                                finalPoints += bet.selectedPoints*(1+bet.odds[bet.selectedTeam]);
                                 bet.betWon = true;
                             } else {
                                 bet.betWon = false;
@@ -495,14 +495,14 @@ const Context = (props) => {
                             betSettledCount++;
                             bet.isNoResult = true;
                             notifications.push({
-                                title: "Phew! No Result!",
+                                title: "Oh no! Nobody Won!",
                                 body: `Your bet on ${moment.unix(bet.betTime.seconds).format("LLL")} for the match ${bet.team1} vs ${bet.team2} has been ended in NO Result!. You got ${bet.selectedPoints} POINTS.`,
                                 betWon: true,
                                 isNoResult: true
                             });
                         } else {
                             if(matchDetails.matchWinner == bet.selectedTeam) {
-                                finalPoints += 2*bet.selectedPoints;
+                                finalPoints += bet.selectedPoints*(1 + bet.odds[bet.selectedTeam]);
                                 bet.betWon = true;
                             } else {
                                 bet.betWon = false;
