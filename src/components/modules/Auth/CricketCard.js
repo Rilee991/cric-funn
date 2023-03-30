@@ -138,7 +138,7 @@ const CricketCard = (props) => {
               <Typography variant={fontVariant} style={{fontSize: 13}} color="textSecondary" component="p">
                 <b>{status}</b>
               </Typography>
-              <Typography variant={fontVariant} style={{fontSize: 13}} color="textSecondary" component="p">
+              <Typography variant={fontVariant} style={{fontSize: 13}} color="primary" component="p">
                 <b>{isEmpty(odds) ? `Odds updation in progress...` : `${odds[0].name}: ${odds[0].price}, ${odds[1].name}: ${odds[1].price}`  }</b>
               </Typography>
             </CardContent>

@@ -54,16 +54,16 @@ export default function PointsTable() {
   }, []);
 
   function getColor(rank, isOut) {
-    if(isOut) return "#E77414";
-    if(rank == 2) return "#A5F209";
-    else if(rank == 1)  return "#FFCC66";
-    else return "#E2EEC8";
+    if(isOut) return "crimson";
+    if(rank == 2) return "springgreen";
+    else if(rank == 1)  return "lightskyblue";
+    else return "lightyellow";
   }
 
   function getUsernameRow(username, rank) {
     return (
        <Badge badgeContent={rank} color={rank == 1 ? "primary" : (rank == 2 ? "secondary" : "error")} component="p" anchorOrigin={{vertical: 'top',horizontal: 'left'}}>
-         <Typography><b>{username}</b></Typography>
+         <Typography><b>{username}{username == "Cypher33" ? "(c)" : ""}</b></Typography>
        </Badge>
       );
   }
