@@ -1,4 +1,4 @@
-import { each, find, flattenDeep, isEmpty, orderBy, round, sortBy } from 'lodash';
+import { ceil, each, find, flattenDeep, isEmpty, orderBy, round, sortBy } from 'lodash';
 import React, { createContext, useState, useEffect } from 'react';
 import emailChecker from 'mailchecker';
 
@@ -424,7 +424,7 @@ const Context = (props) => {
                             bet.isNoResult = true;
                         } else {
                             if(matchDetails.matchWinner == bet.selectedTeam) {
-                                finalPoints += bet.selectedPoints*(1+bet.odds[bet.selectedTeam]);
+                                finalPoints += ceil(bet.selectedPoints*(1+bet.odds[bet.selectedTeam]));
                                 bet.betWon = true;
                             } else {
                                 bet.betWon = false;
@@ -502,7 +502,7 @@ const Context = (props) => {
                             });
                         } else {
                             if(matchDetails.matchWinner == bet.selectedTeam) {
-                                finalPoints += bet.selectedPoints*(1 + bet.odds[bet.selectedTeam]);
+                                finalPoints += ceil(bet.selectedPoints*(1 + bet.odds[bet.selectedTeam]));
                                 bet.betWon = true;
                             } else {
                                 bet.betWon = false;
