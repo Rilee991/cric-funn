@@ -22,16 +22,16 @@ function BetCard(props) {
       isSettled ? (
         isNoResult ? 
           (
-            getMsgForNoResultBets(selectedPoints)
+            getMsgForNoResultBets(selectedPoints, selectedTeam)
           ) 
             : 
           (
-            betWon ? getMsgForWonBets(selectedPoints) : getMsgForLostBets(selectedPoints)
+            betWon ? getMsgForWonBets(selectedPoints, selectedTeam) : getMsgForLostBets(selectedPoints, selectedTeam)
           )
       ) 
         : 
       (
-        getMsgForInProgressBets(selectedPoints)
+        getMsgForInProgressBets(selectedPoints, selectedTeam)
       )
     );
     const [severity, setSeverity] = useState(isSettled ? (betWon ? `success` : `error`) : `warning`);
@@ -55,7 +55,7 @@ function BetCard(props) {
         <Card style={root}>
           <CardActionArea>
             <CardContent>
-              <MatchPic team1Logo={team1Logo} team2Logo={team2Logo} mobileView={mobileView}/>
+              <MatchPic src="bet" team1Logo={team1Logo} team2Logo={team2Logo} mobileView={mobileView}/>
               <Typography gutterBottom variant="overline" style={{fontSize: 20}} component="h2">
                 <b>{team1} VS. {team2}</b>
               </Typography>

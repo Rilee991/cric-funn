@@ -20,7 +20,7 @@ const CricketCard = (props) => {
   
   const { bets = [], points } = loggedInUserDetails;
 
-  const { dateTimeGMT: matchTime, id: matchId, name: matchTitle, team1Abbreviation, teamInfo, team2Abbreviation, status, venue, odds = [] } = match;
+  const { dateTimeGMT: matchTime, id: matchId, name: matchTitle, team1Abbreviation, teamInfo, team2Abbreviation, status, venue, odds = [], banner } = match;
   
   const [bettingDoneByUser, setBettingDoneByUser] = useState(false);
   const [matchDetails, setMatchDetails] = useState({});
@@ -125,7 +125,7 @@ const CricketCard = (props) => {
         <Card style={root}>
           <CardActionArea>
             <CardContent>
-              <MatchPic matchTime={matchTime} team1Logo={team1Logo} team2Logo={team2Logo} mobileView={mobileView}/>
+              <MatchPic banner={banner} matchTime={matchTime} team1Logo={team1Logo} team2Logo={team2Logo} mobileView={mobileView}/>
               <Typography gutterBottom variant={fontVariant} style={{fontSize: matchHeadingFontSize}} component="h2">
                 <b>{get(matchTitle.split(","),'[0]','No Title')}</b>
               </Typography>

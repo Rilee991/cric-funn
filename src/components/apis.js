@@ -1,6 +1,6 @@
 import { get, isEmpty, sortBy } from "lodash";
 import moment from "moment";
-import { db, iplMatches, firebase } from '../config';
+import { db, iplMatches, firebase, matchImgs } from '../config';
 
 const API_KEY = "e5dc35f0-1ff0-422f-b494-9999047708de";
 const SERIES_ID = "c75f8952-74d4-416f-b7b4-7da4b4e3ae6e";
@@ -73,6 +73,8 @@ export const getMatches = async () => {
                     match.odds = odds;
                 }
             }
+
+            match.banner = matchImgs[match.id];
 
             filteredMatches.push(match);
         };
