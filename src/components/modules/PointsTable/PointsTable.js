@@ -55,8 +55,8 @@ export default function PointsTable() {
 
   function getColor(rank, isOut) {
     if(isOut) return "crimson";
-    if(rank == 2) return "springgreen";
-    else if(rank == 1)  return "lightskyblue";
+    if(rank == 2) return mobileView? "darkgray" : "lightgray";
+    else if(rank == 1)  return mobileView ? "darkkhaki" : "khaki";
     else return "lightyellow";
   }
 
@@ -80,9 +80,9 @@ export default function PointsTable() {
                     <TableRow>
                         <StyledTableCell ><Typography variant="overline">Username</Typography></StyledTableCell>
                         <StyledTableCell align="center"><Typography variant="overline">Bets</Typography></StyledTableCell>
-                        <StyledTableCell align="center"><Typography variant="overline">Won</Typography></StyledTableCell>
-                        <StyledTableCell align="center"><Typography variant="overline">Lost</Typography></StyledTableCell>
-                        <StyledTableCell align="center"><Typography variant="overline">In-Progress</Typography></StyledTableCell>
+                        <StyledTableCell align="center"><Typography variant="overline">W-L-I</Typography></StyledTableCell>
+                        {/* <StyledTableCell align="center"><Typography variant="overline">Lost</Typography></StyledTableCell>
+                        <StyledTableCell align="center"><Typography variant="overline">In-Progress</Typography></StyledTableCell> */}
                         <StyledTableCell align="center"><Typography variant="overline">Points</Typography></StyledTableCell>
                     </TableRow>
                 </TableHead>
@@ -91,9 +91,9 @@ export default function PointsTable() {
                         <StyledTableRow key={row.username} style={{backgroundColor: getColor(index+1, row.isOut)}}>
                             <StyledTableCell component="th" scope="row">{getUsernameRow(row.username,index+1)}</StyledTableCell>
                             <StyledTableCell align="center">{row.totalBets}</StyledTableCell>
-                            <StyledTableCell align="center">{row.won}</StyledTableCell>
-                            <StyledTableCell align="center">{row.lost}</StyledTableCell>
-                            <StyledTableCell align="center">{row.inprogress}</StyledTableCell>
+                            <StyledTableCell align="center">{`${row.won}-${row.lost}-${row.inprogress}`}</StyledTableCell>
+                            {/* <StyledTableCell align="center">{row.lost}</StyledTableCell>
+                            <StyledTableCell align="center">{row.inprogress}</StyledTableCell> */}
                             <StyledTableCell align="center">{row.points}</StyledTableCell>
                         </StyledTableRow>
                     )) : <div style={{justifyContent: "center", alignContent: "center"}}><Typography variant="overline" style={{fontSize: 15}}>Loading Data Please wait...</Typography></div>}
