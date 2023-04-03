@@ -50,7 +50,7 @@ const CricketCard = (props) => {
 
     useEffect(()=> {
       const bet = find(bets, { "matchId": matchId }) || {};
-      const { selectedPoints, isNoResult, isSettled, betWon, selectedTeam } = bet;
+      const { selectedPoints, isNoResult, isSettled, betWon, selectedTeam, odds: betOdds } = bet;
       const bettingDone = isEmpty(bet) ? false : true;
 
       setBettingDoneByUser(bettingDone);
@@ -76,7 +76,7 @@ const CricketCard = (props) => {
         if(bettingDone) {
           if(isSettled) {
             if(betWon) {
-              setMessage(getMsgForWonBets(selectedPoints, selectedTeam));
+              setMessage(getMsgForWonBets(Math.ceil(selectedPoints*betOdds[selectedTeam]), selectedTeam));
               setSeverity("success");
             } else {
               setMessage(getMsgForLostBets(selectedPoints, selectedTeam));

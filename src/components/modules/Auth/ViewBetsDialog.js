@@ -44,7 +44,7 @@ const ViewBetsDialog = (props) => {
                                 <TableCell component="th" scope="row">{eachBet.username}</TableCell>
                                 <TableCell align="center">{eachBet.betTeam}</TableCell>
                                 <TableCell align="center">{eachBet.betPoints}</TableCell>
-                                <TableCell align="center">{eachBet.betTime ? moment.unix(eachBet.betTime.seconds).format("LLL") : "NA"}</TableCell>
+                                <TableCell align="center">{eachBet.betTime ? moment.unix(eachBet.betTime.seconds).format("DD/MM hh:mm A") : "NA"}</TableCell>
                             </TableRow>
                         ))}
                     </TableBody>

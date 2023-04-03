@@ -42,7 +42,7 @@ function Graph() {
         
     const RADIAN = Math.PI / 180;
 
-    let points = 2000, betWon = true, totalMatches = 0;
+    let points = 3500, betWon = true, totalMatches = 0;
     let userJourney = [{
         totalMatches,
         betWon,
@@ -58,7 +58,7 @@ function Graph() {
                 betWon = true;
                 totalMatches += 1; 
             } else {
-                points += parseInt(bet.selectedPoints);
+                points += parseInt(Math.ceil(bet.selectedPoints*bet.odds[bet.selectedTeam]));
                 betWon = true;
                 totalMatches += 1;
             }
