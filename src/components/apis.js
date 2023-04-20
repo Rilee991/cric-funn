@@ -2,7 +2,7 @@ import { get, isEmpty, sortBy } from "lodash";
 import moment from "moment";
 import { db, iplMatches, firebase, matchImgs } from '../config';
 
-const API_KEY = "e62a5cb2-1135-40ee-9a7b-99d14472d7ee";
+const API_KEY = "e5dc35f0-1ff0-422f-b494-9999047708de";
 const SERIES_ID = "c75f8952-74d4-416f-b7b4-7da4b4e3ae6e";
 
 export const userDump = async () => {
