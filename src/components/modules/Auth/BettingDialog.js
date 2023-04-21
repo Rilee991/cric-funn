@@ -38,15 +38,16 @@ function BettingDialog(props) {
 
     const handlePointsChange = (event) => {
         setSelectedPoints(event.target.value);
-        if(event.target.value > points) {
+        if(event.target.value.includes(".")) {
+            setError("Decimal not allowed bhadwe. Change kar maderchod");
+        } else if(event.target.value > points) {
             setError("Entered points is greater than your current points. Please select a lower value.");
-            setDisableSave(true);
         } else {
             setError("");
         }
 
         
-        if(isEmpty(selectedTeam) || isEmpty(event.target.value) || event.target.value > points || event.target.value <= 0) {
+        if(isEmpty(selectedTeam) || isEmpty(event.target.value) || event.target.value > points || event.target.value <= 0 || event.target.value.includes(".")) {
             setDisableSave(true);
         } else {
             setDisableSave(false);
