@@ -33,6 +33,7 @@ const db = firebase.firestore();
 const auth = firebase.auth();
 const storage = firebase.storage();
 const logger = firebase.analytics(app);
+logger.setAnalyticsCollectionEnabled(true);
 
 const themeColor = "#4B0082";
 const loaderHeight = 100;

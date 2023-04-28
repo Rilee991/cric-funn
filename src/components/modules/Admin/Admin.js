@@ -31,7 +31,7 @@ const useStyles = makeStyles({
 
 export default function Admin() {
     const contextConsumer = useContext(ContextProvider);
-    const { getPointsTableData, clearUsernameBetsData, mobileView, syncUsernameBetsData } = contextConsumer;
+    const { getPointsTableData, clearUsernameBetsData, mobileView, syncUsernameBetsData, loggedInUserDetails } = contextConsumer;
     const classes = useStyles();
     const [tableData, setTableData] = useState([]);
     const [open, setOpen] = useState(false);
@@ -62,6 +62,14 @@ export default function Admin() {
 
     const handleClose = () => {
         setOpen(false);
+    }
+
+    if(loggedInUserDetails?.username != "Cypher33") {
+      return (
+        <div style={container}>
+          You don't have permissions to view this page bhosdike!
+        </div>
+      )
     }
 
   return (

@@ -7,14 +7,16 @@ const GlobalStats = () => {
     const contextConsumer = useContext(ContextProvider);
     const { getAllUsersData, mobileView, loading, loggedInUserDetails } = contextConsumer;
     const [globalStats, setGlobalStats] = useState({});
+    const [betPtsDistribution, setBetPtsDistribution] = useState({});
 
     useEffect(async () => {
         getGlobalStats();
     },[]);
 
     const getGlobalStats = async () => {
-        const globalStats = await getAllUsersData();
-        setGlobalStats(globalStats);
+        const allStats = await getAllUsersData();
+        setGlobalStats(allStats.globalStats);
+        setBetPtsDistribution(allStats.betPtsDistribution);
     }
 
     return (

@@ -38,7 +38,9 @@ export const clearBetsData = async () => {
         await db.collection("users").doc(data.username).update({
             bets: [],
             points: 2000,
-            isDummyUser: isDummyUser
+            isDummyUser: isDummyUser,
+            updatedBy: "clearBetsData",
+            updatedAt: firebase.firestore.Timestamp.fromDate(new Date())
         });
     });
     console.log('Clearing completed');
@@ -66,7 +68,6 @@ export const getMatches = async () => {
                 const data = matchDb.data();
                 const odds = get(data, 'odds', []);
 
-                console.log(`${match.name}, Odds: ${odds}`);
                 if(isEmpty(odds)) {
                     stopOddsChecker = true;
                 } else {

@@ -3,7 +3,7 @@ import React, { createContext, useState, useEffect } from 'react';
 import emailChecker from 'mailchecker';
 
 import { auth, db, storage, teamNames, getFormattedFirebaseTime, logger, iplMatches } from '../config';
-import { getMatchDetailsById, getMatches, getIplMatches } from '../components/apis';
+import { getMatchDetailsById, getMatches } from '../components/apis';
 import moment from 'moment';
 const admin = require('firebase');
 
@@ -121,8 +121,10 @@ const Context = (props) => {
         const newPoints = points - betDetails.selectedPoints;
 
         db.collection("users").doc(username).update({
-            bets: newBets,
-            points: newPoints
+            bets: admin.default.firestore.FieldValue.arrayUnion(betDetails),
+            points: newPoints,
+            updatedBy: `${username}_betOnMatch`,
+            updatedAt: admin.default.firestore.Timestamp.fromDate(new Date())
         }).then(() => {
             console.log("Document updated Successfully.");
             setLoggedInUserDetails({
@@ -204,12 +206,16 @@ const Context = (props) => {
             let mostBetsDone = [], mostBetsWon = [], mostBetsLost = [], mostBetsPenalized = [], maxAvgBetsPoints = [],
                 mostPointsWon = [], mostPointsLost = [], mostPointsPenalized = [], longestWinningStreak = [], longestLosingStreak = [],
                 longestPenalizedStreak = [], earliestBetsTime = [], mostPointsBetInAMatch = [];
+            const betPtsDistribution = {};
+            const timeSeriesPts = {};
             const allUsersSnap = await db.collection("users").where("isDummyUser", "==", false).get();
             const allUsersDocs = allUsersSnap.docs;
             const allUsersData = allUsersDocs.map(eachUserDoc => {
                 const eachUserData = eachUserDoc.data();
                 const username = eachUserData.username;
                 const bets = eachUserData.bets;
+                const currPts = [3500];
+                let currPtsLen = 1;
 
                 let betsDone = 0, betsWon = 0, betsLost = 0, betsPenalized = 0, pointsBet = 0, pointsWon = 0, pointsLost = 0,
                     pointsPenalized = 0, longestWinStreak = 0, currentWinStreak = 0, longestLoseStreak = 0, currentLoseStreak = 0,
@@ -231,11 +237,14 @@ const Context = (props) => {
                         if(bet.isSettled) {
                             if(bet.betWon) {
                                 betsWon++;
-                                pointsWon += parseInt(bet.selectedPoints);
+                                const pts = Math.ceil(parseInt(bet.selectedPoints)*bet.odds[bet.selectedTeam]);
+                                pointsWon += pts;
                                 currentWinStreak++;
 
                                 longestLoseStreak = Math.max(longestLoseStreak, currentLoseStreak);
                                 currentLoseStreak = 0;
+
+                                currPts.push(currPts[currPtsLen-1]+pts);
                             } else {
                                 betsLost++;
                                 pointsLost += parseInt(bet.selectedPoints);
@@ -243,13 +252,19 @@ const Context = (props) => {
 
                                 longestWinStreak = Math.max(longestWinStreak, currentWinStreak);
                                 currentWinStreak = 0;
+
+                                currPts.push(currPts[currPtsLen-1]-parseInt(bet.selectedPoints));
                             }
+                            currPtsLen++;
                         }
                     } else {
                         if(parseInt(bet.selectedPoints) == 50) {
                             betsPenalized++;
                             pointsPenalized += parseInt(bet.selectedPoints);
                             currentPenalizStreak++;
+
+                            currPts.push(currPts[currPtsLen-1]-parseInt(bet.selectedPoints));
+                            currPtsLen++;
                         }
                     }
 
@@ -259,14 +274,17 @@ const Context = (props) => {
                     bet.betWon = bet.betWon ? "Yes" : "No";
                 });
 
+                betPtsDistribution[username] = pointsBet;
+                timeSeriesPts[username] = currPts;
+
                 longestWinStreak = Math.max(longestWinStreak, currentWinStreak);
                 longestLoseStreak = Math.max(longestLoseStreak, currentLoseStreak);
                 longestPenalizStreak = Math.max(longestPenalizStreak, currentPenalizStreak);
 
                 mostBetsDone.push({ username, betsDone });
-                mostBetsWon.push({ username, betsWon, winPercent: round(betsWon/betsDone,2) || 0 });
-                mostBetsLost.push({ username, betsLost, lossPercent: round(betsLost/betsDone,2) || 0 });
-                mostBetsPenalized.push({ username, betsPenalized, penalizedPercent: round(betsPenalized/betsDone,2) || 0 });
+                mostBetsWon.push({ username, betsWon, winPercent: round(betsWon/(betsWon+betsLost),2) || 0 });
+                mostBetsLost.push({ username, betsLost, lossPercent: round(betsLost/(betsWon+betsLost),2) || 0 });
+                mostBetsPenalized.push({ username, betsPenalized, penalizedPercent: round(betsPenalized/(betsWon+betsLost),2) || 0 });
                 maxAvgBetsPoints.push({ username, avgBetPoints: round(pointsBet/betsDone, 2) || 0 });
                 mostPointsWon.push({ username, pointsWon });
                 mostPointsLost.push({ username, pointsLost });
@@ -297,6 +315,8 @@ const Context = (props) => {
             // earlierBetsDone, longestWinningStreak(done), longestLosingStreak(done), longestPenalizedStreak(done),
             // mostPointsBetInAMatch, mostPointsWonOverall(done), mostPointsLostOverall(done), mostPointsPenalizedOverall(done) 
             // mostBetsDone(done), mostBetsWon(done), mostBetsLost(done), mostBetsPenalized(done),highestAvgBetPointsOverall(done)
+            console.log(timeSeriesPts);
+            console.log(betPtsDistribution);
 
             const globalStats = { 
                 mostBetsDone: { data: mostBetsDone, cols: Object.keys(mostBetsDone[0]), description: "Most number of bets done. Penalized bets is not included in it." }, 
@@ -314,7 +334,7 @@ const Context = (props) => {
                 mostPointsBetInAMatch: { data: mostPointsBetInAMatch, cols: ["username", "betWon", "selectedTeam", "selectedPoints", "betTime"], description: "Max points bet in a match over the season." }
             };
             
-            return globalStats;
+            return { globalStats, timeSeriesPts, betPtsDistribution };
         } catch (err) {
             console.log(err);
         }
@@ -394,7 +414,9 @@ const Context = (props) => {
     const clearUsernameBetsData = async(username) => {
         await db.collection("users").doc(username).update({
             bets: [],
-            points: 2000
+            points: 2000,
+            updatedBy: "clearUsernameBetsData",
+            updatedAt: admin.default.firestore.Timestamp.fromDate(new Date())
         });
 
         setLoggedInUserDetails({
@@ -471,7 +493,9 @@ const Context = (props) => {
 
             await db.collection("users").doc(username).update({
                 bets,
-                points: finalPoints
+                points: finalPoints,
+                updatedBy: `${loggedInUserDetails?.username}_syncUsernameBetsData`,
+                updatedAt: admin.default.firestore.Timestamp.fromDate(new Date())
             });
         } catch (err) {
             console.log(err);
@@ -480,6 +504,7 @@ const Context = (props) => {
 
     const updateUserInfo = async (username, points, bets) => {
         try {
+            logger.logEvent("update_user_info", { username, points, bets });
             let finalPoints = points, betSettledCount = 0;
             let notifications = [];
             let inprogressBets = 0;
@@ -563,11 +588,15 @@ const Context = (props) => {
                 }
             }
 
+            logger.logEvent("Settling Count", { ...bets });
+            console.log("Settling event counted");
             if(betSettledCount) {
                 setNotifications(notifications);
                 await db.collection("users").doc(username).update({
                     bets,
-                    points: finalPoints
+                    points: finalPoints,
+                    updatedBy: `${username}_updateUserInfo`,
+                    updatedAt: admin.default.firestore.Timestamp.fromDate(new Date())
                 });
             }
             return { latestPoints: finalPoints, latestBets: bets };
