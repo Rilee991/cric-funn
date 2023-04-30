@@ -151,7 +151,7 @@ function Graph() {
                         <CartesianGrid strokeDasharray="3 3" />
                         <XAxis dataKey="match" />
                         <YAxis />
-                        <Tooltip />
+                        {/* <Tooltip /> */}
                         <Legend />
                         <Line type="monotone" dataKey="Broly" stroke="#8884d8" strokeWidth="2.5" dot={false} />
                         <Line type="monotone" dataKey="SD" stroke="#82ca9d" strokeWidth="2.5" dot={false} />
