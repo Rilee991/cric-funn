@@ -206,7 +206,7 @@ const Context = (props) => {
             let mostBetsDone = [], mostBetsWon = [], mostBetsLost = [], mostBetsPenalized = [], maxAvgBetsPoints = [],
                 mostPointsWon = [], mostPointsLost = [], mostPointsPenalized = [], longestWinningStreak = [], longestLosingStreak = [],
                 longestPenalizedStreak = [], earliestBetsTime = [], mostPointsBetInAMatch = [], betPtsDistribution = [];
-            let timeSeriesPts = [];
+            let timeSeriesPts = [], bettingOddsDistribution = [];
             const allUsersSnap = await db.collection("users").where("isDummyUser", "==", false).get();
             const allUsersDocs = allUsersSnap.docs;
             const allUsersData = allUsersDocs.map(eachUserDoc => {
@@ -218,7 +218,7 @@ const Context = (props) => {
 
                 let betsDone = 0, betsWon = 0, betsLost = 0, betsPenalized = 0, pointsBet = 0, pointsWon = 0, pointsLost = 0,
                     pointsPenalized = 0, longestWinStreak = 0, currentWinStreak = 0, longestLoseStreak = 0, currentLoseStreak = 0,
-                    longestPenalizStreak = 0, currentPenalizStreak = 0;
+                    longestPenalizStreak = 0, currentPenalizStreak = 0, betOnTeamsLikelyToWin = 0, betOnTeamsLikelyToLose = 0;
 
                 bets.map((bet, idx) => {
                     const betTime = moment.unix(bet.betTime.seconds);
@@ -233,6 +233,21 @@ const Context = (props) => {
                         longestPenalizStreak = Math.max(longestPenalizStreak, currentPenalizStreak);
                         currentPenalizStreak = 0;
                         
+                        if(bet.odds) {
+                            const [team1, team2] = Object.keys(bet.odds);
+                            if(team1 == bet.selectedTeam) {
+                                if(bet.odds[team1] <= bet.odds[team2])
+                                    betOnTeamsLikelyToWin++;
+                                else
+                                    betOnTeamsLikelyToLose++;
+                            } else if(team2 == bet.selectedTeam) {
+                                if(bet.odds[team2] <= bet.odds[team1])
+                                    betOnTeamsLikelyToWin++;
+                                else
+                                    betOnTeamsLikelyToLose++;
+                            }
+                        }
+
                         if(bet.isSettled) {
                             if(bet.betWon) {
                                 betsWon++;
@@ -278,6 +293,7 @@ const Context = (props) => {
                 betPtsDistribution.push({ username, points: pointsBet });
                 timeSeriesPts = merge(timeSeriesPts, currPts);
 
+                bettingOddsDistribution.push({ username, betOnTeamsLikelyToWin, betOnTeamsLikelyToLose });
                 longestWinStreak = Math.max(longestWinStreak, currentWinStreak);
                 longestLoseStreak = Math.max(longestLoseStreak, currentLoseStreak);
                 longestPenalizStreak = Math.max(longestPenalizStreak, currentPenalizStreak);
@@ -324,6 +340,8 @@ const Context = (props) => {
             earliestBetsTime = sortBy(allBetsData, ["diff"]).slice(0,5).map(eachBet => ({...eachBet, time: moment().startOf('day').add(eachBet.diff/1000,"seconds").format("hh:mm: A")}));
             mostPointsBetInAMatch = sortBy(allBetsData, ["selectedPoints"]).reverse().slice(0,5);
 
+            bettingOddsDistribution = sortBy(bettingOddsDistribution, ["betOnTeamsLikelyToWin"]).reverse();
+
             // earlierBetsDone, longestWinningStreak(done), longestLosingStreak(done), longestPenalizedStreak(done),
             // mostPointsBetInAMatch, mostPointsWonOverall(done), mostPointsLostOverall(done), mostPointsPenalizedOverall(done) 
             // mostBetsDone(done), mostBetsWon(done), mostBetsLost(done), mostBetsPenalized(done),highestAvgBetPointsOverall(done)
@@ -342,7 +360,8 @@ const Context = (props) => {
                 // longestPenalizedStreak: { data: longestPenalizedStreak, cols: Object.keys(longestPenalizedStreak[0]), description: "Most consecutive penalties." },
                 earliestBetsTime: { data: earliestBetsTime, cols: ["username", "time"], description: "Earliest bets done over a day."},
                 mostPointsBetInAMatch: { data: mostPointsBetInAMatch, cols: ["username", "betWon", "selectedTeam", "selectedPoints", "betTime"], description: "Max points bet in a match over the season." },
-                betPtsDistribution: { data: betPtsDistribution, cols: ["username", "points", "ptsPercent"], description: "Most points bet this season."}
+                betPtsDistribution: { data: betPtsDistribution, cols: ["username", "points", "ptsPercent"], description: "Most points bet this season."},
+                bettingOddsDistribution: { data: bettingOddsDistribution, cols: Object.keys(bettingOddsDistribution[0]), description: "Betting trends based on odds" }
             };
             
             return { globalStats, timeSeriesPts, betPtsDistribution };
