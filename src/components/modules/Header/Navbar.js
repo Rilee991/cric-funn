@@ -64,13 +64,13 @@ const Navbar = () => {
     onClick: closeDrawer,
     icon: (<InsertChartRounded style={{ color: mobileView ? themeColor : "inherit" }} fontSize="default"/>)
   }, 
-  // {
-  //   label: `GLOBAL STATS`,
-  //   href: "/global-stats",
-  //   disabled: false,
-  //   onClick: closeDrawer,
-  //   icon: (<InsertChartTwoTone style={{ color: mobileView ? themeColor : "inherit" }} fontSize="default"/>)
-  // }, 
+  {
+    label: `GLOBAL STATS`,
+    href: "/global-stats",
+    disabled: false,
+    onClick: closeDrawer,
+    icon: (<InsertChartTwoTone style={{ color: mobileView ? themeColor : "inherit" }} fontSize="default"/>)
+  }, 
   {
     label: `POINTS TABLE`,
     href: "/points-table",

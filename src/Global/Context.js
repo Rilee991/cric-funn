@@ -1,4 +1,4 @@
-import { ceil, each, find, flattenDeep, isEmpty, orderBy, round, sortBy } from 'lodash';
+import { ceil, each, find, flattenDeep, isEmpty, merge, orderBy, round, sortBy } from 'lodash';
 import React, { createContext, useState, useEffect } from 'react';
 import emailChecker from 'mailchecker';
 
@@ -205,23 +205,22 @@ const Context = (props) => {
         try {
             let mostBetsDone = [], mostBetsWon = [], mostBetsLost = [], mostBetsPenalized = [], maxAvgBetsPoints = [],
                 mostPointsWon = [], mostPointsLost = [], mostPointsPenalized = [], longestWinningStreak = [], longestLosingStreak = [],
-                longestPenalizedStreak = [], earliestBetsTime = [], mostPointsBetInAMatch = [];
-            const betPtsDistribution = {};
-            const timeSeriesPts = {};
+                longestPenalizedStreak = [], earliestBetsTime = [], mostPointsBetInAMatch = [], betPtsDistribution = [];
+            let timeSeriesPts = [];
             const allUsersSnap = await db.collection("users").where("isDummyUser", "==", false).get();
             const allUsersDocs = allUsersSnap.docs;
             const allUsersData = allUsersDocs.map(eachUserDoc => {
                 const eachUserData = eachUserDoc.data();
                 const username = eachUserData.username;
                 const bets = eachUserData.bets;
-                const currPts = [3500];
+                const currPts = [{ match: 0, [username]: 3500 }];
                 let currPtsLen = 1;
 
                 let betsDone = 0, betsWon = 0, betsLost = 0, betsPenalized = 0, pointsBet = 0, pointsWon = 0, pointsLost = 0,
                     pointsPenalized = 0, longestWinStreak = 0, currentWinStreak = 0, longestLoseStreak = 0, currentLoseStreak = 0,
                     longestPenalizStreak = 0, currentPenalizStreak = 0;
 
-                bets.map(bet => {
+                bets.map((bet, idx) => {
                     const betTime = moment.unix(bet.betTime.seconds);
                     const startOfDay = moment(betTime).startOf('day');
                     const diff = betTime.diff(startOfDay).valueOf();
@@ -244,7 +243,8 @@ const Context = (props) => {
                                 longestLoseStreak = Math.max(longestLoseStreak, currentLoseStreak);
                                 currentLoseStreak = 0;
 
-                                currPts.push(currPts[currPtsLen-1]+pts);
+                                // currPts.push(currPts[currPtsLen-1]+pts);
+                                currPts.push({ match: idx+1, [username]: currPts[currPtsLen-1][username]+pts });
                             } else {
                                 betsLost++;
                                 pointsLost += parseInt(bet.selectedPoints);
@@ -253,7 +253,7 @@ const Context = (props) => {
                                 longestWinStreak = Math.max(longestWinStreak, currentWinStreak);
                                 currentWinStreak = 0;
 
-                                currPts.push(currPts[currPtsLen-1]-parseInt(bet.selectedPoints));
+                                currPts.push({ match: idx+1, [username]: currPts[currPtsLen-1][username]-parseInt(bet.selectedPoints) });
                             }
                             currPtsLen++;
                         }
@@ -263,7 +263,8 @@ const Context = (props) => {
                             pointsPenalized += parseInt(bet.selectedPoints);
                             currentPenalizStreak++;
 
-                            currPts.push(currPts[currPtsLen-1]-parseInt(bet.selectedPoints));
+                            // currPts.push(currPts[currPtsLen-1]-parseInt(bet.selectedPoints));
+                            currPts.push({ match: idx+1, [username]: currPts[currPtsLen-1][username]-parseInt(bet.selectedPoints) });
                             currPtsLen++;
                         }
                     }
@@ -274,8 +275,8 @@ const Context = (props) => {
                     bet.betWon = bet.betWon ? "Yes" : "No";
                 });
 
-                betPtsDistribution[username] = pointsBet;
-                timeSeriesPts[username] = currPts;
+                betPtsDistribution.push({ username, points: pointsBet });
+                timeSeriesPts = merge(timeSeriesPts, currPts);
 
                 longestWinStreak = Math.max(longestWinStreak, currentWinStreak);
                 longestLoseStreak = Math.max(longestLoseStreak, currentLoseStreak);
@@ -301,37 +302,47 @@ const Context = (props) => {
             mostBetsLost = sortBy(mostBetsLost, ["betsLost"]).reverse();
             mostBetsPenalized = sortBy(mostBetsPenalized, ["betsPenalized"]).reverse();
             maxAvgBetsPoints = sortBy(maxAvgBetsPoints, ["avgBetPoints"]).reverse();
+
+            const totalWinPoints = mostPointsWon.reduce((acc, val) => acc+val.pointsWon, 0);
+            mostPointsWon.forEach(dist => dist["ptsPercent"] = ((dist["pointsWon"]/totalWinPoints)*100).toFixed(2));
             mostPointsWon = sortBy(mostPointsWon, ["pointsWon"]).reverse();
+
+            const totalLosePoints = mostPointsWon.reduce((acc, val) => acc+val.pointsWon, 0);
+            mostPointsLost.forEach(dist => dist["ptsPercent"] = ((dist["pointsLost"]/totalLosePoints)*100).toFixed(2));
             mostPointsLost = sortBy(mostPointsLost, ["pointsLost"]).reverse();
+
             mostPointsPenalized = sortBy(mostPointsPenalized, ["pointsPenalized"]).reverse();
             longestWinningStreak = sortBy(longestWinningStreak, ["longestWinStreak"]).reverse();
             longestLosingStreak = sortBy(longestLosingStreak, ["longestLoseStreak"]).reverse();
             longestPenalizedStreak = sortBy(longestPenalizedStreak, ["longestPenalizStreak"]).reverse();
             
+            const totalBetPoints = betPtsDistribution.reduce((acc, val) => acc+val.points, 0);
+            betPtsDistribution.forEach(dist => dist["ptsPercent"] = ((dist["points"]/totalBetPoints)*100).toFixed(2));
+            betPtsDistribution = sortBy(betPtsDistribution, ["points"]).reverse();
+            
             const allBetsData = flattenDeep(allUsersData);
-            earliestBetsTime = sortBy(allBetsData, ["diff"]).slice(0,5).map(eachBet => ({...eachBet, time: moment().startOf('day').add(eachBet.diff/1000,"seconds").format("HH:mm: A")}));
+            earliestBetsTime = sortBy(allBetsData, ["diff"]).slice(0,5).map(eachBet => ({...eachBet, time: moment().startOf('day').add(eachBet.diff/1000,"seconds").format("hh:mm: A")}));
             mostPointsBetInAMatch = sortBy(allBetsData, ["selectedPoints"]).reverse().slice(0,5);
 
             // earlierBetsDone, longestWinningStreak(done), longestLosingStreak(done), longestPenalizedStreak(done),
             // mostPointsBetInAMatch, mostPointsWonOverall(done), mostPointsLostOverall(done), mostPointsPenalizedOverall(done) 
             // mostBetsDone(done), mostBetsWon(done), mostBetsLost(done), mostBetsPenalized(done),highestAvgBetPointsOverall(done)
-            console.log(timeSeriesPts);
-            console.log(betPtsDistribution);
 
             const globalStats = { 
                 mostBetsDone: { data: mostBetsDone, cols: Object.keys(mostBetsDone[0]), description: "Most number of bets done. Penalized bets is not included in it." }, 
                 mostBetsWon: { data: mostBetsWon, cols: Object.keys(mostBetsWon[0]), description: "Most number of bets won." }, 
                 mostBetsLost: { data: mostBetsLost, cols: Object.keys(mostBetsLost[0]), description: "Most number of bets lost." },
-                mostBetsPenalized: { data: mostBetsPenalized, cols: Object.keys(mostBetsPenalized[0]), description: "Most number of bets penalized." },
+                // mostBetsPenalized: { data: mostBetsPenalized, cols: Object.keys(mostBetsPenalized[0]), description: "Most number of bets penalized." },
                 maxAvgBetsPoints: { data: maxAvgBetsPoints, cols: Object.keys(maxAvgBetsPoints[0]), description: "Most points bet per match. Penalized points is not included in it." },
                 mostPointsWon: { data: mostPointsWon, cols: Object.keys(mostPointsWon[0]), description: "Most points won over the season." },
                 mostPointsLost: { data: mostPointsLost, cols: Object.keys(mostPointsLost[0]), description: "Most points lost over the season." },
-                mostPointsPenalized: { data: mostPointsPenalized, cols: Object.keys(mostPointsPenalized[0]), description: "Most points penalized over the season." },
+                // mostPointsPenalized: { data: mostPointsPenalized, cols: Object.keys(mostPointsPenalized[0]), description: "Most points penalized over the season." },
                 longestWinningStreak: { data: longestWinningStreak, cols: Object.keys(longestWinningStreak[0]), description: "Most consecutive wins." },
                 longestLosingStreak: { data: longestLosingStreak, cols: Object.keys(longestLosingStreak[0]), description: "Most consecutive loses." },
-                longestPenalizedStreak: { data: longestPenalizedStreak, cols: Object.keys(longestPenalizedStreak[0]), description: "Most consecutive penalties." },
+                // longestPenalizedStreak: { data: longestPenalizedStreak, cols: Object.keys(longestPenalizedStreak[0]), description: "Most consecutive penalties." },
                 earliestBetsTime: { data: earliestBetsTime, cols: ["username", "time"], description: "Earliest bets done over a day."},
-                mostPointsBetInAMatch: { data: mostPointsBetInAMatch, cols: ["username", "betWon", "selectedTeam", "selectedPoints", "betTime"], description: "Max points bet in a match over the season." }
+                mostPointsBetInAMatch: { data: mostPointsBetInAMatch, cols: ["username", "betWon", "selectedTeam", "selectedPoints", "betTime"], description: "Max points bet in a match over the season." },
+                betPtsDistribution: { data: betPtsDistribution, cols: ["username", "points", "ptsPercent"], description: "Most points bet this season."}
             };
             
             return { globalStats, timeSeriesPts, betPtsDistribution };

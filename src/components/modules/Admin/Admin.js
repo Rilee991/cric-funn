@@ -4,6 +4,7 @@ import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper
 import Alert from '@material-ui/lab/Alert';
 
 import { ContextProvider } from '../../../Global/Context';
+import { restoreData } from '../../apis';
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -64,13 +65,13 @@ export default function Admin() {
         setOpen(false);
     }
 
-    if(loggedInUserDetails?.username != "Cypher33") {
-      return (
-        <div style={container}>
-          You don't have permissions to view this page bhosdike!
-        </div>
-      )
-    }
+    // if(loggedInUserDetails?.username != "Cypher33") {
+    //   return (
+    //     <div style={container}>
+    //       You don't have permissions to view this page bhosdike!
+    //     </div>
+    //   )
+    // }
 
   return (
     <div style={container}>
@@ -92,6 +93,8 @@ export default function Admin() {
                               <Button variant="contained" disabled={true} onClick={() => onClickClear(row.username)} color="secondary">Reset Bets</Button>
                               {" "}
                               <Button variant="contained" onClick={() => onClickSync(row.username)} color="secondary">Sync Bets</Button>
+                              {" "}
+                              <Button variant="contained" onClick={() => restoreData(row.username)} color="primary">Restore Data</Button>
                             </StyledTableCell>
                         </StyledTableRow>
                     )) : <div style={{justifyContent: "center", alignContent: "center"}}><Typography variant="overline" style={{fontSize: 15}}>Loading Data Please wait...</Typography></div>}

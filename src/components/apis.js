@@ -168,3 +168,15 @@ export const getIplMatches = async () => {
 
     return matches;
 }
+
+export const restoreData = async (username) => {
+    try {
+        const resp = await fetch("https://wild-blue-adder-gear.cyclic.app/cfb/dbops/restoreDataForUsername", 
+            { method: "post", headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ username: username }) }
+        );
+
+        console.log("Update successful" + resp);
+    } catch (e) {
+        console.log(e);
+    }
+}

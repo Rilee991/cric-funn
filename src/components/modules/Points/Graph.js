@@ -2,7 +2,7 @@ import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper
 import { makeStyles, withStyles } from '@material-ui/styles';
 import { round } from 'lodash';
 import moment from 'moment';
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Area, AreaChart, Cell, CartesianGrid, ComposedChart, Legend, Line, LineChart, Pie, PieChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import { getFormattedFirebaseTime, themeColor } from '../../../config';
 
@@ -35,8 +35,18 @@ const StyledTableRow = withStyles((theme) => ({
 
 function Graph() {
     const contextConsumer = useContext(ContextProvider);
-    const { loggedInUserDetails, mobileView } = contextConsumer;
+    const { loggedInUserDetails, mobileView, getAllUsersData } = contextConsumer;
     const { bets = [] } = loggedInUserDetails;
+    const [timeSeriesData, setTimeSeriesData] = useState([]);
+
+    useEffect(() => {
+        getTimeSeriesData();
+    },[])
+
+    const getTimeSeriesData = async () => {
+        const data = await getAllUsersData();
+        setTimeSeriesData(data.timeSeriesPts);
+    }
 
     const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
         
@@ -130,6 +140,31 @@ function Graph() {
         );
     }
 
+    const getTimeSeriesOfUsers = () => {
+        return (
+            <>
+                <Typography variant="overline" align="center" style={{fontSize: 20}}>TIME SERIES AGAINST OPPONENTS</Typography>
+                <hr/>
+                <br/><br/>
+                <ResponsiveContainer height={400} width="100%">
+                    <LineChart width={730} height={250} data={timeSeriesData} margin={{ top: 5, right: 30, left: 20, bottom: 0 }}>
+                        <CartesianGrid strokeDasharray="3 3" />
+                        <XAxis dataKey="match" />
+                        <YAxis />
+                        <Tooltip />
+                        <Legend />
+                        <Line type="monotone" dataKey="Broly" stroke="#8884d8" strokeWidth="2.5" dot={false} />
+                        <Line type="monotone" dataKey="SD" stroke="#82ca9d" strokeWidth="2.5" dot={false} />
+                        <Line type="monotone" dataKey="Cypher33" stroke="#1B0101" strokeWidth="2.5" dot={false} />
+                        <Line type="monotone" dataKey="desmond" stroke="#F60F78" strokeWidth="2.5" dot={false} />
+                        <Line type="monotone" dataKey="ashu" stroke="#A108D6" strokeWidth="2.5" dot={false} />
+                        <Line type="monotone" dataKey="kelly" stroke="#0BBEF8" strokeWidth="2.5" dot={false} />
+                    </LineChart>
+                </ResponsiveContainer>
+            </>
+        );
+    }
+
     const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, payload, percent }) => {
         const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
         const x = cx + radius * Math.cos(-midAngle * RADIAN);
@@ -175,9 +210,11 @@ function Graph() {
             padding: mobileView ? "70px 0px" : "70px 200px"
         }}>
             {getPointsJourney()}
-            {/* <br /><br /><br />
-            {getBetTimeStats()} */}
             <br /><br /><br />
+            {getTimeSeriesOfUsers()}
+            <br /><br /><br />
+            {/* <br /><br /><br /> */}
+            {/* {!mobileView && getBetTimeStats()} */}
             <TeamStatsTable />
         </div>
     );

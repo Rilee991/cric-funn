@@ -46,7 +46,7 @@ export default function TeamStatsTable() {
     const [tableData, setTableData] = useState([]);
     const container = {
         width: "100%", 
-        padding: mobileView ? "70px 0px" : "70px 200px"
+        // padding: mobileView ? "70px 0px" : "70px 200px"
     };
 
   useEffect(async () => {
