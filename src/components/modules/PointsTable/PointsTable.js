@@ -3,6 +3,7 @@ import { withStyles, makeStyles } from '@material-ui/core/styles';
 import { Row, Col, Container } from 'reactstrap';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography, Badge, Avatar, Grid, Card, CardActionArea, CardContent, GridList, Collapse } from '@material-ui/core';
 import { ContextProvider } from '../../../Global/Context';
+import { find } from 'lodash';
 
 import LoadingComponent from '../../common/LoadingComponent';
 import { themeColor } from '../../../config';
@@ -40,9 +41,10 @@ const useStyles = makeStyles({
 export default function PointsTable() {
     const contextConsumer = useContext(ContextProvider);
     const { getPointsTableData, mobileView, loading, loggedInUserDetails } = contextConsumer;
-    const { image } = loggedInUserDetails;
+    const { image, username } = loggedInUserDetails;
     const classes = useStyles();
     const [tableData, setTableData] = useState([]);
+    const [caption, setCaption] = useState("Sorted By Points - Swipe left to see more");
     const container = {
         width: "100%", 
         padding: mobileView ? "70px 0px" : "70px 200px"
@@ -51,6 +53,8 @@ export default function PointsTable() {
   useEffect(async () => {
     const data = await getPointsTableData();
     setTableData(data);
+    const userDetails = find(data, { username });
+    setCaption(userDetails?.caption || caption);
   }, []);
 
   function getColor(rank, isOut) {
@@ -60,10 +64,10 @@ export default function PointsTable() {
     else return "lightyellow";
   }
 
-  function getUsernameRow(username, rank) {
+  function getUsernameRow(row, rank) {
     return (
        <Badge badgeContent={rank} color={rank == 1 ? "primary" : (rank == 2 ? "secondary" : "error")} component="p" anchorOrigin={{vertical: 'top',horizontal: 'left'}}>
-         <Typography><b>{username}{username == "Cypher33" ? "(c)" : ""}</b></Typography>
+         <Typography><b>{row.username}{row.isChampion ? "(C)" : ""}</b></Typography>
        </Badge>
       );
   }
@@ -75,7 +79,7 @@ export default function PointsTable() {
         <hr/>
         <TableContainer component={Paper}>
             <Table className={classes.table} aria-label="customized table caption">
-                <caption><Typography variant="overline">Sorted By Points - Swipe left to see more</Typography></caption>
+                <caption><Typography variant="overline">{caption}</Typography></caption>
                 <TableHead>
                     <TableRow>
                         <StyledTableCell ><Typography variant="overline">Username</Typography></StyledTableCell>
@@ -89,7 +93,7 @@ export default function PointsTable() {
                 <TableBody>
                     {tableData.length ? tableData.map((row, index) => (
                         <StyledTableRow key={row.username} style={{backgroundColor: getColor(index+1, row.isOut)}}>
-                            <StyledTableCell component="th" scope="row">{getUsernameRow(row.username,index+1)}</StyledTableCell>
+                            <StyledTableCell component="th" scope="row">{getUsernameRow(row,index+1)}</StyledTableCell>
                             <StyledTableCell align="center">{row.totalBets}</StyledTableCell>
                             <StyledTableCell align="center">{`${row.won}-${row.lost}-${row.inprogress}`}</StyledTableCell>
                             {/* <StyledTableCell align="center">{row.lost}</StyledTableCell>

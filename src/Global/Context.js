@@ -166,7 +166,7 @@ const Context = (props) => {
         const userDocs = await db.collection("users").get();
         userDocs.docs.map(user => {
             const userData = user.data();
-            const { bets = [], username, points, isDummyUser = false } = userData;
+            const { bets = [], username, points, isDummyUser = false, isChampion = false } = userData;
             if(isDummyUser)    
                 return;
             let won = 0, lost = 0, inprogress = 0, totalBets = 0, penalized = 0;
@@ -192,11 +192,23 @@ const Context = (props) => {
                 inprogress,
                 penalized,
                 points,
-                isOut: (inprogress === 0 && points === 0) ? true : false
+                isOut: (inprogress === 0 && points === 0) ? true : false,
+                isChampion
             });
         });
 
-        result = orderBy(result, ["points", "totalBets", "won", "username"], ["desc", "desc", "desc", "asc"]);
+        result = orderBy(result, ["points", "won", "totalBets", "username"], ["desc", "desc", "asc", "asc"]);
+
+        result.forEach((user, idx) => {
+            if(idx === 0) {
+                user.caption = `Woohoo!! You're leading the table ${user.username}. Maintain your position!`;
+            } else if(user.isOut) {
+                user.caption = `You're out for now ${user.username}. Comeback stronger next year :)`;
+            } else {
+                const diff = result[idx-1].points-user.points+1;
+                user.caption = `${user.username} you need only ${diff} points to move to rank ${idx}. Get going!`;
+            }
+        })
 
         return result;
     }
