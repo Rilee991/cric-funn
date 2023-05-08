@@ -1,4 +1,4 @@
-import { ceil, each, find, flattenDeep, isEmpty, merge, orderBy, round, sortBy } from 'lodash';
+import { ceil, each, find, flattenDeep, get, isEmpty, merge, orderBy, round, sortBy } from 'lodash';
 import React, { createContext, useState, useEffect } from 'react';
 import emailChecker from 'mailchecker';
 
@@ -325,11 +325,47 @@ const Context = (props) => {
                 return bets;
             });
 
+            const rankDays = {}, avgRankParams = {};
+
+            timeSeriesPts.forEach((matchPoint, mIdx) => {
+                if(mIdx == 0) return;
+                const matchNum = matchPoint["match"];
+                delete matchPoint["match"];
+
+                const sortedList = Object.keys(Object.fromEntries(Object.entries(matchPoint).sort((a,b) => b[1] - a[1])));
+
+                sortedList.forEach((username, idx) => {
+                    if(rankDays[username]) {
+                        if(rankDays[username][idx+1]) {
+                            rankDays[username] = { ...rankDays[username], [idx+1]: rankDays[username][idx+1] + 1 };
+                        } else {
+                            rankDays[username] = { ...rankDays[username], [idx+1]: 1 };
+                        }
+                        avgRankParams[username]["totalRank"] = avgRankParams[username].totalRank+idx+1;
+                        avgRankParams[username]["totalMatches"] = avgRankParams[username].totalMatches+1;
+                    } else {
+                        rankDays[username] = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, [idx+1]: 1 };
+                        avgRankParams[username] = { totalRank: idx+1, totalMatches: 1 };
+                        // rankDays[username] = { ...rankDays[username],  };
+                    }
+                });
+
+                matchPoint["match"] = matchNum;
+            })
+
+            let rankMatchArray = [];
+
+            Object.keys(rankDays).forEach(user => {
+                const avgRank = parseFloat(avgRankParams[user]["totalRank"]/(avgRankParams[user]["totalMatches"] || 1)).toFixed(2);
+                rankMatchArray.push({ username: user, ...rankDays[user], avgRank });
+            });
+
             mostBetsDone = sortBy(mostBetsDone, ["betsDone"]).reverse();
             mostBetsWon = sortBy(mostBetsWon, ["betsWon"]).reverse();
             mostBetsLost = sortBy(mostBetsLost, ["betsLost"]).reverse();
             mostBetsPenalized = sortBy(mostBetsPenalized, ["betsPenalized"]).reverse();
             maxAvgBetsPoints = sortBy(maxAvgBetsPoints, ["avgBetPoints"]).reverse();
+            rankMatchArray = sortBy(rankMatchArray, ["1", "2", "3", "4", "5", "6", "username"]).reverse();
 
             const totalWinPoints = mostPointsWon.reduce((acc, val) => acc+val.pointsWon, 0);
             mostPointsWon.forEach(dist => dist["ptsPercent"] = ((dist["pointsWon"]/totalWinPoints)*100).toFixed(2));
@@ -373,7 +409,8 @@ const Context = (props) => {
                 earliestBetsTime: { data: earliestBetsTime, cols: ["username", "time"], description: "Earliest bets done over a day."},
                 mostPointsBetInAMatch: { data: mostPointsBetInAMatch, cols: ["username", "betWon", "selectedTeam", "selectedPoints", "betTime"], description: "Max points bet in a match over the season." },
                 betPtsDistribution: { data: betPtsDistribution, cols: ["username", "points", "ptsPercent"], description: "Most points bet this season."},
-                bettingOddsDistribution: { data: bettingOddsDistribution, cols: Object.keys(bettingOddsDistribution[0]), description: "Betting trends based on odds" }
+                bettingOddsDistribution: { data: bettingOddsDistribution, cols: Object.keys(bettingOddsDistribution[0]), description: "Betting trends based on odds" },
+                longestReignInRankings: { data: rankMatchArray, cols: ["username", "1", "2", "3", "4", "5", "6", "avgRank"], description: "Longest reign at a particular rank." }
             };
             
             return { globalStats, timeSeriesPts, betPtsDistribution };
