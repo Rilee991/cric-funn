@@ -137,6 +137,28 @@ const Context = (props) => {
         });
     }
 
+    const updateSeenBets = async (id, username) => {
+        const docRef = db.collection("ipl_matches").doc(id);
+        
+        docRef.get().then(doc => {
+            if(doc.exists) {
+                const data = doc.data();
+                let value = get(data, `seenBy[${username}]`, []);
+                if(data.seenBy) {
+                    if(data.seenBy[username]) {
+                        value.push(admin.default.firestore.Timestamp.fromDate(new Date()));
+                    } else {
+                        value.push(admin.default.firestore.Timestamp.fromDate(new Date()));
+                    }
+                } else {
+                    value.push(admin.default.firestore.Timestamp.fromDate(new Date()));
+                }
+
+                docRef.update(`seenBy.${username}`, value).then(resp => console.log("doc updated :)"));
+            }
+        }); 
+    }
+
     const viewBetsData = async(id) => {
         let result = [];
         const userDocs = await db.collection("users").get();
@@ -218,10 +240,11 @@ const Context = (props) => {
             let mostBetsDone = [], mostBetsWon = [], mostBetsLost = [], mostBetsPenalized = [], maxAvgBetsPoints = [],
                 mostPointsWon = [], mostPointsLost = [], mostPointsPenalized = [], longestWinningStreak = [], longestLosingStreak = [],
                 longestPenalizedStreak = [], earliestBetsTime = [], mostPointsBetInAMatch = [], betPtsDistribution = [];
-            let timeSeriesPts = [], bettingOddsDistribution = [];
+            let timeSeriesPts = [], bettingOddsDistribution = [], betPtsSplitDistribution = [];
             const allUsersSnap = await db.collection("users").where("isDummyUser", "==", false).get();
             const allUsersDocs = allUsersSnap.docs;
             const allUsersData = allUsersDocs.map(eachUserDoc => {
+                const userSplitData = { };
                 const eachUserData = eachUserDoc.data();
                 const username = eachUserData.username;
                 const bets = eachUserData.bets;
@@ -237,10 +260,17 @@ const Context = (props) => {
                     const startOfDay = moment(betTime).startOf('day');
                     const diff = betTime.diff(startOfDay).valueOf();
                     bet.selectedPoints = parseInt(bet.selectedPoints);
+                    const lKey = Math.floor(idx/10)*10+1;
+                    const rKey = Math.floor(idx/10)*10+10;
 
                     if(bet.isBetDone) {
                         betsDone++;
                         pointsBet += parseInt(bet.selectedPoints);
+                        
+                        if(userSplitData[`${lKey}-${rKey}`])
+                            userSplitData[`${lKey}-${rKey}`] += bet.selectedPoints;
+                        else
+                            userSplitData[`${lKey}-${rKey}`] = bet.selectedPoints;
 
                         longestPenalizStreak = Math.max(longestPenalizStreak, currentPenalizStreak);
                         currentPenalizStreak = 0;
@@ -285,6 +315,11 @@ const Context = (props) => {
                             currPtsLen++;
                         }
                     } else {
+                        if(userSplitData[`${lKey}-${rKey}`])
+                            userSplitData[`${lKey}-${rKey}`] += 0;
+                        else
+                            userSplitData[`${lKey}-${rKey}`] = 0;
+
                         if(parseInt(bet.selectedPoints) == 50) {
                             betsPenalized++;
                             pointsPenalized += parseInt(bet.selectedPoints);
@@ -321,6 +356,7 @@ const Context = (props) => {
                 longestWinningStreak.push({ username, longestWinStreak });
                 longestLosingStreak.push({ username, longestLoseStreak });
                 longestPenalizedStreak.push({ username, longestPenalizStreak });
+                betPtsSplitDistribution.push({ ...userSplitData, username });
 
                 return bets;
             });
@@ -379,6 +415,7 @@ const Context = (props) => {
             longestWinningStreak = sortBy(longestWinningStreak, ["longestWinStreak"]).reverse();
             longestLosingStreak = sortBy(longestLosingStreak, ["longestLoseStreak"]).reverse();
             longestPenalizedStreak = sortBy(longestPenalizedStreak, ["longestPenalizStreak"]).reverse();
+            betPtsSplitDistribution = sortBy(betPtsSplitDistribution, ["username"]);
             
             const totalBetPoints = betPtsDistribution.reduce((acc, val) => acc+val.points, 0);
             betPtsDistribution.forEach(dist => dist["ptsPercent"] = ((dist["points"]/totalBetPoints)*100).toFixed(2));
@@ -410,9 +447,10 @@ const Context = (props) => {
                 mostPointsBetInAMatch: { data: mostPointsBetInAMatch, cols: ["username", "betWon", "selectedTeam", "selectedPoints", "betTime"], description: "Max points bet in a match over the season." },
                 betPtsDistribution: { data: betPtsDistribution, cols: ["username", "points", "ptsPercent"], description: "Most points bet this season."},
                 bettingOddsDistribution: { data: bettingOddsDistribution, cols: Object.keys(bettingOddsDistribution[0]), description: "Betting trends based on odds" },
-                longestReignInRankings: { data: rankMatchArray, cols: ["username", "1", "2", "3", "4", "5", "6", "avgRank"], description: "Longest reign at a particular rank." }
+                longestReignInRankings: { data: rankMatchArray, cols: ["username", "1", "2", "3", "4", "5", "6", "avgRank"], description: "Longest reign at a particular rank." },
+                betPtsSplitDistribution: { data: betPtsSplitDistribution, cols: [...new Set(["username", ...Object.keys(betPtsSplitDistribution[0])])], description: "Points bet in 10 match splits." },
             };
-            
+
             return { globalStats, timeSeriesPts, betPtsDistribution };
         } catch (err) {
             console.log(err);
@@ -738,7 +776,8 @@ const Context = (props) => {
             markNotificationsAsRead,
             sendResetPasswordEmail,
             getTeamStatsData,
-            getAllUsersData
+            getAllUsersData,
+            updateSeenBets
         }}>
             {props.children}
         </ContextProvider.Provider>

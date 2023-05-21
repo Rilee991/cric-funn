@@ -35,7 +35,7 @@ const storage = firebase.storage();
 const logger = firebase.analytics(app);
 logger.setAnalyticsCollectionEnabled(true);
 
-const themeColor = "#4B0082";
+let themeColor = "#4B0082";
 const loaderHeight = 100;
 const loaderWidth = 250;
 const DEFAULT_START_POINTS = 2000;
@@ -172,6 +172,19 @@ const matchImgs = {"c8742d20-c3cb-4423-aea1-b436f3ac65c3":"IPL-Match-29-GT-vs-CS
 "6e853a67-5625-434f-babd-5702dcd846a9":"IPL-Match-65-MI-vs-SH-768x360.jpg",
 "9759d12a-14a6-42c2-bbe2-833c6f612ceb":"IPL-Match-67-RCB-vs-GT-768x360.jpg"};
 
+const dimModePalette = {
+    backgroundColor: "slategray",
+    headerBackgroundColor: "#24033c",
+    tableBackgroundImage: "linear-gradient(to right,rgba(255, 225, 0, 0.1),rgb(120 239 20) 4%,rgba(255, 225, 0, 0.3))",
+    tableRankOneBackgroundColor: "#d08f0c",
+    tableRankTwoBackgroundColor: "#628f07",
+    tableRankOthersBackgroundColor: "#85a937",
+    tableBodyTextColor: "aliceblue",
+    tableCaptionBackgroundColor: "darkslateblue"
+}
+
+// themeColor = dimModePalette.headerBackgroundColor //normal_mode - don't assign again
+
 export { 
     db, 
     auth,
@@ -188,6 +201,7 @@ export {
     DEFAULT_PROFILE_IMAGE,
     firebase,
     matchImgs,
+    dimModePalette,
 
     getTeamLogo,
     getFormattedTimeISOString,

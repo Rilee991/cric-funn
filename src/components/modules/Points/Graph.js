@@ -153,9 +153,9 @@ function Graph() {
                         <YAxis />
                         {/* <Tooltip /> */}
                         <Legend />
-                        <Line type="monotone" dataKey="Broly" stroke="#8884d8" strokeWidth="2.5" dot={false} />
+                        <Line type="monotone" dataKey="Broly" stroke="#872806" strokeWidth="2.5" dot={false} />
                         <Line type="monotone" dataKey="SD" stroke="#82ca9d" strokeWidth="2.5" dot={false} />
-                        <Line type="monotone" dataKey="Cypher33" stroke="#1B0101" strokeWidth="2.5" dot={false} />
+                        <Line type="monotone" dataKey="Cypher33" stroke="#0142a1" strokeWidth="2.5" dot={false} />
                         <Line type="monotone" dataKey="desmond" stroke="#F60F78" strokeWidth="2.5" dot={false} />
                         <Line type="monotone" dataKey="ashu" stroke="#A108D6" strokeWidth="2.5" dot={false} />
                         <Line type="monotone" dataKey="kelly" stroke="#0BBEF8" strokeWidth="2.5" dot={false} />

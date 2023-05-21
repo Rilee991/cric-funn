@@ -6,7 +6,7 @@ import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper
 import { ContextProvider } from '../../../Global/Context';
 
 import LoadingComponent from '../../common/LoadingComponent';
-import { themeColor } from '../../../config';
+import { dimModePalette, themeColor } from '../../../config';
 import { startCase } from 'lodash';
 
 const StyledTableCell = withStyles((theme) => ({
@@ -21,7 +21,8 @@ const StyledTableCell = withStyles((theme) => ({
     fontSize: 14,
     borderRightWidth: 1,
     borderRightColor: theme.palette.grey[300],
-    borderRightStyle: "solid"
+    borderRightStyle: "solid",
+    // color: dimModePalette.tableBodyTextColor
   },
 }))(TableCell);
 
@@ -56,8 +57,8 @@ export default function GenericTable(props) {
 
     function getStatsTable() {
         return (
-        <div style={container}>
-            <Typography variant="overline" style={{fontSize: 20}}>{startCase(tableHeading)}</Typography>
+        <div style={{...container}}>
+            <Typography variant="overline" style={{fontSize: 20, borderRadius: "0.8em 0.3em" }}>{startCase(tableHeading)}</Typography>
             <hr/>
             <TableContainer component={Paper}>
                 <Table className={classes.table} aria-label="customized table caption">

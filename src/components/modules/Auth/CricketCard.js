@@ -16,9 +16,9 @@ import MatchPic from '../../common/MatchPic';
 const CricketCard = (props) => {
   const contextConsumer = useContext(ContextProvider);  
   const  { match = {} } = props;
-  const { loggedInUserDetails, mobileView } = contextConsumer;
+  const { loggedInUserDetails, mobileView, updateSeenBets } = contextConsumer;
   
-  const { bets = [], points } = loggedInUserDetails;
+  const { bets = [], points, username = "", isAdmin = false } = loggedInUserDetails;
 
   const { dateTimeGMT: matchTime, id: matchId, name: matchTitle, team1Abbreviation, teamInfo, team2Abbreviation, status, venue, odds = [], banner } = match;
   
@@ -118,6 +118,7 @@ const CricketCard = (props) => {
 
     const handleOnClickViewBets = () => {
       setOpenViewBetsDialogBox(true);
+      updateSeenBets(matchId, username);
     }
 
     return (
@@ -188,6 +189,8 @@ const CricketCard = (props) => {
           matchDetails={match}
           open={openViewBetsDialogBox}
           handleClose={handleCloseViewBets}
+          username={username}
+          isAdmin={isAdmin}
         />
       </>
     );

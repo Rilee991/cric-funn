@@ -5,11 +5,11 @@ import moment from 'moment';
 import { ContextProvider } from '../../../Global/Context';
 
 const ViewBetsDialog = (props) => {
-    const { matchDetails, open, handleClose } = props;
+    const { matchDetails, open, handleClose, isAdmin } = props;
     const contextConsumer = useContext(ContextProvider);
     const { viewBetsData } = contextConsumer;
 
-    const { team1Abbreviation, team2Abbreviation, id: matchId } = matchDetails;
+    const { team1Abbreviation, team2Abbreviation, id: matchId, seenBy = {} } = matchDetails;
     const [betsData, setBetsData] = useState([]);
 
     const closeDialog = () => {
@@ -29,7 +29,7 @@ const ViewBetsDialog = (props) => {
         return (
             <TableContainer component={Paper}>
                 <Table aria-label="caption table">
-                    <caption><Typography variant="overline">Sorted By Points</Typography></caption>
+                    <caption><Typography variant="overline">Sorted By Points {isAdmin ? `- Seen By (${Object.keys(seenBy)})` : ""}</Typography></caption>
                     <TableHead>
                         <TableRow>
                             <TableCell variant="footer">USERNAME</TableCell>

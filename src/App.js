@@ -10,11 +10,13 @@ import PointsTable from './components/modules/PointsTable/PointsTable';
 import Admin from './components/modules/Admin/Admin';
 import Graph from './components/modules/Points/Graph';
 import GlobalStats from './components/modules/GlobalStats/GlobalStats';
+import { dimModePalette } from './config';
 
 const App = () => {
   return (
     <Router>
       <Context>
+        {/* <div style={{ backgroundColor: dimModePalette.backgroundColor }}> normal_mode:no color */}
         <Header/> 
         <Route exact path="/">
           <Auth/> 
@@ -34,6 +36,7 @@ const App = () => {
         <Route exact path="/global-stats">
           <GlobalStats exact />
         </Route>
+        {/* </div> */}
       </Context>
     </Router>
   );

@@ -67,11 +67,13 @@ export const getMatches = async () => {
                 const matchDb = await db.collection("ipl_matches").doc(match.id).get();
                 const data = matchDb.data();
                 const odds = get(data, 'odds', []);
+                const seenBy = get(data, 'seenBy', {});
 
                 if(isEmpty(odds)) {
                     stopOddsChecker = true;
                 } else {
                     match.odds = odds;
+                    match.seenBy = seenBy;
                 }
             }
 
