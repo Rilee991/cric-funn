@@ -3,7 +3,7 @@ import React, { createContext, useState, useEffect } from 'react';
 import emailChecker from 'mailchecker';
 
 import { auth, db, storage, teamNames, getFormattedFirebaseTime, logger, iplMatches } from '../config';
-import { getMatchDetailsById, getMatches } from '../components/apis';
+import { getMatchDetails, getMatchDetailsById, getMatches } from '../components/apis';
 import moment from 'moment';
 const admin = require('firebase');
 
@@ -191,14 +191,19 @@ const Context = (props) => {
             const { bets = [], username, points, isDummyUser = false, isChampion = false } = userData;
             if(isDummyUser)    
                 return;
-            let won = 0, lost = 0, inprogress = 0, totalBets = 0, penalized = 0;
-            bets.map(bet => {
+            let won = 0, lost = 0, inprogress = 0, totalBets = 0, penalized = 0,totalPoints=points;
+            bets.map(async bet => {
                 if(bet.isBetDone) {
                     if(bet.isSettled) {
                         if(bet.betWon)  won++;
                         else    lost++;
                     } else {
                         inprogress++;
+                        const matchDetails= await getMatchDetails(bet.matchId)
+                        const betEndTime = moment(matchDetails.dateTimeGMT).subtract(30,"minutes");
+                        if(moment() < betEndTime){
+                            totalPoints+=parseInt(bet.selectedPoints)
+                        }
                     }
                     totalBets++;
                 } else {
@@ -213,7 +218,7 @@ const Context = (props) => {
                 lost,
                 inprogress,
                 penalized,
-                points,
+                points:totalPoints,
                 isOut: (inprogress === 0 && points === 0) ? true : false,
                 isChampion
             });
