@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 
-import { getMatches } from '../../apis';
+import { getMatches, saveIplMatchesInDb } from '../../apis';
 import { ContextProvider } from '../../../Global/Context';
 
 import CricketCard from './CricketCard';
