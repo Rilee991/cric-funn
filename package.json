@@ -10,12 +10,16 @@
     "@testing-library/jest-dom": "^5.11.9",
     "@testing-library/react": "^11.2.5",
     "@testing-library/user-event": "^12.8.3",
+    "autoprefixer": "^10.4.0",
+    "concurrently": "^6.4.0",
     "email-check": "^1.1.0",
     "firebase": "^8.3.0",
     "firebase-admin": "^9.5.0",
     "lodash": "^4.17.21",
     "mailchecker": "^5.0.7",
     "moment": "^2.29.1",
+    "postcss": "^8.4.5",
+    "postcss-cli": "^9.1.0",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-icons": "^4.3.1",
@@ -27,13 +31,16 @@
     "react-spinners": "^0.11.0",
     "reactstrap": "^8.9.0",
     "recharts": "^2.0.9",
+    "tailwindcss": "^3.0.2",
     "web-vitals": "^1.1.0"
   },
   "scripts": {
+    "dev": "concurrently \"npm run tailwind:css\" \"npm run start\"",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "tailwind:css": "postcss ./src/assets/tailwind.css -o ./src/assets/index.css --watch"
   },
   "eslintConfig": {
     "extends": [
@@ -52,6 +59,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "type": "module"
+  }
 }
