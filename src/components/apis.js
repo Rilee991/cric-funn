@@ -47,17 +47,23 @@ export const clearBetsData = async () => {
 }
 
 export const getMatches = async () => {
-    const url = `https://api.cricapi.com/v1/series_info?apikey=${API_KEY}&offset=0&id=${SERIES_ID}`;
+    // const url = `https://api.cricapi.com/v1/series_info?apikey=${API_KEY}&offset=0&id=${SERIES_ID}`;
     try {
-        let response = await fetch(url);
-        response = await response.json();
+        let response = await db.collection("ipl_matches").get();
+        response = {"data.matchList": response.docs.map(doc => {
+            const data = doc.data();
+            return data;
+        })}
+
+        // let response = await fetch(url);
+        // response = await response.json();
         const matches = get(response,'data.matchList',[]);
         const sortedMatches = sortBy(matches, ['dateTimeGMT']);
         let stopOddsChecker = false;
         const filteredMatches = [];
 
         for(const match of sortedMatches) {
-            match.dateTimeGMT = match.dateTimeGMT + 'Z';
+            // match.dateTimeGMT = match.dateTimeGMT + 'Z';
 
             const isIncludedMatch = (moment(match.dateTimeGMT).add(2 ,'days').isSameOrAfter(moment()));
 

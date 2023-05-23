@@ -38,8 +38,8 @@ export default function Admin() {
     const [open, setOpen] = useState(false);
     
     const container = {
-        width: "100%", 
-        padding: mobileView ? "70px 0px" : "70px 200px"
+        // width: "100%", 
+        // padding: mobileView ? "70px 0px" : "70px 200px"
     };
     const [isClear, setIsClear] = useState(true);
     const [isSynced, setIsSynced] = useState(true);

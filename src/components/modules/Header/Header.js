@@ -6,13 +6,13 @@ import { ContextProvider } from '../../../Global/Context';
 import LoggedInHeader from './LoggedInHeader';
 import LoggedOutHeader from './LoggedOutHeader';
 
-const Header = () => {
+const Header = (props) => {
     const contextConsumer = useContext(ContextProvider) || {};
     const { loggedInUserDetails = {} } = contextConsumer;
 
     return ( 
         <>
-            { !isEmpty(loggedInUserDetails) ? <LoggedInHeader /> : <LoggedOutHeader /> }
+            { !isEmpty(loggedInUserDetails) ? <LoggedInHeader setIsDrawerOpen={props.setIsDrawerOpen} /> : <LoggedOutHeader /> }
         </>
     );
 }

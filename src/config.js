@@ -170,7 +170,10 @@ const matchImgs = {"c8742d20-c3cb-4423-aea1-b436f3ac65c3":"IPL-Match-29-GT-vs-CS
 "ab52f012-34b7-4a68-a1af-b95668255a40":"IPL-Match-55-CSK-vs-DC-768x360.jpg",
 "034ccab8-50ac-4dc4-affb-38c73cca0a49":"IPL-Match-66-KKR-vs-LSG-768x360.jpg",
 "6e853a67-5625-434f-babd-5702dcd846a9":"IPL-Match-65-MI-vs-SH-768x360.jpg",
-"9759d12a-14a6-42c2-bbe2-833c6f612ceb":"IPL-Match-67-RCB-vs-GT-768x360.jpg"};
+"9759d12a-14a6-42c2-bbe2-833c6f612ceb":"IPL-Match-67-RCB-vs-GT-768x360.jpg",
+"ebd0d24d-8726-44d3-afdb-40021ce99982": "IPL-Match-29-GT-vs-CSK-768x360.jpg",
+"11db4216-28c6-4725-822e-a40f3ea65187": "IPL-Match-37-LSG-vs-MI-768x360.jpg"};
+
 
 const dimModePalette = {
     backgroundColor: "slategray",

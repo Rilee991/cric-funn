@@ -12,7 +12,6 @@ import Graph from './components/modules/Points/Graph';
 import GlobalStats from './components/modules/GlobalStats/GlobalStats';
 import { dimModePalette } from './config';
 
-// normal_mode:no color
 const App = () => {
   return (
     <Router>
