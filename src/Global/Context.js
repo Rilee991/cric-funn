@@ -724,7 +724,7 @@ const Context = (props) => {
 
     const checkMobileView = () => {
         const setResponsiveness = () => {
-            return window.innerWidth < 900 ? setMobileView(true) : setMobileView(false);
+            return window.innerWidth < 960 ? setMobileView(true) : setMobileView(false);
         }
       
         setResponsiveness();
