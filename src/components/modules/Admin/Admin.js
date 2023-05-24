@@ -26,7 +26,7 @@ const StyledTableRow = withStyles((theme) => ({
 
 const useStyles = makeStyles({
   table: {
-    minWidth: 700,
+    minWidth: "100%",
   },
 });
 
@@ -38,7 +38,7 @@ export default function Admin() {
     const [open, setOpen] = useState(false);
     
     const container = {
-        // width: "100%", 
+        width: "100%", 
         // padding: mobileView ? "70px 0px" : "70px 200px"
     };
     const [isClear, setIsClear] = useState(true);
@@ -81,7 +81,7 @@ export default function Admin() {
             <Table className={classes.table} aria-label="customized table caption">
                 <TableHead>
                     <TableRow>
-                        <StyledTableCell ><Typography variant="overline">Username</Typography></StyledTableCell>
+                        <StyledTableCell><Typography variant="overline">Username</Typography></StyledTableCell>
                         <StyledTableCell align="center"><Typography variant="overline">Action</Typography></StyledTableCell>
                     </TableRow>
                 </TableHead>
@@ -89,12 +89,12 @@ export default function Admin() {
                     {tableData.length ? tableData.map((row, index) => (
                         <StyledTableRow key={index}>
                             <StyledTableCell component="th" scope="row">{row.username}</StyledTableCell>
-                            <StyledTableCell align="center">
-                              <Button variant="contained" disabled={true} onClick={() => onClickClear(row.username)} color="secondary">Reset Bets</Button>
+                            <StyledTableCell align="center" className="tw-flex tw-gap-1 tw-justify-center">
+                              <Button variant="contained" disabled={true} onClick={() => onClickClear(row.username)} color="secondary">Reset</Button>
                               {" "}
-                              <Button variant="contained" onClick={() => onClickSync(row.username)} color="secondary">Sync Bets</Button>
+                              <Button variant="contained" onClick={() => onClickSync(row.username)} color="secondary">Sync</Button>
                               {" "}
-                              <Button variant="contained" onClick={() => restoreData(row.username)} color="primary">Restore Data</Button>
+                              <Button variant="contained" onClick={() => restoreData(row.username)} color="primary">Restore</Button>
                             </StyledTableCell>
                         </StyledTableRow>
                     )) : <div style={{justifyContent: "center", alignContent: "center"}}><Typography variant="overline" style={{fontSize: 15}}>Loading Data Please wait...</Typography></div>}

@@ -45,8 +45,8 @@ export default function GenericTable(props) {
 
     const classes = useStyles();
     const container = {
-        width: "100%", 
-        padding: mobileView ? "70px 0px" : "70px 200px"
+        // width: "100%", 
+        // padding: mobileView ? "70px 0px" : "70px 200px"
     };
 
     function getColor(rank) {

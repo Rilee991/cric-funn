@@ -9,3 +9,9 @@
 body {
   font-family: 'Raleway', sans-serif;
 }
+
+.sc-bxivhb {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}

@@ -27,12 +27,16 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Header = (props) => {
-	const { setIsDrawerOpen } = props;
+	const { setIsDrawerOpen, setIsNotificationsOpen } = props;
 	const classes = useStyles();
 
 	const handleDrawerToggle = () => {
 		setIsDrawerOpen(prev => !prev);
 	};
+
+	const handleNotificationsToggle = () => {
+		setIsNotificationsOpen(prev => !prev);
+	}
 
 	const getCricFunnLogo = () => (
 		<Link href="/">
@@ -50,7 +54,7 @@ const Header = (props) => {
 							color="inherit"
 							aria-label="open drawer"
 							edge="start"
-							onClick={handleDrawerToggle}
+							onClick={handleNotificationsToggle}
 							className={`${classes.menuButton} tw-m-0`}
 						>
 							<OfflineBolt />

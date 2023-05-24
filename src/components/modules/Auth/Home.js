@@ -36,7 +36,7 @@ const Home = () => {
   const { mobileView, } = contextConsumer;
   const container = {
     width: "100%", 
-    padding: mobileView ? "70px 0px" : "70px 200px"
+    // padding: mobileView ? "70px 0px" : "70px 200px"
   };
   const [matches, setMatches] = useState([]);
 

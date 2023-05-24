@@ -207,7 +207,7 @@ function Graph() {
     return (
         <div style={{
             width: "100%", 
-            padding: mobileView ? "70px 0px" : "70px 200px"
+            // padding: mobileView ? "70px 0px" : "70px 200px"
         }}>
             {getPointsJourney()}
             <br /><br /><br />

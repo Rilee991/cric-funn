@@ -147,7 +147,7 @@ function StatsCard(props) {
                             </Grid>
 
                             <Grid item xs={10}>
-                                <Paper style={paper}>LAST 5 BETS FORM:  
+                                <Paper style={paper}>RECENT FORM:  
                                     { last5Results.length == 0 ? "NO BETTING DONE" : last5Results.map(result => 
                                         (<>  {"  "}
                                             {result == 'I' ? <img width={mobileView ? 15 : 18} src={inProgressLogo}/> 
