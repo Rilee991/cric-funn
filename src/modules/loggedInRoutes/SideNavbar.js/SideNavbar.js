@@ -12,7 +12,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Typography } from '@material-ui/core';
 import { ContextProvider } from '../../../Global/Context';
 import './SideNavbar.css';
-import { BubbleChartOutlined, PublicOutlined, StarBorderOutlined, StarsOutlined, TimelineOutlined, VpnKey, Whatshot, WhatshotOutlined } from '@material-ui/icons';
 import { Link } from 'react-router-dom';
 
 const drawerWidth = 240;
@@ -52,50 +51,13 @@ const useStyles = makeStyles((theme) => ({
 
 
 const SideNavbar = (props) => {
-    const { setIsDrawerOpen, isDrawerOpen } = props;
+    const { setIsDrawerOpen, isDrawerOpen, navSelected, navItems, setNavSelected } = props;
     const contextConsumer = useContext(ContextProvider);
     const { mobileView } = contextConsumer;
     const classes = useStyles();
 
     const handleDrawerToggle = () => {
         setIsDrawerOpen(prev => !prev);
-    };
-
-    const getNavItems = () => {
-        const navItems = [{
-            id: 1,
-            name: "Home",
-            to: "/",
-            icon: <WhatshotOutlined />
-        }, {
-            id: 2,
-            name: "My Bets",
-            to: "/my-bets",
-            icon: <TimelineOutlined />
-        }, {
-            id: 3,
-            name: "Graphs",
-            to: "/graphs",
-            icon: <BubbleChartOutlined />
-        }, {
-            id: 4,
-            name: "Global Stats",
-            to: "/global-stats",
-            icon: <PublicOutlined />
-        }, {
-            id: 5,
-            name: "Points Table",
-            to: "/points-table",
-            icon: <StarBorderOutlined />
-        }, {
-            id: 6,
-            name: "Logout",
-            to: "/",
-            onClick: () => {console.log("3")},
-            icon: <VpnKey />
-        }];
-
-        return navItems;
     }
 
     const getDrawerItems = () => (
@@ -109,9 +71,9 @@ const SideNavbar = (props) => {
             <Divider />
             <div>
                 <List>
-                    {getNavItems().map((item, index) => (
-                        <Link to={item.to} key={item.id}>
-                            <ListItem button key={item.name}>
+                    {navItems.map((item, index) => (
+                        <Link to={item.to} key={item.id} onClick={() => setNavSelected(item.id)}>
+                            <ListItem style={{ background: navSelected == item.id ? "darkslateblue" : "", borderRadius: "40px" }} className="hover:tw-bg-blue-600 tw-mb-1" button key={item.name}>
                                 <ListItemIcon className="neon">
                                     {/* {index % 2 === 0 ? <InboxIcon /> : <MailIcon />} */}
                                     {item.icon}
