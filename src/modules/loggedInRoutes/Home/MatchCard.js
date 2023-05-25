@@ -5,22 +5,22 @@ import { find, get, isEmpty } from 'lodash';
 import moment from 'moment';
 
 import { ContextProvider } from '../../../Global/Context';
-import { getMatchDetails } from '../../apis';
-import { fontVariant, getFormattedTimeISOString, getMsgForClosedBets, getMsgForInProgressBets, getMsgForLostBets, getMsgForNoResultBets, getMsgForOpenBets, getMsgForUpcomingBets, getMsgForWonBets, getTeamLogo, matchHeadingFontSize, themeColor } from '../../../config';
+import { getMatchDetails } from '../../../components/apis';
+import { fontVariant, getFormattedTimeISOString, getMsgForClosedBets, getMsgForInProgressBets, getMsgForLostBets, getMsgForNoResultBets, getMsgForOpenBets, getMsgForUpcomingBets, getMsgForWonBets, getPerc, getTeamLogo, matchHeadingFontSize, teamProps, themeColor } from '../../../config';
 
-import MatchDetails from './MatchDetails';
 import BettingDialog from './BettingDialog';
 import ViewBetsDialog from './ViewBetsDialog';
-import MatchPic from '../../common/MatchPic';
+import MatchPic from '../../../components/common/MatchPic';
 
-const CricketCard = (props) => {
+
+const MatchCard = (props) => {
   const contextConsumer = useContext(ContextProvider);  
   const  { match = {} } = props;
   const { loggedInUserDetails, mobileView, updateSeenBets } = contextConsumer;
   
   const { bets = [], points, username = "", isAdmin = false } = loggedInUserDetails;
 
-  const { dateTimeGMT: matchTime, id: matchId, name: matchTitle, team1Abbreviation, teamInfo, team2Abbreviation, status, venue, odds = [], banner } = match;
+  const { dateTimeGMT: matchTime, id: matchId, name: matchTitle, team1Abbreviation, teamInfo = [], team2Abbreviation, status, venue, odds = [], banner } = match;
   
   const [bettingDoneByUser, setBettingDoneByUser] = useState(false);
   const [matchDetails, setMatchDetails] = useState({});
@@ -34,7 +34,6 @@ const CricketCard = (props) => {
   const team1Logo = getTeamLogo(team1Abbreviation);
   const team2Logo = getTeamLogo(team2Abbreviation);
   
-  console.log("src1")
   const [bettingOn, setBettingOn] = useState((moment() >= betStartTime && moment() <= betEndTime) && (bettingDoneByUser == false));
   
   const [canViewBets, setCanViewBets] = useState(moment() > betEndTime);
@@ -46,7 +45,7 @@ const CricketCard = (props) => {
 
   const root = {
     width: mobileView ? '100%' : '70%',
-    marginBottom: "50px"
+    marginBottom: "40px"
   };
 
     useEffect(()=> {
@@ -55,7 +54,6 @@ const CricketCard = (props) => {
       const bettingDone = isEmpty(bet) ? false : true;
 
       setBettingDoneByUser(bettingDone);
-      console.log("src2")
       setBettingOn(moment() >= betStartTime && moment() <= betEndTime && !bettingDone);
       setCanViewBets(moment() > betEndTime);
 
@@ -123,13 +121,26 @@ const CricketCard = (props) => {
       updateSeenBets(matchId, username);
     }
 
+    const oddsParams = {};
+
+    if(!isEmpty(odds)) {
+      oddsParams["team1Color"] = teamProps[odds[0].name].color;
+      oddsParams["team1Abbr"] = teamProps[odds[0].name].abbr;
+      oddsParams["team1Perc"] = getPerc(odds[0].price, odds[1].price);
+      oddsParams["team1Logo"] = teamProps[odds[0].name].logo;
+      oddsParams["team2Color"] = teamProps[odds[1].name].color;
+      oddsParams["team2Abbr"] = teamProps[odds[1].name].abbr;
+      oddsParams["team2Perc"] = getPerc(odds[1].price, odds[0].price);
+      oddsParams["team2Logo"] = teamProps[odds[1].name].logo;
+    }
+
     return (
       <>
-        <Card style={root}>
+        <Card className="tw-mt-2 tw-mb-10 xl:tw-w-[70%] md:tw-w-[90%] tw-rounded-[40px]">
           <CardActionArea>
             <CardContent>
               <MatchPic banner={banner} matchTime={matchTime} team1Logo={team1Logo} team2Logo={team2Logo} mobileView={mobileView}/>
-              <Typography gutterBottom variant={fontVariant} style={{fontSize: matchHeadingFontSize}} component="h2">
+              <Typography className="-tw-mt-5" gutterBottom variant={fontVariant} style={{fontSize: matchHeadingFontSize}} component="h2">
                 <b>{get(matchTitle.split(","),'[0]','No Title')}</b>
               </Typography>
               <Typography variant={fontVariant} style={{fontSize: 13}} color="textSecondary" component="p">
@@ -141,18 +152,31 @@ const CricketCard = (props) => {
               <Typography variant={fontVariant} style={{fontSize: 13}} color="textSecondary" component="p">
                 <b>{status}</b>
               </Typography>
-              <Typography variant={fontVariant} style={{fontSize: 13}} color="primary" component="p">
+              {/* <Typography variant={fontVariant} style={{fontSize: 13}} color="primary" component="p">
                 <b>{isEmpty(odds) ? `Odds updation in progress...` : `${odds[0].name}: ${odds[0].price}, ${odds[1].name}: ${odds[1].price}`  }</b>
-              </Typography>
+              </Typography> */}
+              
+              {!isEmpty(odds) ?
+                <div style={{ background: oddsParams.team1Color }} className={`tw-h-[5vh] tw-rounded-[30px] tw-mt-2 tw-text-white tw-flex`}>
+                  <div style={{ backgroundColor: oddsParams.team1Color, width: oddsParams.team1Perc+"%", backgroundImage: `url(${oddsParams.team1Logo})`, backgroundSize: "cover", backgroundPosition: "center", backgroundBlendMode: "multiply" }} className="tw-rounded-[30px] tw-flex tw-items-center tw-justify-center">
+                    <Typography variant={fontVariant} style={{fontSize: mobileView ? 16 : 13, textShadow: "0 0 3px #0e0101, 0 0 5px #e7e7e9"}} component="p">
+                      <b>{`${mobileView ? oddsParams.team1Abbr : odds[0].name}: ${odds[0].price}`}</b>
+                    </Typography>
+                  </div>
+                  <div style={{ backgroundColor: oddsParams.team2Color, width: oddsParams.team2Perc+"%", backgroundImage: `url(${oddsParams.team2Logo})`, backgroundSize: "cover", backgroundPosition: "center", backgroundBlendMode: "multiply" }} className="tw-rounded-[30px] tw-flex tw-items-center tw-justify-center">
+                    <Typography variant={fontVariant} style={{fontSize: mobileView ? 16 : 13, textShadow: "0 0 3px #0e0101, 0 0 5px #e7e7e9"}} component="p">
+                      <b>{`${mobileView ? oddsParams.team2Abbr : odds[1].name}: ${odds[1].price}`}</b>
+                    </Typography>
+                  </div>
+                </div> : <div className="tw-bg-indigo-950 tw-h-[5vh] tw-mt-2 tw-rounded-[20px] tw-flex tw-justify-center tw-items-center tw-text-white">
+                  <Typography variant={fontVariant} style={{fontSize: 13}} component="p">
+                    <b>Odds updation in progress...</b>
+                  </Typography>
+                </div>}
             </CardContent>
           </CardActionArea>
 
           <CardActions>
-            {/* <Button size="small" style={{ backgroundColor: themeColor, color: "white" }} variant="contained" onClick={() => handleOnClickMatchDetails(matchId)}>
-              <Typography variant="overline">
-                {"Match Details"}
-              </Typography>
-            </Button> */}
             <Button size="small" style={{ backgroundColor: bettingOn ? themeColor : 'grey', color: "white" }} variant="contained" disabled={bettingOn ? false : true} onClick={() => handleOnClickLetsBet()}>
               <Typography variant="overline">
                 {"Let's Bet"}
@@ -169,15 +193,6 @@ const CricketCard = (props) => {
             <b>{message}</b>
           </Alert>
         </Card>
-
-        <MatchDetails 
-          isMatchDetailsLoading={isMatchDetailsLoading} 
-          matchDetails={matchDetails} 
-          open={openMatchDetailsDialogBox} 
-          handleClose={handleCloseMatchDetails} 
-          team1Abbreviation={team1Abbreviation} 
-          team2Abbreviation={team2Abbreviation}
-        />
 
         <BettingDialog
           matchDetails={match} 
@@ -198,4 +213,4 @@ const CricketCard = (props) => {
     );
 }
 
-export default CricketCard;
+export default MatchCard;

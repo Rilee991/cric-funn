@@ -709,6 +709,7 @@ const Context = (props) => {
             console.log("Settling event counted");
             if(betSettledCount) {
                 setNotifications(notifications);
+                console.log("Updating users:", { bets, finalPoints, username, t: admin.default.firestore.Timestamp.fromDate(new Date())})
                 await db.collection("users").doc(username).update({
                     bets,
                     points: finalPoints,

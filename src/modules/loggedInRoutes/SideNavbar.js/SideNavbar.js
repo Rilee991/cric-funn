@@ -42,7 +42,7 @@ const useStyles = makeStyles((theme) => ({
   toolbar: theme.mixins.gutters,
   drawerPaper: {
     width: drawerWidth,
-    linearGradient: "linear-gradient(45deg, #1634d6, black)"
+    background: "linear-gradient(45deg, #1634d6, black)"
   },
   content: {
     flexGrow: 1,

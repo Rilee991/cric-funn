@@ -60,6 +60,59 @@ const teamNames = ["Chennai Super Kings", "Delhi Capitals", "Kolkata Knight Ride
     "Royal Challengers Bangalore", "No Betting Done."
 ]
 
+const teamProps = {
+    "Chennai Super Kings": {
+        color: "#694B08",
+        abbr: "CSK",
+        logo: cskLogo
+    },
+    "Delhi Capitals": {
+        color: "#1D1CE5",
+        abbr: "DC",
+        logo: dcLogo
+    },
+    "Kolkata Knight Riders": {
+        color: "#674188",
+        abbr: "KKR",
+        logo: kkrLogo
+    },
+    "Sunrisers Hyderabad": {
+        color: "#a65e14",
+        abbr: "SRH",
+        logo: srhLogo
+    },
+    "Mumbai Indians": {
+        color: "#2F58CD",
+        abbr: "MI",
+        logo: miLogo
+    },
+    "Rajasthan Royals": {
+        color: "#E11299",
+        abbr: "RR",
+        logo: rrLogo
+    },
+    "Gujarat Titans": {
+        color: "#3e5477",
+        abbr: "GT",
+        logo: gtLogo
+    },
+    "Lucknow Super Giants": {
+        color: "#1A2C5B",
+        abbr: "LSG",
+        logo: lsgLogo
+    },
+    "Punjab Kings": {
+        color: "#F45050",
+        abbr: "PBKS",
+        logo: pkLogo
+    },
+    "Royal Challengers Bangalore": {
+        color: "#850000",
+        abbr: "RCB",
+        logo: rcbLogo
+    }
+}
+
 const fontVariant = "button";
 const matchHeadingFontSize = 20;
 
@@ -99,7 +152,7 @@ function getFormattedFirebaseTime(firebaseTime) {
     return firebaseTime ? moment.unix(firebaseTime.seconds).format("LLL") : "NA";
 }
 
-const iplMatches = JSON.parse('[{"id":"ebd0d24d-8726-44d3-afdb-40021ce99982","name":"Gujarat Titans vs Chennai Super Kings, Qualifier 1","matchType":"t20","status":"Match not started","venue":"MA Chidambaram Stadium, Chennai","date":"2023-05-23","dateTimeGMT":"2023-05-23T14:00:00Z","teams":["Gujarat Titans","Chennai Super Kings"],"fantasyEnabled":false,"bbbEnabled":false,"hasSquad":false,"matchStarted":false,"matchEnded":false},{"id":"11db4216-28c6-4725-822e-a40f3ea65187","name":"Lucknow Super Giants vs Mumbai Indians, Eliminator","matchType":"t20","status":"Match not started","venue":"MA Chidambaram Stadium, Chennai","date":"2023-05-24","dateTimeGMT":"2023-05-24T14:00:00Z","teams":["Lucknow Super Giants","Mumbai Indians"],"fantasyEnabled":false,"bbbEnabled":false,"hasSquad":false,"matchStarted":false,"matchEnded":false},{"id":"63c6436d-3d09-4e9c-b0e1-7f9379eafdd5","name":"Tbc vs Tbc, Qualifier 2","matchType":"t20","status":"Match not started","venue":"Narendra Modi Stadium, Ahmedabad","date":"2023-05-26","dateTimeGMT":"2023-05-26T14:00:00Z","teams":["Tbc","Tbc"],"fantasyEnabled":false,"bbbEnabled":false,"hasSquad":false,"matchStarted":false,"matchEnded":false},{"id":"63c6436d-3d09-4e9c-b0e1-7f9379eafdd5","name":"Tbc vs Tbc, The Final","matchType":"t20","status":"Match not started","venue":"Narendra Modi Stadium, Ahmedabad","date":"2023-05-26","dateTimeGMT":"2023-05-26T14:00:00Z","teams":["Tbc","Tbc"],"fantasyEnabled":false,"bbbEnabled":false,"hasSquad":false,"matchStarted":false,"matchEnded":false}]');
+const iplMatches = JSON.parse('[{"id":"ebd0d24d-8726-44d3-afdb-40021ce99982","name":"Gujarat Titans vs Chennai Super Kings, Qualifier 1","matchType":"t20","team1Abbreviation": "GT","team2Abbreviation": "CSK","team1":"Gujarat Titans","team2":"Chennai Super Kings","status":"Match not started","venue":"MA Chidambaram Stadium, Chennai","date":"2023-05-23","dateTimeGMT":"2023-05-23T14:00:00Z","teams":["Gujarat Titans","Chennai Super Kings"],"fantasyEnabled":false,"bbbEnabled":false,"hasSquad":false,"matchStarted":false,"matchEnded":false},{"id":"11db4216-28c6-4725-822e-a40f3ea65187","name":"Lucknow Super Giants vs Mumbai Indians, Eliminator","matchType":"t20","status":"Match not started","venue":"MA Chidambaram Stadium, Chennai","date":"2023-05-24","dateTimeGMT":"2023-05-24T14:00:00Z","teams":["Lucknow Super Giants","Mumbai Indians"],"fantasyEnabled":false,"bbbEnabled":false,"hasSquad":false,"matchStarted":false,"matchEnded":false},{"id":"63c6436d-3d09-4e9c-b0e1-7f9379eafdd5","name":"Tbc vs Tbc, Qualifier 2","matchType":"t20","status":"Match not started","venue":"Narendra Modi Stadium, Ahmedabad","date":"2023-05-26","dateTimeGMT":"2023-05-26T14:00:00Z","teams":["Tbc","Tbc"],"fantasyEnabled":false,"bbbEnabled":false,"hasSquad":false,"matchStarted":false,"matchEnded":false},{"id":"63c6436d-3d09-4e9c-b0e1-7f9379eafdd5","name":"Tbc vs Tbc, The Final","matchType":"t20","status":"Match not started","venue":"Narendra Modi Stadium, Ahmedabad","date":"2023-05-26","dateTimeGMT":"2023-05-26T14:00:00Z","teams":["Tbc","Tbc"],"fantasyEnabled":false,"bbbEnabled":false,"hasSquad":false,"matchStarted":false,"matchEnded":false}]');
 
 const matchImgs = {"c8742d20-c3cb-4423-aea1-b436f3ac65c3":"IPL-Match-29-GT-vs-CSK-768x360.jpg",
 "99c2990f-3e53-4cfa-8697-ab3d92b19f35":"IPL-Match-8-KKR-vs-PK-768x360.jpg",
@@ -186,6 +239,10 @@ const dimModePalette = {
     tableCaptionBackgroundColor: "darkslateblue"
 }
 
+const getPerc = (score1, score2) => {
+    return ((score1/(score1 + score2))*100).toFixed(0);
+}
+
 // themeColor = dimModePalette.headerBackgroundColor //normal_mode - don't assign again
 
 export { 
@@ -205,6 +262,7 @@ export {
     firebase,
     matchImgs,
     dimModePalette,
+    teamProps,
 
     getTeamLogo,
     getFormattedTimeISOString,
@@ -215,5 +273,6 @@ export {
     getMsgForNoResultBets, 
     getMsgForInProgressBets, 
     getMsgForOpenBets,
-    getFormattedFirebaseTime
+    getFormattedFirebaseTime,
+    getPerc
 }

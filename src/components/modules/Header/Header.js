@@ -3,7 +3,7 @@ import { isEmpty } from 'lodash';
 
 import { ContextProvider } from '../../../Global/Context';
 
-import LoggedInHeader from './LoggedInHeader copy';
+import LoggedInHeader from './LoggedInHeader';
 import LoggedOutHeader from './LoggedOutHeader';
 
 const Header = (props) => {
