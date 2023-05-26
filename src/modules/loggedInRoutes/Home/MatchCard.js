@@ -178,19 +178,19 @@ const MatchCard = (props) => {
           </CardActionArea>
 
           <CardActions className="tw-flex tw-justify-center tw-px-4 tw-pt-0">
-            <Button size="small" className="tw-w-1/2 tw-rounded-[40px]" style={{ backgroundColor: bettingOn ? themeColor : 'grey', color: "white" }} variant="contained" disabled={bettingOn ? false : true} onClick={() => handleOnClickLetsBet()}>
+            <Button size="small" className="tw-w-1/2 tw-rounded-[40px]" style={{ background: bettingOn ? "linear-gradient(44deg, #250c51, #605317)" : 'grey', color: "white" }} variant="contained" disabled={bettingOn ? false : true} onClick={() => handleOnClickLetsBet()}>
               <Typography variant="overline">
                 {"Let's Bet"} <FlashOnOutlined />
               </Typography>
             </Button>
-            <Button size="small" className="tw-w-1/2 tw-rounded-[40px]" style={{ backgroundColor: canViewBets ? themeColor : 'grey', color: "white" }} variant="contained" disabled={canViewBets ? false : true} onClick={() => handleOnClickViewBets(matchId)}>
+            <Button size="small" className="tw-w-1/2 tw-rounded-[40px]" style={{ background: canViewBets ? "linear-gradient(44deg, #250c51, #605317)" : 'grey', color: "white" }} variant="contained" disabled={canViewBets ? false : true} onClick={() => handleOnClickViewBets(matchId)}>
               <Typography variant="overline">
                 {"View Bets"} <VisibilityOutlined />
               </Typography>
             </Button>
           </CardActions>
 
-          <Alert severity={severity} variant="standard">
+          <Alert severity={severity} variant="filled" className="tw-rounded-[40px]">
             <b>{message}</b>
           </Alert>
         </Card>
