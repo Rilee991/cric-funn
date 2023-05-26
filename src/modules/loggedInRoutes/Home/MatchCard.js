@@ -1,5 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { Card, CardActionArea, CardActions, CardContent, Button, Typography } from '@material-ui/core';
+import { FlashOnOutlined, VisibilityOutlined } from '@material-ui/icons';
 import Alert from '@material-ui/lab/Alert';
 import { find, get, isEmpty } from 'lodash';
 import moment from 'moment';
@@ -136,7 +137,7 @@ const MatchCard = (props) => {
 
     return (
       <>
-        <Card className="tw-mt-2 tw-mb-10 xl:tw-w-[70%] md:tw-w-[90%] tw-rounded-[40px]">
+        <Card style={{ boxShadow: "5px 5px 20px"}} className="tw-mt-2 tw-mb-10 xl:tw-w-[70%] md:tw-w-[90%] tw-rounded-[40px]">
           <CardActionArea>
             <CardContent>
               <MatchPic banner={banner} matchTime={matchTime} team1Logo={team1Logo} team2Logo={team2Logo} mobileView={mobileView}/>
@@ -176,15 +177,15 @@ const MatchCard = (props) => {
             </CardContent>
           </CardActionArea>
 
-          <CardActions>
-            <Button size="small" style={{ backgroundColor: bettingOn ? themeColor : 'grey', color: "white" }} variant="contained" disabled={bettingOn ? false : true} onClick={() => handleOnClickLetsBet()}>
+          <CardActions className="tw-flex tw-justify-center tw-px-4 tw-pt-0">
+            <Button size="small" className="tw-w-1/2 tw-rounded-[40px]" style={{ backgroundColor: bettingOn ? themeColor : 'grey', color: "white" }} variant="contained" disabled={bettingOn ? false : true} onClick={() => handleOnClickLetsBet()}>
               <Typography variant="overline">
-                {"Let's Bet"}
+                {"Let's Bet"} <FlashOnOutlined />
               </Typography>
             </Button>
-            <Button size="small" style={{ backgroundColor: canViewBets ? themeColor : 'grey', color: "white" }} variant="contained" disabled={canViewBets ? false : true} onClick={() => handleOnClickViewBets(matchId)}>
+            <Button size="small" className="tw-w-1/2 tw-rounded-[40px]" style={{ backgroundColor: canViewBets ? themeColor : 'grey', color: "white" }} variant="contained" disabled={canViewBets ? false : true} onClick={() => handleOnClickViewBets(matchId)}>
               <Typography variant="overline">
-                {"View Bets"}
+                {"View Bets"} <VisibilityOutlined />
               </Typography>
             </Button>
           </CardActions>

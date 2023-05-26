@@ -97,7 +97,7 @@ const teamProps = {
         logo: gtLogo
     },
     "Lucknow Super Giants": {
-        color: "#1A2C5B",
+        color: "#394e87",
         abbr: "LSG",
         logo: lsgLogo
     },
@@ -225,7 +225,9 @@ const matchImgs = {"c8742d20-c3cb-4423-aea1-b436f3ac65c3":"IPL-Match-29-GT-vs-CS
 "6e853a67-5625-434f-babd-5702dcd846a9":"IPL-Match-65-MI-vs-SH-768x360.jpg",
 "9759d12a-14a6-42c2-bbe2-833c6f612ceb":"IPL-Match-67-RCB-vs-GT-768x360.jpg",
 "ebd0d24d-8726-44d3-afdb-40021ce99982": "IPL-Match-29-GT-vs-CSK-768x360.jpg",
-"11db4216-28c6-4725-822e-a40f3ea65187": "IPL-Match-37-LSG-vs-MI-768x360.jpg"};
+"11db4216-28c6-4725-822e-a40f3ea65187": "IPL-Match-37-LSG-vs-MI-768x360.jpg",
+"63c6436d-3d09-4e9c-b0e1-7f9379eafdd5": "IPL-Match-51-GT-vs-MI-768x360.jpg",
+"faa22a1a-a48b-42dd-96cd-8f5a4e38b3b0": "IPL-Match-29-GT-vs-CSK-768x360.jpg"};
 
 
 const dimModePalette = {
