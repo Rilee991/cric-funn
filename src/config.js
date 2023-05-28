@@ -227,7 +227,7 @@ const matchImgs = {"c8742d20-c3cb-4423-aea1-b436f3ac65c3":"IPL-Match-29-GT-vs-CS
 "ebd0d24d-8726-44d3-afdb-40021ce99982": "IPL-Match-29-GT-vs-CSK-768x360.jpg",
 "11db4216-28c6-4725-822e-a40f3ea65187": "IPL-Match-37-LSG-vs-MI-768x360.jpg",
 "63c6436d-3d09-4e9c-b0e1-7f9379eafdd5": "IPL-Match-51-GT-vs-MI-768x360.jpg",
-"faa22a1a-a48b-42dd-96cd-8f5a4e38b3b0": "IPL-Match-29-GT-vs-CSK-768x360.jpg"};
+"faa22a1a-a48b-42dd-96cd-8f5a4e38b3b0": "https://pbs.twimg.com/media/FxHaccgWAAA_W4s?format=jpg&name=medium"};
 
 
 const dimModePalette = {
@@ -242,6 +242,8 @@ const dimModePalette = {
 }
 
 const getPerc = (score1, score2) => {
+    score1 = parseFloat(score1);
+    score2 = parseFloat(score2);
     return ((score1/(score1 + score2))*100).toFixed(0);
 }
 

@@ -9,9 +9,10 @@ import moment from 'moment';
 function MatchPic(props) {
     const { team1Logo, team2Logo, mobileView, matchTime, banner = "", src = "" } = props;
     const isNightMatch = moment(matchTime).hours() > 18;
-
+console.log(banner);
     const backgroundImage = {
-        backgroundImage: src == "bet" ? `url(${isNightMatch ? nightBackGround : dayBackGround})` : `url(https://cdorg.b-cdn.net/wp-content/uploads/2022/03/${banner})`, 
+        backgroundImage: src == "bet" ? `url(${isNightMatch ? nightBackGround : dayBackGround})` : `url(${banner})`,
+        // `url(https://cdorg.b-cdn.net/wp-content/uploads/2022/03/${banner})` 
         backgroundRepeat:"no-repeat", 
         backgroundSize: "100% 90%",
         height: mobileView ? 200 : 400

@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { Card, CardActionArea, CardActions, CardContent, Button, Typography } from '@material-ui/core';
-import { FlashOnOutlined, VisibilityOutlined } from '@material-ui/icons';
+import { Card, CardActionArea, CardActions, CardContent, Button, Typography, Chip } from '@material-ui/core';
+import { FlashOnOutlined, VisibilityOutlined, FaceOutlined } from '@material-ui/icons';
 import Alert from '@material-ui/lab/Alert';
 import { find, get, isEmpty } from 'lodash';
 import moment from 'moment';
@@ -133,6 +133,7 @@ const MatchCard = (props) => {
       oddsParams["team2Abbr"] = teamProps[odds[1].name].abbr;
       oddsParams["team2Perc"] = getPerc(odds[1].price, odds[0].price);
       oddsParams["team2Logo"] = teamProps[odds[1].name].logo;
+      console.log(odds[0].price, odds[1].price);
     }
 
     return (

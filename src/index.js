@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import App from './App copy.js';
+import App from './App.js';
 import "./assets/index.css";
 import Context from './Global/Context';
 

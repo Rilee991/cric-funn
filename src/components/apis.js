@@ -65,7 +65,7 @@ export const getMatches = async () => {
         for(const match of sortedMatches) {
             // match.dateTimeGMT = match.dateTimeGMT + 'Z';
 
-            const isIncludedMatch = (moment(match.dateTimeGMT).add(10 ,'days').isSameOrAfter(moment()));
+            const isIncludedMatch = (moment(match.dateTimeGMT).add(1 ,'days').isSameOrAfter(moment()));
 
             if(!isIncludedMatch)  continue;
             
@@ -83,6 +83,7 @@ export const getMatches = async () => {
                 }
             }
 
+            console.log(match.id);
             match.banner = matchImgs[match.id];
 
             filteredMatches.push(match);

@@ -5,6 +5,7 @@ import { ContextProvider } from '../../../Global/Context';
 
 import CricketCard from './CricketCard';
 import LoadingComponent from '../../common/LoadingComponent';
+import MatchCard from '../../../modules/loggedInRoutes/Home/MatchCard';
 
 // {
 //     "id":"048d4bdf-88de-4981-b330-03ceb18eb6a1",
@@ -36,7 +37,7 @@ const Home = () => {
   const { mobileView, } = contextConsumer;
   const container = {
     width: "100%", 
-    // padding: mobileView ? "70px 0px" : "70px 200px"
+    padding: mobileView ? "70px 0px" : "70px 200px"
   };
   const [matches, setMatches] = useState([]);
 
@@ -76,7 +77,8 @@ const Home = () => {
   return (
     <div style={container}>
       {matches.length ? matches.map((match, index) => (
-        <CricketCard key={index} match={match}/>
+        // <CricketCard key={index} match={match}/>
+        <MatchCard key={index} match={match} />
       ))  : <LoadingComponent /> }
     </div>
   );
