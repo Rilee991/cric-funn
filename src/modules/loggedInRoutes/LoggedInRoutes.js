@@ -12,7 +12,7 @@ import SideNavbar from './SideNavbar.js/SideNavbar';
 import { find } from 'lodash';
 
 const LoggedInRoutes = () => {
-    const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+    const [isNavOpen, setIsNavOpen] = useState(false);
     const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
     const [navSelected, setNavSelected] = useState(1);
 
@@ -67,13 +67,13 @@ const LoggedInRoutes = () => {
     return (
         <div className="tw-flex tw-flex-col">
             <div>
-                <Header setIsDrawerOpen={setIsDrawerOpen} setIsNotificationsOpen={setIsNotificationsOpen} />
+                <Header setIsNavOpen={setIsNavOpen} setIsNotificationsOpen={setIsNotificationsOpen} />
             </div>
             <div className="tw-flex">
                 <div>
                     <SideNavbar 
-                        setIsDrawerOpen={setIsDrawerOpen}
-                        isDrawerOpen={isDrawerOpen}
+                        setIsNavOpen={setIsNavOpen}
+                        isNavOpen={isNavOpen}
                         setIsNotificationsOpen={setIsNotificationsOpen}
                         isNotificationsOpen={isNotificationsOpen}
                         navItems={navItems}

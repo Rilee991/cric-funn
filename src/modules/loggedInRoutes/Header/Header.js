@@ -27,11 +27,11 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Header = (props) => {
-	const { setIsDrawerOpen, setIsNotificationsOpen } = props;
+	const { setIsNavOpen, setIsNotificationsOpen } = props;
 	const classes = useStyles();
 
 	const handleDrawerToggle = () => {
-		setIsDrawerOpen(prev => !prev);
+		setIsNavOpen(prev => !prev);
 	};
 
 	const handleNotificationsToggle = () => {

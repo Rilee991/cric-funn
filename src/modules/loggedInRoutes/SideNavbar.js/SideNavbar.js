@@ -51,13 +51,18 @@ const useStyles = makeStyles((theme) => ({
 
 
 const SideNavbar = (props) => {
-    const { setIsDrawerOpen, isDrawerOpen, navSelected, navItems, setNavSelected } = props;
+    const { setIsNavOpen, isNavOpen, navSelected, navItems, setNavSelected } = props;
     const contextConsumer = useContext(ContextProvider);
     const { mobileView } = contextConsumer;
     const classes = useStyles();
 
     const handleDrawerToggle = () => {
-        setIsDrawerOpen(prev => !prev);
+        setIsNavOpen(prev => !prev);
+    }
+
+    const onClickNavItem = (item) => {
+        setNavSelected(item.id);
+        setIsNavOpen(false);
     }
 
     const getDrawerItems = () => (
@@ -72,7 +77,7 @@ const SideNavbar = (props) => {
             <div>
                 <List>
                     {navItems.map((item, index) => (
-                        <Link to={item.to} key={item.id} onClick={() => setNavSelected(item.id)}>
+                        <Link to={item.to} key={item.id} onClick={() => onClickNavItem(item)}>
                             <ListItem style={{ background: navSelected == item.id ? "darkslateblue" : "", borderRadius: "40px" }} className="hover:tw-bg-blue-600 tw-mb-1" button key={item.name}>
                                 <ListItemIcon className="neon">
                                     {/* {index % 2 === 0 ? <InboxIcon /> : <MailIcon />} */}
@@ -99,7 +104,7 @@ const SideNavbar = (props) => {
                             }}
                             className={`tw-w-full`}
                             variant={mobileView ? "temporary" : "permanent"}
-                            open={isDrawerOpen}
+                            open={isNavOpen}
                             onClose={handleDrawerToggle}
                             anchor={mobileView ? 'left' : 'left'}
                             ModalProps={{

@@ -39,6 +39,7 @@ const Home = () => {
     // padding: mobileView ? "70px 0px" : "70px 200px"
   };
   const [matches, setMatches] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const filterIplMatches = (matches) => {
     const iplTeamAbbreviation = ["CSK", "DC", "GT", "KKR", "LSG", "MI", "PBKS", "RCB", "RR", "SRH"];
@@ -66,18 +67,20 @@ const Home = () => {
   }
 
   useEffect(async () => {
+    setLoading(true);
     let matches = await getMatches();
     matches = filterIplMatches(matches);
     setMatches(matches);
+    setLoading(false);
     // console.log(JSON.stringify(matches));
     // await saveIplMatchesInDb();
   }, []);
 
   return (
     <div style={container}>
-      {matches.length ? matches.map((match, index) => (
+      {loading ? <LoadingComponent />  : matches.length ? matches.map((match, index) => (
         <MatchCard key={index} match={match}/>
-      ))  : <LoadingComponent /> }
+      ))  : "No active matches..."}
     </div>
   );
 }
