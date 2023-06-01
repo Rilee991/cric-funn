@@ -138,7 +138,7 @@ const MatchCard = (props) => {
 
     return (
       <>
-        <Card style={{ boxShadow: "5px 5px 20px"}} className="tw-mt-2 tw-mb-10 xl:tw-w-[70%] md:tw-w-[90%] tw-rounded-[40px]">
+        <Card style={{ boxShadow: "5px 5px 20px"}} className="tw-mt-2 tw-mb-10 xl:tw-w-[70%] tw-rounded-[40px]">
           <CardActionArea>
             <CardContent>
               <MatchPic banner={banner} matchTime={matchTime} team1Logo={team1Logo} team2Logo={team2Logo} mobileView={mobileView}/>

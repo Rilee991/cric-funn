@@ -14,7 +14,7 @@ export default function MyBets() {
     const { loggedInUserDetails = {}, mobileView, loading } = contextConsumer;
     const { bets = [], username = "", points = "" } = loggedInUserDetails;
     const container = {
-        width: "100%", 
+        width: "100%"
         // padding: mobileView ? "70px 0px" : "70px 200px"
     };
 
@@ -22,9 +22,9 @@ export default function MyBets() {
         loading ? (
             <LoadingComponent />
         ) : (
-            <div style={container}>
+            <div className="tw-w-full tw-mt-2">
                 <StatsCard bets={bets} mobileView={mobileView} username={username} points={points}/>
-                {bets.length ? bets.map((bet) => (
+                {/* {bets.length ? bets.map((bet) => (
                     <BetCard key={bet.unique_id} mobileView={mobileView} bet={bet}/>
                 ))  : 
                 <Alert severity="info" variant="filled" style={{width: mobileView ? "100%" : "70%"}}>
@@ -32,7 +32,7 @@ export default function MyBets() {
                         <b>You have not bet in any matches yet.</b>
                     </Typography>
                 </Alert>
-                }
+                } */}
             </div>
         )
     );
