@@ -52,7 +52,7 @@ const StatsCard = (props) => {
             <Card style={{ boxShadow: "5px 5px 20px", backgroundImage: `url(${backGround})`, backgroundRepeat:"no-repeat", backgroundSize: "inherit",height: "auto", backgroundBlendMode: "hard-light" }} className="tw-mt-2 tw-mb-10 xl:tw-w-[70%] md:tw-w-[90%] tw-rounded-[40px]">
                 <CardActionArea>
                     <CardContent className="tw-flex tw-flex-col tw-items-center">
-                        <div style={{ padding: "10px" }} className="tw-bg-indigo-950 tw-h-[5vh] tw-rounded-[20px] tw-flex tw-justify-center tw-items-center tw-text-white">
+                        <div style={{ padding: "10px", border: "2px solid white" }} className="tw-bg-indigo-950 tw-h-[5vh] tw-rounded-[20px] tw-flex tw-justify-center tw-items-center tw-text-white">
                             <Typography className="tw-flex tw-items-center tw-gap-2" variant={"button"} style={{fontSize: 13}} component="p">
                                 <b>Statistics</b> 
                                 <WhatsappShareButton 
@@ -79,7 +79,7 @@ const StatsCard = (props) => {
                                     </div>
                                     <div style={{ padding: "10px" }} className="tw-w-1/2 tw-bg-[#5800FF] tw-h-[5vh] tw-rounded-[20px] tw-flex tw-justify-center tw-items-center tw-text-white">
                                         <Typography variant={"button"} style={{fontSize: 13}} component="p">
-                                            <b>Avg Points Per Match: {avgBettingPoints}</b>
+                                            <b>Avg Points Bet: {avgBettingPoints}</b>
                                         </Typography>
                                     </div>
                                 </div>
