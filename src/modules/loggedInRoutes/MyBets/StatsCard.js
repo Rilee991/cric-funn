@@ -49,7 +49,7 @@ const StatsCard = (props) => {
 
     return (
         <>
-            <Card style={{ boxShadow: "5px 5px 20px", backgroundImage: `url(${backGround})`, backgroundRepeat:"no-repeat", backgroundSize: "inherit",height: "auto", backgroundBlendMode: "hard-light" }} className="tw-mt-2 tw-mb-10 xl:tw-w-[70%] md:tw-w-[90%] tw-rounded-[40px]">
+            <Card style={{ boxShadow: "5px 5px 20px", backgroundImage: `url(${backGround})`, backgroundRepeat:"no-repeat", backgroundSize: "cover", height: "auto", backgroundBlendMode: "hard-light" }} className="tw-mt-2 tw-mb-10 xl:tw-w-[70%] md:tw-w-[90%] tw-rounded-[40px]">
                 <CardActionArea>
                     <CardContent className="tw-flex tw-flex-col tw-items-center">
                         <div style={{ padding: "10px", border: "2px solid white" }} className="tw-bg-indigo-950 tw-h-[5vh] tw-rounded-[20px] tw-flex tw-justify-center tw-items-center tw-text-white">
