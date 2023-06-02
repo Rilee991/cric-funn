@@ -5,7 +5,7 @@ import backGround from '../../../images/stats.jpg';
 
 const TopperCard = (props) => {
 	const { topperDetails = {} } = props;
-	const { image, bets, won, lost, points } = topperDetails;
+	const { image, bets, won, lost, points, player } = topperDetails;
 	console.log("topper:",topperDetails);
 
 	return (
@@ -15,38 +15,44 @@ const TopperCard = (props) => {
 					<div>
 						<img className="tw-w-[85px] tw-h-[85px] sm:tw-w-[150px] sm:tw-h-[150px]" src={"https://scores.iplt20.com/ipl/playerimages/Shubman%20Gill.png"} />
 					</div>
-					<Typography className="tw-flex tw-items-center tw-gap-2 sm:tw-text-[25px]" variant={"button"} style={{fontSize: 15}} component="p">
-						<div className="tw-flex tw-gap-2">
-							<div className="tw-flex tw-flex-col tw-items-center">
-								<div>
-									<b><i>Bets</i></b>
+					<Typography variant={"button"} className="tw-flex tw-flex-col tw-justify-evenly" style={{fontSize: 15, height: "inherit"}} component="p">
+						<div className="tw-leading-normal">
+							<div className="">@{player}</div>
+							<div className="tw-text-[10px] md:tw-text-[13px] tw-italic" style={{ fontWeight: "500 !important" }}>Universal Champion</div>
+						</div>
+						<div className="tw-flex tw-items-center tw-gap-2 sm:tw-text-[25px]">
+							<div className="tw-flex tw-gap-2">
+								<div className="tw-flex tw-flex-col tw-items-center">
+									<div>
+										<b><i>Bets</i></b>
+									</div>
+									<div>
+										<b><i>{bets || "-"}</i></b>
+									</div>
 								</div>
-								<div>
-									<b><i>{bets || "-"}</i></b>
+								<div className="tw-flex tw-flex-col tw-items-center">
+									<div>
+										<b><i>Wins</i></b>
+									</div>
+									<div>
+										<b><i>{won || "-"}</i></b>
+									</div>
 								</div>
-							</div>
-							<div className="tw-flex tw-flex-col tw-items-center">
-								<div>
-									<b><i>Wins</i></b>
+								<div className="tw-flex tw-flex-col tw-items-center">
+									<div>
+										<b><i>Win %</i></b>
+									</div>
+									<div>
+										<b><i>{Math.round((won/(won+lost))* 100,2)}</i></b>
+									</div>
 								</div>
-								<div>
-									<b><i>{won || "-"}</i></b>
-								</div>
-							</div>
-							<div className="tw-flex tw-flex-col tw-items-center">
-								<div>
-									<b><i>Win %</i></b>
-								</div>
-								<div>
-									<b><i>{Math.round((won/(won+lost))* 100,2)}</i></b>
-								</div>
-							</div>
-							<div className="tw-flex tw-flex-col tw-items-center">
-								<div>
-									<b><i>Points</i></b>
-								</div>
-								<div>
-									<b><i>{points}</i></b>
+								<div className="tw-flex tw-flex-col tw-items-center">
+									<div>
+										<b><i>Points</i></b>
+									</div>
+									<div>
+										<b><i>{points}</i></b>
+									</div>
 								</div>
 							</div>
 						</div>
