@@ -63,8 +63,6 @@ const TableCard = (props) => {
     const { tableData = {} } = props;
     const { title, cols = [], data = [], caption } = tableData;
 
-    console.log(tableData);
-
     return (
         <Card style={{ boxShadow: "5px 5px 20px" }} className="tw-mt-2 tw-mb-10 xl:tw-w-[70%] md:tw-w-[90%] tw-rounded-[40px]">
             <CardActionArea style={{ background: "linear-gradient(44deg, rgb(37, 12, 81), rgb(96, 83, 23))" }}>

@@ -5,8 +5,7 @@ import backGround from '../../../images/stats.jpg';
 
 const TopperCard = (props) => {
 	const { topperDetails = {} } = props;
-	const { image, bets, won, lost, points, player } = topperDetails;
-	console.log("topper:",topperDetails);
+	const { image, bets, won, lost, points, player, subText } = topperDetails;
 
 	return (
         <Card style={{ boxShadow: "5px 5px 20px", backgroundImage: `url(https://img.pikbest.com/back_our/bg/20200602/bg/19b3888f1e139_337891.png)`, backgroundRepeat:"no-repeat", backgroundSize: "cover", height: "auto", backgroundBlendMode: "hard-light" }} className="tw-mt-2 tw-mb-10 xl:tw-w-[70%] md:tw-w-[90%] tw-rounded-[40px]">
@@ -18,7 +17,7 @@ const TopperCard = (props) => {
 					<Typography variant={"button"} className="tw-flex tw-flex-col tw-justify-evenly" style={{fontSize: 15, height: "inherit"}} component="p">
 						<div className="tw-leading-normal">
 							<div className="">@{player}</div>
-							<div className="tw-text-[10px] md:tw-text-[13px] tw-italic" style={{ fontWeight: "500 !important" }}>Universal Champion</div>
+							<div className="tw-text-[10px] md:tw-text-[13px] tw-italic" style={{ fontWeight: "500 !important" }}>{subText}</div>
 						</div>
 						<div className="tw-flex tw-items-center tw-gap-2 sm:tw-text-[25px]">
 							<div className="tw-flex tw-gap-2">
