@@ -51,9 +51,7 @@ const useStyles = makeStyles((theme) => ({
 
 
 const SideNavbar = (props) => {
-    const { setIsNavOpen, isNavOpen, navSelected, navItems, setNavSelected } = props;
-    const contextConsumer = useContext(ContextProvider);
-    const { mobileView } = contextConsumer;
+    const { setIsNavOpen, isNavOpen, navSelected, navItems, setNavSelected, mobileView } = props;
     const classes = useStyles();
 
     const handleDrawerToggle = () => {
