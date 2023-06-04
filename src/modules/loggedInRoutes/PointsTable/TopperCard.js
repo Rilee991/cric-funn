@@ -1,5 +1,6 @@
 import React from 'react';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography, Badge, Avatar, Grid, Card, CardActionArea, CardContent, GridList, Collapse } from '@material-ui/core';
+import { round } from 'lodash';
 
 import backGround from '../../../images/stats.jpg';
 
@@ -42,7 +43,7 @@ const TopperCard = (props) => {
 										<b><i>Win %</i></b>
 									</div>
 									<div>
-										<b><i>{Math.round((won/(won+lost))* 100,2)}</i></b>
+										<b><i>{(round(won/(won+lost),4).toFixed(4)*100).toFixed(2)}</i></b>
 									</div>
 								</div>
 								<div className="tw-flex tw-flex-col tw-items-center">
