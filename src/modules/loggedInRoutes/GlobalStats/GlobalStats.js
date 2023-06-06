@@ -7,7 +7,7 @@ import { ContextProvider } from '../../../Global/Context';
 
 const GlobalStats = () => {
     const contextConsumer = useContext(ContextProvider);
-    const { getAllUsersData, mobileView } = contextConsumer;
+    const { getAllUsersData } = contextConsumer;
     const [globalStats, setGlobalStats] = useState({});
     const [loading, setLoading] = useState(false);
 

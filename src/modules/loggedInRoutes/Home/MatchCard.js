@@ -7,7 +7,9 @@ import moment from 'moment';
 
 import { ContextProvider } from '../../../Global/Context';
 import { getMatchDetails } from '../../../components/apis';
-import { fontVariant, getFormattedTimeISOString, getMsgForClosedBets, getMsgForInProgressBets, getMsgForLostBets, getMsgForNoResultBets, getMsgForOpenBets, getMsgForUpcomingBets, getMsgForWonBets, getPerc, getTeamLogo, matchHeadingFontSize, teamProps, themeColor } from '../../../config';
+import { fontVariant, getFormattedTimeISOString, getMsgForClosedBets, getMsgForInProgressBets, getMsgForLostBets, 
+  getMsgForNoResultBets, getMsgForOpenBets, getMsgForUpcomingBets, getMsgForWonBets, getPerc, getTeamLogo, 
+  matchHeadingFontSize, teamProps } from '../../../config';
 
 import BettingDialog from './BettingDialog';
 import ViewBetsDialog from './ViewBetsDialog';
