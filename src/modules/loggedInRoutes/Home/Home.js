@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 
 import { getMatches, saveIplMatchesInDb } from '../../../components/apis';
-import { ContextProvider } from '../../../Global/Context';
+import { ContextProvider } from '../../../global/Context';
 
 import LoadingComponent from '../../../components/common/LoadingComponent';
 import MatchCard from './MatchCard';

@@ -5,7 +5,7 @@ import { find } from 'lodash';
 
 import NotFoundError from '../../components/common/NotFoundError';
 import { Header, SideNavbar, Notifications, Home, MyBets, MyStats, GlobalStats, PointsTable } from './index';
-import { ContextProvider } from '../../Global/Context';
+import { ContextProvider } from '../../global/Context';
 
 const LoggedInRoutes = () => {
     const contextConsumer = useContext(ContextProvider);

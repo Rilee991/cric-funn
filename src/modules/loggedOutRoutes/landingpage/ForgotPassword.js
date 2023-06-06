@@ -6,7 +6,7 @@ import MuiAlert from '@material-ui/lab/Alert';
 import { isEmpty } from 'lodash';
 import Loader from 'react-loader-spinner';
 
-import { ContextProvider } from '../../../Global/Context';
+import { ContextProvider } from '../../../global/Context';
 import { loaderHeight, loaderWidth, themeColor } from '../../../config';
 
 import iplLogo from '../../../images/logo.png';

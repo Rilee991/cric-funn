@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { withStyles, makeStyles } from '@material-ui/core/styles';
 import { Row, Col, Container } from 'reactstrap';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography, Badge, Avatar, Grid, Card, CardActionArea, CardContent, GridList, Collapse } from '@material-ui/core';
-import { ContextProvider } from '../../../Global/Context';
+import { ContextProvider } from '../../../global/Context';
 import { find, isEmpty } from 'lodash';
 
 import LoadingComponent from '../../../components/common/LoadingComponent';

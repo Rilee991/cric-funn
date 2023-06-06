@@ -10,7 +10,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 
 import { makeStyles } from '@material-ui/core/styles';
 import { Typography } from '@material-ui/core';
-import { ContextProvider } from '../../../Global/Context';
+import { ContextProvider } from '../../../global/Context';
 import './SideNavbar.css';
 import { Link } from 'react-router-dom';
 

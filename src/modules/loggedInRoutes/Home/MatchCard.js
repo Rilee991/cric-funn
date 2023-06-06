@@ -5,7 +5,7 @@ import Alert from '@material-ui/lab/Alert';
 import { find, get, isEmpty } from 'lodash';
 import moment from 'moment';
 
-import { ContextProvider } from '../../../Global/Context';
+import { ContextProvider } from '../../../global/Context';
 import { getMatchDetails } from '../../../components/apis';
 import { fontVariant, getFormattedTimeISOString, getMsgForClosedBets, getMsgForInProgressBets, getMsgForLostBets, 
   getMsgForNoResultBets, getMsgForOpenBets, getMsgForUpcomingBets, getMsgForWonBets, getPerc, getTeamLogo, 

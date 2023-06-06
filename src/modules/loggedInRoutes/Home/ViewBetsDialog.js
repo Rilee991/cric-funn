@@ -2,7 +2,7 @@ import React, { useState, useContext, useEffect } from 'react';
 import { Dialog, DialogContent, DialogContentText, DialogTitle, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography } from '@material-ui/core';
 import moment from 'moment';
 
-import { ContextProvider } from '../../../Global/Context';
+import { ContextProvider } from '../../../global/Context';
 
 const ViewBetsDialog = (props) => {
     const { matchDetails, open, handleClose, isAdmin } = props;

@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import moment from 'moment';
 
 import LoadingComponent from '../../../components/common/LoadingComponent';
-import { ContextProvider } from '../../../Global/Context';
+import { ContextProvider } from '../../../global/Context';
 import PointsTimeline from './PointsTimeline';
 import BetTimeDistChart from './BetTimeDistChart';
 import StatsTable from '../../../components/common/StatsTable';

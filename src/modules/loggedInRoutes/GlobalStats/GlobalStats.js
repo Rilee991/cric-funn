@@ -3,7 +3,7 @@ import { startCase } from 'lodash';
 
 import LoadingComponent from '../../../components/common/LoadingComponent';
 import StatsTable from '../../../components/common/StatsTable';
-import { ContextProvider } from '../../../Global/Context';
+import { ContextProvider } from '../../../global/Context';
 
 const GlobalStats = () => {
     const contextConsumer = useContext(ContextProvider);

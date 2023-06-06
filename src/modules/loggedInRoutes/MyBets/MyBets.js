@@ -3,7 +3,7 @@ import React, { useContext } from 'react';
 import { Card, CardActionArea, CardContent, Typography } from '@material-ui/core';
 import Alert from '@material-ui/lab/Alert';
 
-import { ContextProvider } from '../../../Global/Context';
+import { ContextProvider } from '../../../global/Context';
 
 import BetCard from './BetCard';
 import StatsCard from './StatsCard';
