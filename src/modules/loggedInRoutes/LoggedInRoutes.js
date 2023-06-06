@@ -1,17 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Switch, Route } from 'react-router-dom';
-import NotFoundError from '../../components/common/NotFoundError';
-import { BubbleChartOutlined, PublicOutlined, StarBorderOutlined, StarsOutlined, TimelineOutlined, VpnKey, Whatshot, WhatshotOutlined } from '@material-ui/icons';
-
-
-import Header from './Header/Header';
-import Home from './Home/Home';
-import MyBets from './MyBets/MyBets';
-import Notifications from './Notifications/Notifications';
-import SideNavbar from './SideNavbar.js/SideNavbar';
+import { BubbleChartOutlined, PublicOutlined, StarBorderOutlined, TimelineOutlined, VpnKey, WhatshotOutlined } from '@material-ui/icons';
 import { find } from 'lodash';
 
+import NotFoundError from '../../components/common/NotFoundError';
+import { Header, SideNavbar, Notifications, Home, MyBets, MyStats, GlobalStats, PointsTable } from './index';
+import { ContextProvider } from '../../Global/Context';
+
 const LoggedInRoutes = () => {
+    const contextConsumer = useContext(ContextProvider);
+    const { mobileView, logout } = contextConsumer;
     const [isNavOpen, setIsNavOpen] = useState(false);
     const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
     const [navSelected, setNavSelected] = useState(1);
@@ -28,8 +26,8 @@ const LoggedInRoutes = () => {
         icon: <TimelineOutlined />
     }, {
         id: 3,
-        name: "Graphs",
-        to: "/graphs",
+        name: "My Stats",
+        to: "/my-stats",
         icon: <BubbleChartOutlined />
     }, {
         id: 4,
@@ -45,7 +43,7 @@ const LoggedInRoutes = () => {
         id: 6,
         name: "Logout",
         to: "/",
-        onClick: () => {console.log("3")},
+        onClick: () => logout(),
         icon: <VpnKey />
     }];
 
@@ -79,6 +77,7 @@ const LoggedInRoutes = () => {
                         navItems={navItems}
                         navSelected={navSelected}
                         setNavSelected={setNavSelected}
+                        mobileView={mobileView}
                     />
                     <Notifications
                         setIsNotificationsOpen={setIsNotificationsOpen}
@@ -87,22 +86,27 @@ const LoggedInRoutes = () => {
                 </div>
                 <div className={`tw-pt-16 tw-py-6 md:tw-px-14 tw-w-full`}>
                     <Switch>
+                        {/* {navItems.map(eachNav => (
+                            <Route exact path={eachNav.to}>
+                                {eachNav.component || <div>{eachNav.name}</div>}
+                            </Route>
+                        ))} */}
                         <Route exact path="/">
                             <Home />
                         </Route> 
                         <Route exact path="/my-bets">
                             <MyBets /> 
                         </Route>
-                        {/* <Route exact path="/points">
-                            <Graph exact />
+                        <Route exact path="/my-stats">
+                            <MyStats exact />
                         </Route>
                         <Route exact path="/global-stats">
-                            <GlobalStats exact />
+                            <GlobalStats />
                         </Route>
                         <Route exact path="/points-table">
-                            <PointsTableNew exact />
+                            <PointsTable />
                         </Route>
-                        <Route exact path="/admin">
+                        {/* <Route exact path="/admin">
                             <Admin exact />
                         </Route> */}
                         <Route>

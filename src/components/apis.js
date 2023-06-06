@@ -65,7 +65,7 @@ export const getMatches = async () => {
         for(const match of sortedMatches) {
             // match.dateTimeGMT = match.dateTimeGMT + 'Z';
 
-            const isIncludedMatch = (moment(match.dateTimeGMT).add(1 ,'days').isSameOrAfter(moment()));
+            const isIncludedMatch = (moment(match.dateTimeGMT).isBetween(moment("2023-04-01"),moment("2023-04-05")))//.add(1 ,'days').isSameOrAfter(moment()));
 
             if(!isIncludedMatch)  continue;
             

@@ -9,13 +9,9 @@ import * as d3 from 'd3-shape';
 
 const PointsTimeline = (props) => {
     const { data = [], username = "Series" } = props;
-    const series1Ref = useRef(null);
-    const series2Ref = useRef(null);
-    const series3Ref = useRef(null);
-    const xAxisRef = useRef(null);
 
     useEffect(() => {
-        const root = am5.Root.new("chartdiv");
+        const root = am5.Root.new("ptsTimeline");
     
         root.setThemes([am5themes_Animated.new(root), am5themes_Responsive.new(root), am5themes_Frozen.new(root)]);
     
@@ -203,7 +199,7 @@ const PointsTimeline = (props) => {
         return () => {
           root.dispose();
         };
-    }, []);
+    }, [data]);
 
     return (
         <Card style={{ boxShadow: "5px 5px 20px" }} className="tw-mt-2 tw-mb-10 xl:tw-w-[70%] md:tw-w-[90%] tw-rounded-[40px]">
@@ -214,7 +210,7 @@ const PointsTimeline = (props) => {
                     </Typography>
                 </CardContent>
                 <Divider />
-                <div id="chartdiv" style={{ width: "100%", height: "500px" }}></div>
+                <div id="ptsTimeline" style={{ width: "100%", height: "500px" }}></div>
             </CardActionArea>
         </Card>
     );
