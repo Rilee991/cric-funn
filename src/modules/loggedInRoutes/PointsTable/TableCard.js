@@ -74,7 +74,7 @@ const TableCard = (props) => {
                 <Divider />
                 <TableContainer component={Paper}>
 					<Table style={{ minWidth: "100%" }} aria-label="customized table caption">
-						<caption><Typography variant="overline">{caption || "Enjoy your life dumbass!"}</Typography></caption>
+						<caption style={{ background: "linear-gradient(45deg, #13606a, #303848)", color: "aliceblue" }}><Typography variant="overline">{caption || "Enjoy your life dumbass!"}</Typography></caption>
 						<TableHead>
 							<TableRow>
                                 {cols && cols.length ? cols.map((colName, idx) => 

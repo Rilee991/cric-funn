@@ -5,6 +5,7 @@ import emailChecker from 'mailchecker';
 import { auth, db, storage, teamNames, getFormattedFirebaseTime, logger, iplMatches, teamProps } from '../config';
 import { getMatchDetailsById, getMatches } from '../components/apis';
 import moment from 'moment';
+import { getToppgerBgImage } from './adhocUtils';
 const admin = require('firebase');
 
 export const ContextProvider = createContext();
@@ -220,7 +221,8 @@ const Context = (props) => {
                 isOut: (inprogress === 0 && points === 0) ? true : false,
                 isChampion,
                 image,
-                subText: isChampion ? "Undisputed Universal Champion" : "#1 Contender"
+                subText: isChampion ? "Undisputed Universal Champion" : "#1 Contender",
+                bgImage: isChampion ? getToppgerBgImage(true) : getToppgerBgImage(false)
             });
         });
 
