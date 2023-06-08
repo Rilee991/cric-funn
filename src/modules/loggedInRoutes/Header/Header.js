@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { AppBar, CssBaseline, IconButton, Toolbar, makeStyles } from '@material-ui/core';
+import { AppBar, CssBaseline, IconButton, Toolbar, makeStyles, Badge } from '@material-ui/core';
 import { OfflineBolt, Reorder } from '@material-ui/icons';
 
 import cricFunnLogo from '../../../images/logo.png';
@@ -23,11 +23,17 @@ const useStyles = makeStyles((theme) => ({
 		[theme.breakpoints.up('md')]: {
 			display: 'none',
 		}
+	},
+	notificationButton: {
+		marginRight: theme.spacing(2)
+	},
+	customBadge: {
+		background: "#0c1b6e"
 	}
 }));
 
 const Header = (props) => {
-	const { setIsNavOpen, setIsNotificationsOpen } = props;
+	const { setIsNavOpen, setIsNotificationsOpen, totalNotifs = 0, clearNotifications } = props;
 	const classes = useStyles();
 
 	const handleDrawerToggle = () => {
@@ -36,6 +42,7 @@ const Header = (props) => {
 
 	const handleNotificationsToggle = () => {
 		setIsNotificationsOpen(prev => !prev);
+		clearNotifications();
 	}
 
 	const getCricFunnLogo = () => (
@@ -55,9 +62,11 @@ const Header = (props) => {
 							aria-label="open drawer"
 							edge="start"
 							onClick={handleNotificationsToggle}
-							className={`${classes.menuButton} tw-m-0`}
+							className={`${classes.notificationButton} tw-m-0`}
 						>
-							<OfflineBolt />
+							<Badge component="button" badgeContent={totalNotifs} classes={{ badge: classes.customBadge }}>
+								<OfflineBolt />
+							</Badge>
 						</IconButton>
 						<IconButton
 							color="inherit"

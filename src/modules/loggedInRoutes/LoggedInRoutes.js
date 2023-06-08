@@ -9,7 +9,7 @@ import { ContextProvider } from '../../global/Context';
 
 const LoggedInRoutes = () => {
     const contextConsumer = useContext(ContextProvider);
-    const { mobileView, logout } = contextConsumer;
+    const { mobileView, logout, notifications = [], clearNotifications } = contextConsumer;
     const [isNavOpen, setIsNavOpen] = useState(false);
     const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
     const [navSelected, setNavSelected] = useState(1);
@@ -65,7 +65,7 @@ const LoggedInRoutes = () => {
     return (
         <div className="tw-flex tw-flex-col">
             <div>
-                <Header setIsNavOpen={setIsNavOpen} setIsNotificationsOpen={setIsNotificationsOpen} />
+                <Header totalNotifs={notifications.length} clearNotifications={clearNotifications} setIsNavOpen={setIsNavOpen} setIsNotificationsOpen={setIsNotificationsOpen} />
             </div>
             <div className="tw-flex">
                 <div>

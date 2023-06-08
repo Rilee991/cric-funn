@@ -111,7 +111,7 @@ const Context = (props) => {
         }
     }
 
-    const markNotificationsAsRead = () => {
+    const clearNotifications = () => {
         setNotifications([]);
     }
 
@@ -769,7 +769,7 @@ const Context = (props) => {
             getPointsTableData,
             clearUsernameBetsData,
             syncUsernameBetsData,
-            markNotificationsAsRead,
+            clearNotifications,
             sendResetPasswordEmail,
             getTeamStatsData,
             getAllUsersData,
