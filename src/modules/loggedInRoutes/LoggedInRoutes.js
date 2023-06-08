@@ -82,6 +82,7 @@ const LoggedInRoutes = () => {
                     <Notifications
                         setIsNotificationsOpen={setIsNotificationsOpen}
                         isNotificationsOpen={isNotificationsOpen}
+                        notifications={notifications}
                     />
                 </div>
                 <div className={`tw-pt-16 tw-py-6 md:tw-px-14 tw-w-full`}>

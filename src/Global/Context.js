@@ -633,7 +633,7 @@ const Context = (props) => {
                             bet.isNoResult = true;
                             notifications.push({
                                 title: "Oh no! Nobody Won!",
-                                body: `Your bet on ${moment.unix(bet.betTime.seconds).format("LLL")} for the match ${bet.team1} vs ${bet.team2} has been ended in NO Result!. You got ${bet.selectedPoints} POINTS.`,
+                                body: `Your bet for the match ${bet.team1} vs ${bet.team2} has been ended in NO Result!. You got ${bet.selectedPoints} POINTS.`,
                                 betWon: true,
                                 isNoResult: true
                             });
@@ -649,7 +649,7 @@ const Context = (props) => {
                             betSettledCount++;
                             notifications.push({
                                 title: `You ${bet.betWon ? "Won" : "Lost"}!`,
-                                body: `Your bet on ${moment.unix(bet.betTime.seconds).format("LLL")} for the match ${bet.team1} vs ${bet.team2} has been ${bet.betWon ? "Won" : "Lost"}!. You ${bet.betWon ? "Won" : "Lost"} ${bet.selectedPoints} POINTS.`,
+                                body: `Your bet for the match ${bet.team1} vs ${bet.team2} has been ${bet.betWon ? "Won" : "Lost"}!. You ${bet.betWon ? "Won" : "Lost"} ${bet.selectedPoints} POINTS.`,
                                 betWon: bet.betWon,
                                 isNoResult: false
                             });

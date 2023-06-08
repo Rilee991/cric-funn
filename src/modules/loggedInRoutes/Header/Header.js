@@ -41,8 +41,11 @@ const Header = (props) => {
 	};
 
 	const handleNotificationsToggle = () => {
-		setIsNotificationsOpen(prev => !prev);
-		clearNotifications();
+		setIsNotificationsOpen(prev => {
+			if(prev) clearNotifications();
+
+			return !prev;
+		});
 	}
 
 	const getCricFunnLogo = () => (
