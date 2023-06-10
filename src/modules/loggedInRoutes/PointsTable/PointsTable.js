@@ -1,16 +1,12 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { withStyles, makeStyles } from '@material-ui/core/styles';
-import { Row, Col, Container } from 'reactstrap';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography, Badge, Avatar, Grid, Card, CardActionArea, CardContent, GridList, Collapse } from '@material-ui/core';
-import { ContextProvider } from '../../../global/Context';
-import { find, isEmpty } from 'lodash';
+import { Typography } from '@material-ui/core';
+import { isEmpty } from 'lodash';
+import { Alert } from '@material-ui/lab';
 
-import LoadingComponent from '../../../components/common/LoadingComponent';
-import { themeColor } from '../../../config';
-import backGround from '../../../images/stats.jpg';
+import { ContextProvider } from '../../../global/Context';
 import TopperCard from './TopperCard';
 import TableCard from './TableCard';
-import { Alert } from '@material-ui/lab';
+import LoaderV2 from '../../../components/common/LoaderV2';
 
 export default function PointsTable() {
     const contextConsumer = useContext(ContextProvider);
@@ -44,7 +40,7 @@ export default function PointsTable() {
 		else return "#386832";
 	}
 
-	return ( loading ? ( <LoadingComponent /> ) : (
+	return ( loading ? ( <LoaderV2 tip="Loading Points table" /> ) : (
 		<>
 			{!isEmpty(tableData) ?
 				<>

@@ -13,7 +13,7 @@ const LoadingComponent = () => {
             <Grid item className="tw-flex tw-justify-center">
                 <ScaleLoader color={themeColor} size={30} speedMultiplier={0.7}/>
             </Grid>
-            <br/><br/><br/><br/>
+            <br/><br/>
             <Grid item>
                 <Copyright />
             </Grid>
