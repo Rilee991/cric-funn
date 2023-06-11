@@ -1,18 +1,8 @@
-import React, { useContext } from 'react'
-import Divider from '@material-ui/core/Divider';
-import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
-import Hidden from '@material-ui/core/Hidden';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-
-import { makeStyles } from '@material-ui/core/styles';
-import { Typography } from '@material-ui/core';
-import { ContextProvider } from '../../../global/Context';
-import './SideNavbar.css';
+import React from 'react'
+import { Divider, SwipeableDrawer, Hidden, List, ListItem, ListItemIcon, ListItemText, makeStyles, Typography } from '@material-ui/core';
 import { Link } from 'react-router-dom';
+
+import './SideNavbar.css';
 
 const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
@@ -70,7 +60,6 @@ const SideNavbar = (props) => {
                     <b>MENU</b>
                 </Typography>
             </div>
-            {/* <div className={classes.toolbar} /> */}
             <Divider />
             <div>
                 <List>
@@ -78,7 +67,6 @@ const SideNavbar = (props) => {
                         <Link to={item.to} key={item.id} onClick={() => onClickNavItem(item)}>
                             <ListItem style={{ background: navSelected == item.id ? "darkslateblue" : "", borderRadius: "40px" }} className="hover:tw-bg-blue-600 tw-mb-1" button key={item.name}>
                                 <ListItemIcon className="neon">
-                                    {/* {index % 2 === 0 ? <InboxIcon /> : <MailIcon />} */}
                                     {item.icon}
                                 </ListItemIcon>
                                 <ListItemText className={index%2 == 0 ? "neon" : "neon-reverse"} primary={item.name} />
