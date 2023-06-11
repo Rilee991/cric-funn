@@ -1,21 +1,14 @@
-import React, { useState } from 'react';
-import Card from '@material-ui/core/Card';
-import CardActionArea from '@material-ui/core/CardActionArea';
-import CardContent from '@material-ui/core/CardContent';
-import Typography from '@material-ui/core/Typography';
+import React from 'react';
+import { Card, CardActionArea, CardContent, Typography } from '@material-ui/core';
 import moment from 'moment';
 import Alert from '@material-ui/lab/Alert';
 
-import backGround from '../../../images/background.jpg';
 import MatchPic from '../../../components/common/MatchPic';
-import { getMsgForInProgressBets, getMsgForLostBets, getMsgForNoResultBets, getMsgForWonBets, getTeamLogo } from '../../../config';
-
-const admin = require("firebase");
+import { getTeamLogo } from '../../../config';
 
 function BetCard(props) {
     const { mobileView, bet = {} } = props;
-    const { betTime = "", team1, odds = {}, team2, selectedTeam, selectedPoints, isSettled, betWon, isNoResult = false, 
-		team1Abbreviation, team2Abbreviation, isBetDone } = bet;
+    const { betTime = "", team1, team2, selectedTeam, selectedPoints, team1Abbreviation, team2Abbreviation } = bet;
     const team1Logo = getTeamLogo(team1Abbreviation);
     const team2Logo = getTeamLogo(team2Abbreviation);
     

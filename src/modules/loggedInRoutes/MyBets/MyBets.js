@@ -1,13 +1,10 @@
 import React, { useContext } from 'react';
-
 import { Card, CardActionArea, CardContent, Typography } from '@material-ui/core';
-import Alert from '@material-ui/lab/Alert';
 
 import { ContextProvider } from '../../../global/Context';
-
 import BetCard from './BetCard';
 import StatsCard from './StatsCard';
-import LoadingComponent from '../../../components/common/LoadingComponent';
+import LoaderV2 from '../../../components/common/LoaderV2';
 
 export default function MyBets() {
     const contextConsumer = useContext(ContextProvider);
@@ -43,9 +40,7 @@ export default function MyBets() {
     })
 
     return (
-        loading ? (
-            <LoadingComponent />
-        ) : (
+        loading ? (<LoaderV2 tip="Loading History..." />) : (
             <div className="tw-w-full tw-mt-2">
                 <StatsCard bets={bets} mobileView={mobileView} username={username} points={points}/>
                 <Card style={{ boxShadow: "5px 5px 20px", backgroundRepeat:"no-repeat", backgroundSize: "inherit",height: "auto", backgroundBlendMode: "hard-light" }} className="tw-mt-2 tw-mb-10 xl:tw-w-[70%] md:tw-w-[90%] tw-rounded-[40px]">

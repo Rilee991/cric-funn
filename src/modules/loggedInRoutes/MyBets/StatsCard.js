@@ -1,7 +1,7 @@
 import React from 'react';
-import { Grid, Paper, Card, Typography, CardContent, CardActionArea } from '@material-ui/core';
-import { round, toUpper, upperCase } from 'lodash';
-import { CheckOutlined, CloseOutlined, HourglassEmptyOutlined, PriorityHighOutlined, WhatsApp } from '@material-ui/icons';
+import { Card, Typography, CardContent, CardActionArea } from '@material-ui/core';
+import { round, upperCase } from 'lodash';
+import { CheckOutlined, CloseOutlined, HourglassEmptyOutlined, PriorityHighOutlined } from '@material-ui/icons';
 import { WhatsappIcon, WhatsappShareButton } from 'react-share';
 
 import backGround from '../../../images/stats.jpg';
