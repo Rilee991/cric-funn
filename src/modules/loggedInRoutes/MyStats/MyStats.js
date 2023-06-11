@@ -1,15 +1,15 @@
 import React, { useContext, useEffect, useState } from 'react';
 import moment from 'moment';
 
-import LoadingComponent from '../../../components/common/LoadingComponent';
 import { ContextProvider } from '../../../global/Context';
 import PointsTimeline from './PointsTimeline';
 import BetTimeDistChart from './BetTimeDistChart';
 import StatsTable from '../../../components/common/StatsTable';
+import LoaderV2 from '../../../components/common/LoaderV2';
 
 const MyStats = () => {
     const contextConsumer = useContext(ContextProvider);
-    const { getAllUsersData, getTeamStatsData, loggedInUserDetails } = contextConsumer;
+    const { getTeamStatsData, loggedInUserDetails } = contextConsumer;
     const { username, bets = [] } = loggedInUserDetails;
     const [pointsTimelineData, setPointsTimelineData] = useState([]);
     const [betTimeDist, setBetTimeDist] = useState([]);
@@ -95,7 +95,7 @@ const MyStats = () => {
         }]);
     }
 
-    return ( loading && teamWisePtsData ? ( <LoadingComponent /> ) : (
+    return ( loading && teamWisePtsData ? ( <LoaderV2 tip="Loading Stats..." /> ) : (
 		<div className="tw-flex tw-flex-col">
             <PointsTimeline data={pointsTimelineData} username={username} />
             <br/>

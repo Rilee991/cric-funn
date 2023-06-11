@@ -40,7 +40,7 @@ export default function PointsTable() {
 		else return "#386832";
 	}
 
-	return ( loading ? ( <LoaderV2 tip="Loading Points table" /> ) : (
+	return ( loading ? ( <LoaderV2 tip="Loading Points table..." /> ) : (
 		<>
 			{!isEmpty(tableData) ?
 				<>
