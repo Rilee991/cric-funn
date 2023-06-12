@@ -63,7 +63,7 @@ const ViewBetsDialog = (props) => {
         return props ? props.color : "red";
     }
 
-    const getBetRow = () => {   
+    const getViewBetsTable = () => {   
         return (
             <TableContainer component={Paper} className="tw-rounded-[30px] tw-mt-2 tw-overflow-hidden">
                 <Table aria-label="caption table">
@@ -98,7 +98,7 @@ const ViewBetsDialog = (props) => {
     return (
         <Modal style={{ top: 20 }} open={open} title={`${team1Abbreviation} v/s ${team2Abbreviation}`} onCancel={() => closeDialog()} centered footer={null}>
             <Divider className="tw-m-0 tw-bg-black tw-h-[1px]" />
-            {getBetRow()}
+            {getViewBetsTable()}
         </Modal>
     );
 }
