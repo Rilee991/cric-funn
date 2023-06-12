@@ -1,11 +1,10 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 
-import { getMatches, saveIplMatchesInDb } from '../../../components/apis';
-import { ContextProvider } from '../../../global/Context';
-
-import LoadingComponent from '../../../components/common/LoadingComponent';
+import { getMatchesFromDb } from '../../../components/apis';
 import MatchCard from './MatchCard';
+import LoaderV2 from '../../../components/common/LoaderV2';
 
+// Incoming match object from db
 // {
 //     "id":"048d4bdf-88de-4981-b330-03ceb18eb6a1",
 //     "name":"Punjab Kings vs Rajasthan Royals, 66th Match",
@@ -13,7 +12,7 @@ import MatchCard from './MatchCard';
 //     "status":"Match not started",
 //     "venue":"Himachal Pradesh Cricket Association Stadium, Dharamsala",
 //     "date":"2023-05-19",
-//     "dateTimeGMT":"2023-05-19T14:00:00",
+//     "dateTimeGMT":"2023-05-19T14:00:00Z",
 //     "teams":["Punjab Kings","Rajasthan Royals"],
 //     "teamInfo":[{
 //         "name":"Punjab Kings",
@@ -24,6 +23,8 @@ import MatchCard from './MatchCard';
 //         "shortname":"RR",
 //         "img":"https://g.cricapi.com/img/teams/251-637852956607161886.png"
 //     }],
+// 	   "poster": "https://posterlink",
+//     "matchWinner": "Rajasthan Royals"
 //     "fantasyEnabled":false,
 //     "bbbEnabled":false,
 //     "hasSquad":true,
@@ -32,57 +33,34 @@ import MatchCard from './MatchCard';
 // }
 
 const Home = () => {
-  const contextConsumer = useContext(ContextProvider);
-  const { mobileView, } = contextConsumer;
-  const container = {
-    width: "100%", 
-    // padding: mobileView ? "70px 0px" : "70px 200px"
-  };
-  const [matches, setMatches] = useState([]);
-  const [loading, setLoading] = useState(false);
+	const [matches, setMatches] = useState([]);
+	const [loading, setLoading] = useState(false);
 
-  const filterIplMatches = (matches) => {
-    const iplTeamAbbreviation = ["CSK", "DC", "GT", "KKR", "LSG", "MI", "PBKS", "RCB", "RR", "SRH"];
+	useEffect(async () => {
+		getMatches();
+	}, []);
 
-    const result = matches.filter(match => {
-      const { teams } = match;
-      let team1 = teams[0], team2 = teams[1];
+	const getMatches = async () => {
+		setLoading(true);
+		try {
+			const matches = await getMatchesFromDb();
+			setMatches(matches);
+		} catch (e) {
+			console.log(e);
+		}
+		setLoading(false);
+	}
 
-      if(team1 == "Sunrisers Hyderabad") team1 = "Sun Risers Hyderabad";
-      if(team2 == "Sunrisers Hyderabad") team2 = "Sun Risers Hyderabad";
-      if(team1 == "Punjab Kings") team1 = "Punja B King S";
-      if(team2 == "Punjab Kings") team2 = "Punja B King S";
-      
-      team1 = team1.match(/(\b\S)?/g).join("").toUpperCase();
-      team2 = team2.match(/(\b\S)?/g).join("").toUpperCase();
-      
-      // if(iplTeamAbbreviation.includes(team1) && iplTeamAbbreviation.includes(team2)) {
-        match.team1Abbreviation = team1;
-        match.team2Abbreviation = team2;
-        return match;
-      // }
-    });
-
-    return result;
-  }
-
-  useEffect(async () => {
-    setLoading(true);
-    let matches = await getMatches();
-    matches = filterIplMatches(matches);
-    setMatches(matches);
-    setLoading(false);
-    // console.log(JSON.stringify(matches));
-    // await saveIplMatchesInDb();
-  }, []);
-
-  return (
-    <div style={container}>
-      {loading ? <LoadingComponent />  : matches.length ? matches.map((match, index) => (
-        <MatchCard key={index} match={match}/>
-      ))  : "No active matches..."}
-    </div>
-  );
+	return (
+		<div className="tw-w-full">
+			{ loading ? <LoaderV2 tip="Loading matches..." />  
+				: matches.length ? matches.map((match, index) => (
+					<MatchCard key={index} match={match}/>
+				))
+				: "No active matches..."
+			}
+		</div>
+	);
 }
 
 export default Home;

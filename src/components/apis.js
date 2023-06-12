@@ -47,23 +47,23 @@ export const clearBetsData = async () => {
 }
 
 export const getMatches = async () => {
-    // const url = `https://api.cricapi.com/v1/series_info?apikey=${API_KEY}&offset=0&id=${SERIES_ID}`;
+    const url = `https://api.cricapi.com/v1/series_info?apikey=${API_KEY}&offset=0&id=${SERIES_ID}`;
     try {
-        let response = await db.collection("ipl_matches").get();
-        response = {"data.matchList": response.docs.map(doc => {
-            const data = doc.data();
-            return data;
-        })}
+        // let response = await db.collection("ipl_matches").get();
+        // response = {"data.matchList": response.docs.map(doc => {
+        //     const data = doc.data();
+        //     return data;
+        // })}
 
-        // let response = await fetch(url);
-        // response = await response.json();
+        let response = await fetch(url);
+        response = await response.json();
         const matches = get(response,'data.matchList',[]);
         const sortedMatches = sortBy(matches, ['dateTimeGMT']);
         let stopOddsChecker = false;
         const filteredMatches = [];
 
         for(const match of sortedMatches) {
-            // match.dateTimeGMT = match.dateTimeGMT + 'Z';
+            match.dateTimeGMT = match.dateTimeGMT + 'Z';
 
             const isIncludedMatch = (moment(match.dateTimeGMT).isBetween(moment("2023-04-01"),moment("2023-04-05")))//.add(1 ,'days').isSameOrAfter(moment()));
 
@@ -92,6 +92,34 @@ export const getMatches = async () => {
         return filteredMatches;
     } catch (err) {
         console.log("Error in API getMatches:", err);
+    }
+}
+
+export const getMatchesFromDb = async () => {
+    try {
+        const rawResp = await db.collection("ipl_matches").orderBy('dateTimeGMT').get();
+        const matches = rawResp.docs.map(doc => {
+            const data = doc.data();
+            return data;
+        }) || [];
+
+        const relevantMatches = [];
+
+        for(const match of matches) {
+            const isIncludedMatch = (moment(match.dateTimeGMT).isBetween(moment("2023-04-01"),moment("2023-04-05")))//.add(1 ,'days').isSameOrAfter(moment()));
+
+            if(!isIncludedMatch)  continue;
+
+            match.team1Abbreviation = match.teamInfo[0].shortname;
+            match.team2Abbreviation = match.teamInfo[1].shortname;
+            match.banner = matchImgs[match.id];
+            relevantMatches.push(match);
+        };
+
+        return relevantMatches;
+    } catch (err) {
+        console.log("Error in API getMatchesFromDb:", err);
+        throw new Error(err);
     }
 }
 

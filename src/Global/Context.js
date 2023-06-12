@@ -173,7 +173,8 @@ const Context = (props) => {
                         username,
                         betTime: betData.betTime,
                         betPoints: parseInt(betData.selectedPoints),
-                        betTeam: betData.team1 == betData.selectedTeam ? betData.team1Abbreviation : (betData.team2 == betData.selectedTeam ? betData.team2Abbreviation : "Penalty")
+                        betTeam: betData.team1 == betData.selectedTeam ? betData.team1Abbreviation : (betData.team2 == betData.selectedTeam ? betData.team2Abbreviation : "Penalty"),
+                        teamName: betData.selectedTeam
                     });
                 }
             }
