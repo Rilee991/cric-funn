@@ -1,12 +1,11 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { Card, CardActionArea, CardActions, CardContent, Button, Typography, Chip } from '@material-ui/core';
-import { FlashOnOutlined, VisibilityOutlined, FaceOutlined } from '@material-ui/icons';
+import { Card, CardActionArea, CardActions, CardContent, Button, Typography } from '@material-ui/core';
+import { FlashOnOutlined, VisibilityOutlined } from '@material-ui/icons';
 import Alert from '@material-ui/lab/Alert';
 import { find, get, isEmpty } from 'lodash';
 import moment from 'moment';
 
 import { ContextProvider } from '../../../global/Context';
-import { getMatchDetails } from '../../../components/apis';
 import { fontVariant, getFormattedTimeISOString, getMsgForClosedBets, getMsgForInProgressBets, getMsgForLostBets, 
   getMsgForNoResultBets, getMsgForOpenBets, getMsgForUpcomingBets, getMsgForWonBets, getPerc, getTeamLogo, 
   matchHeadingFontSize, teamProps } from '../../../config';
@@ -51,7 +50,7 @@ const MatchCard = (props) => {
 	const { bets = [], points, username = "", isAdmin = false } = loggedInUserDetails;
 	const { match = {} } = props;
 
-	const { dateTimeGMT: matchTime, id: matchId, name: matchTitle, status, venue, odds = [], banner } = match;
+	const { dateTimeGMT: matchTime, id: matchId, name: matchTitle, status, venue, odds = [], banner, teams = [] } = match;
 
 	const [bettingDoneByUser, setBettingDoneByUser] = useState(false);
 	const [openLetsBetDialogBox, setOpenLetsBetDialogBox] = useState(false);
@@ -128,6 +127,10 @@ const MatchCard = (props) => {
     const oddsParams = {};
 
     if(!isEmpty(odds)) {
+		if(odds[0].name != teams[0]) {
+			[odds[0], odds[1]] = [odds[1], odds[0]];
+		}
+
 		oddsParams["team1Color"] = teamProps[odds[0].name].color;
 		oddsParams["team1Abbr"] = teamProps[odds[0].name].abbr;
 		oddsParams["team1Perc"] = getPerc(odds[0].price, odds[1].price);
@@ -178,7 +181,7 @@ const MatchCard = (props) => {
 				</CardActionArea>
 
 				<CardActions className="tw-flex tw-justify-center tw-px-4 tw-pt-0">
-					<Button size="small" className="tw-w-1/2 tw-rounded-[40px]" style={{ background: bettingOn ? "linear-gradient(44deg, #250c51, #605317)" : 'grey', color: "white" }} variant="contained" disabled={bettingOn ? false : true} onClick={() => handleOnClickLetsBet()}>
+					<Button size="small" className="tw-w-1/2 tw-rounded-[40px]" style={{ background: bettingOn ? "linear-gradient(44deg, #250c51, #605317)" : 'grey', color: "white" }} variant="contained" disabled={!bettingOn ? false : true} onClick={() => handleOnClickLetsBet()}>
 						<Typography variant="overline">
 							{"Let's Bet"} <FlashOnOutlined />
 						</Typography>
@@ -200,6 +203,7 @@ const MatchCard = (props) => {
 				open={openLetsBetDialogBox} 
 				betEndTime={betEndTime} 
 				points={points}
+				oddsParams={oddsParams}
 				handleClose={handleCloseLetsBet}
 			/>
 
