@@ -5,7 +5,7 @@ import { makeStyles } from '@material-ui/core/styles';
 
 import Signin from './Signin';
 import Signup from './Signup';
-import Social from '../../common/Social';
+import SocialMedia from '../../common/SocialMedia';
 import Copyright from '../../common/Copyright';
 import ForgotPassword from './ForgotPassword';
 
@@ -16,7 +16,7 @@ function Footer() {
         <Copyright />
       </Grid>
       <Grid item>
-          <Social />
+          <SocialMedia />
       </Grid>
     </Grid>
   );

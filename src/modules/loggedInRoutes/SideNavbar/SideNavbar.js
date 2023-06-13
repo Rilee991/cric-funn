@@ -51,6 +51,7 @@ const SideNavbar = (props) => {
     const onClickNavItem = (item) => {
         setNavSelected(item.id);
         setIsNavOpen(false);
+        item.onClick && item.onClick();
     }
 
     const getDrawerItems = () => (

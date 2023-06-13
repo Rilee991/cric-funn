@@ -151,7 +151,7 @@ function Signin(props) {
                             </Typography>
                         </Button>
                     </Grid>
-                    <Grid container xs justify="flex-end">
+                    <Grid container justify="flex-end">
                         <Button variant="text" onClick={toggleForgotPassword}>
                             <Typography variant="overline" style={{ fontSize: 12, fontWeight: 500}}>
                                 {"Forgot Password?"}

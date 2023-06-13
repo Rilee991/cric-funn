@@ -1,21 +1,22 @@
 import React from 'react';
 import { Grid, Typography, Link } from '@material-ui/core';
 
-function Copyright() {
+const Copyright = (props) => {
+    const { textColor = "black" } = props;
+
     return (
         <Grid container justify="space-evenly" alignContent="space-around" direction="column">
             <Grid item>
-                <Typography variant="body2" color="textSecondary" align="center">
+                <Typography style={{ color: textColor }} variant="body2" color="textPrimary" align="center">
                     {'Copyright © '}
                     <Link color="inherit" href="#" variant="overline">
                         Cric-Funn
                     </Link>{' '}
-                    {new Date().getFullYear()}
-                    {'.'}
+                    {"2021."}
                 </Typography>
             </Grid>
             <Grid item>
-                <Typography variant="overline" color="textSecondary" align="center">
+                <Typography style={{ color: textColor }} variant="overline" color="textSecondary" align="center">
                     {'Designed and Created by - Cypher33'}
                 </Typography>
             </Grid>
