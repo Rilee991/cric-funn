@@ -16,6 +16,7 @@ const Context = (props) => {
     const [errorMessage, setErrorMessage] = useState('');
     const [loading, setLoading] = useState(true);
     const [mobileView, setMobileView] = useState(false);
+    const [matches, setMatches] = useState([]);
     const [notifications, setNotifications] = useState([]);
 
     const signUp = async (user) => {
@@ -617,22 +618,20 @@ const Context = (props) => {
         }
     }
 
-    const updateUserInfo = async (username, points, bets) => {
+    const updateUserInfo = async (username, points, bets, matches) => {
         try {
-            logger.logEvent("update_user_info", { username, points, bets });
-            let finalPoints = points, betSettledCount = 0;
-            let notifications = [];
-            let inprogressBets = 0;
+            let finalPoints = points, betSettledCount = 0, inprogressBets = 0;
+            const notifications = [];
+
             for(let i=0; i<bets.length; i++) {
                 const bet = bets[i];
                 if(!bet.isSettled) {
-                    const matchDetails = await getMatchDetailsById(bet.matchId) || {};
+                    const matchDetails = find(matches, { id: bet.matchId });
                     if(!isEmpty(matchDetails.matchWinner)) {
                         if(matchDetails.matchWinner == "No Winner") {
                             bet.isSettled = true;
                             bet.betWon = true;
                             finalPoints += parseInt(bet.selectedPoints);
-                            betSettledCount++;
                             bet.isNoResult = true;
                             notifications.push({
                                 title: "Oh no! Nobody Won!",
@@ -649,7 +648,6 @@ const Context = (props) => {
                             }
                             bet.isSettled = true;
                             bet.isNoResult = false;
-                            betSettledCount++;
                             notifications.push({
                                 title: `You ${bet.betWon ? "Won" : "Lost"}!`,
                                 body: `Your bet for the match ${bet.team1} vs ${bet.team2} has been ${bet.betWon ? "Won" : "Lost"}!. You ${bet.betWon ? "Won" : "Lost"} ${bet.selectedPoints} POINTS.`,
@@ -657,6 +655,7 @@ const Context = (props) => {
                                 isNoResult: false
                             });
                         }
+                        betSettledCount++;
                     } else {
                         inprogressBets++;
                     }
@@ -703,11 +702,8 @@ const Context = (props) => {
                 }
             }
 
-            logger.logEvent("Settling Count", { ...bets });
-            console.log("Settling event counted");
             if(betSettledCount) {
                 setNotifications(notifications);
-                console.log("Updating users:", { bets, finalPoints, username, t: admin.default.firestore.Timestamp.fromDate(new Date())})
                 await db.collection("users").doc(username).update({
                     bets,
                     points: finalPoints,
@@ -718,6 +714,37 @@ const Context = (props) => {
             return { latestPoints: finalPoints, latestBets: bets };
         } catch(err) {
             console.log(err);
+        }
+    }
+
+    const updateAndGetMatches = async () => {
+        try {
+            const dbMatches = await db.collection("ipl_matches").get();
+            const matchPromises = [], matches = [];
+
+            for(let match of dbMatches.docs) {
+                match = match.data();
+                if(isEmpty(match.matchWinner)) {
+                    const matchDetails = await getMatchDetailsById(match.id);
+
+                    if(!isEmpty(matchDetails?.matchWinner)) {
+                        matchPromises.push(db.collection("ipl_matches").doc(match.id).update({
+                            matchWinner: matchDetails.matchWinner,
+                            status: matchDetails.status,
+                            updatedAt: admin.default.firestore.Timestamp.fromDate(new Date())
+                        }));
+
+                        match.matchWinner = matchDetails.matchWinner;
+                    }
+                }
+
+                matches.push(match);
+            };
+
+            await Promise.all(matchPromises);
+            return matches;
+        } catch (e) {
+            console.log(e);
         }
     }
 
@@ -734,25 +761,26 @@ const Context = (props) => {
     useEffect(async () => {
         checkMobileView();
         setLoading(true);
-        await auth.onAuthStateChanged(async user => {
+        auth.onAuthStateChanged(async user => {
             if(user) {
-                await db.collection("users").where("email", "==", user.email).get().then(async userSnap => {
-                    const { username, email, image, points, bets, isAdmin = false } = userSnap.docs[0].data();
-                    const { latestPoints = points, latestBets = [] } =  await updateUserInfo(username,points,bets) || {};
-                    setLoggedInUserDetails({
-                        username,
-                        email,
-                        image,
-                        points: latestPoints,
-                        bets: latestBets,
-                        isAdmin
-                    });
+                const userSnap = await db.collection("users").where("email", "==", user.email).get();
+                const { username, email, image, points, bets, isAdmin = false, isChampion = false } = userSnap.docs[0].data();
+                const matches = await updateAndGetMatches();
+                setMatches(matches);
+                const updatedDetails =  await updateUserInfo(username,points,bets,matches);
+                setLoggedInUserDetails({
+                    username,
+                    email,
+                    image,
+                    points: updatedDetails.latestPoints,
+                    bets: updatedDetails.latestBets,
+                    isAdmin,
+                    isChampion
                 });
-                setLoading(false);
             } else {
                 setLoggedInUserDetails({});
-                setLoading(false);
             }
+            setLoading(false);
         });
     },[]);
 
@@ -763,6 +791,7 @@ const Context = (props) => {
             loading,
             mobileView,
             notifications,
+            matches,
 
             signUp,
             signIn,
