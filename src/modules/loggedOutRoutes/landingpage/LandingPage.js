@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import { Paper, Box, Grid } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+import { Paper, Box, Grid, makeStyles } from '@material-ui/core';
 
 import Signin from './Signin';
 import Signup from './Signup';

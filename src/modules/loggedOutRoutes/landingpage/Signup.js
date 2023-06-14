@@ -1,16 +1,12 @@
 import React, { useState, useContext } from 'react'
-import { makeStyles, withStyles } from '@material-ui/core/styles';
-import { Button, TextField, Grid, Typography, Snackbar, InputAdornment, IconButton } from '@material-ui/core';
+import { Button, TextField, Typography, Snackbar, InputAdornment, IconButton, makeStyles, withStyles } from '@material-ui/core';
 import { LockOpen, Visibility, VisibilityOff } from '@material-ui/icons';
 import MuiAlert from '@material-ui/lab/Alert';
 import { isEmpty } from 'lodash';
-import Loader from 'react-loader-spinner';
 import { Tag } from 'antd';
 
 import LoaderV2 from '../../../components/common/LoaderV2';
 import { ContextProvider } from '../../../global/Context';
-import { loaderHeight, loaderWidth } from '../../../config';
-
 import iplLogo from '../../../images/logo.png';
 
 const useStyles = makeStyles((theme) => ({

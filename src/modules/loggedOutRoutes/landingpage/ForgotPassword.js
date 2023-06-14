@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react'
-import { Button, TextField, Typography, Snackbar, InputAdornment, IconButton, makeStyles, withStyles } from '@material-ui/core';
+import { Button, TextField, Typography, Snackbar, makeStyles, withStyles } from '@material-ui/core';
 import { LabelImportant } from '@material-ui/icons';
 import { isEmpty } from 'lodash';
 import MuiAlert from '@material-ui/lab/Alert';
