@@ -15,10 +15,9 @@ export const ContextProvider = createContext();
 
 const Context = (props) => {
     const [loggedInUserDetails, setLoggedInUserDetails] = useState({});
-    const [errorMessage, setErrorMessage] = useState('');
+    const [matches, setMatches] = useState([]);
     const [loading, setLoading] = useState(true);
     const [mobileView, setMobileView] = useState(false);
-    const [matches, setMatches] = useState([]);
     const [notifications, setNotifications] = useState([]);
 
     const signUp = async (user) => {
@@ -93,24 +92,14 @@ const Context = (props) => {
     }
 
     const logout = async () => {
-        setLoading(true);
         try {
-            await auth.signOut()
-            .then(() => {
-                setLoggedInUserDetails({});
-                setErrorMessage('');
-            })
-            .catch(error => {
-                console.log(error);
-                setErrorMessage(error.message);
-            });
+            await auth.signOut();
+            setLoggedInUserDetails({});
             setNotifications([]);
-            setLoading(false);
+            setMatches([]);
         } catch (error) {
             console.log(error);
-            setErrorMessage(error.message);
-            setNotifications([]);
-            setLoading(false);
+            throw new Error(error);
         }
     }
 
@@ -789,7 +778,6 @@ const Context = (props) => {
     return (
         <ContextProvider.Provider value={{
             loggedInUserDetails,
-            errorMessage,
             loading,
             mobileView,
             notifications,
@@ -800,6 +788,7 @@ const Context = (props) => {
             sendResetPasswordEmail,
             resetPassword,
             logout,
+
             betOnMatch,
             viewBetsData,
             getPointsTableData,
