@@ -1,17 +1,18 @@
-import { ceil, each, find, flattenDeep, get, isEmpty, merge, orderBy, round, sortBy } from 'lodash';
 import React, { createContext, useState, useEffect } from 'react';
+import { ceil, find, flattenDeep, get, isEmpty, merge, orderBy, round, sortBy } from 'lodash';
 import emailChecker from 'mailchecker';
-
-import { auth, db, storage, teamNames, getFormattedFirebaseTime, logger, iplMatches, teamProps } from '../config';
-import { getMatchDetailsById, getMatches } from '../components/apis';
 import moment from 'moment';
-import { getToppgerBgImage } from './adhocUtils';
-const admin = require('firebase');
 
+import { auth, db, teamNames, logger, iplMatches, teamProps } from '../config';
+import { getMatchDetailsById } from '../components/apis';
+import { getToppgerBgImage } from './adhocUtils';
+import { DEFAULT_USER_PARAMS } from '../configs/userConfigs';
+import { USER_COLLECTION } from './enums';
+
+const admin = require('firebase');
 export const ContextProvider = createContext();
 
 const Context = (props) => {
-    const DEFAULT_PROFILE_IMAGE = "https://firebasestorage.googleapis.com/v0/b/cric-funn.appspot.com/o/defaultImages%2Fdefault.png?alt=media&token=9ccd045b-3ece-4d06-babf-04c267c38d40";
     const [loggedInUserDetails, setLoggedInUserDetails] = useState({});
     const [errorMessage, setErrorMessage] = useState('');
     const [loading, setLoading] = useState(true);
@@ -20,7 +21,6 @@ const Context = (props) => {
     const [notifications, setNotifications] = useState([]);
 
     const signUp = async (user) => {
-        setLoading(true);
         const { username, email, password } = user;
         try {
             const isValidEmail = await emailChecker.isValid(email);
@@ -28,53 +28,37 @@ const Context = (props) => {
             if(!isValidEmail) throw new Error(`Email is invalid. Please don't try to be oversmart.`);
 
             const resp = await auth.createUserWithEmailAndPassword(email, password);
-            resp.user.updateProfile({displayName: username});
-            const points = 2000, image = DEFAULT_PROFILE_IMAGE, bets = [];
-            db.collection("users").doc(username).set({
-                username,
-                email,
-                password,
-                image,
-                points,
-                bets,
-                isDummyUser: true
-            });
+            resp.user.updateProfile({ displayName: username });
+            const points = DEFAULT_USER_PARAMS.STARTING_POINTS, image = DEFAULT_USER_PARAMS.PROFILE_PICTURE, bets = DEFAULT_USER_PARAMS.STARTING_BETS;
 
-            setErrorMessage('');
-            setNotifications([]);
-            setLoading(false);
+            db.collection(USER_COLLECTION).doc(username).set({
+                username, email, password, image, points, bets, isDummyUser: true, isAdmin: false, isChampion: false
+            });
         } catch (error) {
-            logger.logEvent("Signup", { ...user });
             console.log(error);
-            setErrorMessage(error.message);
-            setNotifications([]);
-            setLoading(false);
+            throw new Error(error);
         }
     }
 
     const signIn = async (user) => {
-        setLoading(true);
         const { email, password } = user;
         try {
             await auth.signInWithEmailAndPassword(email, password);
-            db.collection("users").where("email", "==", email).get().then(userSnap => {
-                const { username, email, image, points, bets = [], isAdmin = false } = userSnap.docs[0].data();
+            db.collection(USER_COLLECTION).where("email", "==", email).get().then(userSnap => {
+                const { username, email, image, points, bets = [], isAdmin = false, isChampion = false } = userSnap.docs[0].data();
                 setLoggedInUserDetails({
                     username,
                     email,
                     image,
                     points,
                     bets,
-                    isAdmin
+                    isAdmin,
+                    isChampion
                 });
-                setLoading(false);
             });
-
-            setErrorMessage('');
         } catch (error) {
             console.log(error);
-            setErrorMessage(error.message);
-            setLoading(false);
+            throw new Error(error);
         }
     }
 

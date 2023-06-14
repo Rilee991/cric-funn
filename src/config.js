@@ -38,9 +38,9 @@ logger.setAnalyticsCollectionEnabled(true);
 let themeColor = "#4B0082";
 const loaderHeight = 100;
 const loaderWidth = 250;
+
 const DEFAULT_START_POINTS = 2000;
-const DEFAULT_PROFILE_IMAGE = "https://firebasestorage.googleapis.com/v0/b/cric-funn.appspot.com/o/defaultImages%2Fdefault.png?alt=media&token=9ccd045b-3ece-4d06-babf-04c267c38d40";
-    
+const DEFAULT_PROFILE_IMAGE = "https://firebasestorage.googleapis.com/v0/b/cric-funn.appspot.com/o/defaultImages%2Fpp.png?alt=media&token=2745d072-9783-4505-95ba-bab54aad2d9c&_gl=1*fgupvy*_ga*MTIwMTA5NzI2Ny4xNjY4Njg3MTAz*_ga_CW55HF8NVT*MTY4NjY1NTk4My41My4xLjE2ODY2NTYwNzkuMC4wLjA.";
 
 function getTeamLogo(teamAbbreviation) {
     if(teamAbbreviation == "SRH") return srhLogo;

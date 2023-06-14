@@ -9,7 +9,7 @@ const Copyright = (props) => {
             <Grid item>
                 <Typography style={{ color: textColor }} variant="body2" color="textPrimary" align="center">
                     {'Copyright © '}
-                    <Link color="inherit" href="#" variant="overline">
+                    <Link color="inherit" href="" variant="overline">
                         Cric-Funn
                     </Link>{' '}
                     {"2021."}

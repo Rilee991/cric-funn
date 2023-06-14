@@ -1,55 +1,50 @@
 import React, { useState, useContext } from 'react'
-import { makeStyles } from '@material-ui/core/styles';
-import { Button, TextField, Grid, Typography, Snackbar, InputAdornment, IconButton } from '@material-ui/core';
-import { Visibility, VisibilityOff } from '@material-ui/icons';
+import { Button, TextField, Typography, Snackbar, InputAdornment, IconButton, makeStyles, withStyles } from '@material-ui/core';
+import { Visibility, VisibilityOff, Lock } from '@material-ui/icons';
 import MuiAlert from '@material-ui/lab/Alert';
 import { isEmpty } from 'lodash';
-import Loader from 'react-loader-spinner';
+import { Tag } from 'antd';
 
+import LoaderV2 from '../../../components/common/LoaderV2';
 import { ContextProvider } from '../../../global/Context';
-import { loaderHeight, loaderWidth, themeColor } from '../../../config';
-
 import iplLogo from '../../../images/logo.png';
 
 const useStyles = makeStyles((theme) => ({
-    avatar: {
-      margin: theme.spacing(1),
-      backgroundColor: theme.palette.secondary.main,
-    },
     form: {
-      width: '100%', // Fix IE 11 issue.
-      marginTop: theme.spacing(1),
+        width: '100%', // Fix IE 11 issue.
     },
     submit: {
-      margin: theme.spacing(3, 0, 2),
-    },
-    loader: {
-        display: 'flex',
-        '& > * + *': {
-        marginLeft: theme.spacing(2),
-        }
+        margin: theme.spacing(1, 0, 1),
+        borderRadius: "40px"
     }
 }));
 
-function Signin(props) {
+const CustomTextField = withStyles({
+    root: {
+        '& fieldset': {
+            borderWidth: 2,
+            borderRadius: "40px"
+        }
+    },
+})(TextField);
+
+const Signin = (props) => {
     const classes = useStyles();
     const { handleToggle } = props;
     const contextConsumer = useContext(ContextProvider) || {};
-    const { signIn, errorMessage, loading } = contextConsumer;
+    const { signIn } = contextConsumer;
 
-    const [inputs, setInputs] = useState({
-        email: '',
-        password: ''
-    });
-    const [open, setOpen] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState("");
+    const [inputs, setInputs] = useState({ email: '', password: '' });
     const [showPassword, setShowPassword] = useState(false);
 
-    function toggleSignin() {
+    const toggleSignin = () => {
         handleToggle && handleToggle("signup");
     }
 
     const toggleForgotPassword = () => {
-        handleToggle && handleToggle("password")
+        handleToggle && handleToggle("password");
     }
 
     const togglePasswordVisibility = () => setShowPassword(!showPassword);
@@ -61,17 +56,17 @@ function Signin(props) {
         });
     }
 
-    const signInUser = (event) => {
-        event.preventDefault();
-        signIn(inputs);
-        setInputs({
-            email: '',
-            password: ''
-        });
-
-        if(!isEmpty(errorMessage)) {
-            setOpen(true);
-            return;
+    const signInUser = async (event) => {
+        setLoading(true);
+        try {
+            event.preventDefault();
+            await signIn(inputs);
+            setInputs({ email: '', password: '' });
+            setError("");
+        } catch (e) {
+            console.log("Errs:", e);
+            setError(e.message);
+            setLoading(false);
         }
     }
 
@@ -79,22 +74,21 @@ function Signin(props) {
         if (reason === 'clickaway') {
           return;
         }
-    
-        setOpen(false);
+
+        setError("");
     }
 
     return (
-        loading ? 
-            <Loader type="Puff" color="#0008ff" height={loaderHeight} width={loaderWidth} timeout={5000} /> : 
-        <>
-            <img src={iplLogo} style={{width: 150}}/>
+        loading ? <LoaderV2 tip="Loading..." /> 
+        : <>
+            <img src={iplLogo} style={{width: 150}} />
             <Typography variant="overline" style={{ fontSize: 20, fontWeight: 500}}>
                 Sign in
             </Typography>
             <form className={classes.form} onSubmit={signInUser}>
-                <TextField
+                <CustomTextField
                     variant="outlined"
-                    margin="normal"
+                    className={"tw-mb-0 sm:tw-mb-3"}
                     required
                     fullWidth
                     id="email"
@@ -106,7 +100,7 @@ function Signin(props) {
                     value={inputs.email}
                     onChange={handleInputs}
                 />
-                <TextField
+                <CustomTextField
                     variant="outlined"
                     margin="normal"
                     required
@@ -136,34 +130,26 @@ function Signin(props) {
                     type="submit"
                     fullWidth
                     variant="contained"
-                    style={{ backgroundColor: themeColor, color: "white" }}
+                    style={{ background: "linear-gradient(44deg, #250c51, #605317)", color: "white" }}
                     className={classes.submit}
                 >
-                    <Typography variant="overline" style={{ fontSize: 13, fontWeight: 500}}>
-                        Sign In
+                    <Typography variant="overline" className="tw-flex tw-items-center tw-justify-center tw-gap-2" style={{ fontSize: "medium" }}>
+                        Sign In <Lock className="tw-text-2xl" />
                     </Typography>
                 </Button>
-                <Grid container spacing={2}>
-                    <Grid item xs>
-                        <Button variant="text" onClick={toggleSignin}>
-                            <Typography variant="overline" style={{ fontSize: 12, fontWeight: 500}}>
-                                {"Don't have an account? Sign Up"}
-                            </Typography>
-                        </Button>
-                    </Grid>
-                    <Grid container justify="flex-end">
-                        <Button variant="text" onClick={toggleForgotPassword}>
-                            <Typography variant="overline" style={{ fontSize: 12, fontWeight: 500}}>
-                                {"Forgot Password?"}
-                            </Typography>
-                        </Button>
-                    </Grid>
-                </Grid>
+                <div className="tw-flex tw-justify-between tw-mt-2">
+                    <div onClick={toggleSignin} className="tw-cursor-pointer">
+                        <Tag className="tw-rounded-3xl" color="blue-inverse">Create Account</Tag>
+                    </div>
+                    <div onClick={toggleForgotPassword} className="tw-cursor-pointer">
+                        <Tag className="tw-rounded-3xl" color="volcano-inverse">Forgot Password</Tag>
+                    </div>
+                </div>
             </form>
             
-            <Snackbar open={open} autoHideDuration={10000} onClose={handleClose}>
-                <MuiAlert onClose={handleClose} severity="error">
-                    {errorMessage}
+            <Snackbar open={!isEmpty(error)} autoHideDuration={3000} onClose={handleClose} anchorOrigin={{ vertical: "top", horizontal: "right" }}>
+                <MuiAlert className="tw-rounded-3xl" variant="filled" onClose={handleClose} severity="error">
+                    {error}
                 </MuiAlert>
             </Snackbar>
         </>

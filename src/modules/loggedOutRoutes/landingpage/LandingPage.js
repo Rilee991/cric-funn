@@ -13,7 +13,7 @@ function Footer() {
 	return (
 		<Grid container justify="space-evenly" alignContent="space-around" direction="column">
 			<Grid item>
-				<Copyright textColor="white" />
+				<Copyright textColor="black" />
 			</Grid>
 			<Grid item>
 				<SocialMedia />
@@ -29,15 +29,17 @@ const useStyles = makeStyles((theme) => ({
 	image: {
 		backgroundImage: 'url(https://source.unsplash.com/collection/9344848)',
 		backgroundRepeat: 'no-repeat',
-		backgroundColor: theme.palette.grey[50],
+		backgroundColor: "#450559",
 		backgroundSize: 'cover',
 		backgroundPosition: 'center',
 	},
 	paper: {
-		margin: theme.spacing(8, 4),
+		margin: theme.spacing(0, 3, 0, 3),
 		display: 'flex',
 		flexDirection: 'column',
 		alignItems: 'center',
+		justifyContent: "center",
+		height: "100%"
 	}
 }));
 
@@ -53,7 +55,7 @@ const LandingPage = () => {
         <Grid container component="main" className={classes.root}>
 			<CssBaseline />
 			<Grid item xs={false} sm={4} md={7} className={classes.image} />
-			<Grid style={{ background: "linear-gradient(300deg, black, #15065b)" }} className="tw-text-white" item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+			<Grid style={{ background: "linear-gradient(300deg, #ccfffc, #d4e5ff)" }} className="tw-text-black" item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
 				<div className={classes.paper}>
 					{ toggleLogin === "login" ? 
 						<Signin handleToggle={handleToggle}/> 
@@ -61,7 +63,7 @@ const LandingPage = () => {
 						<Signup handleToggle={handleToggle}/> 
 					: <ForgotPassword handleToggle={handleToggle} /> )
 					}
-					<Box mt={5}>
+					<Box className="tw-mt-6 sm:tw-mt-10">
 						<Footer />
 					</Box>
 				</div>
