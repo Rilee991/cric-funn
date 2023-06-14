@@ -5,9 +5,10 @@ import moment from 'moment';
 
 import { auth, db, teamNames, logger, iplMatches, teamProps } from '../config';
 import { getMatchDetailsById } from '../components/apis';
-import { getToppgerBgImage } from './adhocUtils';
+import { getFirebaseCurrentTime, getToppgerBgImage } from './adhocUtils';
 import { DEFAULT_USER_PARAMS } from '../configs/userConfigs';
 import { USER_COLLECTION } from './enums';
+import { updateUserDetailsByEmail } from './utils';
 
 const admin = require('firebase');
 export const ContextProvider = createContext();
@@ -70,6 +71,21 @@ const Context = (props) => {
         const { email } = user;
         try {
             await auth.sendPasswordResetEmail(email);
+        } catch (error) {
+            console.log(error);
+            throw new Error(error);
+        }
+    }
+
+    const resetPassword = async (resetInfo) => {
+        const { password, actionCode } = resetInfo;
+        try {
+            const email = await auth.verifyPasswordResetCode(actionCode);
+            await auth.confirmPasswordReset(actionCode, password);
+            await updateUserDetailsByEmail(email, {
+                password,
+                updatedAt: getFirebaseCurrentTime()
+            });
         } catch (error) {
             console.log(error);
             throw new Error(error);
@@ -781,6 +797,8 @@ const Context = (props) => {
 
             signUp,
             signIn,
+            sendResetPasswordEmail,
+            resetPassword,
             logout,
             betOnMatch,
             viewBetsData,
@@ -788,7 +806,6 @@ const Context = (props) => {
             clearUsernameBetsData,
             syncUsernameBetsData,
             clearNotifications,
-            sendResetPasswordEmail,
             getTeamStatsData,
             getAllUsersData,
             updateSeenBets

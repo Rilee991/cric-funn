@@ -75,7 +75,7 @@ const Signup = (props) => {
     };
 
     return (
-        loading ? <LoaderV2 tip="Loading..." /> 
+        loading ? <LoaderV2 tip="Creating your account..." /> 
         : <>
             <img src={iplLogo} style={{width: 150}}/>
             <Typography variant="overline" style={{ fontSize: 20, fontWeight: 500}}>

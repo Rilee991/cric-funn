@@ -4,22 +4,8 @@ import { Paper, Box, Grid, makeStyles } from '@material-ui/core';
 
 import Signin from './Signin';
 import Signup from './Signup';
-import SocialMedia from '../../../components/common/SocialMedia';
-import Copyright from '../../../components/common/Copyright';
+import Credits from '../../../components/common/Credits';
 import ForgotPassword from './ForgotPassword';
-
-function Footer() {
-	return (
-		<Grid container justify="space-evenly" alignContent="space-around" direction="column">
-			<Grid item>
-				<Copyright textColor="black" />
-			</Grid>
-			<Grid item>
-				<SocialMedia />
-			</Grid>
-		</Grid>
-	);
-}
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -63,7 +49,7 @@ const LandingPage = () => {
 					: <ForgotPassword handleToggle={handleToggle} /> )
 					}
 					<Box className="tw-mt-6 sm:tw-mt-10">
-						<Footer />
+						<Credits />
 					</Box>
 				</div>
 			</Grid>

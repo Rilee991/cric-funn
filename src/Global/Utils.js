@@ -32,10 +32,18 @@ const updateUserDetailsByUsername = async (username, userDetails) => {
     await db.collection("users").doc(username).update({ ...userDetails });
 }
 
+const updateUserDetailsByEmail = async (email, userDetails) => {
+    const docsSnapshot = await db.collection("users").where("email", "==", email).get();
+    docsSnapshot.docs.forEach(doc => {
+        updateUserDetailsByUsername(doc.id, userDetails);
+    });
+}
+
 export {
     createUserInDb,
     getFormattedTimeFromSeconds,
     getIsMobileView,
     getUserFromKey,
-    updateUserDetailsByUsername
+    updateUserDetailsByUsername,
+    updateUserDetailsByEmail
 };

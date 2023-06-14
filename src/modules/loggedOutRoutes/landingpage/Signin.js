@@ -79,7 +79,7 @@ const Signin = (props) => {
     }
 
     return (
-        loading ? <LoaderV2 tip="Loading..." /> 
+        loading ? <LoaderV2 tip="Logging In..." /> 
         : <>
             <img src={iplLogo} style={{width: 150}} />
             <Typography variant="overline" style={{ fontSize: 20, fontWeight: 500}}>
