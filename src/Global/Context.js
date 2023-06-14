@@ -27,11 +27,15 @@ const Context = (props) => {
 
             if(!isValidEmail) throw new Error(`Email is invalid. Please don't try to be oversmart.`);
 
+            const user = await db.collection(USER_COLLECTION).doc(username).get();
+
+            if(user.exists) throw new Error("Username already exists");
+
             const resp = await auth.createUserWithEmailAndPassword(email, password);
             resp.user.updateProfile({ displayName: username });
             const points = DEFAULT_USER_PARAMS.STARTING_POINTS, image = DEFAULT_USER_PARAMS.PROFILE_PICTURE, bets = DEFAULT_USER_PARAMS.STARTING_BETS;
 
-            db.collection(USER_COLLECTION).doc(username).set({
+            await db.collection(USER_COLLECTION).doc(username).set({
                 username, email, password, image, points, bets, isDummyUser: true, isAdmin: false, isChampion: false
             });
         } catch (error) {
@@ -63,16 +67,13 @@ const Context = (props) => {
     }
 
     const sendResetPasswordEmail = async (user) => {
-        setLoading(true);
         const { email } = user;
         try {
             await auth.sendPasswordResetEmail(email);
-            setErrorMessage('');
         } catch (error) {
             console.log(error);
-            setErrorMessage(error.message);
+            throw new Error(error);
         }
-        setLoading(false);
     }
 
     const logout = async () => {
@@ -688,6 +689,7 @@ const Context = (props) => {
 
             if(betSettledCount) {
                 setNotifications(notifications);
+                console.log(finalPoints, bets);
                 await db.collection("users").doc(username).update({
                     bets,
                     points: finalPoints,

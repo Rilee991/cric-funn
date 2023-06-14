@@ -1,48 +1,45 @@
 import React, { useState, useContext } from 'react'
-import { makeStyles } from '@material-ui/core/styles';
-import { Button, TextField, Grid, Typography, Snackbar, InputAdornment, IconButton } from '@material-ui/core';
-import { Visibility, VisibilityOff } from '@material-ui/icons';
-import MuiAlert from '@material-ui/lab/Alert';
+import { Button, TextField, Typography, Snackbar, InputAdornment, IconButton, makeStyles, withStyles } from '@material-ui/core';
+import { LabelImportant } from '@material-ui/icons';
 import { isEmpty } from 'lodash';
-import Loader from 'react-loader-spinner';
+import MuiAlert from '@material-ui/lab/Alert';
+import { Tag } from 'antd';
 
+import LoaderV2 from '../../../components/common/LoaderV2';
 import { ContextProvider } from '../../../global/Context';
-import { loaderHeight, loaderWidth, themeColor } from '../../../config';
-
 import iplLogo from '../../../images/logo.png';
 
 const useStyles = makeStyles((theme) => ({
-    avatar: {
-      margin: theme.spacing(1),
-      backgroundColor: theme.palette.secondary.main,
-    },
     form: {
-      width: '100%', // Fix IE 11 issue.
-      marginTop: theme.spacing(1),
+        width: '100%', // Fix IE 11 issue.
     },
     submit: {
-      margin: theme.spacing(3, 0, 2),
-    },
-    loader: {
-        display: 'flex',
-        '& > * + *': {
-        marginLeft: theme.spacing(2),
-        }
+        margin: theme.spacing(1, 0, 1),
+        borderRadius: "40px"
     }
 }));
+
+const CustomTextField = withStyles({
+    root: {
+      '& fieldset': {
+        borderWidth: 2,
+        borderRadius: "40px"
+      }
+    },
+})(TextField);
 
 const ForgotPassword = (props) => {
     const classes = useStyles();
     const { handleToggle } = props;
     const contextConsumer = useContext(ContextProvider) || {};
-    const { sendResetPasswordEmail, errorMessage, loading } = contextConsumer;
+    const { sendResetPasswordEmail } = contextConsumer;
 
-    const [inputs, setInputs] = useState({
-        email: ''
-    });
-    const [open, setOpen] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState("");
+    const [severity, setSeverity] = useState("error");
+    const [inputs, setInputs] = useState({ email: '' });
 
-    function toggleSignin() {
+    const toggleSignin = () => {
         handleToggle && handleToggle("login");
     }
 
@@ -53,39 +50,41 @@ const ForgotPassword = (props) => {
         });
     }
 
-    const saveResetPasswordEmail = (event) => {
-        event.preventDefault();
-        sendResetPasswordEmail(inputs);
-        setInputs({
-            email: ''
-        });
-
-        if(!isEmpty(errorMessage)) {
-            setOpen(true);
-            return;
+    const saveResetPasswordEmail = async (event) => {
+        setLoading(true);
+        try {
+            event.preventDefault();
+            await sendResetPasswordEmail(inputs);
+            setInputs({ email: '' });
+            setError("Reset password link has been sent to your mail. Please check.");
+            setSeverity("success");
+        } catch (e) {
+            console.log("Errs:", e);
+            setError(e.message);
+            setSeverity("error");
         }
+        setLoading(false);
     }
 
     const handleClose = (event, reason) => {
         if (reason === 'clickaway') {
-          return;
+            return;
         }
-    
-        setOpen(false);
+
+        setError("");
     }
 
     return (
-        loading ? 
-            <Loader type="Puff" color="#0008ff" height={loaderHeight} width={loaderWidth} timeout={5000} /> : 
-        <>
-            <img src={iplLogo} style={{width: 150}}/>
+        loading ? <LoaderV2 tip="Loading..." /> 
+        : <>
+            <img src={iplLogo} style={{width: 150}} />
             <Typography variant="overline" style={{ fontSize: 20, fontWeight: 500}}>
-                Forgot Password
+                Reset Password
             </Typography>
             <form className={classes.form} onSubmit={saveResetPasswordEmail}>
-                <TextField
+                <CustomTextField
                     variant="outlined"
-                    margin="normal"
+                    className={"tw-mb-0 sm:tw-mb-3"}
                     required
                     fullWidth
                     id="email"
@@ -102,27 +101,23 @@ const ForgotPassword = (props) => {
                     type="submit"
                     fullWidth
                     variant="contained"
-                    style={{ backgroundColor: themeColor, color: "white" }}
+                    style={{ background: "linear-gradient(44deg, #250c51, #605317)", color: "white" }}
                     className={classes.submit}
                 >
-                    <Typography variant="overline" style={{ fontSize: 13, fontWeight: 500}}>
-                        Send Mail
+                    <Typography variant="overline" className="tw-flex tw-items-center tw-justify-center tw-gap-2" style={{ fontSize: "medium" }}>
+                        Send Mail <LabelImportant className="tw-text-2xl" />
                     </Typography>
                 </Button>
-                <Grid container spacing={2}>
-                    <Grid item xs>
-                        <Button variant="text" onClick={toggleSignin}>
-                            <Typography variant="overline" style={{ fontSize: 12, fontWeight: 500}}>
-                                {"Back to Login"}
-                            </Typography>
-                        </Button>
-                    </Grid>
-                </Grid>
+                <div className="tw-flex tw-justify-center tw-mt-2">
+                    <div onClick={toggleSignin} className="tw-cursor-pointer">
+                        <Tag className="tw-rounded-3xl" color="blue-inverse">Sign Into Existing Account</Tag>
+                    </div>
+                </div>
             </form>
             
-            <Snackbar open={open} autoHideDuration={10000} onClose={handleClose}>
-                <MuiAlert onClose={handleClose} severity="error">
-                    {errorMessage}
+            <Snackbar open={!isEmpty(error)} autoHideDuration={3000} onClose={handleClose} anchorOrigin={{ vertical: "top", horizontal: "right" }}>
+                <MuiAlert className="tw-rounded-3xl" variant="filled" onClose={handleClose} severity={severity}>
+                    {error}
                 </MuiAlert>
             </Snackbar>
         </>
