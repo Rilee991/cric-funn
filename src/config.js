@@ -226,9 +226,7 @@ const matchImgs = {"c8742d20-c3cb-4423-aea1-b436f3ac65c3":"https://cdorg.b-cdn.n
 "9759d12a-14a6-42c2-bbe2-833c6f612ceb":"https://cdorg.b-cdn.net/wp-content/uploads/2022/03/IPL-Match-67-RCB-vs-GT-768x360.jpg",
 "ebd0d24d-8726-44d3-afdb-40021ce99982": "https://cdorg.b-cdn.net/wp-content/uploads/2022/03/IPL-Match-29-GT-vs-CSK-768x360.jpg",
 "11db4216-28c6-4725-822e-a40f3ea65187": "https://cdorg.b-cdn.net/wp-content/uploads/2022/03/IPL-Match-37-LSG-vs-MI-768x360.jpg",
-"63c6436d-3d09-4e9c-b0e1-7f9379eafdd5": "https://cdorg.b-cdn.net/wp-content/uploads/2022/03/IPL-Match-51-GT-vs-MI-768x360.jpg",
-"faa22a1a-a48b-42dd-96cd-8f5a4e38b3b0": "https://pbs.twimg.com/media/FxHaccgWAAA_W4s?format=jpg&name=medium",
-"faa22a1a-a48b-42dd-96cd-8f5a4e38b3b1": "https://scontent.fbbi5-3.fna.fbcdn.net/v/t39.30808-6/350245081_211072855069677_4527982921524003206_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=5cd70e&_nc_ohc=-phHp1mO4zAAX8q5V9O&_nc_ht=scontent.fbbi5-3.fna&oh=00_AfBi_dKl1_bbs-1G-7TD9skQNVHotosqLOOhIucZp4jB4g&oe=647A0309"};
+"63c6436d-3d09-4e9c-b0e1-7f9379eafdd5": "https://cdorg.b-cdn.net/wp-content/uploads/2022/03/IPL-Match-51-GT-vs-MI-768x360.jpg"};
 
 
 const dimModePalette = {
