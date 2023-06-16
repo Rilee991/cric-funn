@@ -1,3 +1,6 @@
+import { ceil } from "lodash";
+import moment from "moment";
+
 const firebase = require("firebase");
 
 export const getToppgerBgImage = (isChampion = false) => {
@@ -7,4 +10,12 @@ export const getToppgerBgImage = (isChampion = false) => {
 
 export const getFirebaseCurrentTime = () => {
     return firebase.default.firestore.Timestamp.fromDate(new Date());
+}
+
+export const getWinningAmount = (amount, odds) => {
+    return ceil((1+odds)*amount);
+}
+
+export const getBetEndTime = (matchTime) => {
+    return moment(matchTime).subtract(30, "minutes");
 }

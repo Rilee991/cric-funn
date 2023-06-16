@@ -25,9 +25,6 @@ import LoaderV2 from '../../../components/common/LoaderV2';
 //     }],
 // 	   "poster": "https://posterlink",
 //     "matchWinner": "Rajasthan Royals"
-//     "fantasyEnabled":false,
-//     "bbbEnabled":false,
-//     "hasSquad":true,
 //     "matchStarted":false,
 //     "matchEnded":false
 // }
