@@ -4,19 +4,16 @@ import moment from 'moment';
 import Alert from '@material-ui/lab/Alert';
 
 import MatchPic from '../../../components/common/MatchPic';
-import { getTeamLogo } from '../../../config';
 
 function BetCard(props) {
     const { mobileView, bet = {} } = props;
-    const { betTime = "", team1, team2, selectedTeam, selectedPoints, team1Abbreviation, team2Abbreviation } = bet;
-    const team1Logo = getTeamLogo(team1Abbreviation);
-    const team2Logo = getTeamLogo(team2Abbreviation);
+    const { betTime = "", team1, team2, selectedTeam, selectedPoints, team1Abbreviation, team2Abbreviation, team1Logo, team2Logo } = bet;
     
     return (
 		<Card style={{ boxShadow: "5px 5px 20px"}} className="tw-mt-2 tw-mb-10 xl:tw-w-[70%] md:tw-w-[90%] tw-rounded-[40px]">
 			<CardActionArea>
 				<CardContent>
-					<MatchPic src="bet" team1Logo={team1Logo} team2Logo={team2Logo} mobileView={mobileView}/>
+					<MatchPic posterSrc="single" team1Logo={team1Logo} team2Logo={team2Logo} mobileView={mobileView}/>
 					<Typography gutterBottom variant="overline" style={{fontSize: 20, lineHeight: "28px", }} component="h2">
 						<b>{team1} VS. {team2}</b>
 					</Typography>

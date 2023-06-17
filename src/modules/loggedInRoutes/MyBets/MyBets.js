@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import { Card, CardActionArea, CardContent, Typography } from '@material-ui/core';
+import { find } from 'lodash';
 
 import { ContextProvider } from '../../../global/Context';
 import BetCard from './BetCard';
@@ -8,10 +9,14 @@ import LoaderV2 from '../../../components/common/LoaderV2';
 
 export default function MyBets() {
     const contextConsumer = useContext(ContextProvider);
-    const { loggedInUserDetails = {}, mobileView, loading } = contextConsumer;
+    const { loggedInUserDetails = {}, mobileView, loading, matches = [] } = contextConsumer;
     const { bets = [], username = "", points = "" } = loggedInUserDetails;
 
     bets.map(bet => {
+        const match = find(matches, { id: bet.matchId });
+        bet.team1Logo = match.teamInfo[0].img;
+        bet.team2Logo = match.teamInfo[1].img;
+
         if(bet.isBetDone) {
 			if(bet.isSettled) {
 				if(bet.isNoResult) {
@@ -55,7 +60,7 @@ export default function MyBets() {
                     </CardActionArea>
                 </Card>
                 {bets.length ? bets.map((bet) => (
-                    <BetCard key={bet.unique_id} mobileView={mobileView} bet={bet} />
+                    <BetCard key={bet.matchId} mobileView={mobileView} bet={bet} posterSrc="single" />
                 )) :
                     <Card style={{ boxShadow: "5px 5px 20px", backgroundRepeat:"no-repeat", backgroundSize: "inherit",height: "auto", backgroundBlendMode: "hard-light" }} className="tw-mt-2 tw-mb-10 xl:tw-w-[70%] md:tw-w-[90%] tw-rounded-[40px]">
                         <CardActionArea>

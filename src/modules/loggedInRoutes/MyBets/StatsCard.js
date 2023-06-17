@@ -37,7 +37,7 @@ const StatsCard = (props) => {
 
     last5ResultsString = last5ResultsString.slice(-5);
     accuracy = round(winBets/(winBets+lostBets),2) * 100 || 0;
-    avgBettingPoints = round(totalPointsBet/(winBets+lostBets),2) || 0;
+    avgBettingPoints = round(totalPointsBet/((winBets+lostBets) || 1),2) || 0;
 
     const shareTitle = `*${upperCase(username)}'s Statistics*\n-------------------------`;
     const shareBody = `*Total Bets Done: ${totalBets}*\n*Bets Won: ${winBets}*\n*Bets Lost: ${lostBets}*\n*Bets In-Progress: ${inProgressBets}*\n*Bets Penalized: ${finedBets}*\n*Accuracy: ${accuracy}%*\n*Points: ${points}*\n*Last 5 Bets Form: ${last5ResultsString}*\n\nCric-Funn - Boiz's Official Betting App`;
