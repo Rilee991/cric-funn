@@ -57,7 +57,7 @@ function getTeamLogo(teamAbbreviation) {
 
 const teamNames = ["Chennai Super Kings", "Delhi Capitals", "Kolkata Knight Riders", "Sunrisers Hyderabad",
     "Mumbai Indians", "Rajasthan Royals", "Gujarat Titans", "Lucknow Super Giants", "Punjab Kings", 
-    "Royal Challengers Bangalore", "No Betting Done."
+    "Royal Challengers Bangalore"
 ]
 
 const teamProps = {

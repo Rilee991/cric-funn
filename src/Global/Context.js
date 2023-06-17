@@ -1,13 +1,13 @@
 import React, { createContext, useState, useEffect } from 'react';
-import { ceil, find, findIndex, flattenDeep, get, isEmpty, merge, orderBy, round, sortBy } from 'lodash';
+import { find, findIndex, flattenDeep, get, isEmpty, merge, orderBy, round, sortBy } from 'lodash';
 import emailChecker from 'mailchecker';
 import moment from 'moment';
 
-import { auth, db, teamNames, logger, iplMatches, teamProps } from '../config';
+import { auth } from '../config';
 import { getBetEndTime, getFirebaseCurrentTime, getToppgerBgImage, getWinningAmount } from './adhocUtils';
 import { DEFAULT_USER_PARAMS } from '../configs/userConfigs';
-import { getUserByKey, getUserByUsername, createUser, updateUserByEmail, updateUserByUsername } from '../apis/userController';
-import { getMatches, updateMatchById } from '../apis/matchController';
+import { getUserByKey, getUserByUsername, createUser, updateUserByEmail, updateUserByUsername, getUsers } from '../apis/userController';
+import { getMatchById, getMatches, updateMatchById } from '../apis/matchController';
 import { getMatchDetailsById, saveMatchesToDb } from '../apis/cricapiController';
 import { DEFAULT_PENALTY_POINTS, DEFAULT_PENALTY_TEAM } from '../configs/matchConfigs';
 
@@ -100,64 +100,58 @@ const Context = (props) => {
         setNotifications([]);
     }
 
-    const betOnMatch = (betDetails) => {
+    const betOnMatch = async (betDetails) => {
         const { username, bets, points } = loggedInUserDetails;
-        const newBets = [...bets, betDetails];
-        const newPoints = points - betDetails.selectedPoints;
+        try {
+            const newBets = [...bets, betDetails];
+            const newPoints = points - betDetails.selectedPoints;
 
-        db.collection("users").doc(username).update({
-            bets: admin.default.firestore.FieldValue.arrayUnion(betDetails),
-            points: newPoints,
-            updatedBy: `${username}_betOnMatch`,
-            updatedAt: admin.default.firestore.Timestamp.fromDate(new Date())
-        }).then(() => {
-            console.log("Document updated Successfully.");
-            setLoggedInUserDetails({
-                ...loggedInUserDetails,
-                bets: newBets,
-                points: newPoints
+            await updateUserByUsername(username, {
+                bets: admin.default.firestore.FieldValue.arrayUnion(betDetails),
+                points: newPoints,
+                updatedBy: `${username}_betOnMatch`,
+                updatedAt: getFirebaseCurrentTime()
             });
-        }).catch(err => {
-            console.log("Error while updating user details:",err);
-        });
+
+            setLoggedInUserDetails({ ...loggedInUserDetails, bets: newBets, points: newPoints });
+        } catch (error) {
+            console.log(error);
+            throw new Error(error);
+        }
     }
 
     const updateSeenBets = async (id, username) => {
-        const docRef = db.collection("ipl_matches").doc(id);
-        
-        docRef.get().then(doc => {
+        try {
+            const doc = await getMatchById(id);
+
             if(doc.exists) {
                 const data = doc.data();
-                let value = get(data, `seenBy[${username}]`, []);
-                if(data.seenBy) {
-                    if(data.seenBy[username]) {
-                        value.push(admin.default.firestore.Timestamp.fromDate(new Date()));
-                    } else {
-                        value.push(admin.default.firestore.Timestamp.fromDate(new Date()));
-                    }
-                } else {
-                    value.push(admin.default.firestore.Timestamp.fromDate(new Date()));
-                }
+                const value = get(data, `seenBy[${username}]`, []);
+                value.push(getFirebaseCurrentTime());
 
-                docRef.update(`seenBy.${username}`, value).then(resp => console.log("doc updated :)"));
+                await doc.ref.update(`seenBy.${username}`, value);
             }
-        }); 
+        } catch (error) {
+            console.log(error);
+            throw new Error(error);
+        }
     }
 
-    const viewBetsData = async(id) => {
+    const viewBetsData = async (matchId) => {
         let result = [];
-        const userDocs = await db.collection("users").get();
+        const userDocs = await getUsers();
+
         userDocs.docs.map(user => {
             const userData = user.data();
             const { bets = [], username, isDummyUser = false } = userData;
             if(!isDummyUser) {
-                const betData = find(bets, {"matchId": id}) || {};
+                const betData = find(bets, {"matchId": matchId}) || {};
                 if(!isEmpty(betData)) {
                     result.push({
                         username,
                         betTime: betData.betTime,
                         betPoints: parseInt(betData.selectedPoints),
-                        betTeam: betData.team1 == betData.selectedTeam ? betData.team1Abbreviation : (betData.team2 == betData.selectedTeam ? betData.team2Abbreviation : "Penalty"),
+                        betTeam: betData.team1 == betData.selectedTeam ? betData.team1Abbreviation : (betData.team2 == betData.selectedTeam ? betData.team2Abbreviation : DEFAULT_PENALTY_TEAM),
                         teamName: betData.selectedTeam
                     });
                 }
@@ -171,10 +165,11 @@ const Context = (props) => {
 
     const getPointsTableData = async () => {
         let result = [];
-        const userDocs = await db.collection("users").get();
+        const userDocs = await getUsers();
+
         userDocs.docs.map(user => {
             const userData = user.data();
-            const { bets = [], username, points, isDummyUser = false, isChampion = false, image } = userData;
+            const { bets = [], username, points, isDummyUser = false, isChampion = false, image, isOut = false } = userData;
 
             if(isDummyUser) return;
             
@@ -194,19 +189,9 @@ const Context = (props) => {
                 }
             });
 
-            result.push({
-                player: username,
-                bets: totalBets,
-                won,
-                lost,
-                inprogress,
-                fined,
-                points,
-                "w-l-i": `${won}-${lost}-${inprogress}`,
-                isOut: (inprogress === 0 && points === 0) ? true : false,
-                isChampion,
-                image,
-                subText: isChampion ? "Undisputed Universal Champion" : "#1 Contender",
+            result.push({ player: username, bets: totalBets, won, lost, inprogress, fined, points,
+                "w-l-i": `${won}-${lost}-${inprogress}`, isOut, isChampion, image, 
+                subText: isChampion ? "Undisputed Universal Champion" : "#1 Contender", 
                 bgImage: getToppgerBgImage(isChampion)
             });
         });
@@ -220,16 +205,16 @@ const Context = (props) => {
         try {
             let mostBetsDone = [], mostBetsWon = [], mostBetsLost = [], mostBetsPenalized = [], maxAvgBetsPoints = [],
                 mostPointsWon = [], mostPointsLost = [], mostPointsPenalized = [], longestWinningStreak = [], longestLosingStreak = [],
-                longestPenalizedStreak = [], earliestBetsTime = [], mostPointsBetInAMatch = [], betPtsDistribution = [];
-            let timeSeriesPts = [], bettingOddsDistribution = [], betPtsSplitDistribution = [];
-            const allUsersSnap = await db.collection("users").where("isDummyUser", "==", false).get();
+                longestPenalizedStreak = [], earliestBetsTime = [], mostPointsBetInAMatch = [], betPtsDistribution = [], 
+                timeSeriesPts = [], bettingOddsDistribution = [], betPtsSplitDistribution = [];
+
+            const allUsersSnap = await getUserByKey("isDummyUser", false);
             const allUsersDocs = allUsersSnap.docs;
+
             const allUsersData = allUsersDocs.map(eachUserDoc => {
-                const userSplitData = { };
                 const eachUserData = eachUserDoc.data();
-                const username = eachUserData.username;
-                const bets = eachUserData.bets;
-                const currPts = [{ match: 0, [username]: 3500 }];
+                const userSplitData = { }, username = eachUserData.username, bets = eachUserData.bets, 
+                    currPts = [{ match: 0, [username]: DEFAULT_USER_PARAMS.STARTING_POINTS }];
                 let currPtsLen = 1;
 
                 let betsDone = 0, betsWon = 0, betsLost = 0, betsPenalized = 0, pointsBet = 0, pointsWon = 0, pointsLost = 0,
@@ -438,166 +423,141 @@ const Context = (props) => {
         }
     }
 
-    const getTeamStatsData = async () => {
-        if(loggedInUserDetails && loggedInUserDetails.username) {
-            let result = [];
-            const userDocs = await db.collection("users").where("username", "==", loggedInUserDetails.username).get();
-
-            let penalizedPts = 0, betsPenalized = 0;
-            userDocs.docs.map(user => {
-                const userData = user.data();
-                const { bets = [] } = userData;
-                
-                teamNames.map(team => {
-                    const qualifedBets = bets.filter(bet => bet.selectedTeam === team);
-                    let betsDone = 0, betsWon = 0, betsLost = 0, betsInProgress = 0, totalPts = 0, wonPts = 0, 
-                        lostPts = 0, inprogressPts = 0;
-                    qualifedBets.map(bet => {
-                        if(bet.isBetDone) {
-                            if(bet.isSettled) {
-                                if(bet.betWon) {
-                                    betsWon++;
-                                    wonPts += parseInt(bet.selectedPoints);
-                                } else {
-                                    betsLost++;
-                                    lostPts += parseInt(bet.selectedPoints);
-                                }
-                            } else {
-                                betsInProgress++;
-                                inprogressPts += parseInt(bet.selectedPoints);
-                            }
-                            betsDone++;
-                            totalPts += parseInt(bet.selectedPoints);
-                        } else {
-                            betsPenalized++;
-                            penalizedPts += parseInt(bet.selectedPoints);
-                        }
-                    });
-
-                    if(team !== "No Betting Done.") {
-                        result.push({
-                            team: teamProps[team].abbr,
-                            bets: betsDone,
-                            betsWon,
-                            betsLost,
-                            // betsInProgress,
-                            ptsBet: totalPts.toLocaleString("en-IN"),
-                            ptsWon: wonPts.toLocaleString("en-IN"),
-                            ptsLost: lostPts.toLocaleString("en-IN"),
-                            // inprogressPts,
-                        });
-                    }
-                });
-            });
-
-            result = orderBy(result, ["teamName"], ["asc"]);
-
-            result.push({
-                team: "Penalized",
-                bets: betsPenalized,
-                betsWon: 0,
-                betsLost: betsPenalized,
-                // betsInProgress: 0,
-                ptsBet: penalizedPts.toLocaleString("en-IN"),
-                ptsWon: 0,
-                ptsLost: penalizedPts,
-                // inprogressPts: 0,
-            });
-
-            return { data: result, cols: Object.keys(result[0]), caption: "Team wise pts distribution.", dangerCols: [3, 6] };
-        }
-
-        return { data: [], cols: [], caption: "Team wise pts distribution.", dangerCols: [] };
-    }
-
-    const clearUsernameBetsData = async(username) => {
-        await db.collection("users").doc(username).update({
-            bets: [],
-            points: 2000,
-            updatedBy: "clearUsernameBetsData",
-            updatedAt: admin.default.firestore.Timestamp.fromDate(new Date())
-        });
-
-        setLoggedInUserDetails({
-            ...loggedInUserDetails,
-            bets: [],
-            points: 2000
-        });
-    }
-
-    const syncUsernameBetsData = async (username) => {
-        try {
-            let userDetails = await db.collection("users").where("username", "==", username).get();
-            userDetails = await userDetails.docs[0].data();
-            const { bets = [], points = 0 } = userDetails;
-            let finalPoints = points;
-            let inprogressBets = 0;
-
-            for(let i=0; i<bets.length; i++) {
-                const bet = bets[i];
-                if(!bet.isSettled) {
-                    const matchDetails = await getMatchDetailsById(bet.matchId) || {};
-                    if(!isEmpty(matchDetails.matchWinner)) {
-                        if(matchDetails.matchWinner == "No Winner") {
-                            bet.isSettled = true;
-                            bet.betWon = true;
-                            finalPoints += parseInt(bet.selectedPoints);
-                            bet.isNoResult = true;
-                        } else {
-                            if(matchDetails.matchWinner == bet.selectedTeam) {
-                                finalPoints += ceil(bet.selectedPoints*(1+bet.odds[bet.selectedTeam]));
-                                bet.betWon = true;
-                            } else {
-                                bet.betWon = false;
-                            }
-                            bet.isSettled = true;
-                            bet.isNoResult = false;
-                        }
-                    } else {
-                        inprogressBets++;
-                    }
+    const getTeamWiseStats = async () => {
+        let penalizedPts = 0, betsPenalized = 0;
+        const { bets = [] } = loggedInUserDetails;
+        const teamAttributes = {};
+        
+        matches.forEach(match => {
+            if(isEmpty(teamAttributes[match.team1])) {
+                teamAttributes[match.team1] = {
+                    abbr: match.team1Abbreviation
                 }
             }
 
-            for(let j=0; j<iplMatches.length; j++) {
-                const match = iplMatches[j];
-                const { dateTimeGMT: matchTime, id: matchId, team1, team2, team1Abbreviation, team2Abbreviation } = match;
-                const betEndTime = moment(matchTime).subtract(30,"minutes");
-                if(moment() > betEndTime && finalPoints > 0) {
-                    const betData = find(bets, {"matchId": matchId}) || {};
-                    const isOut = (inprogressBets === 0 && finalPoints === 0) ? true : false;
+            if(isEmpty(teamAttributes[match.team2])) {
+                teamAttributes[match.team2] = {
+                    abbr: match.team2Abbreviation
+                }
+            }
+        });
 
-                    if(isEmpty(betData)) {
-                        bets.push({
-                            betTime: admin.default.firestore.Timestamp.fromDate(new Date()),
-                            betWon: false,
-                            isSettled: true,
-                            isBetDone: false,
-                            selectedPoints: isOut ? 0 : 50,
-                            selectedTeam: "No Betting Done.",
-                            team1: team1,
-                            team2: team2,
-                            team1Abbreviation: team1Abbreviation,
-                            team2Abbreviation: team2Abbreviation,
-                            matchId: matchId,
-                            isNoResult: false
-                        });
+        Object.keys(teamAttributes).forEach(team => {
+            const qualifedBets = bets.filter(bet => bet.selectedTeam === team);
+            let betsDone = 0, betsWon = 0, betsLost = 0, totalPts = 0, wonPts = 0, lostPts = 0;
 
-                        finalPoints = Math.max(finalPoints-50, 0);
+            qualifedBets.forEach(bet => {
+                if(bet.isBetDone) {
+                    if(bet.isSettled) {
+                        if(bet.betWon) {
+                            betsWon++;
+                            wonPts += getWinningAmount(bet.selectedPoints, bet.odds[bet.selectedTeam]);
+                        } else {
+                            betsLost++;
+                            lostPts += parseInt(bet.selectedPoints);
+                        }
+                    }
+                    betsDone++;
+                    totalPts += parseInt(bet.selectedPoints);
+                } else {
+                    betsPenalized++;
+                    penalizedPts += parseInt(bet.selectedPoints);
+                }
+            });
+
+            result.push({
+                team: teamAttributes[team].abbr,
+                bets: betsDone,
+                betsWon,
+                betsLost,
+                ptsBet: totalPts.toLocaleString("en-IN"),
+                ptsWon: wonPts.toLocaleString("en-IN"),
+                ptsLost: lostPts.toLocaleString("en-IN")
+            });
+        });
+
+        result = orderBy(result, ["team"], ["asc"]);
+
+        result.push({
+            team: DEFAULT_PENALTY_TEAM,
+            bets: betsPenalized,
+            betsWon: 0,
+            betsLost: betsPenalized,
+            ptsBet: penalizedPts.toLocaleString("en-IN"),
+            ptsWon: 0,
+            ptsLost: penalizedPts
+        });
+
+        return { data: result, cols: Object.keys(result[0]), caption: "Team wise pts distribution.", dangerCols: [3, 6] };
+    }
+
+    const resetUserDetails = async (username) => {
+        await updateUserByUsername(username, {
+            bets: DEFAULT_USER_PARAMS.STARTING_BETS, points: DEFAULT_USER_PARAMS.STARTING_POINTS,
+            updatedBy: "resetUserDetails", updatedAt: getFirebaseCurrentTime()
+        });
+
+        if(username == loggedInUserDetails?.username) {
+            setLoggedInUserDetails({
+                ...loggedInUserDetails,
+                bets: DEFAULT_USER_PARAMS.STARTING_BETS,
+                points: DEFAULT_USER_PARAMS.STARTING_POINTS
+            });
+        }
+    }
+
+    const syncUserDetails = async (username) => {
+        try {
+            let userDetails = await getUserByUsername(username);
+            userDetails = await userDetails.data();
+
+            let settledBets = 0, unsettledBets = 0;
+            let { bets = [], points = 0 } = userDetails;
+
+            for(const match of matches) {
+                const betEndTime = getBetEndTime(match.dateTimeGMT);
+
+                if(betEndTime < moment()) {
+                    // Considerable Bet
+                    const betIndex = findIndex(bets, { matchId: match.id });
+
+                    if(betIndex == -1) {
+                        // Missed
+                        const updatedInfo = updateMissingBet(bets, points, match);
+                        points = updatedInfo.points;
+                        settledBets++;
+                    } else {
+                        // Result
+                        const bet = bets[betIndex];
+
+                        if(!bet.isSettled && match.matchWinner) {
+                            const updatedInfo = updateUnsettledBet(bet, points, match);
+                            points = updatedInfo.points;
+                            settledBets++;
+                        } else {
+                            unsettledBets++;
+                        }
                     }
                 } else {
+                    // Future bets - don't do anything
                     break;
                 }
             }
 
-            await db.collection("users").doc(username).update({
-                bets,
-                points: finalPoints,
-                updatedBy: `${loggedInUserDetails?.username}_syncUsernameBetsData`,
-                updatedAt: admin.default.firestore.Timestamp.fromDate(new Date())
-            });
-        } catch (err) {
-            console.log(err);
+            const isOut = unsettledBets == 0 && points == 0;
+
+            if(settledBets) {
+                await updateUserByUsername(username, {
+                    bets,
+                    points,
+                    isOut,
+                    updatedBy: `${loggedInUserDetails?.username}_syncUserDetails`,
+                    updatedAt: getFirebaseCurrentTime()
+                });
+            }
+        } catch (error) {
+            console.log(error);
+            throw new Error(error);
         }
     }
 
@@ -789,29 +749,14 @@ const Context = (props) => {
     },[]);
 
     return (
-        <ContextProvider.Provider value={{
-            loggedInUserDetails,
-            loading,
-            mobileView,
-            notifications,
-            matches,
+        <ContextProvider.Provider
+            value={{ loggedInUserDetails, loading, mobileView, notifications, matches,
+                signUp, signIn, sendResetPasswordEmail, resetPassword, logout, clearNotifications, betOnMatch, updateSeenBets,
+                viewBetsData, getPointsTableData, resetUserDetails, syncUserDetails, getTeamWiseStats,
 
-            signUp,
-            signIn,
-            sendResetPasswordEmail,
-            resetPassword,
-            logout,
-
-            betOnMatch,
-            viewBetsData,
-            getPointsTableData,
-            clearUsernameBetsData,
-            syncUsernameBetsData,
-            clearNotifications,
-            getTeamStatsData,
-            getAllUsersData,
-            updateSeenBets
-        }}>
+                getAllUsersData
+            }}
+        >
             {props.children}
         </ContextProvider.Provider>
     )
