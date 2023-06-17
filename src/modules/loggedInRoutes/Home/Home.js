@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useContext } from 'react';
 
-import { getMatchesFromDb } from '../../../components/apis';
 import MatchCard from './MatchCard';
-import LoaderV2 from '../../../components/common/LoaderV2';
+import { ContextProvider } from '../../../global/Context';
 
 // Incoming match object from db
 // {
@@ -30,31 +29,14 @@ import LoaderV2 from '../../../components/common/LoaderV2';
 // }
 
 const Home = () => {
-	const [matches, setMatches] = useState([]);
-	const [loading, setLoading] = useState(false);
-
-	useEffect(async () => {
-		getMatches();
-	}, []);
-
-	const getMatches = async () => {
-		setLoading(true);
-		try {
-			const matches = await getMatchesFromDb();
-			setMatches(matches);
-		} catch (e) {
-			console.log(e);
-		}
-		setLoading(false);
-	}
+	const contextConsumer = useContext(ContextProvider);
+	const { matches = [] } = contextConsumer;
 
 	return (
 		<div className="tw-w-full">
-			{ loading ? <LoaderV2 tip="Loading matches..." />  
-				: matches.length ? matches.map((match, index) => (
-					<MatchCard key={index} match={match}/>
-				))
-				: "No active matches..."
+			{ matches.length ? matches.map((match, index) => (
+				<MatchCard key={index} match={match}/>
+			)) : "No active matches..."
 			}
 		</div>
 	);

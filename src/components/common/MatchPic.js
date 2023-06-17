@@ -7,12 +7,11 @@ import vsLogo from '../../images/vs.png';
 import moment from 'moment';
 
 function MatchPic(props) {
-    const { team1Logo, team2Logo, mobileView, matchTime, banner = "", src = "" } = props;
+    const { team1Logo, team2Logo, mobileView, matchTime, poster = "", posterSrc = "" } = props;
     const isNightMatch = moment(matchTime).hours() > 18;
-console.log(banner);
+
     const backgroundImage = {
-        backgroundImage: src == "bet" ? `url(${isNightMatch ? nightBackGround : dayBackGround})` : `url(${banner})`,
-        // `url(https://cdorg.b-cdn.net/wp-content/uploads/2022/03/${banner})` 
+        backgroundImage: posterSrc == "single" ? `url(${isNightMatch ? nightBackGround : dayBackGround})` : `url(${poster})`,
         backgroundRepeat:"no-repeat", 
         backgroundSize: "100% 90%",
         height: mobileView ? 200 : 400
@@ -20,7 +19,7 @@ console.log(banner);
     
     return (
         <Grid container justify="space-evenly" spacing={4} alignContent="center" style={{ ...backgroundImage, backgroundBlendMode: "normal", backgroundColor: "" }} direction="row">
-            {src == "bet" ? <> <Grid item>
+            {posterSrc == "single" ? <> <Grid item>
                 <img src={team1Logo} style={{width: mobileView ? "6.5em" : 150, height: "auto", mixBlendMode: isNightMatch ? "lighten" : "hard-light"}}/>
             </Grid>
             

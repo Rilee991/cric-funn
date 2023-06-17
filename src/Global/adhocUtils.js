@@ -16,6 +16,10 @@ export const getWinningAmount = (amount, odds) => {
     return ceil((1+odds)*amount);
 }
 
+export const getBetStartTime = (matchTime) => {
+    return moment(matchTime).subtract(29, "hours");
+}
+
 export const getBetEndTime = (matchTime) => {
     return moment(matchTime).subtract(30, "minutes");
 }

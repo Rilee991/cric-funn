@@ -14,6 +14,7 @@ import BettingDialog from './BettingDialog';
 import ViewBetsDialog from './ViewBetsDialog';
 import MatchPic from '../../../components/common/MatchPic';
 import ComparisionBar from '../../../components/common/ComparisionBar';
+import { getBetEndTime, getBetStartTime } from '../../../global/adhocUtils';
 
 // Incoming match object from db
 // {
@@ -50,14 +51,14 @@ const MatchCard = (props) => {
 	const { bets = [], points, username = "", isAdmin = false } = loggedInUserDetails;
 	const { match = {} } = props;
 
-	const { dateTimeGMT: matchTime, id: matchId, name: matchTitle, status, venue, odds = [], banner, teams = [] } = match;
+	const { dateTimeGMT: matchTime, id: matchId, name: matchTitle, status, venue, odds = [], poster = "", teamInfo= [] } = match;
 
 	const [bettingDoneByUser, setBettingDoneByUser] = useState(false);
 	const [openLetsBetDialogBox, setOpenLetsBetDialogBox] = useState(false);
 	const [openViewBetsDialogBox, setOpenViewBetsDialogBox] = useState(false);
 
-	const betStartTime = moment(matchTime).subtract(24,"hours");
-	const betEndTime = moment(matchTime).subtract(30,"minutes");
+	const betStartTime = getBetStartTime(matchTime);
+	const betEndTime = getBetEndTime(matchTime);
 	
 	const [bettingOn, setBettingOn] = useState((moment() >= betStartTime && moment() <= betEndTime) && (bettingDoneByUser == false));
 	const [canViewBets, setCanViewBets] = useState(moment() > betEndTime);
@@ -127,18 +128,18 @@ const MatchCard = (props) => {
     const oddsParams = {};
 
     if(!isEmpty(odds)) {
-		if(odds[0].name != teams[0]) {
+		if(odds[0].name != teamInfo[0].name) {
 			[odds[0], odds[1]] = [odds[1], odds[0]];
 		}
 
-		oddsParams["team1Color"] = teamProps[odds[0].name].color;
-		oddsParams["team1Abbr"] = teamProps[odds[0].name].abbr;
+		oddsParams["team1Color"] = teamProps[odds[0].name]?.color || "red";
+		oddsParams["team1Abbr"] = teamProps[odds[0].name]?.abbr || teamInfo[0].shortname;
 		oddsParams["team1Perc"] = getPerc(odds[0].price, odds[1].price);
-		oddsParams["team1Logo"] = teamProps[odds[0].name].logo;
-		oddsParams["team2Color"] = teamProps[odds[1].name].color;
-		oddsParams["team2Abbr"] = teamProps[odds[1].name].abbr;
+		oddsParams["team1Logo"] = teamProps[odds[0].name]?.logo || teamInfo[0].img;
+		oddsParams["team2Color"] = teamProps[odds[1].name]?.color || "blue";
+		oddsParams["team2Abbr"] = teamProps[odds[1].name]?.abbr || teamInfo[1].shortname;
 		oddsParams["team2Perc"] = getPerc(odds[1].price, odds[0].price);
-		oddsParams["team2Logo"] = teamProps[odds[1].name].logo;
+		oddsParams["team2Logo"] = teamProps[odds[1].name]?.logo || teamInfo[1].img;
     }
 
     return (
@@ -146,7 +147,7 @@ const MatchCard = (props) => {
 			<Card style={{ boxShadow: "5px 5px 20px"}} className="tw-mt-2 tw-mb-10 xl:tw-w-[70%] tw-rounded-[40px]">
 				<CardActionArea>
 					<CardContent>
-						<MatchPic banner={banner} matchTime={matchTime} mobileView={mobileView}/>
+						<MatchPic posterSrc={poster ? "poster" : "single"} team1Logo={teamInfo[0].img} team2Logo={teamInfo[1].img} poster={poster} matchTime={matchTime} mobileView={mobileView}/>
 						<Typography className="-tw-mt-5" variant={fontVariant} style={{fontSize: matchHeadingFontSize}} component="h2">
 							<b>{get(matchTitle.split(","),'[0]','No Title')}</b>
 						</Typography>
@@ -181,7 +182,7 @@ const MatchCard = (props) => {
 				</CardActionArea>
 
 				<CardActions className="tw-flex tw-justify-center tw-px-4 tw-pt-0">
-					<Button size="small" className="tw-w-1/2 tw-rounded-[40px]" style={{ background: bettingOn ? "linear-gradient(44deg, #250c51, #605317)" : 'grey', color: "white" }} variant="contained" disabled={!bettingOn ? false : true} onClick={() => handleOnClickLetsBet()}>
+					<Button size="small" className="tw-w-1/2 tw-rounded-[40px]" style={{ background: bettingOn ? "linear-gradient(44deg, #250c51, #605317)" : 'grey', color: "white" }} variant="contained" disabled={bettingOn ? false : true} onClick={() => handleOnClickLetsBet()}>
 						<Typography variant="overline">
 							{"Let's Bet"} <FlashOnOutlined />
 						</Typography>
