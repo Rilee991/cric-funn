@@ -1,14 +1,15 @@
 import React, { createContext, useState, useEffect } from 'react';
-import { ceil, find, flattenDeep, get, isEmpty, merge, orderBy, round, sortBy } from 'lodash';
+import { ceil, find, findIndex, flattenDeep, get, isEmpty, merge, orderBy, round, sortBy } from 'lodash';
 import emailChecker from 'mailchecker';
 import moment from 'moment';
 
 import { auth, db, teamNames, logger, iplMatches, teamProps } from '../config';
-import { getMatchDetailsById } from '../components/apis';
-import { getFirebaseCurrentTime, getToppgerBgImage } from './adhocUtils';
+import { getBetEndTime, getFirebaseCurrentTime, getToppgerBgImage, getWinningAmount } from './adhocUtils';
 import { DEFAULT_USER_PARAMS } from '../configs/userConfigs';
-import { USER_COLLECTION } from './enums';
-import { updateUserDetailsByEmail } from './utils';
+import { getUserByKey, getUserByUsername, createUser, updateUserByEmail, updateUserByUsername } from '../apis/userController';
+import { getMatches, updateMatchById } from '../apis/matchController';
+import { getMatchDetailsById, saveMatchesToDb } from '../apis/cricapiController';
+import { DEFAULT_PENALTY_POINTS, DEFAULT_PENALTY_TEAM } from '../configs/matchConfigs';
 
 const admin = require('firebase');
 export const ContextProvider = createContext();
@@ -27,7 +28,7 @@ const Context = (props) => {
 
             if(!isValidEmail) throw new Error(`Email is invalid. Please don't try to be oversmart.`);
 
-            const user = await db.collection(USER_COLLECTION).doc(username).get();
+            const user = await getUserByUsername(username);
 
             if(user.exists) throw new Error("Username already exists");
 
@@ -35,8 +36,8 @@ const Context = (props) => {
             resp.user.updateProfile({ displayName: username });
             const points = DEFAULT_USER_PARAMS.STARTING_POINTS, image = DEFAULT_USER_PARAMS.PROFILE_PICTURE, bets = DEFAULT_USER_PARAMS.STARTING_BETS;
 
-            await db.collection(USER_COLLECTION).doc(username).set({
-                username, email, password, image, points, bets, isDummyUser: true, isAdmin: false, isChampion: false
+            await createUser(username, { username, email, password, image, points, bets, isDummyUser: true, 
+                isAdmin: false, isChampion: false
             });
         } catch (error) {
             console.log(error);
@@ -48,18 +49,10 @@ const Context = (props) => {
         const { email, password } = user;
         try {
             await auth.signInWithEmailAndPassword(email, password);
-            db.collection(USER_COLLECTION).where("email", "==", email).get().then(userSnap => {
-                const { username, email, image, points, bets = [], isAdmin = false, isChampion = false } = userSnap.docs[0].data();
-                setLoggedInUserDetails({
-                    username,
-                    email,
-                    image,
-                    points,
-                    bets,
-                    isAdmin,
-                    isChampion
-                });
-            });
+            const records = await getUserByKey("email", email);
+            const { username, image, points, bets = [], isAdmin = false, isChampion = false, isOut = false } = records.docs[0].data();
+
+            setLoggedInUserDetails({ username, email, image, points, bets, isAdmin, isChampion, isOut });
         } catch (error) {
             console.log(error);
             throw new Error(error);
@@ -81,7 +74,7 @@ const Context = (props) => {
         try {
             const email = await auth.verifyPasswordResetCode(actionCode);
             await auth.confirmPasswordReset(actionCode, password);
-            await updateUserDetailsByEmail(email, {
+            await updateUserByEmail(email, {
                 password,
                 updatedAt: getFirebaseCurrentTime()
             });
@@ -214,7 +207,7 @@ const Context = (props) => {
                 isChampion,
                 image,
                 subText: isChampion ? "Undisputed Universal Champion" : "#1 Contender",
-                bgImage: isChampion ? getToppgerBgImage(true) : getToppgerBgImage(false)
+                bgImage: getToppgerBgImage(isChampion)
             });
         });
 
@@ -608,124 +601,142 @@ const Context = (props) => {
         }
     }
 
-    const updateUserInfo = async (username, points, bets, matches) => {
-        try {
-            let finalPoints = points, betSettledCount = 0, inprogressBets = 0;
-            const notifications = [];
+    const updateMissingBet = (bets, points, match) => {
+        const { id: matchId, team1, team2, team1Abbreviation, team2Abbreviation } = match;
+        const selectedPoints = points < DEFAULT_PENALTY_POINTS ? points : DEFAULT_PENALTY_POINTS;
+        points -= selectedPoints;
 
-            for(let i=0; i<bets.length; i++) {
-                const bet = bets[i];
-                if(!bet.isSettled) {
-                    const matchDetails = find(matches, { id: bet.matchId });
-                    if(!isEmpty(matchDetails.matchWinner)) {
-                        if(matchDetails.matchWinner == "No Winner") {
-                            bet.isSettled = true;
-                            bet.betWon = true;
-                            finalPoints += parseInt(bet.selectedPoints);
-                            bet.isNoResult = true;
-                            notifications.push({
-                                title: "Oh no! Nobody Won!",
-                                body: `Your bet for the match ${bet.team1} vs ${bet.team2} has been ended in NO Result!. You got ${bet.selectedPoints} POINTS.`,
-                                betWon: true,
-                                isNoResult: true
-                            });
-                        } else {
-                            if(matchDetails.matchWinner == bet.selectedTeam) {
-                                finalPoints += ceil(bet.selectedPoints*(1 + bet.odds[bet.selectedTeam]));
-                                bet.betWon = true;
-                            } else {
-                                bet.betWon = false;
-                            }
-                            bet.isSettled = true;
-                            bet.isNoResult = false;
-                            notifications.push({
-                                title: `You ${bet.betWon ? "Won" : "Lost"}!`,
-                                body: `Your bet for the match ${bet.team1} vs ${bet.team2} has been ${bet.betWon ? "Won" : "Lost"}!. You ${bet.betWon ? "Won" : "Lost"} ${bet.selectedPoints} POINTS.`,
-                                betWon: bet.betWon,
-                                isNoResult: false
-                            });
-                        }
-                        betSettledCount++;
-                    } else {
-                        inprogressBets++;
-                    }
-                }
+        bets.push({
+            betTime: getFirebaseCurrentTime(),
+            betWon: false,
+            isBetDone: false,
+            isNoResult: false,
+            isSettled: true,
+            matchId: matchId,
+            selectedPoints,
+            selectedTeam: DEFAULT_PENALTY_TEAM,
+            team1: team1,
+            team2: team2,
+            team1Abbreviation: team1Abbreviation,
+            team2Abbreviation: team2Abbreviation
+        });
+
+        const notify = {
+            body: `You did not bet for the match ${team1Abbreviation} vs ${team2Abbreviation}. You lost ${selectedPoints} POINTS.`,
+            betWon: false,
+            isNoResult: false,
+            isBetDone: false
+        };
+
+        return { points, notify };
+    }
+
+    const updateUnsettledBet = (bet, points, match) => {
+        let notify = {};
+        if(match.matchWinner == "No Winner") {
+            bet.betWon = true;
+            bet.isNoResult = true;
+            points += parseInt(bet.selectedPoints);
+            notify = {
+                body: `Your bet for the match ${bet.team1} vs ${bet.team2} has been ended in NO Result!. You got back ${bet.selectedPoints} POINTS.`,
+                betWon: bet.betWon,
+                isNoResult: bet.isNoResult,
+                isBetDone: bet.isBetDone
             };
-
-            for(let j=0; j<iplMatches.length; j++) {
-                const match = iplMatches[j];
-                const { dateTimeGMT: matchTime, id: matchId, team1, team2, team1Abbreviation, team2Abbreviation } = match;
-                const betEndTime = moment(matchTime).subtract(30,"minutes");
-                if(moment() > betEndTime) {
-                    const betData = find(bets, {"matchId": matchId}) || {};
-                    const isOut = (inprogressBets === 0 && finalPoints === 0) ? true : false;
-
-                    if(isEmpty(betData)) {
-                        bets.push({
-                            betTime: admin.default.firestore.Timestamp.fromDate(new Date()),
-                            betWon: false,
-                            isSettled: true,
-                            isBetDone: false,
-                            selectedPoints: isOut ? 0 : 50,
-                            selectedTeam: "No Betting Done.",
-                            team1: team1,
-                            team2: team2,
-                            team1Abbreviation: team1Abbreviation,
-                            team2Abbreviation: team2Abbreviation,
-                            matchId: matchId,
-                            isNoResult: false
-                        });
-
-                        finalPoints = Math.max(finalPoints-50,0);
-                        betSettledCount++;
-                        if(!isOut) {
-                            notifications.push({
-                                title: `You Lost!`,
-                                body: `You did not bet for the match ${team1Abbreviation} vs ${team2Abbreviation}. You lost 50 POINTS.`,
-                                betWon: false,
-                                isNoResult: false
-                            });
-                        }
-                    }
-                } else {
-                    break;
-                }
+        } else {
+            if(match.matchWinner == bet.selectedTeam) {
+                points += getWinningAmount(bet.selectedPoints, bet.odds[bet.selectedTeam]);
+                bet.betWon = true;
+            } else {
+                bet.betWon = false;
             }
-
-            if(betSettledCount) {
-                setNotifications(notifications);
-                console.log(finalPoints, bets);
-                await db.collection("users").doc(username).update({
-                    bets,
-                    points: finalPoints,
-                    updatedBy: `${username}_updateUserInfo`,
-                    updatedAt: admin.default.firestore.Timestamp.fromDate(new Date())
-                });
-            }
-            return { latestPoints: finalPoints, latestBets: bets };
-        } catch(err) {
-            console.log(err);
+            bet.isNoResult = false;
+            notify = {
+                body: `Your bet for the match ${bet.team1} vs ${bet.team2} has been ${bet.betWon ? "Won" : "Lost"}!. You ${bet.betWon ? "Won" : "Lost"} ${bet.selectedPoints} POINTS.`,
+                betWon: bet.betWon,
+                isNoResult: false
+            };
         }
+
+        bet.isSettled = true;
+
+        return { points, notify };
+    }
+
+    const updateUserDetails = async (username, points, bets, matches) => {
+        let settledBets = 0, unsettledBets = 0, notifications = [];
+
+        for(const match of matches) {
+            const betEndTime = getBetEndTime(match.dateTimeGMT);
+
+            if(betEndTime < moment()) {
+                // Considerable Bet
+                const betIndex = findIndex(bets, { matchId: match.id });
+
+                if(betIndex == -1) {
+                    // Missed
+                    const updatedInfo = updateMissingBet(bets, points, match);
+                    points = updatedInfo.points;
+                    notifications.push(updatedInfo.notify);
+                    settledBets++;
+                } else {
+                    // Result
+                    const bet = bets[betIndex];
+
+                    if(!bet.isSettled && match.matchWinner) {
+                        const updatedInfo = updateUnsettledBet(bet, points, match);
+                        points = updatedInfo.points;
+                        notifications.push(updatedInfo.notify);
+                        settledBets++;
+                    } else {
+                        unsettledBets++;
+                    }
+                }
+            } else {
+                // Future bets - don't do anything
+                break;
+            }
+        }
+
+        const isOut = unsettledBets == 0 && points == 0;
+
+        if(settledBets) {
+            setNotifications(notifications);
+            await updateUserByUsername(username, {
+                bets,
+                points,
+                isOut,
+                updatedBy: `${username}_updateUserInfo`,
+                updatedAt: getFirebaseCurrentTime()
+            });
+        }
+
+        return { latestPoints: points, latestBets: bets, latestIsOut: isOut };
     }
 
     const updateAndGetMatches = async () => {
         try {
-            const dbMatches = await db.collection("ipl_matches").get();
+            const dbMatches = await getMatches();
             const matchPromises = [], matches = [];
 
             for(let match of dbMatches.docs) {
                 match = match.data();
-                if(isEmpty(match.matchWinner)) {
+                if(isEmpty(match.matchWinner) && moment(match.dateTimeGMT).add(3, "hours") <= moment()) {
                     const matchDetails = await getMatchDetailsById(match.id);
 
-                    if(!isEmpty(matchDetails?.matchWinner)) {
-                        matchPromises.push(db.collection("ipl_matches").doc(match.id).update({
+                    if(!isEmpty(matchDetails.matchWinner)) {
+                        matchPromises.push(updateMatchById(match.id, {
                             matchWinner: matchDetails.matchWinner,
                             status: matchDetails.status,
-                            updatedAt: admin.default.firestore.Timestamp.fromDate(new Date())
+                            matchStarted: matchDetails.matchStarted,
+                            matchEnded: matchDetails.matchEnded,
+                            updatedAt: getFirebaseCurrentTime()
                         }));
 
                         match.matchWinner = matchDetails.matchWinner;
+                        match.status = matchDetails.status;
+                        match.matchStarted = matchDetails.matchStarted;
+                        match.matchEnded = matchDetails.matchEnded;
                     }
                 }
 
@@ -733,6 +744,7 @@ const Context = (props) => {
             };
 
             await Promise.all(matchPromises);
+
             return matches;
         } catch (e) {
             console.log(e);
@@ -754,11 +766,11 @@ const Context = (props) => {
         setLoading(true);
         auth.onAuthStateChanged(async user => {
             if(user) {
-                const userSnap = await db.collection("users").where("email", "==", user.email).get();
-                const { username, email, image, points, bets, isAdmin = false, isChampion = false } = userSnap.docs[0].data();
+                const userSnap = await getUserByKey("email", user.email);
+                const { username, email, image, points, bets, isAdmin = false, isChampion = false, isOut = false } = userSnap.docs[0].data();
                 const matches = await updateAndGetMatches();
+                const updatedDetails = await updateUserDetails(username, points, bets, matches);
                 setMatches(matches);
-                const updatedDetails =  await updateUserInfo(username,points,bets,matches);
                 setLoggedInUserDetails({
                     username,
                     email,
@@ -766,7 +778,8 @@ const Context = (props) => {
                     points: updatedDetails.latestPoints,
                     bets: updatedDetails.latestBets,
                     isAdmin,
-                    isChampion
+                    isChampion,
+                    isOut: updatedDetails.latestIsOut
                 });
             } else {
                 setLoggedInUserDetails({});
