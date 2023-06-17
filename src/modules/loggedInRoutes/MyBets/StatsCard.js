@@ -46,6 +46,7 @@ const StatsCard = (props) => {
     const finedBetsWidth = 100-totalBetsWidth;
     const winBetsWidth = round(winBets/(winBets+lostBets),2)*100;
     const lossBetsWidth = 100-winBetsWidth;
+    const notBetsDone = bets.length == 0;
 
     return (
         <>
@@ -67,10 +68,10 @@ const StatsCard = (props) => {
                         <div className="tw-flex tw-w-full">
                             <div className="tw-flex tw-flex-col tw-justify-between tw-w-full">
                                 {/* 20% mini width for better ux */}
-                                <ComparisionBar color1="#1C315E" width1={`${totalBetsWidth < 20 ? 20 : totalBetsWidth}%`} text1={`${totalBets} total`} fontSize={mobileView ? 13 : 16} color2="#FC7300" width2={`${finedBetsWidth < 20 ? 20 : finedBetsWidth}%`} text2={`${finedBets} Fined`} />
+                                <ComparisionBar color1="#1C315E" width1={`${notBetsDone ? 50 : totalBetsWidth < 20 ? 20 : totalBetsWidth}%`} text1={`${totalBets} total`} fontSize={mobileView ? 13 : 16} color2="#FC7300" width2={`${notBetsDone ? 50 : finedBetsWidth < 20 ? 20 : finedBetsWidth}%`} text2={`${finedBets} Fined`} />
                                 {/* 13% mini width for better ux */}
-                                <ComparisionBar color1="#6C4AB6" width1={`${winBetsWidth < 13 ? 13 : winBetsWidth}%`} text1={`${winBets} ${mobileView ? "W" : "Wins"}`} fontSize={mobileView ? 13 : 16} color2="#EB6440" width2={`${lossBetsWidth < 13 ? 13 : lossBetsWidth}%`} text2={`${lostBets} ${mobileView ? "L" : "Losses"}`} />
-                                <ComparisionBar color1="#5DA7DB" width1={`${accuracy < 13 ? 13 : accuracy}%`} text1={`${accuracy}% ${mobileView ? "W" : "Accurate"}`} fontSize={mobileView ? 13 : 16} color2="#E8AA42" width2={`${(100-accuracy) < 13 ? 13 : (100-accuracy)}%`} text2={`${100-accuracy}% ${mobileView ? "L" : "Missed"}`} />
+                                <ComparisionBar color1="#6C4AB6" width1={`${notBetsDone ? 50 : winBetsWidth < 13 ? 13 : winBetsWidth}%`} text1={`${winBets} ${mobileView ? "W" : "Wins"}`} fontSize={mobileView ? 13 : 16} color2="#EB6440" width2={`${notBetsDone ? 50 : lossBetsWidth < 13 ? 13 : lossBetsWidth}%`} text2={`${lostBets} ${mobileView ? "L" : "Losses"}`} />
+                                <ComparisionBar color1="#5DA7DB" width1={`${notBetsDone ? 50 : accuracy < 13 ? 13 : accuracy}%`} text1={`${accuracy}% ${mobileView ? "W" : "Accurate"}`} fontSize={mobileView ? 13 : 16} color2="#E8AA42" width2={`${notBetsDone ? 50 : (100-accuracy) < 13 ? 13 : (100-accuracy)}%`} text2={`${notBetsDone ? 0 : 100-accuracy}% ${mobileView ? "L" : "Missed"}`} />
                                 <div className="tw-flex tw-mt-2 tw-gap-1">
                                     <div style={{ padding: "10px" }} className="tw-w-1/2 tw-bg-[#379237] tw-h-[5vh] tw-rounded-[20px] tw-flex tw-justify-center tw-items-center tw-text-white">
                                         <Typography variant={"button"} style={{fontSize: 13}} component="p">
