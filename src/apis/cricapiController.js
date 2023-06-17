@@ -2,7 +2,7 @@ import { clearTable, createMatch } from "./matchController";
 import { matchPostersMapping } from '../configs/matchConfigs';
 
 const API_KEY = "e62a5cb2-1135-40ee-9a7b-99d14472d7ee";
-const SERIES_ID = "c75f8952-74d4-416f-b7b4-7da4b4e3ae6e";
+const SERIES_ID = "81b588f0-afb5-49a6-99e5-15ea1ac127a9"; //"c75f8952-74d4-416f-b7b4-7da4b4e3ae6e";
 
 export const getMatchDetailsById = async (id) => {
     try {
@@ -47,7 +47,8 @@ export const saveMatchesToDb = async () => {
             match.team2 = team2;
             match.team1Abbreviation = match.teamInfo[0].shortname;
             match.team2Abbreviation = match.teamInfo[1].shortname;
-            match.poster = matchPostersMapping[`${match.team1Abbreviation}-${match.team2Abbreviation}`] || matchPostersMapping[`${match.team2Abbreviation}-${match.team1Abbreviation}`];
+            match.poster = matchPostersMapping[`${match.team1Abbreviation}-${match.team2Abbreviation}`] || matchPostersMapping[`${match.team2Abbreviation}-${match.team1Abbreviation}`] || "";
+            match.dateTimeGMT = match.dateTimeGMT + "Z";
 
             delete match["bbbEnabled"];
             delete match["fantasyEnabled"];
