@@ -29,3 +29,9 @@ export const updateUserByEmail = async (email, userDetails) => {
         updateUserByUsername(doc.id, userDetails);
     });
 }
+
+export const getUsers = async () => {
+    const users = await db.collection(USER_COLLECTION).get();
+
+    return users;
+}

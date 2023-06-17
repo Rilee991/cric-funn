@@ -7,6 +7,12 @@ export const getMatches = async () => {
     return matches;
 }
 
+export const getMatchById = async (id) => {
+    const match = await db.collection(MATCH_COLLECTION).doc(id).get();
+
+    return match;
+}
+
 export const updateMatchById = async (id, matchDetails) => {
     await db.collection(MATCH_COLLECTION).doc(id).update({ ...matchDetails });
 }
