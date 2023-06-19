@@ -144,20 +144,20 @@ const MatchCard = (props) => {
 
     return (
 		<>
-			<Card style={{ boxShadow: "5px 5px 20px"}} className="tw-mt-2 tw-mb-10 xl:tw-w-[70%] tw-rounded-[40px]">
+			<Card style={{ boxShadow: "5px 5px 20px", background: `linear-gradient(130deg, ${oddsParams["team1Color"]}, ${oddsParams["team2Color"]}` }} className="tw-mt-2 tw-mb-10 xl:tw-w-[70%] tw-rounded-[40px]">
 				<CardActionArea>
 					<CardContent>
 						<MatchPic posterSrc={poster ? "poster" : "single"} team1Logo={teamInfo[0].img} team2Logo={teamInfo[1].img} poster={poster} matchTime={matchTime} mobileView={mobileView}/>
-						<Typography className="-tw-mt-5" variant={fontVariant} style={{fontSize: matchHeadingFontSize}} component="h2">
+						<Typography className="-tw-mt-5 tw-text-white" variant={fontVariant} style={{fontSize: matchHeadingFontSize}} component="h2">
 							<b>{get(matchTitle.split(","),'[0]','No Title')}</b>
 						</Typography>
-						<Typography variant={fontVariant} style={{fontSize: 13}} color="secondary" component="p">
+						<Typography variant={fontVariant} style={{fontSize: 13}} className="tw-text-[#aeff71]" component="p">
 							<b>{venue}</b>
 						</Typography>
-						<Typography variant={fontVariant} style={{fontSize: 13}} color="textPrimary" component="p">
+						<Typography variant={fontVariant} style={{fontSize: 13}} className="tw-text-[#15ffe0de]" component="p">
 							<b>	{getFormattedTimeISOString(matchTime)}</b>
 						</Typography>
-						<Typography variant={fontVariant} style={{fontSize: 13}} color="primary" component="p">
+						<Typography variant={fontVariant} style={{fontSize: 13}} className="tw-text-[#b7e7ff]" component="p">
 							<b>{status}</b>
 						</Typography>
 						{!isEmpty(odds) ?
