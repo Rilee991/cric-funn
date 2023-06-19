@@ -9,7 +9,7 @@ import LoaderV2 from '../../../components/common/LoaderV2';
 
 const MyStats = () => {
     const contextConsumer = useContext(ContextProvider);
-    const { getTeamStatsData, loggedInUserDetails } = contextConsumer;
+    const { getTeamWiseStats, loggedInUserDetails } = contextConsumer;
     const { username, bets = [] } = loggedInUserDetails;
     const [pointsTimelineData, setPointsTimelineData] = useState([]);
     const [betTimeDist, setBetTimeDist] = useState([]);
@@ -28,7 +28,7 @@ const MyStats = () => {
     const getTeamWisePtsData = async () => {
         setIsTeamWiseDataLoading(true);
         try {
-            const teamWiseData = await getTeamStatsData();
+            const teamWiseData = await getTeamWiseStats();
             setTeamWisePtsData(teamWiseData);
         } catch (e) {
             console.log(e);

@@ -23,3 +23,13 @@ export const getBetStartTime = (matchTime) => {
 export const getBetEndTime = (matchTime) => {
     return moment(matchTime).subtract(30, "minutes");
 }
+
+export const getWinnerEtaParams = (matchType = "t20") => {
+    if(matchType == "odi")  return { value: 6, unit: "hours" };
+    else if(matchType == "test")    return { value: 3, unit: "days" };
+    return { value: 3, unit: "hours" };
+}
+
+export const getDefaultMatchOdds = (team1, team2) => {
+    return [{ name: team1, price: 1 }, { name: team2, price: 1 }];
+}

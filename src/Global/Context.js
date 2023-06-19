@@ -4,11 +4,11 @@ import emailChecker from 'mailchecker';
 import moment from 'moment';
 
 import { auth } from '../config';
-import { getBetEndTime, getFirebaseCurrentTime, getToppgerBgImage, getWinningAmount } from './adhocUtils';
+import { getBetEndTime, getDefaultMatchOdds, getFirebaseCurrentTime, getToppgerBgImage, getWinnerEtaParams, getWinningAmount } from './adhocUtils';
 import { DEFAULT_USER_PARAMS } from '../configs/userConfigs';
 import { getUserByKey, getUserByUsername, createUser, updateUserByEmail, updateUserByUsername, getUsers } from '../apis/userController';
 import { getMatchById, getMatches, updateMatchById } from '../apis/matchController';
-import { getMatchDetailsById, saveMatchesToDb } from '../apis/cricapiController';
+import { getMatchDetailsById } from '../apis/cricapiController';
 import { DEFAULT_PENALTY_POINTS, DEFAULT_PENALTY_TEAM } from '../configs/matchConfigs';
 
 const admin = require('firebase');
@@ -424,7 +424,7 @@ const Context = (props) => {
     }
 
     const getTeamWiseStats = async () => {
-        let penalizedPts = 0, betsPenalized = 0;
+        let penalizedPts = 0, betsPenalized = 0, result = [];
         const { bets = [] } = loggedInUserDetails;
         const teamAttributes = {};
         
@@ -562,7 +562,7 @@ const Context = (props) => {
     }
 
     const updateMissingBet = (bets, points, match) => {
-        const { id: matchId, team1, team2, team1Abbreviation, team2Abbreviation } = match;
+        const { id: matchId, team1, team2, team1Abbreviation, team2Abbreviation, odds = [] } = match;
         const selectedPoints = points < DEFAULT_PENALTY_POINTS ? points : DEFAULT_PENALTY_POINTS;
         points -= selectedPoints;
 
@@ -577,6 +577,10 @@ const Context = (props) => {
             selectedTeam: DEFAULT_PENALTY_TEAM,
             team1: team1,
             team2: team2,
+            odds: {
+                [odds[0].name]: parseFloat(odds[0].price),
+                [odds[1].name]: parseFloat(odds[1].price),
+            },
             team1Abbreviation: team1Abbreviation,
             team2Abbreviation: team2Abbreviation
         });
@@ -681,7 +685,13 @@ const Context = (props) => {
 
             for(let match of dbMatches.docs) {
                 match = match.data();
-                if(isEmpty(match.matchWinner) && moment(match.dateTimeGMT).add(3, "hours") <= moment()) {
+                const winnerEtaParams = getWinnerEtaParams(match.matchType);
+                
+                if(isEmpty(match.odds)) {
+                    match.odds = getDefaultMatchOdds(match.team1, match.team2);
+                }
+
+                if(isEmpty(match.matchWinner) && moment(match.dateTimeGMT).add(winnerEtaParams.value, winnerEtaParams.unit) <= moment()) {
                     const matchDetails = await getMatchDetailsById(match.id);
 
                     if(!isEmpty(matchDetails.matchWinner)) {
@@ -752,9 +762,7 @@ const Context = (props) => {
         <ContextProvider.Provider
             value={{ loggedInUserDetails, loading, mobileView, notifications, matches,
                 signUp, signIn, sendResetPasswordEmail, resetPassword, logout, clearNotifications, betOnMatch, updateSeenBets,
-                viewBetsData, getPointsTableData, resetUserDetails, syncUserDetails, getTeamWiseStats,
-
-                getAllUsersData
+                viewBetsData, getPointsTableData, resetUserDetails, syncUserDetails, getTeamWiseStats, getAllUsersData
             }}
         >
             {props.children}

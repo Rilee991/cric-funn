@@ -1,4 +1,5 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
+import moment from 'moment';
 
 import MatchCard from './MatchCard';
 import { ContextProvider } from '../../../global/Context';
@@ -31,10 +32,19 @@ import { ContextProvider } from '../../../global/Context';
 const Home = () => {
 	const contextConsumer = useContext(ContextProvider);
 	const { matches = [] } = contextConsumer;
+	const [relevantMatches, setRelevantMatches] = useState([]);
+
+	useEffect(() => {
+		const relevantMatches = matches.filter(match => 
+			moment(match.dateTimeGMT) >= moment().subtract(2, "days")
+		);
+		
+		setRelevantMatches(relevantMatches);
+	}, [])
 
 	return (
 		<div className="tw-w-full">
-			{ matches.length ? matches.map((match, index) => (
+			{ relevantMatches.length ? relevantMatches.map((match, index) => (
 				<MatchCard key={index} match={match}/>
 			)) : "No active matches..."
 			}
