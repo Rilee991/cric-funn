@@ -1,15 +1,17 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Switch, Route } from 'react-router-dom';
-import { BubbleChartOutlined, PublicOutlined, StarBorderOutlined, TimelineOutlined, VpnKey, WhatshotOutlined } from '@material-ui/icons';
+import { BubbleChartOutlined, PublicOutlined, StarBorderOutlined, TimelineOutlined, VpnKey, WhatshotOutlined, 
+    ControlCamera
+} from '@material-ui/icons';
 import { find } from 'lodash';
 
 import NotFoundError from '../../components/common/NotFoundError';
-import { Header, SideNavbar, Notifications, Home, MyBets, MyStats, GlobalStats, PointsTable } from './index';
+import { Header, SideNavbar, Notifications, Home, MyBets, MyStats, GlobalStats, PointsTable, ControlPanel } from './index';
 import { ContextProvider } from '../../global/Context';
 
 const LoggedInRoutes = () => {
     const contextConsumer = useContext(ContextProvider);
-    const { mobileView, logout, notifications = [], clearNotifications } = contextConsumer;
+    const { mobileView, logout, notifications = [], clearNotifications, loggedInUserDetails: { isAdmin } } = contextConsumer;
     const [isNavOpen, setIsNavOpen] = useState(false);
     const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
     const [navSelected, setNavSelected] = useState(1);
@@ -41,6 +43,11 @@ const LoggedInRoutes = () => {
         icon: <StarBorderOutlined />
     }, {
         id: 6,
+        name: "Control Panel",
+        to: "/control-panel",
+        icon: <ControlCamera />
+    }, {
+        id: 7,
         name: "Logout",
         to: "/",
         onClick: () => logout(),
@@ -107,9 +114,9 @@ const LoggedInRoutes = () => {
                         <Route exact path="/points-table">
                             <PointsTable />
                         </Route>
-                        {/* <Route exact path="/admin">
-                            <Admin exact />
-                        </Route> */}
+                        {isAdmin && <Route exact path="/control-panel">
+                            <ControlPanel exact />
+                        </Route> }
                         <Route>
                             <NotFoundError />
                         </Route>

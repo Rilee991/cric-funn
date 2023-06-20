@@ -494,7 +494,7 @@ const Context = (props) => {
     const resetUserDetails = async (username) => {
         await updateUserByUsername(username, {
             bets: DEFAULT_USER_PARAMS.STARTING_BETS, points: DEFAULT_USER_PARAMS.STARTING_POINTS,
-            updatedBy: "resetUserDetails", updatedAt: getFirebaseCurrentTime()
+            updatedBy: `resetUserDetails_${loggedInUserDetails.username}`, updatedAt: getFirebaseCurrentTime()
         });
 
         if(username == loggedInUserDetails?.username) {
@@ -509,7 +509,7 @@ const Context = (props) => {
     const syncUserDetails = async (username) => {
         try {
             let userDetails = await getUserByUsername(username);
-            userDetails = await userDetails.data();
+            userDetails = userDetails.data();
 
             let settledBets = 0, unsettledBets = 0;
             let { bets = [], points = 0 } = userDetails;

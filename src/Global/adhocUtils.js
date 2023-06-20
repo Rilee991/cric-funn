@@ -1,6 +1,8 @@
 import { ceil } from "lodash";
 import moment from "moment";
 
+import { matchPostersMapping } from "../configs/matchConfigs";
+
 const firebase = require("firebase");
 
 export const getToppgerBgImage = (isChampion = false) => {
@@ -32,4 +34,33 @@ export const getWinnerEtaParams = (matchType = "t20") => {
 
 export const getDefaultMatchOdds = (team1, team2) => {
     return [{ name: team1, price: 1 }, { name: team2, price: 1 }];
+}
+
+export const formatMatch = (match) => {
+    let names = match.name.split(" vs");
+    const team1 = names[0];
+    const team2 = names[1].split(", ")[0].slice(1); 
+
+    if(match.teamInfo && match.teamInfo[0].name != team1) {
+        const temp = match.teamInfo[0];
+        match.teamInfo[0] = match.teamInfo[1];
+        match.teamInfo[1] = temp;
+    }
+
+    if(match.teams && match.teams[0] != team1) {
+        const temp = match.teams[0];
+        match.teams[0] = match.teams[1];
+        match.teams[1] = temp;
+    }
+
+    match.team1 = team1;
+    match.team2 = team2;
+    match.team1Abbreviation = match.teamInfo[0].shortname;
+    match.team2Abbreviation = match.teamInfo[1].shortname;
+    match.poster = matchPostersMapping[`${match.team1Abbreviation}-${match.team2Abbreviation}`] || matchPostersMapping[`${match.team2Abbreviation}-${match.team1Abbreviation}`] || "";
+    match.dateTimeGMT = match.dateTimeGMT + "Z";
+
+    delete match["bbbEnabled"];
+    delete match["fantasyEnabled"];
+    delete match["hasSquad"];
 }
