@@ -374,7 +374,7 @@ const Context = (props) => {
             mostPointsWon.forEach(dist => dist["ptsPercent"] = ((dist["pointsWon"]/totalWinPoints)*100).toFixed(2));
             mostPointsWon = sortBy(mostPointsWon, ["pointsWon"]).reverse();
 
-            const totalLosePoints = mostPointsLost.reduce((acc, val) => acc+val.pointsWon, 0);
+            const totalLosePoints = mostPointsLost.reduce((acc, val) => acc+val.pointsLost, 0);
             mostPointsLost.forEach(dist => dist["ptsPercent"] = ((dist["pointsLost"]/totalLosePoints)*100).toFixed(2));
             mostPointsLost = sortBy(mostPointsLost, ["pointsLost"]).reverse();
 
