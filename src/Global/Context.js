@@ -442,6 +442,8 @@ const Context = (props) => {
             }
         });
 
+        teamAttributes[DEFAULT_PENALTY_TEAM] = { abbr: DEFAULT_PENALTY_TEAM };
+
         Object.keys(teamAttributes).forEach(team => {
             const qualifedBets = bets.filter(bet => bet.selectedTeam === team);
             let betsDone = 0, betsWon = 0, betsLost = 0, totalPts = 0, wonPts = 0, lostPts = 0;
