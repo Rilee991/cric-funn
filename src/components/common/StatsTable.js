@@ -61,7 +61,7 @@ const StyledTableRow = withStyles((theme) => ({
   
 
 const StatsTable = (props) => {
-    const { tableDetails = {}, rankPalette = true } = props;
+    const { tableDetails = {}, rankPalette = true, fullWidth = false } = props;
     const { title, cols = [], data = [], caption, dangerCols = [] } = tableDetails;
 
     function getColor(rank, isOut) {
@@ -78,7 +78,7 @@ const StatsTable = (props) => {
 	}
 
     return (
-        <Card style={{ boxShadow: "5px 5px 20px" }} className="tw-mt-2 tw-mb-10 xl:tw-w-[70%] md:tw-w-[90%] tw-rounded-[40px]">
+        <Card style={{ boxShadow: "5px 5px 20px" }} className={`tw-mt-2 tw-mb-10 ${fullWidth ? "tw-w-full" : "xl:tw-w-[70%] md:tw-w-[90%]"} tw-rounded-[40px]`}>
             <CardActionArea style={{ background: "linear-gradient(179deg, rgb(3 70 77), rgb(85 7 76))" }}>
                 <CardContent style={{ "background": "linear-gradient(179deg, rgb(3 70 77), rgb(85 7 76))"}} className="tw-rounded-[40px] tw-flex tw-flex-col tw-items-center tw-p-2">
                     <Typography className="tw-flex tw-items-center tw-gap-2 tw-text-white tw-font-mono tw-italic" variant={"button"} style={{fontSize: 20}} component="p">
