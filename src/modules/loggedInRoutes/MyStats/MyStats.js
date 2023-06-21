@@ -2,27 +2,26 @@ import React, { useContext, useEffect, useState } from 'react';
 import moment from 'moment';
 
 import { ContextProvider } from '../../../global/Context';
-import PointsTimeline from './PointsTimeline';
 import BetTimeDistChart from './BetTimeDistChart';
 import StatsTable from '../../../components/common/StatsTable';
-import LoaderV2 from '../../../components/common/LoaderV2';
+import PointsTimelineCompare from './PointsTimelineCompare';
+import { getPointsTimeLineComparison } from '../../../apis/mystats/myStatsController';
 
 const MyStats = () => {
     const contextConsumer = useContext(ContextProvider);
     const { getTeamWiseStats, loggedInUserDetails } = contextConsumer;
-    const { username, bets = [] } = loggedInUserDetails;
-    const [pointsTimelineData, setPointsTimelineData] = useState([]);
+    const { bets = [] } = loggedInUserDetails;
+    const [timelineLoading, setTimelineLoading] = useState(false);
+    const [isTeamWiseDataLoading, setIsTeamWiseDataLoading] = useState(false);
+    const [usersPointsTimelineData, setUsersPointsTimelineData] = useState([]);
+    const [teamWisePtsData, setTeamWisePtsData] = useState({});
+
     const [betTimeDist, setBetTimeDist] = useState([]);
     const [betTimePtsDist, setBetTimePtsDist] = useState([]);
-    const [teamWisePtsData, setTeamWisePtsData] = useState({});
-    const [loading, setLoading] = useState(false);
-    const [isTeamWiseDataLoading, setIsTeamWiseDataLoading] = useState(false);
 
-    useEffect(async () => {
-		setLoading(true);
-        getPointsTimeLineData();
+    useEffect(() => {
+        getTimeLineDetails();
         getTeamWisePtsData();
-		setLoading(false);
 	}, []);
 
     const getTeamWisePtsData = async () => {
@@ -36,6 +35,17 @@ const MyStats = () => {
         setIsTeamWiseDataLoading(false);
     }
 
+    const getTimeLineDetails = async () => {
+        setTimelineLoading(true);
+        try {
+            const details = await getPointsTimeLineComparison();
+            setUsersPointsTimelineData(details);
+        } catch (e) {
+            console.log(e);
+        }
+        setTimelineLoading(false);
+    }
+
     const getPointsTimeLineData = () => {
         let points = 3500, match = 0, eveningFiveToSeven = 0, eveningSevenToTwelve = 0, morningTwelveToSeven = 0, 
             morningSevenToFive = 0, ptsBetInEveningFiveToSeven = 0, ptsBetInEveningSevenToTwelve = 0, 
@@ -43,21 +53,6 @@ const MyStats = () => {
         const userJourney = [{ match, points }];
 
         bets.map(bet => {
-            if(bet.betWon) {
-                if(bet.isNoResult) {
-                    points += parseInt(bet.selectedPoints);
-                    match += 1; 
-                } else {
-                    points += parseInt(Math.ceil(bet.selectedPoints*bet.odds[bet.selectedTeam]));
-                    match += 1;
-                }
-            } else {
-                points -= parseInt(bet.selectedPoints);
-                match += 1;
-            }
-
-            userJourney.push({ points, match });
-
             const hours = moment.unix(bet.betTime).hours();
             if(0 <= hours && hours < 7) {
                 ptsBetInMorningTwelveToSeven += parseInt(bet.selectedPoints);
@@ -74,7 +69,6 @@ const MyStats = () => {
             }
         });
 
-        setPointsTimelineData(userJourney);
         setBetTimeDist([{ 
             timePeriod: "5pm-7pm", count: eveningFiveToSeven 
         }, {
@@ -95,15 +89,21 @@ const MyStats = () => {
         }]);
     }
 
-    return ( loading && teamWisePtsData ? ( <LoaderV2 tip="Loading Stats..." /> ) : (
+    return (
 		<div className="tw-flex tw-flex-col">
-            <PointsTimeline data={pointsTimelineData} username={username} />
-            <br/>
-            {/* <PointsTimelineComparision data={pointsTimelineData} username={username} /> */}
+            { timelineLoading ? <div>Loading Graph please wait...</div> : 
+                <PointsTimelineCompare usersPointsTimeline={usersPointsTimelineData} /> 
+            }
             {/* <BetTimeDistChart betTimeDist={betTimeDist} betTimePtsDist={betTimePtsDist} username={username} /> */}
-            <StatsTable tableDetails={{ ...teamWisePtsData, title: "Team Wise Betting Trends" }} rankPalette={false} />
+            {isTeamWiseDataLoading ? <div>Loading table, please wait...</div> :
+                <StatsTable
+                    fullWidth={true}
+                    tableDetails={{ ...teamWisePtsData, title: "Team Wise Betting Trends" }}
+                    rankPalette={false} 
+                />
+            }
         </div>
-	));
+	);
 }
 
 export default MyStats;
