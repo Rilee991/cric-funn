@@ -22,8 +22,11 @@ https://cric-funn.web.app
 1. Need to delete all unused resources
 2. Make a new cric-funn logo
 3. Make eslint for src folder
-4. Make a proper flow for syncing matches into db so won't have to do code change at the beginning of league
 5. Making no matches component
+8. Add legends page consisting of WM posters and Winners
+
+#### COMPLETED:
+4. Make a proper flow for syncing matches into db so won't have to do code change at the beginning of league
 6. Change matches logic - old logic - fetch matches from cricapi and also sync for unsettled matches: 
 new logic - fetch matches from db and sync results to db on each refresh for only unsettled matches and for updating pts first check into db if the match is unsettled only then hit the cricapi
 7. Change view bets and lets bet dialog ui
