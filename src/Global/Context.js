@@ -169,7 +169,7 @@ const Context = (props) => {
 
         userDocs.docs.map(user => {
             const userData = user.data();
-            const { bets = [], username, points, isDummyUser = false, isChampion = false, image, isOut = false } = userData;
+            let { bets = [], username, points, isDummyUser = false, isChampion = false, image, isOut = false } = userData;
 
             if(isDummyUser) return;
             
@@ -181,6 +181,10 @@ const Context = (props) => {
                         if(bet.betWon)  won++;
                         else    lost++;
                     } else {
+                        const match = find(matches, { id: bet.matchId });
+                        if(match && moment() < getBetEndTime(match.dateTimeGMT)) {
+                            points += parseInt(bet.selectedPoints);
+                        }
                         inprogress++;
                     }
                     totalBets++;
@@ -494,17 +498,22 @@ const Context = (props) => {
     }
 
     const resetUserDetails = async (username) => {
-        await updateUserByUsername(username, {
-            bets: DEFAULT_USER_PARAMS.STARTING_BETS, points: DEFAULT_USER_PARAMS.STARTING_POINTS,
-            updatedBy: `resetUserDetails_${loggedInUserDetails.username}`, updatedAt: getFirebaseCurrentTime()
-        });
-
-        if(username == loggedInUserDetails?.username) {
-            setLoggedInUserDetails({
-                ...loggedInUserDetails,
-                bets: DEFAULT_USER_PARAMS.STARTING_BETS,
-                points: DEFAULT_USER_PARAMS.STARTING_POINTS
+        try {
+            await updateUserByUsername(username, {
+                bets: DEFAULT_USER_PARAMS.STARTING_BETS, points: DEFAULT_USER_PARAMS.STARTING_POINTS,
+                updatedBy: `resetUserDetails_${loggedInUserDetails.username}`, updatedAt: getFirebaseCurrentTime()
             });
+
+            if(username == loggedInUserDetails?.username) {
+                setLoggedInUserDetails({
+                    ...loggedInUserDetails,
+                    bets: DEFAULT_USER_PARAMS.STARTING_BETS,
+                    points: DEFAULT_USER_PARAMS.STARTING_POINTS
+                });
+            }
+        } catch (error) {
+            console.log(error);
+            throw new Error(error);
         }
     }
 
@@ -557,6 +566,8 @@ const Context = (props) => {
                     updatedAt: getFirebaseCurrentTime()
                 });
             }
+
+            return { bets, points, isOut };
         } catch (error) {
             console.log(error);
             throw new Error(error);
