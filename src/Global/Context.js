@@ -618,7 +618,7 @@ const Context = (props) => {
             }
             bet.isNoResult = false;
             notify = {
-                body: `Your bet for the match ${bet.team1} vs ${bet.team2} has been ${bet.betWon ? "Won" : "Lost"}!. You ${bet.betWon ? "Won" : "Lost"} ${bet.selectedPoints} POINTS.`,
+                body: `Your bet for the match ${bet.team1} vs ${bet.team2} has been ${bet.betWon ? "Won" : "Lost"}!. You ${bet.betWon ? "Won" : "Lost"} ${bet.betWon ? getWinningAmount(bet.selectedPoints, bet.odds[bet.selectedTeam]) : bet.selectedPoints} POINTS.`,
                 betWon: bet.betWon,
                 isNoResult: false
             };
@@ -649,13 +649,15 @@ const Context = (props) => {
                     // Result
                     const bet = bets[betIndex];
 
-                    if(!bet.isSettled && match.matchWinner) {
-                        const updatedInfo = updateUnsettledBet(bet, points, match);
-                        points = updatedInfo.points;
-                        notifications.push(updatedInfo.notify);
-                        settledBets++;
-                    } else {
-                        unsettledBets++;
+                    if(!bet.isSettled) {
+                        if(match.matchWinner) {
+                            const updatedInfo = updateUnsettledBet(bet, points, match);
+                            points = updatedInfo.points;
+                            notifications.push(updatedInfo.notify);
+                            settledBets++;
+                        } else {
+                            unsettledBets++;
+                        }
                     }
                 }
             } else {

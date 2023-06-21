@@ -14,7 +14,10 @@ export const getFirebaseCurrentTime = () => {
     return firebase.default.firestore.Timestamp.fromDate(new Date());
 }
 
-export const getWinningAmount = (amount, odds) => {
+export const getWinningAmount = (amount, odds = 1) => {
+    amount = parseInt(amount);
+    odds = parseFloat(odds);
+
     return ceil((1+odds)*amount);
 }
 
