@@ -15,35 +15,7 @@ import ViewBetsDialog from './ViewBetsDialog';
 import MatchPic from '../../../components/common/MatchPic';
 import ComparisionBar from '../../../components/common/ComparisionBar';
 import { getBetEndTime, getBetStartTime } from '../../../global/adhocUtils';
-
-// Incoming match object from db
-// {
-//     "id":"048d4bdf-88de-4981-b330-03ceb18eb6a1",
-//     "name":"Punjab Kings vs Rajasthan Royals, 66th Match",
-//     "matchType":"t20",
-//     "status":"Match not started",
-//     "venue":"Himachal Pradesh Cricket Association Stadium, Dharamsala",
-//     "date":"2023-05-19",
-//     "dateTimeGMT":"2023-05-19T14:00:00Z",
-//     "teams":["Punjab Kings","Rajasthan Royals"],
-//     "teamInfo":[{
-//         "name":"Punjab Kings",
-//         "shortname":"PBKS",
-//         "img":"https://g.cricapi.com/img/teams/247-637852956959778791.png"
-//     },{
-//         "name":"Rajasthan Royals",
-//         "shortname":"RR",
-//         "img":"https://g.cricapi.com/img/teams/251-637852956607161886.png"
-//     }],
-// 	   "poster": "https://posterlink"
-//     "fantasyEnabled":false,
-//     "bbbEnabled":false,
-//     "hasSquad":true,
-//     "matchStarted":false,
-//     "matchEnded":false,
-// 	   "matchWinner": "Rajasthan Royals"
-//     "odds": [{name: "Punjab Kings", price: "1.8"}, {name: "Rajasthan Royals", price: "2"}]
-// }
+import { ALERT_CONFIGS } from '../../../configs/userConfigs';
 
 const MatchCard = (props) => {
 	const contextConsumer = useContext(ContextProvider);
@@ -63,7 +35,7 @@ const MatchCard = (props) => {
 	const [bettingOn, setBettingOn] = useState((moment() >= betStartTime && moment() <= betEndTime) && (bettingDoneByUser == false));
 	const [canViewBets, setCanViewBets] = useState(moment() > betEndTime);
 	const [message, setMessage] = useState(moment() >= betEndTime ? `Betting for this match is CLOSED.` : `Betting for this match will be OPENED from ${betStartTime.format("LLL")} to ${betEndTime.format("LLL")}`);
-	const [severity, setSeverity] = useState("info");
+	const [severity, setSeverity] = useState(ALERT_CONFIGS.INFO);
 
     useEffect(()=> {
 		const bet = find(bets, { "matchId": matchId }) || {};
@@ -76,33 +48,33 @@ const MatchCard = (props) => {
 
 		if(moment() < betStartTime) {
 			setMessage(getMsgForUpcomingBets(betStartTime,betEndTime));
-			setSeverity("info");
+			setSeverity(ALERT_CONFIGS.INACTIVE);
 		} else if(moment() >= betStartTime && moment() <= betEndTime) {
 			if(bettingDone) {
 				setMessage(getMsgForInProgressBets(selectedPoints, selectedTeam));
-				setSeverity("warning");
+				setSeverity(ALERT_CONFIGS.WARNING);
 			} else {
 				setMessage(getMsgForOpenBets(betEndTime));
-				setSeverity("success");
+				setSeverity(ALERT_CONFIGS.INFO);
 			}
 		} else if(isNoResult) {
 			setMessage(getMsgForNoResultBets(selectedPoints, selectedTeam));
-			setSeverity("success");
+			setSeverity(ALERT_CONFIGS.SUCCESS);
 		} else {
 			setMessage(getMsgForClosedBets());
-			setSeverity("error");
+			setSeverity(ALERT_CONFIGS.DANGER);
 			if(bettingDone) {
 				if(isSettled) {
 					if(betWon) {
 						setMessage(getMsgForWonBets(Math.ceil(selectedPoints*betOdds[selectedTeam]), selectedTeam));
-						setSeverity("success");
+						setSeverity(ALERT_CONFIGS.SUCCESS);
 					} else {
 						setMessage(getMsgForLostBets(selectedPoints, selectedTeam));
-						setSeverity("error");
+						setSeverity(ALERT_CONFIGS.DANGER);
 					}
 				} else {
 					setMessage(getMsgForInProgressBets(selectedPoints, selectedTeam));
-					setSeverity("warning");
+					setSeverity(ALERT_CONFIGS.WARNING);
 				}
 			}
 		}
@@ -194,7 +166,7 @@ const MatchCard = (props) => {
 					</Button>
 				</CardActions>
 
-				<Alert severity={severity} variant="filled" className="tw-rounded-[40px]">
+				<Alert style={{ background: severity }} variant="filled" className="tw-rounded-[40px]">
 					<b>{message}</b>
 				</Alert>
 			</Card>

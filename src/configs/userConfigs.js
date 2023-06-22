@@ -3,3 +3,11 @@ export const DEFAULT_USER_PARAMS = {
     STARTING_POINTS: 3500,
     STARTING_BETS: []
 }
+
+export const ALERT_CONFIGS = {
+    DANGER: "#700808",
+    SUCCESS: "#008520",
+    INFO: "#3265fa",
+    WARNING: "#cc8800",
+    INACTIVE: "#596072"
+}

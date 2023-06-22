@@ -32,7 +32,7 @@ const Home = () => {
 
 	return (
 		<div className="tw-w-full">
-			{ !relevantMatches.length ? relevantMatches.map((match, index) => (
+			{ relevantMatches.length ? relevantMatches.map((match, index) => (
 				<MatchCard key={index} match={match}/>
 			)) 
 			: <Alert classes={{ standardSuccess: classes.infoAlertSettings, icon: classes.contentColorSettings, message: classes.contentColorSettings }} className="tw-rounded-[40px] tw-mt-2 tw-flex tw-justify-center xl:tw-w-[70%] tw-items-center tw-text-[aliceblue]">
