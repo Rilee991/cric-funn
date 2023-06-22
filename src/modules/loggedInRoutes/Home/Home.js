@@ -1,38 +1,26 @@
 import React, { useContext, useEffect, useState } from 'react';
 import moment from 'moment';
+import { Alert } from '@material-ui/lab';
+import { makeStyles, Typography } from '@material-ui/core';
 
 import MatchCard from './MatchCard';
 import { ContextProvider } from '../../../global/Context';
 
-// Incoming match object from db
-// {
-//     "id":"048d4bdf-88de-4981-b330-03ceb18eb6a1",
-//     "name":"Punjab Kings vs Rajasthan Royals, 66th Match",
-//     "matchType":"t20",
-//     "status":"Match not started",
-//     "venue":"Himachal Pradesh Cricket Association Stadium, Dharamsala",
-//     "date":"2023-05-19",
-//     "dateTimeGMT":"2023-05-19T14:00:00Z",
-//     "teams":["Punjab Kings","Rajasthan Royals"],
-//     "teamInfo":[{
-//         "name":"Punjab Kings",
-//         "shortname":"PBKS",
-//         "img":"https://g.cricapi.com/img/teams/247-637852956959778791.png"
-//     },{
-//         "name":"Rajasthan Royals",
-//         "shortname":"RR",
-//         "img":"https://g.cricapi.com/img/teams/251-637852956607161886.png"
-//     }],
-// 	   "poster": "https://posterlink",
-//     "matchWinner": "Rajasthan Royals"
-//     "matchStarted":false,
-//     "matchEnded":false
-// }
+const useStyles = makeStyles((theme) => ({
+    infoAlertSettings: {
+        background: "linear-gradient(60deg, #6c0c0c, #8f3e01)"
+    },
+    contentColorSettings: {
+        color: "aliceblue !important"
+    }
+}))
 
 const Home = () => {
 	const contextConsumer = useContext(ContextProvider);
 	const { matches = [] } = contextConsumer;
 	const [relevantMatches, setRelevantMatches] = useState([]);
+
+	const classes = useStyles();
 
 	useEffect(() => {
 		const relevantMatches = matches.filter(match => 
@@ -44,9 +32,14 @@ const Home = () => {
 
 	return (
 		<div className="tw-w-full">
-			{ relevantMatches.length ? relevantMatches.map((match, index) => (
+			{ !relevantMatches.length ? relevantMatches.map((match, index) => (
 				<MatchCard key={index} match={match}/>
-			)) : "No active matches..."
+			)) 
+			: <Alert classes={{ standardSuccess: classes.infoAlertSettings, icon: classes.contentColorSettings, message: classes.contentColorSettings }} className="tw-rounded-[40px] tw-mt-2 tw-flex tw-justify-center xl:tw-w-[70%] tw-items-center tw-text-[aliceblue]">
+				<Typography variant={"button"} style={{fontSize: 15}} component="p">
+					<b>No matches found</b>
+				</Typography>
+			</Alert>
 			}
 		</div>
 	);
