@@ -57,7 +57,6 @@ const ViewBetsDialog = (props) => {
     }
 
     const getColor = (bet) => {
-        console.log(bet);
         const props = teamProps[bet.teamName];
         
         return props ? props.color : "red";

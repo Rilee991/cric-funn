@@ -9,7 +9,7 @@ import * as d3 from 'd3-shape';
 
 const BetTimeDistChart = (props) => {
     const { betTimeDist = [], betTimePtsDist = [], username = "Series" } = props;
-    console.log(betTimeDist, betTimePtsDist);
+
     useEffect(() => {
         const root = am5.Root.new("betTimeDistChart");
     

@@ -79,7 +79,6 @@ const ResetPassword = () => {
     const startRedirectionTimer = () => {
         for(let i=10;i>0;i--) {
             setTimeout(() => {
-                console.log(10-i);
                 setSecs(i);
             },(10-i)*1000);
         }
