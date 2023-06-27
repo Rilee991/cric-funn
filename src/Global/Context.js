@@ -471,15 +471,17 @@ const Context = (props) => {
                 }
             });
 
-            result.push({
-                team: teamAttributes[team].abbr,
-                bets: betsDone,
-                betsWon,
-                betsLost,
-                ptsBet: totalPts.toLocaleString("en-IN"),
-                ptsWon: wonPts.toLocaleString("en-IN"),
-                ptsLost: lostPts.toLocaleString("en-IN")
-            });
+            if(team != DEFAULT_PENALTY_TEAM) {
+                result.push({
+                    team: teamAttributes[team].abbr,
+                    bets: betsDone,
+                    betsWon,
+                    betsLost,
+                    ptsBet: totalPts.toLocaleString("en-IN"),
+                    ptsWon: wonPts.toLocaleString("en-IN"),
+                    ptsLost: lostPts.toLocaleString("en-IN")
+                });
+            }
         });
 
         result = orderBy(result, ["team"], ["asc"]);
