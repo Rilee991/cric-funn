@@ -64,11 +64,11 @@ const ViewBetsDialog = (props) => {
 
     const getViewBetsTable = () => {   
         return (
-            <TableContainer component={Paper} className="tw-rounded-[30px] tw-mt-2 tw-overflow-hidden">
+            <TableContainer component={Paper} className="tw-rounded-[30px] tw-mt-2 tw-overflow-scroll">
                 <Table aria-label="caption table">
                     <caption className="tw-p-2">
                         <Typography variant="overline">
-                            Sorted By Points {isAdmin ? `- Seen By (${Object.keys(seenBy)})` : ""}
+                            Sorted By Points {isAdmin ? `- Seen By (${Object.keys(seenBy).join(", ")})` : ""}
                         </Typography>
                     </caption>
                     <TableHead>
