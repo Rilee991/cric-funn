@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
     }
 }))
 
-const Home = () => {
+const Home = ({ handleSelectedNav }) => {
 	const contextConsumer = useContext(ContextProvider);
 	const { matches = [] } = contextConsumer;
 	const [relevantMatches, setRelevantMatches] = useState([]);
@@ -26,6 +26,7 @@ const Home = () => {
 
 	useEffect(() => {
 		setLoading(true);
+		handleSelectedNav && handleSelectedNav();
 		const relevantMatches = matches.filter(match => 
 			moment(match.dateTimeGMT) >= moment().subtract(2, "days")
 		);
