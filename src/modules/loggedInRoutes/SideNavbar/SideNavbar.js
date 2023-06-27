@@ -2,8 +2,6 @@ import React from 'react'
 import { Divider, SwipeableDrawer, Hidden, List, ListItem, ListItemIcon, ListItemText, makeStyles, Typography } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 
-import './SideNavbar.css';
-
 const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -67,10 +65,10 @@ const SideNavbar = (props) => {
                     {navItems.map((item, index) => (
                         <Link to={item.to} key={item.id} onClick={() => onClickNavItem(item)}>
                             <ListItem style={{ background: navSelected == item.id ? "darkslateblue" : "", borderRadius: "40px" }} className="hover:tw-bg-blue-600 tw-mb-1" button key={item.name}>
-                                <ListItemIcon className="neon">
+                                <ListItemIcon className="tw-text-white">
                                     {item.icon}
                                 </ListItemIcon>
-                                <ListItemText className={index%2 == 0 ? "neon" : "neon-reverse"} primary={item.name} />
+                                <ListItemText className="tw-text-white" primary={item.name} />
                             </ListItem>
                         </Link>
                     ))}
