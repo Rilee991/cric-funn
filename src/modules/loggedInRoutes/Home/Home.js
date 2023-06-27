@@ -4,6 +4,7 @@ import { Alert } from '@material-ui/lab';
 import { makeStyles, Typography } from '@material-ui/core';
 
 import MatchCard from './MatchCard';
+import LoaderV2 from '../../../components/common/LoaderV2';
 import { ContextProvider } from '../../../global/Context';
 
 const useStyles = makeStyles((theme) => ({
@@ -19,27 +20,31 @@ const Home = () => {
 	const contextConsumer = useContext(ContextProvider);
 	const { matches = [] } = contextConsumer;
 	const [relevantMatches, setRelevantMatches] = useState([]);
+	const [loading, setLoading] = useState(false);
 
 	const classes = useStyles();
 
 	useEffect(() => {
+		setLoading(true);
 		const relevantMatches = matches.filter(match => 
 			moment(match.dateTimeGMT) >= moment().subtract(2, "days")
 		);
-		
+
 		setRelevantMatches(relevantMatches);
+		setLoading(false);
 	}, [])
 
 	return (
 		<div className="tw-w-full">
-			{ relevantMatches.length ? relevantMatches.map((match, index) => (
-				<MatchCard key={index} match={match}/>
-			)) 
-			: <Alert classes={{ standardSuccess: classes.infoAlertSettings, icon: classes.contentColorSettings, message: classes.contentColorSettings }} className="tw-rounded-[40px] tw-mt-2 tw-flex tw-justify-center xl:tw-w-[70%] tw-items-center tw-text-[aliceblue]">
-				<Typography variant={"button"} style={{fontSize: 15}} component="p">
-					<b>No matches found</b>
-				</Typography>
-			</Alert>
+			{ loading ? <LoaderV2 tip="Loading matches..." />: 
+				relevantMatches.length ? relevantMatches.map((match, index) => (
+					<MatchCard key={index} match={match}/>
+				)) 
+				: <Alert classes={{ standardSuccess: classes.infoAlertSettings, icon: classes.contentColorSettings, message: classes.contentColorSettings }} className="tw-rounded-[40px] tw-mt-2 tw-flex tw-justify-center xl:tw-w-[70%] tw-items-center tw-text-[aliceblue]">
+					<Typography variant={"button"} style={{fontSize: 15}} component="p">
+						<b>No matches found</b>
+					</Typography>
+				</Alert>
 			}
 		</div>
 	);
