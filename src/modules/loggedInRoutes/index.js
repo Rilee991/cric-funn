@@ -7,5 +7,6 @@ import MyStats from './MyStats/MyStats';
 import GlobalStats from './GlobalStats/GlobalStats';
 import PointsTable from './PointsTable/PointsTable';
 import ControlPanel from './ControlPanel/ControlPanel';
+import Legends from './Legends/Legends';
 
-export { Header, SideNavbar, Notifications, Home, MyBets, MyStats, GlobalStats, PointsTable, ControlPanel };
+export { Header, SideNavbar, Notifications, Home, MyBets, MyStats, GlobalStats, PointsTable, ControlPanel, Legends };
