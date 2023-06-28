@@ -58,7 +58,7 @@ const Header = (props) => {
 		<div className={classes.root}>
 			<CssBaseline />
 			<AppBar position="fixed" className={`${classes.appBar} tw-z-[10000] tw-w-full`}>
-				<Toolbar className={"tw-flex tw-flex-row-reverse tw-justify-between"} style={{ "background": "linear-gradient(44deg, #250c51, #605317)"}}>
+				<Toolbar className={"tw-flex tw-flex-row-reverse tw-justify-between"} style={{ "background": "linear-gradient(0deg, #1b004a, #50045a)"}}>
 					<div>
 						<IconButton
 							color="inherit"
