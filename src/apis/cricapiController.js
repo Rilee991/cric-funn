@@ -37,7 +37,6 @@ export const saveMatchesToDb = async () => {
     }
 }
 
-
 export const syncDbWithNewMatches = async () => {
     try {
         const url = `https://api.cricapi.com/v1/series_info?apikey=${API_KEY}&offset=0&id=${SERIES_ID}`;
