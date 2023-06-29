@@ -33,7 +33,9 @@ const Home = ({ handleSelectedNav }) => {
 
 		setRelevantMatches(relevantMatches);
 		setLoading(false);
-	}, [])
+	}, [matches])
+
+	console.log(loading, matches, relevantMatches);
 
 	return (
 		<div className="tw-w-full">
