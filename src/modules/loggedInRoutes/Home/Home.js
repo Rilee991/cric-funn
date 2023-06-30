@@ -35,8 +35,6 @@ const Home = ({ handleSelectedNav }) => {
 		setLoading(false);
 	}, [matches])
 
-	console.log(loading, matches, relevantMatches);
-
 	return (
 		<div className="tw-w-full">
 			{ loading ? <LoaderV2 tip="Loading matches..." />: 
