@@ -33,7 +33,7 @@ const Home = ({ handleSelectedNav }) => {
 
 		setRelevantMatches(relevantMatches);
 		setLoading(false);
-	}, [matches])
+	}, [matches.length])
 
 	return (
 		<div className="tw-w-full">
