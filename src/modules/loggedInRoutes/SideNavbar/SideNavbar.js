@@ -64,11 +64,16 @@ const SideNavbar = (props) => {
                 <List>
                     {navItems.map((item, index) => (
                         <Link to={item.to} key={item.id} onClick={() => onClickNavItem(item)}>
-                            <ListItem style={{ background: navSelected == item.id ? "darkslateblue" : "", borderRadius: "40px" }} className="hover:tw-bg-blue-600 tw-mb-1" button key={item.name}>
+                            <ListItem style={{ background: navSelected == item.id ? "darkslateblue" : "", borderRadius: "40px" }} className={`${item.disabled ? "hover:tw-bg-red-800" : "hover:tw-bg-purple-800"} tw-mb-1`} button key={item.name}>
                                 <ListItemIcon className="tw-text-white">
                                     {item.icon}
                                 </ListItemIcon>
-                                <ListItemText className="tw-text-white" primary={item.name} />
+                                <ListItemText className={item.disabled ? "tw-text-gray-300" : "tw-text-white"}>
+                                    <p className={item.subText && item.disabled ? "tw-leading-4" : ""}>{item.name}</p>
+                                    {item.disabled ? <p className="tw-text-sm tw-leading-4 tw-text-gray-400">
+                                        {item.subText}
+                                    </p> : null }
+                                </ListItemText>
                             </ListItem>
                         </Link>
                     ))}

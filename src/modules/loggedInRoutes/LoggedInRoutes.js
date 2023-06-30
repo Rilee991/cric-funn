@@ -1,12 +1,13 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Switch, Route } from 'react-router-dom';
 import { BubbleChartOutlined, PublicOutlined, StarBorderOutlined, TimelineOutlined, VpnKey, WhatshotOutlined, 
-    ControlCamera
+    ControlCamera, LocalPlay
 } from '@material-ui/icons';
 import { find } from 'lodash';
+import moment from 'moment';
 
 import NotFoundError from '../../components/common/NotFoundError';
-import { Header, SideNavbar, Notifications, Home, MyBets, MyStats, GlobalStats, PointsTable, ControlPanel } from './index';
+import { Header, SideNavbar, Notifications, Home, MyBets, MyStats, GlobalStats, PointsTable, ControlPanel, Legends } from './index';
 import { ContextProvider } from '../../global/Context';
 
 const LoggedInRoutes = () => {
@@ -16,43 +17,6 @@ const LoggedInRoutes = () => {
     const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
     const [navSelected, setNavSelected] = useState(1);
 
-    const navItems = [{
-        id: 1,
-        name: "Home",
-        to: "/",
-        icon: <WhatshotOutlined />
-    }, {
-        id: 2,
-        name: "My Bets",
-        to: "/my-bets",
-        icon: <TimelineOutlined />
-    }, {
-        id: 3,
-        name: "My Stats",
-        to: "/my-stats",
-        icon: <BubbleChartOutlined />
-    }, {
-        id: 4,
-        name: "Global Stats",
-        to: "/global-stats",
-        icon: <PublicOutlined />
-    }, {
-        id: 5,
-        name: "Points Table",
-        to: "/points-table",
-        icon: <StarBorderOutlined />
-    }, {
-        id: 6,
-        name: "Control Panel",
-        to: "/control-panel",
-        icon: <ControlCamera />
-    }, {
-        id: 7,
-        name: "Logout",
-        to: "/",
-        onClick: () => logout(),
-        icon: <VpnKey />
-    }];
 
     useEffect(() => {
         handleSelectedNav();
@@ -69,6 +33,52 @@ const LoggedInRoutes = () => {
         }
     }
 
+    const isGlobalStatsDisabled = !isAdmin && moment().isBefore(moment("01-05-2024"));
+
+    const navItems = [{
+        name: "Home",
+        to: "/",
+        icon: <LocalPlay />,
+        component: <Home handleSelectedNav={handleSelectedNav} />
+    }, {
+        name: "My Bets",
+        to: "/my-bets",
+        icon: <TimelineOutlined />,
+        component: <MyBets />
+    }, {
+        name: "My Stats",
+        to: "/my-stats",
+        icon: <BubbleChartOutlined />,
+        component: <MyStats />
+    }, {
+        name: "Global Stats",
+        to: "/global-stats",
+        icon: <PublicOutlined />,
+        subText: "Enabling on 1st May",
+        disabled: isGlobalStatsDisabled,
+        component: <GlobalStats />
+    }, {
+        name: "Points Table",
+        to: "/points-table",
+        icon: <StarBorderOutlined />,
+        component: <PointsTable />
+    }, {
+        name: "Hall of Fame",
+        to: "/legends",
+        icon: <WhatshotOutlined />,
+        component: <Legends />
+    }, {
+        name: "Control Panel",
+        to: "/control-panel",
+        icon: <ControlCamera />,
+        component: <ControlPanel />
+    }, {
+        name: "Logout",
+        to: "/",
+        onClick: () => logout(),
+        icon: <VpnKey />
+    }].map((item, idx) => ({ ...item, id: idx+1 }));
+
     return (
         <div className="tw-flex tw-flex-col">
             <div>
@@ -76,7 +86,7 @@ const LoggedInRoutes = () => {
             </div>
             <div className="tw-flex">
                 <div>
-                    <SideNavbar 
+                    <SideNavbar
                         setIsNavOpen={setIsNavOpen}
                         isNavOpen={isNavOpen}
                         setIsNotificationsOpen={setIsNotificationsOpen}
@@ -94,13 +104,8 @@ const LoggedInRoutes = () => {
                 </div>
                 <div className={`tw-pt-16 tw-py-6 md:tw-px-14 tw-w-full`}>
                     <Switch>
-                        {/* {navItems.map(eachNav => (
-                            <Route exact path={eachNav.to}>
-                                {eachNav.component || <div>{eachNav.name}</div>}
-                            </Route>
-                        ))} */}
                         <Route exact path="/">
-                            <Home />
+                            <Home handleSelectedNav={handleSelectedNav} />
                         </Route> 
                         <Route exact path="/my-bets">
                             <MyBets /> 
@@ -108,14 +113,17 @@ const LoggedInRoutes = () => {
                         <Route exact path="/my-stats">
                             <MyStats exact />
                         </Route>
-                        <Route exact path="/global-stats">
+                        {!isGlobalStatsDisabled && <Route exact path="/global-stats">
                             <GlobalStats />
-                        </Route>
+                        </Route> }
                         <Route exact path="/points-table">
                             <PointsTable />
                         </Route>
+                        <Route exact path="/legends">
+                            <Legends />
+                        </Route>
                         {isAdmin && <Route exact path="/control-panel">
-                            <ControlPanel exact />
+                            <ControlPanel />
                         </Route> }
                         <Route>
                             <NotFoundError />
