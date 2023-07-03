@@ -12,7 +12,7 @@ import { ContextProvider } from '../../global/Context';
 
 const LoggedInRoutes = () => {
     const contextConsumer = useContext(ContextProvider);
-    const { mobileView, logout, notifications = [], clearNotifications, loggedInUserDetails: { isAdmin } } = contextConsumer;
+    const { mobileView, logout, notifications = [], clearNotifications, loggedInUserDetails: { isAdmin, username, points } } = contextConsumer;
     const [isNavOpen, setIsNavOpen] = useState(false);
     const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
     const [navSelected, setNavSelected] = useState(1);
@@ -36,7 +36,7 @@ const LoggedInRoutes = () => {
     const isGlobalStatsDisabled = !isAdmin && moment().isBefore(moment("01-05-2024"));
 
     const navItems = [{
-        name: "Home",
+        name: `@${username}`,
         to: "/",
         icon: <LocalPlay />,
         component: <Home handleSelectedNav={handleSelectedNav} />
