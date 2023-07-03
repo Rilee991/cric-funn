@@ -80,7 +80,7 @@ const StatsCard = (props) => {
                                     </div>
                                     <div style={{ padding: "10px" }} className="tw-w-1/2 tw-bg-[#5800FF] tw-h-[5vh] tw-rounded-[20px] tw-flex tw-justify-center tw-items-center tw-text-white">
                                         <Typography variant={"button"} style={{fontSize: 13}} component="p">
-                                            <b>Avg Points Bet: {avgBettingPoints}</b>
+                                            <b>{mobileView ? "Average:" : "Avg Points Bet:"} {avgBettingPoints}</b>
                                         </Typography>
                                     </div>
                                 </div>

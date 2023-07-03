@@ -13,7 +13,7 @@ const TopperCard = (props) => {
 			<CardActionArea style={{ backgroundSize: "contain", backgroundImage: `url(${bgImage})`, backgroundRepeat: "no-repeat" }}>
 				<CardContent className="tw-flex tw-text-white tw-items-center tw-justify-evenly sm:tw-h-[180px] tw-h-[100px]">
 					<div>
-						<img className="tw-w-[85px] tw-h-[85px] sm:tw-w-[150px] sm:tw-h-[150px]" src={"https://scores.iplt20.com/ipl/playerimages/Shubman%20Gill.png"} />
+						<img className="tw-w-[85px] tw-h-[85px] sm:tw-w-[150px] sm:tw-h-[150px]" src={image} />
 					</div>
 					<Typography variant={"button"} className="tw-flex tw-flex-col tw-justify-evenly" style={{fontSize: 15, height: "inherit"}} component="p">
 						<div className="tw-leading-normal">
