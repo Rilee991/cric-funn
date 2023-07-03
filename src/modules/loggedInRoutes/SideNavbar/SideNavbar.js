@@ -69,8 +69,8 @@ const SideNavbar = (props) => {
                                     {item.icon}
                                 </ListItemIcon>
                                 <ListItemText className={item.disabled ? "tw-text-gray-300" : "tw-text-white"}>
-                                    <p className={item.subText && item.disabled ? "tw-leading-4" : ""}>{item.name}</p>
-                                    {item.disabled ? <p className="tw-text-sm tw-leading-4 tw-text-gray-400">
+                                    <p className={item.subText ? "tw-leading-4" : ""}>{item.name}</p>
+                                    {item.subText ? <p className="tw-text-sm tw-leading-4 tw-text-gray-400">
                                         {item.subText}
                                     </p> : null }
                                 </ListItemText>

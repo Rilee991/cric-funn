@@ -38,6 +38,7 @@ const LoggedInRoutes = () => {
     const navItems = [{
         name: `@${username}`,
         to: "/",
+        subText: `${points} Points`,
         icon: <LocalPlay />,
         component: <Home handleSelectedNav={handleSelectedNav} />
     }, {
@@ -54,7 +55,7 @@ const LoggedInRoutes = () => {
         name: "Global Stats",
         to: "/global-stats",
         icon: <PublicOutlined />,
-        subText: "Enabling on 1st May",
+        subText: isGlobalStatsDisabled ? "Enabling on 1st May" : "",
         disabled: isGlobalStatsDisabled,
         component: <GlobalStats />
     }, {
