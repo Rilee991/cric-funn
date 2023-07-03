@@ -1,10 +1,13 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography } from '@material-ui/core';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography, Dialog, DialogTitle, 
+    DialogContent, DialogContentText, IconButton } from '@material-ui/core';
 import moment from 'moment';
-import { Divider, Modal, Tag } from 'antd';
+import { Divider, Tag } from 'antd';
+import { Close } from '@material-ui/icons';
 
 import { ContextProvider } from '../../../global/Context';
 import { teamProps } from '../../../config';
+import './Modal.css';
 
 const ViewBetsDialog = (props) => {
     const { matchDetails, open, handleClose, isAdmin } = props;
@@ -35,21 +38,21 @@ const ViewBetsDialog = (props) => {
         const date = (time instanceof Date) ? time : new Date(time);
         const formatter = new Intl.RelativeTimeFormat('en');
         const ranges = {
-            years: 3600 * 24 * 365,
-            months: 3600 * 24 * 30,
-            weeks: 3600 * 24 * 7,
-            days: 3600 * 24,
-            hours: 3600,
-            minutes: 60,
-            seconds: 1
+            years: { offset: 3600 * 24 * 365, shortname: "y" },
+            months: { offset: 3600 * 24 * 30, shortname: "mo" },
+            weeks: { offset: 3600 * 24 * 7, shortname: "w" },
+            days: { offset: 3600 * 24, shortname: "d" },
+            hours: { offset: 3600, shortname: "h" },
+            minutes: { offset: 60, shortname: "m" },
+            seconds: { offset: 1, shortname: "s" }
         };
         const secondsElapsed = (date.getTime() - Date.now()) / 1000;
         
         for (let key in ranges) {
-            if (ranges[key] < Math.abs(secondsElapsed)) {
-                const delta = secondsElapsed / ranges[key];
+            if (ranges[key]["offset"] < Math.abs(secondsElapsed)) {
+                const delta = secondsElapsed / ranges[key]["offset"];
                 const res = formatter.format(Math.round(delta), key).split(" ");
-                return res[0]+res[1][0]+res[1][1];
+                return res[0]+ranges[key]["shortname"];
             }
         }
 
@@ -64,7 +67,7 @@ const ViewBetsDialog = (props) => {
 
     const getViewBetsTable = () => {   
         return (
-            <TableContainer component={Paper} className="tw-rounded-[30px] tw-mt-2 tw-overflow-scroll">
+            <TableContainer component={Paper} className="tw-rounded-[30px] tw-overflow-scroll">
                 <Table aria-label="caption table">
                     <caption className="tw-p-2">
                         <Typography variant="overline">
@@ -95,10 +98,26 @@ const ViewBetsDialog = (props) => {
     }
 
     return (
-        <Modal style={{ top: 20 }} open={open} title={`${team1Abbreviation} v/s ${team2Abbreviation}`} onCancel={() => closeDialog()} centered footer={null}>
-            <Divider className="tw-m-0 tw-bg-black tw-h-[1px]" />
-            {getViewBetsTable()}
-        </Modal>
+        <Dialog open={open} onClose={closeDialog} maxWidth="xl">
+            <DialogTitle className="tw-p-2" style={{ borderRadius: "40px", background: "linear-gradient(353deg, black, #0c4371)" }}>
+                <Typography variant="button" style={{fontSize: 14 }} className="tw-flex tw-justify-between tw-text-white">
+                    <b>{team1Abbreviation} v/s {team2Abbreviation}</b>
+                    <IconButton
+                        aria-label="toggle password visibility"
+                        onClick={closeDialog}
+                        className="tw-p-0"
+                    >
+                        <Close className="tw-text-white" />
+                    </IconButton>
+                </Typography>
+            </DialogTitle>
+            <Divider className="tw-m-0 tw-bg-white tw-h-[1px]" />
+            <DialogContent style={{ borderRadius: "40px", background: "transparent", padding: 0}}>
+                <DialogContentText id="alert-dialog-description">
+                    { getViewBetsTable() }
+                </DialogContentText>
+            </DialogContent>
+        </Dialog>
     );
 }
 
