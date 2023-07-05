@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Switch, Route } from 'react-router-dom';
 import { BubbleChartOutlined, PublicOutlined, StarBorderOutlined, TimelineOutlined, VpnKey, WhatshotOutlined, 
-    ControlCamera, LocalPlay
+    ControlCamera, LocalPlay, AlternateEmail
 } from '@material-ui/icons';
 import { find } from 'lodash';
 import moment from 'moment';
@@ -36,7 +36,11 @@ const LoggedInRoutes = () => {
     const isGlobalStatsDisabled = !isAdmin && moment().isBefore(moment("01-05-2024"));
 
     const navItems = [{
-        name: `@${username}`,
+        name: <div className="tw-flex tw-items-center">
+            <div>
+                <AlternateEmail className="tw-w-1/5"/>{`${username}`}
+            </div>
+        </div>,
         to: "/",
         subText: `${points} Points`,
         icon: <LocalPlay />,
