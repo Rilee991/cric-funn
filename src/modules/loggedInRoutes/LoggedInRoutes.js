@@ -69,7 +69,7 @@ const LoggedInRoutes = () => {
         component: <PointsTable />
     }, {
         name: "Hall of Fame",
-        to: "/legends",
+        to: "/hall-of-fame",
         icon: <WhatshotOutlined />,
         component: <Legends />
     }, {
@@ -124,7 +124,7 @@ const LoggedInRoutes = () => {
                         <Route exact path="/points-table">
                             <PointsTable />
                         </Route>
-                        <Route exact path="/legends">
+                        <Route exact path="/hall-of-fame">
                             <Legends />
                         </Route>
                         {isAdmin && <Route exact path="/control-panel">
