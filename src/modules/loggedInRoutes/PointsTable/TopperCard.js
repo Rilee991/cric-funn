@@ -43,7 +43,7 @@ const TopperCard = (props) => {
 										<b><i>Win %</i></b>
 									</div>
 									<div>
-										<b><i>{(round(won/(won+lost),4).toFixed(4)*100).toFixed(2)}</i></b>
+										<b><i>{(round(won/((won+lost) || 1),4).toFixed(4)*100).toFixed(2)}</i></b>
 									</div>
 								</div>
 								<div className="tw-flex tw-flex-col tw-items-center">
