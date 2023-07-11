@@ -502,7 +502,7 @@ const Context = (props) => {
     const resetUserDetails = async (username) => {
         try {
             await updateUserByUsername(username, {
-                bets: DEFAULT_USER_PARAMS.STARTING_BETS, points: DEFAULT_USER_PARAMS.STARTING_POINTS,
+                bets: DEFAULT_USER_PARAMS.STARTING_BETS, points: DEFAULT_USER_PARAMS.STARTING_POINTS, isOut: false,
                 updatedBy: `resetUserDetails_${loggedInUserDetails.username}`, updatedAt: getFirebaseCurrentTime()
             });
 
@@ -510,7 +510,8 @@ const Context = (props) => {
                 setLoggedInUserDetails({
                     ...loggedInUserDetails,
                     bets: DEFAULT_USER_PARAMS.STARTING_BETS,
-                    points: DEFAULT_USER_PARAMS.STARTING_POINTS
+                    points: DEFAULT_USER_PARAMS.STARTING_POINTS,
+                    isOut: false,
                 });
             }
         } catch (error) {
@@ -711,7 +712,7 @@ const Context = (props) => {
                 if(isEmpty(match.matchWinner) && moment(match.dateTimeGMT).add(winnerEtaParams.value, winnerEtaParams.unit) <= moment()) {
                     const matchDetails = await getMatchDetailsById(match.id);
 
-                    if(!isEmpty(matchDetails.matchWinner)) {
+                    if(!isEmpty(matchDetails?.matchWinner)) {
                         matchPromises.push(updateMatchById(match.id, {
                             matchWinner: matchDetails.matchWinner,
                             status: matchDetails.status,
