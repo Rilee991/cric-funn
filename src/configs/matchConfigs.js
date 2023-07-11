@@ -149,3 +149,5 @@ export const matchPostersMapping = [{
 }, {
     "GT-MI":"https://cdorg.b-cdn.net/wp-content/uploads/2022/03/IPL-Match-51-GT-vs-MI-768x360.jpg"
 }];
+
+export const DEFAULT_TEAM_LOGO = "https://www.pngall.com/wp-content/uploads/2016/05/Best-Quality-Download-PNG.png";

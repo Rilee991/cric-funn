@@ -110,6 +110,36 @@ const teamProps = {
         color: "#850000",
         abbr: "RCB",
         logo: rcbLogo
+    },
+    "Texas Super Kings": {
+        color: "#c5a804",
+        abbr: "TSK",
+        logo: "https://sportavideos.blob.core.windows.net/splcms2/TeamsUpload/6/Team_logo.png"//"https://i.namu.wiki/i/SbhAKGWX3sOO0FXrrFFvFvLeAfLQ3nqJ6ScQH2slPhiLK-iuXhEugZ49gwHD-c59Xiv_IMeZHg8koJ1nBD9LYxG3QwXCLTT7e6qJirPxl5K0ZptruIHmUmTJYj8G0OHWh3Jigmx3WIUvBhtg-zDFQ5H-y5DKDGAhq8usZhOVaTI.webp"
+    },
+    "Los Angeles Knight Riders": {
+        color: "#320955",
+        abbr: "LAKR",
+        logo: "https://sportavideos.blob.core.windows.net/splcms2/TeamsUpload/9/Team_logo.png"//"https://i.namu.wiki/i/SbhAKGWX3sOO0FXrrFFvFiqMKDVXRfLt72OVepYi-mnqe0Hlc1VtuAgYvHXMYBrRkYCt5c1BubK_eeC_zmA_S8Q3lJxpDqYMhmrOfj2zQQYYZd04bnkPtbVzd2QLnhVFlEHXu4clfRg3D7vqXwr6O9IxNQUdehMJe6OmBObvaIc.webp"
+    },
+    "Mi New York": {
+        color: "#0a24be",
+        abbr: "MI NY",
+        logo: "https://sportavideos.blob.core.windows.net/splcms2/TeamsUpload/8/Team_logo.png"//"https://i.namu.wiki/i/SbhAKGWX3sOO0FXrrFFvFrDTj7uv0MP4D4yJxVmBLXrh6-hHpy91p7nIO8X2TC4OXY10R7Fy3OFBQOSeFq6_jMGvqAzFvrAD9ZWNL2K8yST80nLbpac2k3BbGItTjdmITUsTm7mJhCAzunAm7UxpJFzTNMhjn4JQQFDKQGu0Rgg.webp"
+    },
+    "San Francisco Unicorns": {
+        color: "#c07f08",
+        abbr: "SF",
+        logo: "https://sportavideos.blob.core.windows.net/splcms2/TeamsUpload/4/Team_logo.png"//"https://i.namu.wiki/i/SbhAKGWX3sOO0FXrrFFvFigRIb3R97M4a_t1mQvC13aF9lCLk_6eBC8riyS9wF7k4xfW2kYucup0Y0OG-ohwG3f9mgr2Rwr1z6k77nhyAI_yzD9FrPCAQ-7ieShvrvtQ5L1u-Jz_GnFtV5sC0IjIvevO3bsW7jzhSKBkkLs7RA4.webp"
+    },
+    "Seattle Orcas": {
+        color: "green",
+        abbr: "SEA",
+        logo: "https://sportavideos.blob.core.windows.net/splcms2/TeamsUpload/5/Team_logo.png"//"https://i.namu.wiki/i/SbhAKGWX3sOO0FXrrFFvFntgRcX-ALHMvPwPPTeHuHTNgq0fRC1hyG3C9g0juAtbAv4DHgA_Bce_jJG19--Wi-mR6xnUuZVEuVSoJ0wmpT4_MUoebqjq9xXqf16yCzdJIGdgKIY0G1Y9QWgei7mPeqskaX08n65oQbiB0cgTzKQ.webp"
+    },
+    "Washington Freedom": {
+        color: "darkblue",
+        abbr: "WSH",
+        logo: "https://sportavideos.blob.core.windows.net/splcms2/TeamsUpload/7/Team_logo.png"//"https://i.namu.wiki/i/SbhAKGWX3sOO0FXrrFFvFtEYCLq5ml4TfAxICanGJJBK30hn8Hve-f-dtO4CDu_ubHR21U_mG0KkaU33euezUk_oUVIKiUEuScePgri8nxsCu8JR4xqqg-MXnNrE2KRJFsvKY-_25CS8u_bH_G8uLfWFl9C7zJscMr8gLyJB4gY.webp"
     }
 }
 

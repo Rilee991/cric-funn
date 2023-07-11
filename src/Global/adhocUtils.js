@@ -1,7 +1,8 @@
 import { ceil } from "lodash";
 import moment from "moment";
 
-import { matchPostersMapping } from "../configs/matchConfigs";
+import { DEFAULT_TEAM_LOGO, matchPostersMapping } from "../configs/matchConfigs";
+import { teamProps } from "../config";
 
 const firebase = require("firebase");
 
@@ -39,15 +40,30 @@ export const getDefaultMatchOdds = (team1, team2) => {
     return [{ name: team1, price: 1 }, { name: team2, price: 1 }];
 }
 
+export const getTeamAbbr = (name) => {
+    const words = name.split(" ");
+
+    if(words.length > 1)    return words.map(word => word[0]).join("").toUpperCase();
+    return words[0].slice(0,3).toUpperCase();
+}
+
 export const formatMatch = (match) => {
     let names = match.name.split(" vs");
     const team1 = names[0];
-    const team2 = names[1].split(", ")[0].slice(1); 
+    const team2 = names[1].split(", ")[0].slice(1);
 
-    if(match.teamInfo && match.teamInfo[0].name != team1) {
-        const temp = match.teamInfo[0];
-        match.teamInfo[0] = match.teamInfo[1];
-        match.teamInfo[1] = temp;
+    if(match.teamInfo) {
+        if(match.teamInfo[0].name != team1) {
+            const temp = match.teamInfo[0];
+            match.teamInfo[0] = match.teamInfo[1];
+            match.teamInfo[1] = temp;
+        }
+    } else {
+        match.teamInfo = [{
+            name: team1, shortname: teamProps[team1].abbr || getTeamAbbr(team1), img: teamProps[team1].logo || DEFAULT_TEAM_LOGO
+        }, {
+            name: team2, shortname: teamProps[team2].abbr || getTeamAbbr(team2), img: teamProps[team2].logo || DEFAULT_TEAM_LOGO
+        }];
     }
 
     if(match.teams && match.teams[0] != team1) {
