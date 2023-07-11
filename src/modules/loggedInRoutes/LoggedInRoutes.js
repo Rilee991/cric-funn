@@ -85,7 +85,7 @@ const LoggedInRoutes = () => {
     }].map((item, idx) => ({ ...item, id: idx+1 }));
 
     return (
-        <div className="tw-flex tw-flex-col tw-bg-black">
+        <div className="tw-flex tw-flex-col tw-bg-[#8393a0]">
             <div>
                 <Header totalNotifs={notifications.length} clearNotifications={clearNotifications} setIsNavOpen={setIsNavOpen} setIsNotificationsOpen={setIsNotificationsOpen} />
             </div>
