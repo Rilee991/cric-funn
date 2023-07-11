@@ -85,7 +85,7 @@ const LoggedInRoutes = () => {
     }].map((item, idx) => ({ ...item, id: idx+1 }));
 
     return (
-        <div className="tw-flex tw-flex-col">
+        <div className="tw-flex tw-flex-col tw-bg-black">
             <div>
                 <Header totalNotifs={notifications.length} clearNotifications={clearNotifications} setIsNavOpen={setIsNavOpen} setIsNotificationsOpen={setIsNotificationsOpen} />
             </div>
@@ -107,7 +107,7 @@ const LoggedInRoutes = () => {
                         notifications={notifications}
                     />
                 </div>
-                <div className={`tw-pt-16 tw-py-6 md:tw-px-14 tw-w-full`}>
+                <div className={`tw-pt-16 tw-py-6 md:tw-px-14 tw-w-full tw-min-h-screen`}>
                     <Switch>
                         <Route exact path="/">
                             <Home handleSelectedNav={handleSelectedNav} />
