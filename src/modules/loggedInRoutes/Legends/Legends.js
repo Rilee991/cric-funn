@@ -90,7 +90,7 @@ const Legends = () => {
                             backgroundImage: `url(${legend.bgImage})`, 
                             backgroundSize: "cover", backgroundPosition: "center", backgroundColor: legend.bgColor, 
                             backgroundBlendMode: "darken", backgroundRepeat: "no-repeat" }}
-                        contentArrowStyle={{ borderRight: '7px solid  rgb(33, 150, 243)' }}
+                        contentArrowStyle={{ borderRight: `7px solid  ${legend.bgColor}` }}
                         iconStyle={{ background: legend.bgColor, color: '#fff' }}
                         icon={<AcUnit />}
                     >
