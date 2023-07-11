@@ -67,7 +67,7 @@ const ViewBetsDialog = (props) => {
 
     const getViewBetsTable = () => {   
         return (
-            <TableContainer component={Paper} className="tw-rounded-[30px] tw-overflow-scroll">
+            <TableContainer component={Paper} className="tw-rounded-bl-[30px] tw-rounded-br-[30px] tw-overflow-scroll">
                 <Table aria-label="caption table">
                     <caption className="tw-p-2">
                         <Typography variant="overline">
@@ -99,7 +99,7 @@ const ViewBetsDialog = (props) => {
 
     return (
         <Dialog open={open} onClose={closeDialog} maxWidth="xl">
-            <DialogTitle className="tw-p-2" style={{ borderRadius: "40px", background: "linear-gradient(353deg, black, #0c4371)" }}>
+            <DialogTitle className="tw-p-2" style={{ borderRadius: "40px 40px 0px 0px", background: "linear-gradient(353deg, black, #0c4371)" }}>
                 <Typography variant="button" style={{fontSize: 14 }} className="tw-flex tw-justify-between tw-text-white">
                     <b>{team1Abbreviation} v/s {team2Abbreviation}</b>
                     <IconButton
@@ -112,7 +112,7 @@ const ViewBetsDialog = (props) => {
                 </Typography>
             </DialogTitle>
             <Divider className="tw-m-0 tw-bg-white tw-h-[1px]" />
-            <DialogContent style={{ borderRadius: "40px", background: "transparent", padding: 0}}>
+            <DialogContent style={{ borderRadius: "0px", background: "transparent", padding: 0}}>
                 <DialogContentText id="alert-dialog-description">
                     { getViewBetsTable() }
                 </DialogContentText>
