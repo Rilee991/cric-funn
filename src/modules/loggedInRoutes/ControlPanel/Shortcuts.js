@@ -1,7 +1,7 @@
 import React from 'react';
 import { Typography, Card, CardActionArea, CardContent, Divider, Button, CardActions } from '@material-ui/core';
 
-import { syncDbWithNewMatches } from '../../../apis/cricapiController';
+import { syncDbWithNewMatches, saveMatchesToDb } from '../../../apis/cricapiController';
 import { dumpUsers } from '../../../apis/userController';
 
 const Shortcuts = (props) => {
@@ -16,7 +16,7 @@ const Shortcuts = (props) => {
             setSeverity("success");
         } catch (e) {
             setSeverity("error");
-            setMessage(e);
+            setMessage(e.message);
         }
         setLoading(false);
     }
@@ -36,6 +36,20 @@ const Shortcuts = (props) => {
         setLoading(false);
     }
 
+    const cascadeNewSeries = async () => {
+        setTip("Cascading new matches...");
+        setLoading(true);
+        try {
+            await saveMatchesToDb();
+            setMessage("Matches cascaded successfully!");
+            setSeverity("success");
+        } catch (e) {
+            setSeverity("error");
+            setMessage(e.message);
+        }
+        setLoading(false);
+    }
+
     return (
         <Card style={{ boxShadow: "5px 5px 20px" }} className="tw-mt-2 tw-mb-10 xl:tw-w-[70%] md:tw-w-[90%] tw-rounded-[40px]">
             <CardActionArea style={{ background: "linear-gradient(44deg, rgb(37, 12, 81), rgb(96, 83, 23))" }}>
@@ -45,8 +59,9 @@ const Shortcuts = (props) => {
                     </Typography>
                     <Divider className="tw-bg-white tw-w-4/5" />
                 </CardContent>
-                <CardActions className="tw-flex tw-justify-center">
+                <CardActions className="tw-flex tw-flex-col sm:tw-flex-row tw-justify-center tw-gap-2">
                     <Button variant="contained" color="primary" onClick={syncMatches}>Sync new matches</Button>
+                    <Button variant="contained" className="tw-bg-cyan-700 tw-text-white" onClick={cascadeNewSeries}>Cascade new series</Button>
                     <Button variant="contained" className="tw-bg-orange-700 tw-text-white" onClick={dumpAndReset}>Dump and reset users</Button>
                 </CardActions>
             </CardActionArea>
