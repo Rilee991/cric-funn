@@ -2,8 +2,7 @@ import { formatMatch } from "../global/adhocUtils";
 import { clearTable, createMatch, getMatchById } from "./matchController";
 
 const API_KEY = "e62a5cb2-1135-40ee-9a7b-99d14472d7ee";
-const SERIES_ID = "81b588f0-afb5-49a6-99e5-15ea1ac127a9"; //"c75f8952-74d4-416f-b7b4-7da4b4e3ae6e";
-
+const SERIES_ID = "951e7413-7d28-4c91-8822-4a5135091aab";
 export const getMatchDetailsById = async (id) => {
     try {
         const url = `https://api.cricapi.com/v1/match_info?apikey=${API_KEY}&offset=0&id=${id}`;
