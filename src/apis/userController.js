@@ -1,5 +1,6 @@
 import { db } from "../config";
 import { USER_COLLECTION } from "../global/enums";
+import { DEFAULT_USER_PARAMS } from '../configs/userConfigs';
 
 export const getUserByUsername = async (username) => {
     const user = await db.collection(USER_COLLECTION).doc(username).get();
@@ -34,4 +35,18 @@ export const getUsers = async () => {
     const users = await db.collection(USER_COLLECTION).get();
 
     return users;
+}
+
+export const dumpUsers = async () => {
+    const users = await db.collection(USER_COLLECTION).get();
+    const dumpTableName = `users_${new Date().getFullYear()}_ipl_dump`;
+
+    for(const doc of users.docs) {
+        const user = doc.data();
+
+        await db.collection(dumpTableName).doc(user.username).set(user);
+        await db.collection(USER_COLLECTION).doc(doc.id).update({ bets: DEFAULT_USER_PARAMS.STARTING_BETS,
+            points: DEFAULT_USER_PARAMS.STARTING_POINTS, updatedAt: new Date(), updatedBy: "dumpUsers"
+        });
+    }
 }

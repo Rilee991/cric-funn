@@ -2,6 +2,7 @@ import React from 'react';
 import { Typography, Card, CardActionArea, CardContent, Divider, Button, CardActions } from '@material-ui/core';
 
 import { syncDbWithNewMatches } from '../../../apis/cricapiController';
+import { dumpUsers } from '../../../apis/userController';
 
 const Shortcuts = (props) => {
     const { setLoading, setMessage, setTip, setSeverity } = props;
@@ -20,6 +21,21 @@ const Shortcuts = (props) => {
         setLoading(false);
     }
 
+    const dumpAndReset = async () => {
+        setTip("Dumping users...");
+        setLoading(true);
+        try {
+            await dumpUsers();
+            setTip("Resetting users...");
+            setMessage("Users dumped successfully!");
+            setSeverity("success");
+        } catch (e) {
+            setSeverity("error");
+            setMessage(e.message);
+        }
+        setLoading(false);
+    }
+
     return (
         <Card style={{ boxShadow: "5px 5px 20px" }} className="tw-mt-2 tw-mb-10 xl:tw-w-[70%] md:tw-w-[90%] tw-rounded-[40px]">
             <CardActionArea style={{ background: "linear-gradient(44deg, rgb(37, 12, 81), rgb(96, 83, 23))" }}>
@@ -31,6 +47,7 @@ const Shortcuts = (props) => {
                 </CardContent>
                 <CardActions className="tw-flex tw-justify-center">
                     <Button variant="contained" color="primary" onClick={syncMatches}>Sync new matches</Button>
+                    <Button variant="contained" className="tw-bg-orange-700 tw-text-white" onClick={dumpAndReset}>Dump and reset users</Button>
                 </CardActions>
             </CardActionArea>
         </Card>
