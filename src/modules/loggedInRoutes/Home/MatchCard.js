@@ -154,12 +154,12 @@ const MatchCard = (props) => {
 				</CardActionArea>
 
 				<CardActions className="tw-flex tw-justify-center tw-px-4 tw-pt-0">
-					<Button size="small" className="tw-w-1/2 tw-rounded-[40px]" style={{ background: bettingOn ? "linear-gradient(44deg, #250c51, #605317)" : 'grey', color: "white" }} variant="contained" disabled={bettingOn ? false : true} onClick={() => handleOnClickLetsBet()}>
+					<Button size="small" className="tw-w-1/2 tw-rounded-[40px]" style={{ background: bettingOn ? "linear-gradient(0deg, #1b004a, #50045a)" : 'grey', color: "white" }} variant="contained" disabled={bettingOn ? false : true} onClick={() => handleOnClickLetsBet()}>
 						<Typography variant="overline">
 							{"Fire Up"} <FlashOnOutlined />
 						</Typography>
 					</Button>
-					<Button size="small" className="tw-w-1/2 tw-rounded-[40px]" style={{ background: canViewBets ? "linear-gradient(44deg, #250c51, #605317)" : 'grey', color: "white" }} variant="contained" disabled={canViewBets ? false : true} onClick={() => handleOnClickViewBets(matchId)}>
+					<Button size="small" className="tw-w-1/2 tw-rounded-[40px]" style={{ background: canViewBets ? "linear-gradient(0deg, #1b004a, #50045a)" : 'grey', color: "white" }} variant="contained" disabled={canViewBets ? false : true} onClick={() => handleOnClickViewBets(matchId)}>
 						<Typography variant="overline">
 							{mobileView ? "View" : "View Bets"} <VisibilityOutlined />
 						</Typography>
