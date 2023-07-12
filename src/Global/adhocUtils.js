@@ -23,7 +23,7 @@ export const getWinningAmount = (amount, odds = 1) => {
 }
 
 export const getBetStartTime = (matchTime) => {
-    return moment(matchTime).subtract(29, "hours");
+    return moment(matchTime).subtract(24, "hours");
 }
 
 export const getBetEndTime = (matchTime) => {
