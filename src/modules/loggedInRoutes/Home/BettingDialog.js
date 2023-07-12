@@ -1,10 +1,10 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { makeStyles, TextField, MenuItem, Button, Typography, Select, withStyles } from '@material-ui/core';
+import { makeStyles, TextField, MenuItem, Button, Typography, Select, withStyles, Dialog, DialogTitle, IconButton, DialogContent, DialogContentText } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
-import { CheckCircleOutline, CheckCircle } from '@material-ui/icons';
+import { CheckCircleOutline, CheckCircle, Close } from '@material-ui/icons';
 import { isEmpty } from 'lodash';
 import moment from 'moment';
-import { Divider, Modal, Tag } from 'antd';
+import { Divider, Tag } from 'antd';
 
 import { ContextProvider } from '../../../global/Context';
 import { getFirebaseCurrentTime } from '../../../global/adhocUtils';
@@ -112,7 +112,7 @@ const BettingDialog = (props) => {
     const getBettingContent = () => {
         return (
             <div>
-                <form>
+                <form className="tw-mt-1">
                     <Select
                         fullWidth
                         defaultValue="placeholder"
@@ -140,14 +140,14 @@ const BettingDialog = (props) => {
                         className="tw-mb-3"
                     />
                     {error ? <Typography variant="body1" color="error">*{error}</Typography>: ""}
-                    <Button fullWidth size="small" className="tw-w-full tw-rounded-[40px] tw-mb-3" style={{ background: !disabledSave ? "linear-gradient(44deg, #250c51, #605317)" : 'grey', color: "white" }} variant="contained" disabled={disabledSave} onClick={() => betInTheMatch()}>
+                    <Button fullWidth size="small" className="tw-w-full tw-rounded-[40px] tw-mb-3" style={{ background: !disabledSave ? "linear-gradient(0deg, #1b004a, #50045a)" : 'grey', color: "white" }} variant="contained" disabled={disabledSave} onClick={() => betInTheMatch()}>
                         <Typography variant="overline" style={{ fontSize: 15, fontWeight: 500}}>
-                            {"Save"}
+                            {"Go For Glory!"}
                         </Typography>
                     </Button>
                     <Alert severity="warning" variant="filled" className="tw-rounded-[40px] tw-flex tw-justify-center" classes={{ icon: classes.customIcon }}>
                         <Typography variant="body">
-                            <b>{allInEnabled ? "Warning! You've opted for Double OR Nothing! If you loose, it'll be over. " : ""}Once bet cannot be edited.</b>
+                            <b>{allInEnabled ? "Warning! You're going ALL IN! Shout victory is mine! " : ""}Once bet cannot be edited.</b>
                         </Typography>
                     </Alert>
                 </form>
@@ -156,26 +156,42 @@ const BettingDialog = (props) => {
     }
 
     return (
-        <Modal style={{ top: 20 }} open={open} title={`${team1Abbreviation} v/s ${team2Abbreviation}`} onCancel={() => closeDialog()} centered footer={null}>
-            <div className="tw-flex tw-justify-between tw-mb-2">
-                <div>
-                    <Tag color="geekblue" className="tw-rounded-3xl">
-                        <Typography variant="button" style={{fontSize: 11}}>
-                            <b>Pts Left: {points - selectedPoints}</b><br/>
-                        </Typography>
-                    </Tag>
-                </div>
-                <div className="tw-cursor-pointer" onClick={() => onClickAllIn()}>
-                    <Tag color={allInEnabled ? "green-inverse" : "green"} className="tw-rounded-3xl">
-                        <Typography variant="button" style={{fontSize: 11}}>
-                            <b className="tw-flex tw-items-center tw-justify-between">Double Or Nothing {allInEnabled ? <CheckCircle className="tw-h-5" /> : <CheckCircleOutline className="tw-h-5" />} </b>
-                        </Typography>
-                    </Tag>
-                </div>
-            </div>
-            <Divider className="tw-m-0 tw-bg-black tw-h-[1px] tw-mb-2" />
-            {getBettingContent()}
-        </Modal>
+        <Dialog open={open} onClose={closeDialog} maxWidth="xl">
+            <DialogTitle className="tw-p-2" style={{ borderRadius: "40px 40px 0px 0px", background: "linear-gradient(353deg, black, #0c4371)" }}>
+                <Typography variant="button" style={{fontSize: 14 }} className="tw-flex tw-justify-between tw-text-white">
+                    <b>{team1Abbreviation} v/s {team2Abbreviation}</b>
+                    <IconButton
+                        aria-label="toggle password visibility"
+                        onClick={closeDialog}
+                        className="tw-p-0"
+                    >
+                        <Close className="tw-text-white" />
+                    </IconButton>
+                </Typography>
+            </DialogTitle>
+            <div className="tw-flex tw-justify-between tw-p-1" style={{ background: "linear-gradient(180deg, black, #199309)" }}>
+                 <div>
+                     <Tag color={points - selectedPoints < 500 ? "red-inverse" : "geekblue"} className="tw-rounded-3xl">
+                         <Typography variant="button" style={{fontSize: 11}}>
+                             <b>Pts Left: {points - selectedPoints}</b><br/>
+                         </Typography>
+                     </Tag>
+                 </div>
+                 <div className="tw-cursor-pointer" onClick={() => onClickAllIn()}>
+                     <Tag color={allInEnabled ? "green-inverse" : "green"} className="tw-rounded-3xl">
+                         <Typography variant="button" style={{fontSize: 12}}>
+                             <b className="tw-flex tw-items-center tw-justify-between">Go All In {allInEnabled ? <CheckCircle className="tw-h-5" /> : <CheckCircleOutline className="tw-h-5" />} </b>
+                         </Typography>
+                     </Tag>
+                 </div>
+             </div>
+            <Divider className="tw-m-0 tw-bg-white tw-h-[1px]" />
+            <DialogContent style={{ borderRadius: "0px 0px 40px 40px", padding: "0px 8px 0px 8px", background: "#fff" }}>
+                <DialogContentText id="alert-dialog-description">
+                    { getBettingContent() }
+                </DialogContentText>
+            </DialogContent>
+        </Dialog>
     );
 }
 
