@@ -22,6 +22,9 @@ https://cric-funn.web.app
 1. Need to delete all unused resources
 2. Make a new cric-funn logo
 3. Make eslint for src folder
+11. Make modal for bday wishes
+12. Explore push-notifications
+13. Make Go for glory button fireup when selected all in.
 
 #### COMPLETED:
 4. Make a proper flow for syncing matches into db so won't have to do code change at the beginning of league
