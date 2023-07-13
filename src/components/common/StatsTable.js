@@ -100,8 +100,8 @@ const StatsTable = (props) => {
 							</TableRow>
 						</TableHead>
 
-						<TableBody>
-                            {data && data.length ? data.map((eachRow,idx) => (
+						{data && data.length ? <TableBody>
+                            {data.map((eachRow,idx) => (
                                 <StyledTableRow key={eachRow.player} style={{ background: getColor(idx+1) }}>
                                     {cols.map((colName,jdx) => (
                                         <> { jdx != cols.length-1 ? 
@@ -110,8 +110,14 @@ const StatsTable = (props) => {
                                         </>
                                     ))}
                                 </StyledTableRow>
-                            )) : "No players present."}
-						</TableBody>
+                            ))}
+						</TableBody> : 
+                            <Alert severity="error" variant="filled" className="tw-rounded-[40px] tw-w-full tw-flex tw-justify-center">
+                                <Typography variant="body">
+                                    <b>No players present.</b>
+                                </Typography>
+                            </Alert>
+                        }
 					</Table>
 				</TableContainer>
             </CardActionArea>
