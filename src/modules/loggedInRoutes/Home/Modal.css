@@ -1,4 +1,5 @@
 .MuiDialog-paperWidthXl {
     max-width: 1920px !important;
     background: transparent !important;
+    width: 500px !important;
 }
