@@ -66,13 +66,13 @@ const Legends = () => {
         
         return (
             <CardContent className="tw-pt-2 tw-flex tw-flex-col tw-items-center tw-justify-center tw-gap-3">
-                <div style={{ padding: "10px", border: "2px solid white" }} className="tw-bg-indigo-950 tw-h-[5vh] tw-rounded-[20px] tw-flex tw-justify-center tw-items-center tw-text-white">
+                <div style={{ border: "2px solid white" }} className="tw-bg-indigo-950 tw-h-[5vh] tw-rounded-[20px] tw-flex tw-justify-center tw-items-center tw-text-white">
                     <Typography className="tw-flex tw-items-center tw-justify-center" variant={"button"} style={{ fontSize: 13 }}>
                         <b><AlternateEmail className="tw-text-lg" /> {legendCard.title.split(", ")[0]}</b>
                     </Typography>
                 </div>
                 <img src={legendCard.poster} className={legendCard.isChampCard ? "tw-w-[300px] tw-min-h-[300px] tw-max-h-[300px] tw-rounded-[50%]" : "tw-w-full tw-min-h-[300px] tw-max-h-[300px]"}/>
-                <Typography className="tw-text-white tw-flex tw-flex-col tw-items-center tw-justify-center" variant={"button"} style={{fontSize: 18}} component="h2">
+                <Typography className="tw-text-white tw-text-center tw-flex tw-flex-col tw-items-center tw-justify-center" variant={"button"} style={{fontSize: 18}} component="h2">
                     <b>{legendCard.title.split(", ")[1]}</b>
                     <b>{"(" + legendCard.period + ")"}</b>
                 </Typography>
