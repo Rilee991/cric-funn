@@ -67,8 +67,8 @@ const Legends = () => {
         return (
             <CardContent className="tw-pt-2 tw-flex tw-flex-col tw-items-center tw-justify-center tw-gap-3">
                 <div style={{ border: "2px solid white" }} className="tw-bg-indigo-950 tw-h-[5vh] tw-rounded-[20px] tw-flex tw-justify-center tw-items-center tw-text-white">
-                    <Typography className="tw-flex tw-items-center tw-justify-center" variant={"button"} style={{ fontSize: 13 }}>
-                        <b><AlternateEmail className="tw-text-lg" /> {legendCard.title.split(", ")[0]}</b>
+                    <Typography className="tw-flex tw-items-center tw-justify-center tw-p-1" variant={"button"} style={{ fontSize: 13 }}>
+                        <b><AlternateEmail className="tw-text-lg -tw-mr-1" /> {legendCard.title.split(", ")[0]}</b>
                     </Typography>
                 </div>
                 <img src={legendCard.poster} className={legendCard.isChampCard ? "tw-w-[300px] tw-min-h-[300px] tw-max-h-[300px] tw-rounded-[50%]" : "tw-w-full tw-min-h-[300px] tw-max-h-[300px]"}/>
@@ -82,6 +82,9 @@ const Legends = () => {
 
     return (
         <div>
+            <div className="tw-flex tw-justify-center">
+                <img src="https://www.pngall.com/wp-content/uploads/2/Hall-of-Fame-PNG-Free-Download.png" width={300} height={170} />
+            </div>
             <VerticalTimeline lineColor="black">
                 {legends.map(legend => (
                     <VerticalTimelineElement
