@@ -29,6 +29,7 @@ if(firebase.apps.length) {
     app = firebase.initializeApp(firebaseConfig);
 }
 
+const firebaseNotifs = firebase.messaging(app);
 const db = firebase.firestore();
 const auth = firebase.auth();
 const storage = firebase.storage();
@@ -282,6 +283,7 @@ export {
     db, 
     auth,
     storage,
+    firebaseNotifs,
     iplMatches,
     themeColor,
     loaderHeight,
