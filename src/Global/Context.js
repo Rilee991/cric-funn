@@ -20,6 +20,9 @@ const Context = (props) => {
     const [loading, setLoading] = useState(true);
     const [mobileView, setMobileView] = useState(false);
     const [notifications, setNotifications] = useState([]);
+    const [width, setWidth] = useState(window.screen.width);
+    const [height, setHeight] = useState(window.screen.height);
+    const [scrollY, setScrollY] = useState(window.scrollY);
 
     const signUp = async (user) => {
         const { username, email, password } = user;
@@ -745,12 +748,16 @@ const Context = (props) => {
 
     const checkMobileView = () => {
         const setResponsiveness = () => {
+            setWidth(window.screen.width);
+            setHeight(window.screen.height);
+            setScrollY(window.scrollY);
             return window.innerWidth < 960 ? setMobileView(true) : setMobileView(false);
         }
       
         setResponsiveness();
       
         window.addEventListener("resize", () => setResponsiveness());
+        window.addEventListener("scroll", () => setResponsiveness());
     }
 
     useEffect(async () => {
@@ -782,7 +789,7 @@ const Context = (props) => {
 
     return (
         <ContextProvider.Provider
-            value={{ loggedInUserDetails, loading, mobileView, notifications, matches,
+            value={{ loggedInUserDetails, loading, mobileView, notifications, matches, width, height, scrollY,
                 signUp, signIn, sendResetPasswordEmail, resetPassword, logout, clearNotifications, betOnMatch, updateSeenBets,
                 viewBetsData, getPointsTableData, resetUserDetails, syncUserDetails, getTeamWiseStats, getAllUsersData
             }}
