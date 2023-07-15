@@ -1,5 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import moment from 'moment';
+import { Alert } from '@material-ui/lab';
+import { Typography } from '@material-ui/core';
 
 import { ContextProvider } from '../../../global/Context';
 import BetTimeDistChart from './BetTimeDistChart';
@@ -91,7 +93,11 @@ const MyStats = () => {
 
     return (
 		<div className="tw-flex tw-flex-col">
-            { timelineLoading ? <div>Loading Graph please wait...</div> : 
+            { timelineLoading ?  <Alert severity="info" variant="filled" className="tw-mt-2 tw-rounded-[40px] tw-w-full tw-flex tw-justify-center">
+                    <Typography variant="body">
+                        <b>Loading graph details.</b>
+                    </Typography>
+                </Alert> : 
                 <PointsTimelineCompare usersPointsTimeline={usersPointsTimelineData} /> 
             }
             {/* <BetTimeDistChart betTimeDist={betTimeDist} betTimePtsDist={betTimePtsDist} username={username} /> */}
