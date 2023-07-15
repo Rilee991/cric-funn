@@ -5,6 +5,7 @@ import { AppBar, CssBaseline, IconButton, Toolbar, makeStyles, Badge } from '@ma
 import { OfflineBolt, Reorder } from '@material-ui/icons';
 
 import cricFunnLogo from '../../../images/logo.png';
+import IOSSwitch from '../../../components/common/Switch';
 
 const drawerWidth = 240;
 
@@ -33,7 +34,9 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Header = (props) => {
-	const { setIsNavOpen, setIsNotificationsOpen, totalNotifs = 0, clearNotifications } = props;
+	const { setIsNavOpen, setIsNotificationsOpen, totalNotifs = 0, clearNotifications, isBday, toggleConfetti,
+		setToggleConfetti
+	} = props;
 	const classes = useStyles();
 
 	const handleDrawerToggle = () => {
@@ -59,13 +62,18 @@ const Header = (props) => {
 			<CssBaseline />
 			<AppBar position="fixed" className={`${classes.appBar} tw-z-[10000] tw-w-full`}>
 				<Toolbar className={"tw-flex tw-flex-row-reverse tw-justify-between"} style={{ "background": "linear-gradient(0deg, #1b004a, #50045a)"}}>
-					<div>
+					<div className="tw-flex tw-items-center tw-justify-center">
+						{isBday && 
+							<div className="tw-flex">
+								<IOSSwitch checked={toggleConfetti} onChange={() => setToggleConfetti(prev => !prev)} name="checkedB" />
+							</div>
+						}
 						<IconButton
 							color="inherit"
 							aria-label="open drawer"
 							edge="start"
 							onClick={handleNotificationsToggle}
-							className={`${classes.notificationButton} tw-m-0`}
+							className={`${classes.notificationButton} tw-m-0 tw-p-2`}
 						>
 							<Badge component="button" badgeContent={totalNotifs} classes={{ badge: classes.customBadge }}>
 								<OfflineBolt />
@@ -76,7 +84,7 @@ const Header = (props) => {
 							aria-label="open drawer"
 							edge="start"
 							onClick={handleDrawerToggle}
-							className={`${classes.menuButton} tw-m-0`}
+							className={`${classes.menuButton} tw-m-0 tw-p-2`}
 						>
 							<Reorder />
 						</IconButton>
