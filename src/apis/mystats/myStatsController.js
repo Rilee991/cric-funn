@@ -18,7 +18,7 @@ export const getPointsTimeLineComparison = async () => {
                     if(bet.isNoResult) {
                         points += parseInt(bet.selectedPoints);
                     } else {
-                        points += getWinningAmount(bet.selectedPoints, bet.odds[bet.selectedTeam]);
+                        points += getWinningAmount(bet.selectedPoints, bet.odds[bet.selectedTeam]) - parseInt(bet.selectedPoints);
                     }
                 } else {
                     points -= parseInt(bet.selectedPoints);
