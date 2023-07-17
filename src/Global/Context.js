@@ -766,7 +766,7 @@ const Context = (props) => {
         auth.onAuthStateChanged(async user => {
             if(user) {
                 const userSnap = await getUserByKey("email", user.email);
-                const { username, email, image, points, bets, isAdmin = false, isChampion = false, isOut = false } = userSnap.docs[0].data();
+                const { username, email, image, points, bets, isAdmin = false, isChampion = false, isOut = false, dob } = userSnap.docs[0].data();
                 const matches = await updateAndGetMatches();
                 const updatedDetails = await updateUserDetails(username, points, bets, matches);
                 setMatches(matches);
@@ -774,6 +774,7 @@ const Context = (props) => {
                     username,
                     email,
                     image,
+                    dob,
                     points: updatedDetails.latestPoints,
                     bets: updatedDetails.latestBets,
                     isAdmin,
