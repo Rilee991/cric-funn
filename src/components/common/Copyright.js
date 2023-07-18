@@ -12,7 +12,7 @@ const Copyright = (props) => {
                     <Link color="inherit" href="" variant="overline">
                         Cric-Funn
                     </Link>{' '}
-                    {"2021."}
+                    {`2021 - ${new Date().getFullYear()}`}
                 </Typography>
             </Grid>
             <Grid item>
