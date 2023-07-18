@@ -36,7 +36,7 @@ const StatsCard = (props) => {
     });
 
     last5ResultsString = last5ResultsString.slice(-5);
-    accuracy = round(winBets/(winBets+lostBets),2) * 100 || 0;
+    accuracy = (round(winBets/(winBets+lostBets),2) * 100).toFixed(0) || 0;
     avgBettingPoints = round(totalPointsBet/(totalBets || 1),2) || 0;
 
     const shareTitle = `*${upperCase(username)}'s Statistics*\n-------------------------`;
