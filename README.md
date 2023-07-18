@@ -22,7 +22,6 @@ https://cric-funn.web.app
 1. Need to delete all unused resources
 2. Make a new cric-funn logo
 3. Make eslint for src folder
-11. Make modal for bday wishes
 12. Explore push-notifications
 13. Make Go for glory button fireup when selected all in.
 
@@ -35,3 +34,4 @@ new logic - fetch matches from db and sync results to db on each refresh for onl
 8. Add legends page consisting of WM posters and Winners
 9. Fixing performance ui issues in navbar
 10. Modal not opening on mobile devices
+11. Make modal for bday wishes
