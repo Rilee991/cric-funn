@@ -5,18 +5,24 @@ import { BubbleChartOutlined, PublicOutlined, StarBorderOutlined, TimelineOutlin
 } from '@material-ui/icons';
 import { find } from 'lodash';
 import moment from 'moment';
+import Confetti from 'react-confetti';
 
 import NotFoundError from '../../components/common/NotFoundError';
 import { Header, SideNavbar, Notifications, Home, MyBets, MyStats, GlobalStats, PointsTable, ControlPanel, Legends } from './index';
 import { ContextProvider } from '../../global/Context';
+import BirthdayModal from './BirthdayModal/BirthdayModal';
 
 const LoggedInRoutes = () => {
     const contextConsumer = useContext(ContextProvider);
-    const { mobileView, logout, notifications = [], clearNotifications, loggedInUserDetails: { isAdmin, username, points } } = contextConsumer;
+    const { mobileView, logout, notifications = [], clearNotifications, width, height, scrollY, claimReward,
+        loggedInUserDetails: { isAdmin, username, points, dob = "18-07-3212", isRewardClaimed = true }
+    } = contextConsumer;
     const [isNavOpen, setIsNavOpen] = useState(false);
     const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
     const [navSelected, setNavSelected] = useState(1);
-
+    const [toggleConfetti, setToggleConfetti] = useState(true);
+    const [isBday, setIsBday] = useState(dob && dob.slice(0,5) == moment().format("DD-MM"));
+    const [openBdayModal, setOpenBdayModal] = useState(isBday);
 
     useEffect(() => {
         handleSelectedNav();
@@ -86,8 +92,12 @@ const LoggedInRoutes = () => {
 
     return (
         <div className="tw-flex tw-flex-col tw-bg-[#8393a0]">
+            {isBday && toggleConfetti && <Confetti width={width} height={height + scrollY} className="tw-z-[10000]" numberOfPieces={500} />}
+            {isBday && <BirthdayModal claimReward={claimReward} isRewardClaimed={isRewardClaimed} width={width} open={openBdayModal} closeDialog={() => setOpenBdayModal(false)} />}
             <div>
-                <Header totalNotifs={notifications.length} clearNotifications={clearNotifications} setIsNavOpen={setIsNavOpen} setIsNotificationsOpen={setIsNotificationsOpen} />
+                <Header totalNotifs={notifications.length} clearNotifications={clearNotifications} setToggleConfetti={setToggleConfetti}
+                    setIsNavOpen={setIsNavOpen} setIsNotificationsOpen={setIsNotificationsOpen} isBday={isBday} toggleConfetti={toggleConfetti}
+                />
             </div>
             <div className="tw-flex">
                 <div>
