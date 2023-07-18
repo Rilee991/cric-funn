@@ -40,7 +40,7 @@ const Context = (props) => {
             const points = DEFAULT_USER_PARAMS.STARTING_POINTS, image = DEFAULT_USER_PARAMS.PROFILE_PICTURE, bets = DEFAULT_USER_PARAMS.STARTING_BETS;
 
             await createUser(username, { username, email, password, image, points, bets, isDummyUser: true, 
-                isAdmin: false, isChampion: false
+                isAdmin: false, isChampion: false, dob: "", isRewardClaimed: false
             });
         } catch (error) {
             console.log(error);
@@ -53,9 +53,9 @@ const Context = (props) => {
         try {
             await auth.signInWithEmailAndPassword(email, password);
             const records = await getUserByKey("email", email);
-            const { username, image, points, bets = [], isAdmin = false, isChampion = false, isOut = false } = records.docs[0].data();
+            const { username, image, points, bets = [], isAdmin = false, isChampion = false, isOut = false, dob, isRewardClaimed = true } = records.docs[0].data();
 
-            setLoggedInUserDetails({ username, email, image, points, bets, isAdmin, isChampion, isOut });
+            setLoggedInUserDetails({ username, email, image, points, bets, isAdmin, isChampion, isOut, isRewardClaimed, dob });
         } catch (error) {
             console.log(error);
             throw new Error(error);
@@ -434,6 +434,16 @@ const Context = (props) => {
         }
     }
 
+    const claimReward = async (amount) => {
+        try {
+            await updateUserByUsername(loggedInUserDetails.username, { points: loggedInUserDetails.points + amount, isRewardClaimed: true });
+            setLoggedInUserDetails(prev => ({ ...prev, points: prev.points + amount, isRewardClaimed: true }));
+        } catch (error) {
+            console.log(error);
+            throw new Error(error);
+        }
+    }
+
     const getTeamWiseStats = async () => {
         let penalizedPts = 0, betsPenalized = 0, result = [];
         const { bets = [] } = loggedInUserDetails;
@@ -766,7 +776,9 @@ const Context = (props) => {
         auth.onAuthStateChanged(async user => {
             if(user) {
                 const userSnap = await getUserByKey("email", user.email);
-                const { username, email, image, points, bets, isAdmin = false, isChampion = false, isOut = false, dob } = userSnap.docs[0].data();
+                const { username, email, image, points, bets, isAdmin = false, isChampion = false, isOut = false, dob,
+                    isRewardClaimed = true
+                } = userSnap.docs[0].data();
                 const matches = await updateAndGetMatches();
                 const updatedDetails = await updateUserDetails(username, points, bets, matches);
                 setMatches(matches);
@@ -779,6 +791,7 @@ const Context = (props) => {
                     bets: updatedDetails.latestBets,
                     isAdmin,
                     isChampion,
+                    isRewardClaimed,
                     isOut: updatedDetails.latestIsOut
                 });
             } else {
@@ -792,7 +805,8 @@ const Context = (props) => {
         <ContextProvider.Provider
             value={{ loggedInUserDetails, loading, mobileView, notifications, matches, width, height, scrollY,
                 signUp, signIn, sendResetPasswordEmail, resetPassword, logout, clearNotifications, betOnMatch, updateSeenBets,
-                viewBetsData, getPointsTableData, resetUserDetails, syncUserDetails, getTeamWiseStats, getAllUsersData
+                viewBetsData, getPointsTableData, resetUserDetails, syncUserDetails, getTeamWiseStats, getAllUsersData,
+                claimReward
             }}
         >
             {props.children}
