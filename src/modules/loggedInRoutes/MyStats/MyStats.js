@@ -4,6 +4,7 @@ import { Alert } from '@material-ui/lab';
 import { Typography } from '@material-ui/core';
 
 import { ContextProvider } from '../../../global/Context';
+
 import BetTimeDistChart from './BetTimeDistChart';
 import StatsTable from '../../../components/common/StatsTable';
 import PointsTimelineCompare from './PointsTimelineCompare';

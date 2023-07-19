@@ -6,9 +6,10 @@ import MuiAlert from '@material-ui/lab/Alert';
 import { isEmpty } from 'lodash';
 import { Tag } from 'antd';
 
+import iplLogo from '../../../res/images/logo.png';
+
 import PageLoader from '../../../components/common/PageLoader';
 import { ContextProvider } from '../../../global/Context';
-import iplLogo from '../../../images/logo.png';
 import Credits from '../../../components/common/Credits';
 
 const useStyles = makeStyles((theme) => ({

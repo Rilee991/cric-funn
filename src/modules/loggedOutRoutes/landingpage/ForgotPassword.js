@@ -5,9 +5,10 @@ import { isEmpty } from 'lodash';
 import MuiAlert from '@material-ui/lab/Alert';
 import { Tag } from 'antd';
 
+import iplLogo from '../../../res/images/logo.png';
+
 import PageLoader from '../../../components/common/PageLoader';
 import { ContextProvider } from '../../../global/Context';
-import iplLogo from '../../../images/logo.png';
 
 const useStyles = makeStyles((theme) => ({
     form: {

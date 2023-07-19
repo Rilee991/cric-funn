@@ -1,5 +1,7 @@
 import React from 'react';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, Typography, Card, CardActionArea, CardContent, GridList, Collapse, Divider } from '@material-ui/core';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, Typography, Card, 
+    CardActionArea, CardContent, Divider 
+} from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 
 const StyledTableCell = withStyles((theme) => ({

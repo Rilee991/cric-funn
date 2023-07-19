@@ -4,7 +4,8 @@ import { Link } from 'react-router-dom';
 import { AppBar, CssBaseline, IconButton, Toolbar, makeStyles, Badge } from '@material-ui/core';
 import { OfflineBolt, Reorder } from '@material-ui/icons';
 
-import cricFunnLogo from '../../../images/logo.png';
+import cricFunnLogo from '../../../res/images/logo.png';
+
 import IOSSwitch from '../../../components/common/Switch';
 
 const drawerWidth = 240;

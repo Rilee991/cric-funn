@@ -3,7 +3,8 @@ import { Dialog, DialogContent, DialogContentText, Typography, Button, Snackbar 
 import { PlayCircleOutlineOutlined, PauseCircleOutline, Redeem } from '@material-ui/icons';
 import { Alert } from '@material-ui/lab';
 
-import birthdaySong from '../../../images/bdaysong.mp3';
+import birthdaySong from '../../../res/audios/bdaysong.mp3';
+
 import { DEFAULT_USER_PARAMS } from '../../../configs/userConfigs';
 
 const BirthdayModal = (props) => {

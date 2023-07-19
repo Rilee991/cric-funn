@@ -2,8 +2,6 @@ import React from 'react';
 import { Typography, Card, CardActionArea, CardContent } from '@material-ui/core';
 import { round } from 'lodash';
 
-import kkrLogo from '../../../images/papu.png';
-
 const TopperCard = (props) => {
 	const { topperDetails = {} } = props;
 	const { image, bets, won, lost, points, player, subText, bgImage } = topperDetails;

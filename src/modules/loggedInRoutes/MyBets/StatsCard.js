@@ -4,7 +4,8 @@ import { round, upperCase } from 'lodash';
 import { CheckOutlined, CloseOutlined, HourglassEmptyOutlined, PriorityHighOutlined } from '@material-ui/icons';
 import { WhatsappIcon, WhatsappShareButton } from 'react-share';
 
-import backGround from '../../../images/stats.jpg';
+import backGround from '../../../res/images/stats.jpg';
+
 import ComparisionBar from '../../../components/common/ComparisionBar';
 
 const StatsCard = (props) => {
