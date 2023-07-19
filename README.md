@@ -19,13 +19,13 @@ The App has been deployed using firebase. Check it out here
 https://cric-funn.web.app
 
 ##### TODO:
-1. Need to delete all unused resources
 2. Make a new cric-funn logo
 3. Make eslint for src folder
 12. Explore push-notifications
 13. Make Go for glory button fireup when selected all in.
 
 #### COMPLETED:
+1. Need to delete all unused resources
 4. Make a proper flow for syncing matches into db so won't have to do code change at the beginning of league
 5. Making no matches component
 6. Change matches logic - old logic - fetch matches from cricapi and also sync for unsettled matches: 
