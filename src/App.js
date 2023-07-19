@@ -1,45 +1,33 @@
-import React from 'react';
-import { Route, BrowserRouter as Router } from 'react-router-dom';
+import React, { useContext } from 'react';
+import { BrowserRouter as Router } from 'react-router-dom';
+import { isEmpty } from 'lodash';
+import LoadingScreen from 'react-loading-screen';
 
 import './App.css';
-import Context from './Global/Context';
-import Auth from './components/modules/Auth/Auth';
-import Header from './components/modules/Header/Header';
-import MyBets from './components/modules/MyBets/MyBets';
-import PointsTable from './components/modules/PointsTable/PointsTable';
-import Admin from './components/modules/Admin/Admin';
-import Graph from './components/modules/Points/Graph';
-import GlobalStats from './components/modules/GlobalStats/GlobalStats';
-import { dimModePalette } from './config';
+import { ContextProvider } from './global/Context';
+import LoggedInRoutes from './modules/loggedInRoutes/LoggedInRoutes';
+import LoggedOutRoutes from './modules/loggedOutRoutes/LoggedOutRoutes';
+import cricFunnLogo from './images/logo.png';
 
 const App = () => {
-  return (
-    <Router>
-      <Context>
-        {/* <div style={{ backgroundColor: dimModePalette.backgroundColor }}> normal_mode:no color */}
-        <Header/> 
-        <Route exact path="/">
-          <Auth/> 
-        </Route> 
-        <Route exact path="/bets">
-          <MyBets/> 
-        </Route>
-        <Route exact path="/points-table">
-          <PointsTable exact />
-        </Route>
-        <Route exact path="/admin">
-          <Admin exact />
-        </Route>
-        <Route exact path="/points">
-          <Graph exact />
-        </Route>
-        <Route exact path="/global-stats">
-          <GlobalStats exact />
-        </Route>
-        {/* </div> */}
-      </Context>
-    </Router>
-  );
+	const contextConsumer = useContext(ContextProvider);
+	const { loading, loggedInUserDetails } = contextConsumer;
+
+	return (
+		<Router>
+			<LoadingScreen
+				loading={loading}
+				bgColor="rgb(17,24,39)"
+				spinnerColor="#fff"
+				textColor="#fff"
+				text="Loading your details. Please wait..."
+				logoSrc={cricFunnLogo}
+			>
+				{!isEmpty(loggedInUserDetails) ?
+					<LoggedInRoutes /> : <LoggedOutRoutes /> }
+			</LoadingScreen>
+		</Router>
+	);
 }
 
 export default App;
