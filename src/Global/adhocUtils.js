@@ -19,6 +19,34 @@ export const getFormattedTimeISOString = (date) => {
     return moment(date).format("lll");
 }
 
+export function getMsgForUpcomingBets(startTime, endTime) {
+    return (`Betting for this match will be OPENED from - ${startTime.format("LLL")} TO ${endTime.format("LLL")}`);
+}
+
+export function getMsgForOpenBets(endTime) {
+    return (`Betting is OPENED TILL - ${endTime.format("LLL")}.`);
+}
+
+export function getMsgForInProgressBets(points, team) {
+    return (`You've bet ${points} POINTS on this match. Betting Team: ${team}`);
+}
+
+export function getMsgForNoResultBets(points, team) {
+    return (`Betting is CLOSED. Match ended in NO RESULT. You've recieved ${points} POINTS on this match. Betting Team: ${team}`);
+}
+
+export function getMsgForClosedBets() {
+    return (`Betting for this match is CLOSED. You DID NOT bet.`);
+}
+
+export function getMsgForWonBets(points, team) {
+    return (`Betting CLOSED. You WON ${points} POINTS on this match. Betting Team: ${team}`);
+}
+
+export function getMsgForLostBets(points, team) {
+    return (`Betting CLOSED. You LOST ${points} POINTS on this match. Betting Team: ${team}`);
+}
+
 export const getWinningAmount = (amount, odds = 1) => {
     amount = parseInt(amount);
     odds = parseFloat(odds);
@@ -38,6 +66,12 @@ export const getWinnerEtaParams = (matchType = "t20") => {
     if(matchType == "odi")  return { value: 6, unit: "hours" };
     else if(matchType == "test")    return { value: 3, unit: "days" };
     return { value: 3, unit: "hours" };
+}
+
+export const getPerc = (score1, score2) => {
+    score1 = parseFloat(score1);
+    score2 = parseFloat(score2);
+    return ((score1/(score1 + score2))*100).toFixed(0);
 }
 
 export const getDefaultMatchOdds = (team1, team2) => {

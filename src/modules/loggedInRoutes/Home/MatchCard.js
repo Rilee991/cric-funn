@@ -6,14 +6,14 @@ import { find, get, isEmpty } from 'lodash';
 import moment from 'moment';
 
 import { ContextProvider } from '../../../global/Context';
-import { getMsgForClosedBets, getMsgForInProgressBets, getMsgForLostBets, 
-  getMsgForNoResultBets, getMsgForOpenBets, getMsgForUpcomingBets, getMsgForWonBets, getPerc, } from '../../../config';
 
 import BettingDialog from './BettingDialog';
 import ViewBetsDialog from './ViewBetsDialog';
 import MatchPic from '../../../components/common/MatchPic';
 import ComparisionBar from '../../../components/common/ComparisionBar';
-import { getBetEndTime, getBetStartTime, getFormattedTimeISOString } from '../../../global/adhocUtils';
+import { getBetEndTime, getBetStartTime, getFormattedTimeISOString, getMsgForClosedBets, getMsgForInProgressBets, 
+	getMsgForLostBets, getMsgForNoResultBets, getMsgForOpenBets, getMsgForUpcomingBets, getMsgForWonBets, getPerc
+} from '../../../global/adhocUtils';
 import { ALERT_CONFIGS } from '../../../configs/userConfigs';
 import { TEAM_PROPS } from '../../../configs/teamConfigs';
 

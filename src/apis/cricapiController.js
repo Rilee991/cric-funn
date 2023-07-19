@@ -3,6 +3,7 @@ import { clearTable, createMatch, getMatchById } from "./matchController";
 
 const API_KEY = "e62a5cb2-1135-40ee-9a7b-99d14472d7ee";
 const SERIES_ID = "951e7413-7d28-4c91-8822-4a5135091aab";
+
 export const getMatchDetailsById = async (id) => {
     try {
         const url = `https://api.cricapi.com/v1/match_info?apikey=${API_KEY}&offset=0&id=${id}`;

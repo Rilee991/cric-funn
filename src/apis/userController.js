@@ -50,3 +50,11 @@ export const dumpUsers = async () => {
         });
     }
 }
+
+export const restoreData = async (username) => {
+    const resp = await fetch("https://wild-blue-adder-gear.cyclic.app/cfb/dbops/restoreDataForUsername", 
+        { method: "post", headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ username: username }) }
+    );
+
+    console.log("Update successful" + resp);
+}
