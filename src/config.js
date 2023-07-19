@@ -1,17 +1,6 @@
 import firebase from 'firebase';
 import moment from 'moment';
 
-import kkrLogo from './images/kkr.png';
-import rcbLogo from './images/rcb.png';
-import srhLogo from './images/srh.png';
-import cskLogo from './images/csk.png';
-import dcLogo from './images/dc.png';
-import rrLogo from './images/rr.png';
-import miLogo from './images/mi.png';
-import pkLogo from './images/pk.png';
-import lsgLogo from './images/lsg.png';
-import gtLogo from './images/gt.png';
-
 const firebaseConfig = {
     apiKey: "AIzaSyBFK-Ls496ycWWk5LCbxsN_CrEc234uJWc",
     authDomain: "cric-funn.firebaseapp.com",
@@ -35,121 +24,6 @@ const auth = firebase.auth();
 const storage = firebase.storage();
 const logger = firebase.analytics(app);
 logger.setAnalyticsCollectionEnabled(true);
-
-let themeColor = "#4B0082";
-const loaderHeight = 100;
-const loaderWidth = 250;
-
-const DEFAULT_START_POINTS = 2000;
-const DEFAULT_PROFILE_IMAGE = "https://firebasestorage.googleapis.com/v0/b/cric-funn.appspot.com/o/defaultImages%2Fpp.png?alt=media&token=2745d072-9783-4505-95ba-bab54aad2d9c&_gl=1*fgupvy*_ga*MTIwMTA5NzI2Ny4xNjY4Njg3MTAz*_ga_CW55HF8NVT*MTY4NjY1NTk4My41My4xLjE2ODY2NTYwNzkuMC4wLjA.";
-
-function getTeamLogo(teamAbbreviation) {
-    if(teamAbbreviation == "SRH") return srhLogo;
-    else if(teamAbbreviation == "KKR") return kkrLogo;
-    else if(teamAbbreviation == "DC") return dcLogo;
-    else if(teamAbbreviation == "CSK") return cskLogo;
-    else if(teamAbbreviation == "MI") return miLogo;
-    else if(teamAbbreviation == "PBKS") return pkLogo;
-    else if(teamAbbreviation == "RCB") return rcbLogo;
-    else if(teamAbbreviation == "LSG") return lsgLogo;
-    else if(teamAbbreviation == "GT") return gtLogo;
-    else return rrLogo;
-}
-
-const teamNames = ["Chennai Super Kings", "Delhi Capitals", "Kolkata Knight Riders", "Sunrisers Hyderabad",
-    "Mumbai Indians", "Rajasthan Royals", "Gujarat Titans", "Lucknow Super Giants", "Punjab Kings", 
-    "Royal Challengers Bangalore"
-]
-
-const teamProps = {
-    "Chennai Super Kings": {
-        color: "#694B08",
-        abbr: "CSK",
-        logo: cskLogo
-    },
-    "Delhi Capitals": {
-        color: "#1D1CE5",
-        abbr: "DC",
-        logo: dcLogo
-    },
-    "Kolkata Knight Riders": {
-        color: "#674188",
-        abbr: "KKR",
-        logo: kkrLogo
-    },
-    "Sunrisers Hyderabad": {
-        color: "#a65e14",
-        abbr: "SRH",
-        logo: srhLogo
-    },
-    "Mumbai Indians": {
-        color: "#2F58CD",
-        abbr: "MI",
-        logo: miLogo
-    },
-    "Rajasthan Royals": {
-        color: "#E11299",
-        abbr: "RR",
-        logo: rrLogo
-    },
-    "Gujarat Titans": {
-        color: "#3e5477",
-        abbr: "GT",
-        logo: gtLogo
-    },
-    "Lucknow Super Giants": {
-        color: "#394e87",
-        abbr: "LSG",
-        logo: lsgLogo
-    },
-    "Punjab Kings": {
-        color: "#F45050",
-        abbr: "PBKS",
-        logo: pkLogo
-    },
-    "Royal Challengers Bangalore": {
-        color: "#850000",
-        abbr: "RCB",
-        logo: rcbLogo
-    },
-    "Texas Super Kings": {
-        color: "#c5a804",
-        abbr: "TSK",
-        logo: "https://sportavideos.blob.core.windows.net/splcms2/TeamsUpload/6/Team_logo.png"//"https://i.namu.wiki/i/SbhAKGWX3sOO0FXrrFFvFvLeAfLQ3nqJ6ScQH2slPhiLK-iuXhEugZ49gwHD-c59Xiv_IMeZHg8koJ1nBD9LYxG3QwXCLTT7e6qJirPxl5K0ZptruIHmUmTJYj8G0OHWh3Jigmx3WIUvBhtg-zDFQ5H-y5DKDGAhq8usZhOVaTI.webp"
-    },
-    "Los Angeles Knight Riders": {
-        color: "#320955",
-        abbr: "LAKR",
-        logo: "https://sportavideos.blob.core.windows.net/splcms2/TeamsUpload/9/Team_logo.png"//"https://i.namu.wiki/i/SbhAKGWX3sOO0FXrrFFvFiqMKDVXRfLt72OVepYi-mnqe0Hlc1VtuAgYvHXMYBrRkYCt5c1BubK_eeC_zmA_S8Q3lJxpDqYMhmrOfj2zQQYYZd04bnkPtbVzd2QLnhVFlEHXu4clfRg3D7vqXwr6O9IxNQUdehMJe6OmBObvaIc.webp"
-    },
-    "Mi New York": {
-        color: "#0a24be",
-        abbr: "MI NY",
-        logo: "https://sportavideos.blob.core.windows.net/splcms2/TeamsUpload/8/Team_logo.png"//"https://i.namu.wiki/i/SbhAKGWX3sOO0FXrrFFvFrDTj7uv0MP4D4yJxVmBLXrh6-hHpy91p7nIO8X2TC4OXY10R7Fy3OFBQOSeFq6_jMGvqAzFvrAD9ZWNL2K8yST80nLbpac2k3BbGItTjdmITUsTm7mJhCAzunAm7UxpJFzTNMhjn4JQQFDKQGu0Rgg.webp"
-    },
-    "San Francisco Unicorns": {
-        color: "#c07f08",
-        abbr: "SF",
-        logo: "https://sportavideos.blob.core.windows.net/splcms2/TeamsUpload/4/Team_logo.png"//"https://i.namu.wiki/i/SbhAKGWX3sOO0FXrrFFvFigRIb3R97M4a_t1mQvC13aF9lCLk_6eBC8riyS9wF7k4xfW2kYucup0Y0OG-ohwG3f9mgr2Rwr1z6k77nhyAI_yzD9FrPCAQ-7ieShvrvtQ5L1u-Jz_GnFtV5sC0IjIvevO3bsW7jzhSKBkkLs7RA4.webp"
-    },
-    "Seattle Orcas": {
-        color: "green",
-        abbr: "SEA",
-        logo: "https://sportavideos.blob.core.windows.net/splcms2/TeamsUpload/5/Team_logo.png"//"https://i.namu.wiki/i/SbhAKGWX3sOO0FXrrFFvFntgRcX-ALHMvPwPPTeHuHTNgq0fRC1hyG3C9g0juAtbAv4DHgA_Bce_jJG19--Wi-mR6xnUuZVEuVSoJ0wmpT4_MUoebqjq9xXqf16yCzdJIGdgKIY0G1Y9QWgei7mPeqskaX08n65oQbiB0cgTzKQ.webp"
-    },
-    "Washington Freedom": {
-        color: "darkblue",
-        abbr: "WSH",
-        logo: "https://sportavideos.blob.core.windows.net/splcms2/TeamsUpload/7/Team_logo.png"//"https://i.namu.wiki/i/SbhAKGWX3sOO0FXrrFFvFtEYCLq5ml4TfAxICanGJJBK30hn8Hve-f-dtO4CDu_ubHR21U_mG0KkaU33euezUk_oUVIKiUEuScePgri8nxsCu8JR4xqqg-MXnNrE2KRJFsvKY-_25CS8u_bH_G8uLfWFl9C7zJscMr8gLyJB4gY.webp"
-    }
-}
-
-const fontVariant = "button";
-const matchHeadingFontSize = 20;
-
-function getFormattedTimeISOString(date) {
-    return moment(date).format("lll");
-}
 
 function getMsgForUpcomingBets(startTime, endTime) {
     return (`Betting for this match will be OPENED from - ${startTime.format("LLL")} TO ${endTime.format("LLL")}`);
@@ -260,24 +134,11 @@ const matchImgs = {"c8742d20-c3cb-4423-aea1-b436f3ac65c3":"https://cdorg.b-cdn.n
 "63c6436d-3d09-4e9c-b0e1-7f9379eafdd5": "https://cdorg.b-cdn.net/wp-content/uploads/2022/03/IPL-Match-51-GT-vs-MI-768x360.jpg"};
 
 
-const dimModePalette = {
-    backgroundColor: "slategray",
-    headerBackgroundColor: "#24033c",
-    tableBackgroundImage: "linear-gradient(to right,rgba(255, 225, 0, 0.1),rgb(120 239 20) 4%,rgba(255, 225, 0, 0.3))",
-    tableRankOneBackgroundColor: "#d08f0c",
-    tableRankTwoBackgroundColor: "#628f07",
-    tableRankOthersBackgroundColor: "#85a937",
-    tableBodyTextColor: "aliceblue",
-    tableCaptionBackgroundColor: "darkslateblue"
-}
-
 const getPerc = (score1, score2) => {
     score1 = parseFloat(score1);
     score2 = parseFloat(score2);
     return ((score1/(score1 + score2))*100).toFixed(0);
 }
-
-// themeColor = dimModePalette.headerBackgroundColor //normal_mode - don't assign again
 
 export { 
     db, 
@@ -285,22 +146,10 @@ export {
     storage,
     firebaseNotifs,
     iplMatches,
-    themeColor,
-    loaderHeight,
-    loaderWidth,
-    matchHeadingFontSize,
-    fontVariant,
     logger,
-    teamNames,
-    DEFAULT_START_POINTS,
-    DEFAULT_PROFILE_IMAGE,
     firebase,
     matchImgs,
-    dimModePalette,
-    teamProps,
 
-    getTeamLogo,
-    getFormattedTimeISOString,
     getMsgForUpcomingBets,
     getMsgForLostBets, 
     getMsgForWonBets, 

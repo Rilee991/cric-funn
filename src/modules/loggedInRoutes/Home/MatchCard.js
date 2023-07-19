@@ -6,16 +6,16 @@ import { find, get, isEmpty } from 'lodash';
 import moment from 'moment';
 
 import { ContextProvider } from '../../../global/Context';
-import { fontVariant, getFormattedTimeISOString, getMsgForClosedBets, getMsgForInProgressBets, getMsgForLostBets, 
-  getMsgForNoResultBets, getMsgForOpenBets, getMsgForUpcomingBets, getMsgForWonBets, getPerc, getTeamLogo, 
-  matchHeadingFontSize, teamProps } from '../../../config';
+import { getMsgForClosedBets, getMsgForInProgressBets, getMsgForLostBets, 
+  getMsgForNoResultBets, getMsgForOpenBets, getMsgForUpcomingBets, getMsgForWonBets, getPerc, } from '../../../config';
 
 import BettingDialog from './BettingDialog';
 import ViewBetsDialog from './ViewBetsDialog';
 import MatchPic from '../../../components/common/MatchPic';
 import ComparisionBar from '../../../components/common/ComparisionBar';
-import { getBetEndTime, getBetStartTime } from '../../../global/adhocUtils';
+import { getBetEndTime, getBetStartTime, getFormattedTimeISOString } from '../../../global/adhocUtils';
 import { ALERT_CONFIGS } from '../../../configs/userConfigs';
+import { TEAM_PROPS } from '../../../configs/teamConfigs';
 
 const MatchCard = (props) => {
 	const contextConsumer = useContext(ContextProvider);
@@ -104,14 +104,14 @@ const MatchCard = (props) => {
 			[odds[0], odds[1]] = [odds[1], odds[0]];
 		}
 
-		oddsParams["team1Color"] = teamProps[odds[0].name]?.color || "red";
-		oddsParams["team1Abbr"] = teamProps[odds[0].name]?.abbr || teamInfo[0].shortname;
+		oddsParams["team1Color"] = TEAM_PROPS[odds[0].name]?.color || "red";
+		oddsParams["team1Abbr"] = TEAM_PROPS[odds[0].name]?.abbr || teamInfo[0].shortname;
 		oddsParams["team1Perc"] = getPerc(odds[0].price, odds[1].price);
-		oddsParams["team1Logo"] = teamProps[odds[0].name]?.logo || teamInfo[0].img;
-		oddsParams["team2Color"] = teamProps[odds[1].name]?.color || "blue";
-		oddsParams["team2Abbr"] = teamProps[odds[1].name]?.abbr || teamInfo[1].shortname;
+		oddsParams["team1Logo"] = TEAM_PROPS[odds[0].name]?.logo || teamInfo[0].img;
+		oddsParams["team2Color"] = TEAM_PROPS[odds[1].name]?.color || "blue";
+		oddsParams["team2Abbr"] = TEAM_PROPS[odds[1].name]?.abbr || teamInfo[1].shortname;
 		oddsParams["team2Perc"] = getPerc(odds[1].price, odds[0].price);
-		oddsParams["team2Logo"] = teamProps[odds[1].name]?.logo || teamInfo[1].img;
+		oddsParams["team2Logo"] = TEAM_PROPS[odds[1].name]?.logo || teamInfo[1].img;
     }
 
     return (
@@ -120,16 +120,16 @@ const MatchCard = (props) => {
 				<CardActionArea>
 					<CardContent>
 						<MatchPic posterSrc={poster ? "poster" : "single"} team1Logo={teamInfo[0].img} team2Logo={teamInfo[1].img} poster={poster} matchTime={matchTime} mobileView={mobileView}/>
-						<Typography className="-tw-mt-5 tw-text-white" variant={fontVariant} style={{fontSize: matchHeadingFontSize}} component="h2">
+						<Typography className="-tw-mt-5 tw-text-white" variant={"button"} style={{fontSize: 20}} component="h2">
 							<b>{get(matchTitle.split(","),'[0]','No Title')}</b>
 						</Typography>
-						<Typography variant={fontVariant} style={{fontSize: 13}} className="tw-text-[#aeff71]" component="p">
+						<Typography variant={"button"} style={{fontSize: 13}} className="tw-text-[#aeff71]" component="p">
 							<b>{venue}</b>
 						</Typography>
-						<Typography variant={fontVariant} style={{fontSize: 13}} className="tw-text-[#15ffe0de]" component="p">
+						<Typography variant={"button"} style={{fontSize: 13}} className="tw-text-[#15ffe0de]" component="p">
 							<b>	{getFormattedTimeISOString(matchTime)}</b>
 						</Typography>
-						<Typography variant={fontVariant} style={{fontSize: 13}} className="tw-text-[#b7e7ff]" component="p">
+						<Typography variant={"button"} style={{fontSize: 13}} className="tw-text-[#b7e7ff]" component="p">
 							<b>{status}</b>
 						</Typography>
 						{!isEmpty(odds) ?
@@ -145,7 +145,7 @@ const MatchCard = (props) => {
 								bgImg2={oddsParams.team2Logo}
 							/>
 							: <div className="tw-bg-indigo-950 tw-h-[5vh] tw-mt-2 tw-rounded-[20px] tw-flex tw-justify-center tw-items-center tw-text-white">
-								<Typography variant={fontVariant} style={{fontSize: 13}} component="p">
+								<Typography variant={"button"} style={{fontSize: 13}} component="p">
 									<b>Odds updation in progress...</b>
 								</Typography>
 							</div>

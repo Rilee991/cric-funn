@@ -1,8 +1,8 @@
 import { ceil } from "lodash";
 import moment from "moment";
 
-import { DEFAULT_TEAM_LOGO, matchPostersMapping } from "../configs/matchConfigs";
-import { teamProps } from "../config";
+import { matchPostersMapping } from "../configs/matchConfigs";
+import { DEFAULT_TEAM_LOGO, TEAM_PROPS } from "../configs/teamConfigs";
 
 const firebase = require("firebase");
 
@@ -13,6 +13,10 @@ export const getToppgerBgImage = (isChampion = false) => {
 
 export const getFirebaseCurrentTime = () => {
     return firebase.default.firestore.Timestamp.fromDate(new Date());
+}
+
+export const getFormattedTimeISOString = (date) => {
+    return moment(date).format("lll");
 }
 
 export const getWinningAmount = (amount, odds = 1) => {
@@ -60,9 +64,9 @@ export const formatMatch = (match) => {
         }
     } else {
         match.teamInfo = [{
-            name: team1, shortname: teamProps[team1].abbr || getTeamAbbr(team1), img: teamProps[team1].logo || DEFAULT_TEAM_LOGO
+            name: team1, shortname: TEAM_PROPS[team1].abbr || getTeamAbbr(team1), img: TEAM_PROPS[team1].logo || DEFAULT_TEAM_LOGO
         }, {
-            name: team2, shortname: teamProps[team2].abbr || getTeamAbbr(team2), img: teamProps[team2].logo || DEFAULT_TEAM_LOGO
+            name: team2, shortname: TEAM_PROPS[team2].abbr || getTeamAbbr(team2), img: TEAM_PROPS[team2].logo || DEFAULT_TEAM_LOGO
         }];
     }
 

@@ -2,8 +2,6 @@ import React from 'react';
 import { Grid } from '@material-ui/core';
 import { ScaleLoader } from 'react-spinners';
 
-import { themeColor } from '../../config';
-
 import Copyright from './Copyright';
 
 const LoadingComponent = () => {
@@ -11,7 +9,7 @@ const LoadingComponent = () => {
         <Grid container justify="center" alignContent="center" direction="column">
             <br/><br/><br/><br/>
             <Grid item className="tw-flex tw-justify-center">
-                <ScaleLoader color={themeColor} size={30} speedMultiplier={0.7}/>
+                <ScaleLoader color={"#4B0082"} size={30} speedMultiplier={0.7}/>
             </Grid>
             <br/><br/>
             <Grid item>

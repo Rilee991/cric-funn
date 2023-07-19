@@ -6,7 +6,7 @@ import { Divider, Tag } from 'antd';
 import { Close } from '@material-ui/icons';
 
 import { ContextProvider } from '../../../global/Context';
-import { teamProps } from '../../../config';
+import { TEAM_PROPS } from '../../../configs/teamConfigs';
 import './Modal.css';
 
 const ViewBetsDialog = (props) => {
@@ -60,7 +60,7 @@ const ViewBetsDialog = (props) => {
     }
 
     const getColor = (bet) => {
-        const props = teamProps[bet.teamName];
+        const props = TEAM_PROPS[bet.teamName];
         
         return props ? props.color : "red";
     }
