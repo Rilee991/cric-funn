@@ -1,8 +1,9 @@
 import React from 'react';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography, Badge, Avatar, Grid, Card, CardActionArea, CardContent, GridList, Collapse, Divider } from '@material-ui/core';
-import { withStyles, makeStyles } from '@material-ui/core/styles';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography, Card, CardActionArea, 
+    CardContent, Divider 
+} from '@material-ui/core';
+import { withStyles } from '@material-ui/core/styles';
 import { Alert } from '@material-ui/lab';
-import { Filter1Outlined, Filter2Outlined } from '@material-ui/icons';
 import { upperCase } from 'lodash';
 
 const StyledTableCell = withStyles((theme) => ({

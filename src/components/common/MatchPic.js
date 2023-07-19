@@ -2,11 +2,11 @@ import React from 'react';
 import { Grid } from '@material-ui/core';
 import moment from 'moment';
 
-import nightBackGround from '../../images/bg35.jpeg';
-import dayBackGround from '../../images/bg31.jpeg';
-import vsLogo from '../../images/vs.png';
+import nightBackGround from '../../res/images/bg35.jpeg';
+import dayBackGround from '../../res/images/bg31.jpeg';
+import vsLogo from '../../res/images/vs.png';
 
-function MatchPic(props) {
+const MatchPic = (props) => {
     const { team1Logo, team2Logo, mobileView, matchTime, poster = "", posterSrc = "" } = props;
     const isNightMatch = moment(matchTime).hours() > 18;
 
