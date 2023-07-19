@@ -3,11 +3,13 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import { isEmpty } from 'lodash';
 import LoadingScreen from 'react-loading-screen';
 
+import cricFunnLogo from './res/images/logo.png';
+
 import './App.css';
 import { ContextProvider } from './global/Context';
+
 import LoggedInRoutes from './modules/loggedInRoutes/LoggedInRoutes';
 import LoggedOutRoutes from './modules/loggedOutRoutes/LoggedOutRoutes';
-import cricFunnLogo from './images/logo.png';
 
 const App = () => {
 	const contextConsumer = useContext(ContextProvider);
