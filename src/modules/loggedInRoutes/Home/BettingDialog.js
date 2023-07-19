@@ -179,7 +179,7 @@ const BettingDialog = (props) => {
                          </Typography>
                      </Tag>
                  </div>
-                 <div className="tw-cursor-pointer" onClick={() => onClickAllIn()}>
+                 <div className="tw-cursor-pointer glow-on-hover" onClick={() => onClickAllIn()}>
                      <Tag color={allInEnabled ? "green-inverse" : "green"} className="tw-rounded-3xl">
                          <Typography variant="button" style={{fontSize: 12}}>
                              <b className="tw-flex tw-items-center tw-justify-between">Go All In {allInEnabled ? <CheckCircle className="tw-h-5" /> : <CheckCircleOutline className="tw-h-5" />} </b>

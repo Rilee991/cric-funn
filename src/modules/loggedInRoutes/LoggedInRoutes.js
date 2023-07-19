@@ -92,7 +92,7 @@ const LoggedInRoutes = () => {
 
     return (
         <div className="tw-flex tw-flex-col tw-bg-[#8393a0]">
-            {isBday && toggleConfetti && <Confetti width={width} height={height + scrollY} className="tw-z-[10000]" numberOfPieces={500} gravity={0.5} />}
+            {isBday && toggleConfetti && <Confetti width={width} height={height + scrollY} className="tw-z-[10000]" numberOfPieces={500} />}
             {isBday && <BirthdayModal claimReward={claimReward} isRewardClaimed={isRewardClaimed} width={width} open={openBdayModal} closeDialog={() => setOpenBdayModal(false)} />}
             <div>
                 <Header totalNotifs={notifications.length} clearNotifications={clearNotifications} setToggleConfetti={setToggleConfetti}

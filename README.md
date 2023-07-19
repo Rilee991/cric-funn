@@ -23,6 +23,7 @@ https://cric-funn.web.app
 3. Make eslint for src folder
 12. Explore push-notifications
 13. Make Go for glory button fireup when selected all in.
+14. Add a div for showing credits left
 
 #### COMPLETED:
 1. Need to delete all unused resources
