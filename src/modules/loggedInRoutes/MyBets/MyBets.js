@@ -5,7 +5,7 @@ import { find } from 'lodash';
 import { ContextProvider } from '../../../global/Context';
 import BetCard from './BetCard';
 import StatsCard from './StatsCard';
-import LoaderV2 from '../../../components/common/LoaderV2';
+import PageLoader from '../../../components/common/PageLoader';
 
 export default function MyBets() {
     const contextConsumer = useContext(ContextProvider);
@@ -45,7 +45,7 @@ export default function MyBets() {
     })
 
     return (
-        loading ? (<LoaderV2 tip="Loading History..." />) : (
+        loading ? (<PageLoader tip="Loading History..." />) : (
             <div className="tw-w-full tw-mt-2">
                 <StatsCard bets={bets} mobileView={mobileView} username={username} points={points}/>
                 <Card style={{ boxShadow: "5px 5px 20px", backgroundRepeat:"no-repeat", backgroundSize: "inherit",height: "auto", backgroundBlendMode: "hard-light" }} className="tw-mt-2 tw-mb-10 xl:tw-w-[70%] md:tw-w-[90%] tw-rounded-[40px]">

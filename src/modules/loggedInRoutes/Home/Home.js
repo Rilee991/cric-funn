@@ -4,7 +4,7 @@ import { Alert } from '@material-ui/lab';
 import { makeStyles, Typography } from '@material-ui/core';
 
 import MatchCard from './MatchCard';
-import LoaderV2 from '../../../components/common/LoaderV2';
+import PageLoader from '../../../components/common/PageLoader';
 import { ContextProvider } from '../../../global/Context';
 
 const useStyles = makeStyles((theme) => ({
@@ -37,7 +37,7 @@ const Home = ({ handleSelectedNav }) => {
 
 	return (
 		<div className="tw-w-full">
-			{ loading ? <LoaderV2 tip="Loading matches..." />: 
+			{ loading ? <PageLoader tip="Loading matches..." />: 
 				relevantMatches.length ? relevantMatches.map((match, index) => (
 					<MatchCard key={index} match={match}/>
 				)) 

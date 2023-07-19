@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 import Copyright from './Copyright';
 
-const LoaderV2 = (props) => {
+const PageLoader = (props) => {
     const { tip = "" } = props;
 
     return (
@@ -22,8 +22,8 @@ const LoaderV2 = (props) => {
     );
 }
 
-LoaderV2.propTypes = {
+PageLoader.propTypes = {
     tip: PropTypes.string
 }
 
-export default LoaderV2;
+export default PageLoader;

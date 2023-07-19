@@ -5,7 +5,7 @@ import MuiAlert from '@material-ui/lab/Alert';
 import { isEmpty } from 'lodash';
 import { Tag } from 'antd';
 
-import LoaderV2 from '../../../components/common/LoaderV2';
+import PageLoader from '../../../components/common/PageLoader';
 import { ContextProvider } from '../../../global/Context';
 import iplLogo from '../../../images/logo.png';
 
@@ -79,7 +79,7 @@ const Signin = (props) => {
     }
 
     return (
-        loading ? <LoaderV2 tip="Logging In..." /> 
+        loading ? <PageLoader tip="Logging In..." /> 
         : <>
             <img src={iplLogo} style={{width: 150}} />
             <Typography variant="overline" style={{ fontSize: 20, fontWeight: 500}}>

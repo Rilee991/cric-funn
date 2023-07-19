@@ -6,7 +6,7 @@ import { Alert } from '@material-ui/lab';
 import { ContextProvider } from '../../../global/Context';
 import TopperCard from './TopperCard';
 import TableCard from './TableCard';
-import LoaderV2 from '../../../components/common/LoaderV2';
+import PageLoader from '../../../components/common/PageLoader';
 
 export default function PointsTable() {
     const contextConsumer = useContext(ContextProvider);
@@ -40,7 +40,7 @@ export default function PointsTable() {
 		else return "#386832";
 	}
 
-	return ( loading ? ( <LoaderV2 tip="Loading Points table..." /> ) : (
+	return ( loading ? ( <PageLoader tip="Loading Points table..." /> ) : (
 		<>
 			{!isEmpty(tableData) ?
 				<>
