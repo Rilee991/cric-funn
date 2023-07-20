@@ -17,7 +17,7 @@ import 'react-vertical-timeline-component/style.min.css';
 // import 'swiper/modules/effect-fade/effect-fade.min.css';
 
 const Legends = () => {
-    // bgImage, bgColor, title, poster, isChampCard, period
+    const width = window.screen.width;
     const legends = [{
         bgImage: "https://media.tenor.com/RhRpOYBCi9QAAAAC/wrestlemania-wwe.gif",
         bgColor: "#ffb600",
@@ -59,11 +59,9 @@ const Legends = () => {
         period: "2017 - 2018",
         isChampCard: true,
         date: moment("2023-05-30 02:30:30").toISOString()
-    }
-];
+    }];
     
     const getChild = (legendCard) => {
-        
         return (
             <CardContent className="tw-pt-2 tw-flex tw-flex-col tw-items-center tw-justify-center tw-gap-3">
                 <div style={{ border: "2px solid white" }} className="tw-bg-indigo-950 tw-h-[5vh] tw-rounded-[20px] tw-flex tw-justify-center tw-items-center tw-text-white">
@@ -91,10 +89,10 @@ const Legends = () => {
                         className="vertical-timeline-element--work"
                         contentStyle={{ boxShadow: "5px 5px 20px", borderRadius: "20px", 
                             backgroundImage: `url(${legend.bgImage})`, 
-                            backgroundSize: "cover", backgroundPosition: "center", backgroundColor: legend.bgColor, 
-                            backgroundBlendMode: "darken", backgroundRepeat: "no-repeat" }}
+                            backgroundSize: "100% 100%", backgroundPosition: "center", backgroundColor: legend.bgColor, 
+                            backgroundBlendMode: "darken", backgroundRepeat: "no-repeat", margin: width < 500 ? 0 : "" }}
                         contentArrowStyle={{ borderRight: `7px solid  ${legend.bgColor}` }}
-                        iconStyle={{ background: legend.bgColor, color: '#fff' }}
+                        iconStyle={{ background: legend.bgColor, color: '#fff', zIndex: 1 }}
                         icon={<AcUnit />}
                     >
                         {getChild(legend)}
