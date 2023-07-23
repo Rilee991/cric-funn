@@ -15,7 +15,8 @@ import BirthdayModal from './BirthdayModal/BirthdayModal';
 const LoggedInRoutes = () => {
     const contextConsumer = useContext(ContextProvider);
     const { mobileView, logout, notifications = [], clearNotifications, width, height, scrollY, claimReward,
-        loggedInUserDetails: { isAdmin, username, points, dob = "18-07-3212", isRewardClaimed = true }
+        loggedInUserDetails: { isAdmin, username, points, dob = "18-07-3212", isRewardClaimed = true },
+        configurations = {}
     } = contextConsumer;
     const [isNavOpen, setIsNavOpen] = useState(false);
     const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
@@ -110,6 +111,7 @@ const LoggedInRoutes = () => {
                         navSelected={navSelected}
                         setNavSelected={setNavSelected}
                         mobileView={mobileView}
+                        configurations={configurations}
                     />
                     <Notifications
                         setIsNotificationsOpen={setIsNotificationsOpen}
