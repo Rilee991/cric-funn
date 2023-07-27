@@ -98,9 +98,9 @@ export const formatMatch = (match) => {
         }
     } else {
         match.teamInfo = [{
-            name: team1, shortname: TEAM_PROPS[team1].abbr || getTeamAbbr(team1), img: TEAM_PROPS[team1].logo || DEFAULT_TEAM_LOGO
+            name: team1, shortname: TEAM_PROPS[team1]?.abbr || getTeamAbbr(team1), img: TEAM_PROPS[team1]?.logo || DEFAULT_TEAM_LOGO
         }, {
-            name: team2, shortname: TEAM_PROPS[team2].abbr || getTeamAbbr(team2), img: TEAM_PROPS[team2].logo || DEFAULT_TEAM_LOGO
+            name: team2, shortname: TEAM_PROPS[team2]?.abbr || getTeamAbbr(team2), img: TEAM_PROPS[team2]?.logo || DEFAULT_TEAM_LOGO
         }];
     }
 

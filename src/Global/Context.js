@@ -10,6 +10,8 @@ import { getUserByKey, getUserByUsername, createUser, updateUserByEmail, updateU
 import { getMatchById, getMatches, updateMatchById } from '../apis/matchController';
 import { getMatchDetailsById } from '../apis/cricapiController';
 import { DEFAULT_PENALTY_POINTS, DEFAULT_PENALTY_TEAM } from '../configs/matchConfigs';
+import { getConfigurations, updateConfigurations } from '../apis/configurationsController';
+import { CONFIGURATION_DOCS } from './enums';
 
 const admin = require('firebase');
 export const ContextProvider = createContext();
@@ -17,6 +19,7 @@ export const ContextProvider = createContext();
 const Context = (props) => {
     const [loggedInUserDetails, setLoggedInUserDetails] = useState({});
     const [matches, setMatches] = useState([]);
+    const [configurations, setConfigurations] = useState([]);
     const [loading, setLoading] = useState(true);
     const [mobileView, setMobileView] = useState(false);
     const [notifications, setNotifications] = useState([]);
@@ -713,7 +716,7 @@ const Context = (props) => {
         return { latestPoints: points, latestBets: bets, latestIsOut: isOut };
     }
 
-    const updateAndGetMatches = async () => {
+    const updateAndGetMatches = async (username) => {
         try {
             const dbMatches = await getMatches();
             const matchPromises = [], matches = [];
@@ -727,7 +730,7 @@ const Context = (props) => {
                 }
 
                 if(isEmpty(match.matchWinner) && moment(match.dateTimeGMT).add(winnerEtaParams.value, winnerEtaParams.unit) <= moment()) {
-                    const matchDetails = await getMatchDetailsById(match.id);
+                    const matchDetails = await getMatchDetailsById(match.id, username, setConfigurations);
 
                     if(!isEmpty(matchDetails?.matchWinner)) {
                         matchPromises.push(updateMatchById(match.id, {
@@ -779,7 +782,9 @@ const Context = (props) => {
                 const { username, email, image, points, bets, isAdmin = false, isChampion = false, isOut = false, dob,
                     isRewardClaimed = true
                 } = userSnap.docs[0].data();
-                const matches = await updateAndGetMatches();
+                const configs = await getConfigurations();
+                setConfigurations(configs);
+                const matches = await updateAndGetMatches(username);
                 const updatedDetails = await updateUserDetails(username, points, bets, matches);
                 setMatches(matches);
                 setLoggedInUserDetails({
@@ -803,7 +808,7 @@ const Context = (props) => {
 
     return (
         <ContextProvider.Provider
-            value={{ loggedInUserDetails, loading, mobileView, notifications, matches, width, height, scrollY,
+            value={{ loggedInUserDetails, loading, mobileView, notifications, matches, width, height, scrollY, configurations,
                 signUp, signIn, sendResetPasswordEmail, resetPassword, logout, clearNotifications, betOnMatch, updateSeenBets,
                 viewBetsData, getPointsTableData, resetUserDetails, syncUserDetails, getTeamWiseStats, getAllUsersData,
                 claimReward
