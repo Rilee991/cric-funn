@@ -23,8 +23,6 @@ https://cric-funn.web.app
 3. Make eslint for src folder
 12. Explore push-notifications
 13. Make swipe button for betting
-14. Add a div for showing credits left
-15. Making a configurations table to store common items like credits, backups etc.
 16. Making functionality for saving backups and restoring
 
 #### COMPLETED:
@@ -38,4 +36,6 @@ new logic - fetch matches from db and sync results to db on each refresh for onl
 9. Fixing performance ui issues in navbar
 10. Modal not opening on mobile devices
 11. Make modal for bday wishes
+14. Add a div for showing credits left
+15. Making a configurations table to store common items like credits, backups etc.
 17. Make go all in badge as stylish to highlight to user
