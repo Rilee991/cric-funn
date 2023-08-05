@@ -74,7 +74,7 @@ const SideNavbar = (props) => {
                     <List>
                         {navItems.map((item, index) => (
                             <Link to={item.to} key={item.id} onClick={() => onClickNavItem(item)}>
-                                <ListItem style={{ background: navSelected == item.id ? "darkslateblue" : "", borderRadius: "40px" }} className={`${item.disabled ? "hover:tw-bg-red-800" : "hover:tw-bg-purple-800"} tw-mb-1`} button key={item.name}>
+                                <ListItem style={{ borderLeft: navSelected == item.id ? "5px solid darkslateblue" : "", borderRight: navSelected == item.id ? "5px solid darkslateblue" : "", borderRadius: "40px" }} className={`${item.disabled ? "hover:tw-bg-red-800" : "hover:tw-bg-purple-800"} tw-mb-1`} button key={item.name}>
                                     <ListItemIcon className="tw-text-white">
                                         {item.icon}
                                     </ListItemIcon>
