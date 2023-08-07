@@ -1,8 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { makeStyles, TextField, MenuItem, Button, Typography, Select, withStyles, Dialog, DialogTitle, IconButton, 
+import { makeStyles, TextField, MenuItem, Typography, Select, withStyles, Dialog, DialogTitle, IconButton, 
     DialogContent, DialogContentText
 } from '@material-ui/core';
-import { Alert } from '@material-ui/lab';
 import { CheckCircleOutline, CheckCircle, Close } from '@material-ui/icons';
 import { isEmpty } from 'lodash';
 import moment from 'moment';
@@ -10,6 +9,7 @@ import { Divider, Tag } from 'antd';
 
 import { ContextProvider } from '../../../global/Context';
 import { getFirebaseCurrentTime } from '../../../global/adhocUtils';
+import SwipeButton from '../../../components/common/SwipeButton';
 
 const useStyles = makeStyles((theme) => ({
     customRoot: {
@@ -43,6 +43,7 @@ const BettingDialog = (props) => {
     const [error, setError] = useState("");
     const [disabledSave, setDisableSave] = useState(true);
     const [allInEnabled, setAllInEnabled] = useState(false);
+    const [loading, setLoading] = useState(false);
 
     const closeDialog = () => {
         handleClose && handleClose();
@@ -72,10 +73,9 @@ const BettingDialog = (props) => {
     }
 
     const betInTheMatch = async () => {
+        setLoading(true);
         if(betEndTime < moment()) {
             setError("Betting is closed for this match.");
-            window.location.reload(false);
-            return;
         } else {
             const betObject = {
                 betTime: getFirebaseCurrentTime(),
@@ -97,8 +97,11 @@ const BettingDialog = (props) => {
             }
 
             await betOnMatch(betObject);
-            closeDialog();
         }
+        setLoading(false);
+        setTimeout(() => {
+            closeDialog();
+        },5000);
     }
 
     const onClickAllIn = () => {
@@ -142,16 +145,17 @@ const BettingDialog = (props) => {
                         className="tw-mb-3"
                     />
                     {error ? <Typography variant="body1" color="error">*{error}</Typography>: ""}
-                    <Button fullWidth size="small" className="tw-w-full tw-rounded-[40px] tw-mb-3" style={{ background: !disabledSave ? "linear-gradient(0deg, #1b004a, #50045a)" : 'grey', color: "white" }} variant="contained" disabled={disabledSave} onClick={() => betInTheMatch()}>
+                    {/* <Button fullWidth size="small" className="tw-w-full tw-rounded-[40px] tw-mb-3" style={{ background: !disabledSave ? "linear-gradient(0deg, #1b004a, #50045a)" : 'grey', color: "white" }} variant="contained" disabled={disabledSave} onClick={() => betInTheMatch()}>
                         <Typography variant="overline" style={{ fontSize: 15, fontWeight: 500}}>
                             {"Go For Glory!"}
                         </Typography>
-                    </Button>
-                    <Alert severity="warning" variant="filled" className="tw-rounded-[40px] tw-flex tw-justify-center" classes={{ icon: classes.customIcon }}>
+                    </Button> */}
+                    <SwipeButton loading={loading} disabled={disabledSave} color='#5e9d0b' text='SLIDE TO EXECUTE' onSuccess={() => betInTheMatch()} />
+                    {/* <Alert severity="warning" variant="filled" className="tw-rounded-[40px] tw-flex tw-justify-center" classes={{ icon: classes.customIcon }}>
                         <Typography variant="body">
                             <b>{allInEnabled ? "Warning! You're going ALL IN! Shout victory is mine! " : ""}Once bet cannot be edited.</b>
                         </Typography>
-                    </Alert>
+                    </Alert> */}
                 </form>
             </div>
         );
