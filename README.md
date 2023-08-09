@@ -20,7 +20,7 @@ https://cric-funn.web.app
 
 ##### TODO:
 2. Make a new cric-funn logo
-3. Make eslint for src folder
+3. Make jsconfig for src folder
 12. Explore push-notifications
 16. Making functionality for saving backups and restoring
 
