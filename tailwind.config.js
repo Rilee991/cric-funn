@@ -3,7 +3,11 @@ module.exports = {
   prefix: "tw-",
   important: true,
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        noto: ["Noto Sans", "sans-serif"]
+      }
+    },
   },
   plugins: [],
 };
