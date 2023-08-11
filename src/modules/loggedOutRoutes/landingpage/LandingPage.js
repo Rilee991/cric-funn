@@ -8,9 +8,6 @@ import Credits from '../../../components/common/Credits';
 import ForgotPassword from './ForgotPassword';
 
 const useStyles = makeStyles((theme) => ({
-	root: {
-		height: '100vh'
-	},
 	image: {
 		backgroundImage: 'url(https://source.unsplash.com/collection/9344848)',
 		backgroundRepeat: 'no-repeat',
@@ -37,7 +34,7 @@ const LandingPage = () => {
     }
 
     return (
-        <Grid container component="main" className={classes.root}>
+        <Grid container component="main" className="tw-h-screen">
 			<CssBaseline />
 			<Grid item xs={false} sm={4} md={7} className={classes.image} />
 			<Grid style={{ background: "linear-gradient(300deg, #ccfffc, #d4e5ff)" }} className="tw-text-black" item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
