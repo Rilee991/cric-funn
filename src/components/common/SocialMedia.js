@@ -1,5 +1,5 @@
 import React from 'react';
-import { Facebook, LinkedIn, Twitter } from '@material-ui/icons';
+import { Facebook, LinkedIn } from '@material-ui/icons';
 
 const SocialMedia = () => {
     const openWindow = (url) => {
