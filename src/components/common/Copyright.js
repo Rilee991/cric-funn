@@ -5,18 +5,18 @@ const Copyright = (props) => {
     const { textColor = "black" } = props;
 
     return (
-        <Grid container justify="space-evenly" alignContent="space-around" direction="column">
+        <Grid container className="tw-flex tw-flex-col tw-items-center tw-justify-center">
             <Grid item>
-                <Typography style={{ color: textColor }} variant="body2" color="textPrimary" align="center">
+                <Typography className="tw-font-noto" style={{ color: textColor }} variant="overline" color="textPrimary" align="center">
                     {'Copyright © '}
                     <Link color="inherit" href="" variant="overline">
                         Cric-Funn
                     </Link>{' '}
-                    {`2021 - ${new Date().getFullYear()}`}
+                    {`2021-${new Date().getFullYear()}`}
                 </Typography>
             </Grid>
             <Grid item>
-                <Typography style={{ color: textColor }} variant="overline" color="textSecondary" align="center">
+                <Typography className="tw-font-noto" style={{ color: textColor }} variant="overline" color="textSecondary" align="center">
                     {'Designed and Created by - Cypher33'}
                 </Typography>
             </Grid>

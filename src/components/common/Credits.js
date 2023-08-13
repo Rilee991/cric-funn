@@ -8,7 +8,7 @@ const Credits = () => {
     return (
         <Grid container justify="space-evenly" alignContent="space-around" direction="column">
 			<Grid item>
-				<Copyright textColor="black" />
+				<Copyright textColor="white" />
 			</Grid>
 			<Grid item>
 				<SocialMedia />
