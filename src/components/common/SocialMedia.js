@@ -15,7 +15,7 @@ const SocialMedia = () => {
                 <LinkedIn htmlColor="#2b55f7" fontSize="large" />
             </div>
             <div className="tw-cursor-pointer" onClick={() => openWindow(`https://twitter.com/IamRohitKumar22`)}>
-                <Twitter htmlColor="#5c79ff" fontSize="large" />
+                <img className="tw-w-11 tw-h-11" src="https://vectorseek.com/wp-content/uploads/2023/07/Twitter-X-Logo-Vector-01-2.jpg" />
             </div>
         </div>
     );
