@@ -11,9 +11,6 @@ import PageLoader from '../../../components/common/PageLoader';
 import { ContextProvider } from '../../../global/Context';
 
 const useStyles = makeStyles((theme) => ({
-    form: {
-        width: '100%', // Fix IE 11 issue.
-    },
     submit: {
         margin: theme.spacing(1, 0, 1),
         borderRadius: "40px"
@@ -24,8 +21,31 @@ const CustomTextField = withStyles({
     root: {
         '& fieldset': {
             borderWidth: 2,
-            borderRadius: "40px"
-        }
+            borderRadius: "40px",
+            borderColor: "grey",
+            fontFamily: "Noto Sans",
+        }, 
+        '& .MuiOutlinedInput-root': {
+            '&:hover fieldset': {
+              borderColor: 'white',
+            },
+            '&.Mui-focused fieldset': {
+              borderColor: 'white',
+            },
+        },
+        '& .MuiFormLabel-root': {
+            '&.Mui-focused': {
+              color: 'white',
+            },
+        },
+        '& label': {
+            fontFamily: "Noto Sans",
+            color: "grey"
+        },
+        '& div': {
+            color: "white",
+            fontFamily: "Noto Sans"
+        },
     },
 })(TextField);
 
@@ -80,13 +100,14 @@ const Signin = (props) => {
     }
 
     return (
-        loading ? <PageLoader tip="Logging In..." /> 
+        loading ? <PageLoader tip="Logging In..." color="white" /> 
         : <>
             <img src={iplLogo} style={{width: 150}} />
-            <Typography variant="overline" style={{ fontSize: 20, fontWeight: 500}}>
-                Sign in
+            <Typography className="tw-font-noto tw-uppercase tw-text-white" style={{ fontSize: 20, fontWeight: 500 }}>
+                Sign In
             </Typography>
-            <form className={classes.form} onSubmit={signInUser}>
+            <br/>
+            <form className="tw-w-full tw-font-noto" onSubmit={signInUser}>
                 <CustomTextField
                     variant="outlined"
                     className={"tw-mb-0 sm:tw-mb-3"}
@@ -120,7 +141,7 @@ const Signin = (props) => {
                                     aria-label="toggle password visibility"
                                     onClick={togglePasswordVisibility}
                                 >
-                                    {showPassword ? <Visibility /> : <VisibilityOff />}
+                                    {showPassword ? <Visibility className="tw-text-white" /> : <VisibilityOff className="tw-text-white" />}
                                 </IconButton>
                             </InputAdornment>
                         )
@@ -131,19 +152,19 @@ const Signin = (props) => {
                     type="submit"
                     fullWidth
                     variant="contained"
-                    style={{ background: "linear-gradient(44deg, #250c51, #605317)", color: "white" }}
+                    style={{ background: "#f5f7ff", color: "black" }}
                     className={classes.submit}
                 >
-                    <Typography variant="overline" className="tw-flex tw-items-center tw-justify-center tw-gap-2" style={{ fontSize: "medium" }}>
+                    <Typography className="tw-font-noto tw-py-2 tw-font-bold tw-flex tw-items-center tw-justify-center tw-gap-2" style={{ fontSize: "medium" }}>
                         Sign In <Lock className="tw-text-2xl" />
                     </Typography>
                 </Button>
                 <div className="tw-flex tw-justify-between tw-mt-2">
                     <div onClick={toggleSignin} className="tw-cursor-pointer">
-                        <Tag className="tw-rounded-3xl" color="blue-inverse">Create Account</Tag>
+                        <Tag className="tw-rounded-3xl tw-font-noto tw-font-semibold" color="blue-inverse">Create Account</Tag>
                     </div>
                     <div onClick={toggleForgotPassword} className="tw-cursor-pointer">
-                        <Tag className="tw-rounded-3xl" color="volcano-inverse">Forgot Password</Tag>
+                        <Tag className="tw-rounded-3xl tw-font-noto tw-font-semibold" color="volcano-inverse">Forgot Password</Tag>
                     </div>
                 </div>
             </form>

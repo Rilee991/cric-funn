@@ -22,10 +22,33 @@ const useStyles = makeStyles((theme) => ({
 
 const CustomTextField = withStyles({
     root: {
-      '& fieldset': {
-        borderWidth: 2,
-        borderRadius: "40px"
-      }
+        '& fieldset': {
+            borderWidth: 2,
+            borderRadius: "40px",
+            borderColor: "grey",
+            fontFamily: "Noto Sans",
+        }, 
+        '& .MuiOutlinedInput-root': {
+            '&:hover fieldset': {
+              borderColor: 'white',
+            },
+            '&.Mui-focused fieldset': {
+              borderColor: 'white',
+            },
+        },
+        '& .MuiFormLabel-root': {
+            '&.Mui-focused': {
+              color: 'white',
+            },
+        },
+        '& label': {
+            fontFamily: "Noto Sans",
+            color: "grey"
+        },
+        '& div': {
+            color: "white",
+            fontFamily: "Noto Sans"
+        },
     },
 })(TextField);
 
@@ -79,10 +102,11 @@ const ForgotPassword = (props) => {
         loading ? <PageLoader tip="Loading..." /> 
         : <>
             <img src={iplLogo} style={{width: 150}} />
-            <Typography variant="overline" style={{ fontSize: 20, fontWeight: 500}}>
-                Reset Password
+            <Typography className="tw-font-noto tw-uppercase tw-text-white" style={{ fontSize: 20, fontWeight: 500 }}>
+                Password Change
             </Typography>
-            <form className={classes.form} onSubmit={saveResetPasswordEmail}>
+            <br />
+            <form className="tw-w-full tw-font-noto" onSubmit={saveResetPasswordEmail}>
                 <CustomTextField
                     variant="outlined"
                     className={"tw-mb-0 sm:tw-mb-3"}
@@ -102,16 +126,16 @@ const ForgotPassword = (props) => {
                     type="submit"
                     fullWidth
                     variant="contained"
-                    style={{ background: "linear-gradient(44deg, #250c51, #605317)", color: "white" }}
+                    style={{ background: "#f5f7ff", color: "black" }}
                     className={classes.submit}
                 >
-                    <Typography variant="overline" className="tw-flex tw-items-center tw-justify-center tw-gap-2" style={{ fontSize: "medium" }}>
+                    <Typography className="tw-font-noto tw-py-2 tw-font-bold tw-flex tw-items-center tw-justify-center tw-gap-2" style={{ fontSize: "medium" }}>
                         Send Mail <LabelImportant className="tw-text-2xl" />
                     </Typography>
                 </Button>
                 <div className="tw-flex tw-justify-center tw-mt-2">
                     <div onClick={toggleSignin} className="tw-cursor-pointer">
-                        <Tag className="tw-rounded-3xl" color="blue-inverse">Sign Into Existing Account</Tag>
+                        <Tag className="tw-rounded-3xl tw-font-noto tw-font-semibold" color="blue-inverse">Sign Into Existing Account</Tag>
                     </div>
                 </div>
             </form>

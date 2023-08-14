@@ -27,10 +27,33 @@ const useStyles = makeStyles((theme) => ({
 
 const CustomTextField = withStyles({
     root: {
-      '& fieldset': {
-        borderWidth: 2,
-        borderRadius: "40px"
-      }
+        '& fieldset': {
+            borderWidth: 2,
+            borderRadius: "40px",
+            borderColor: "grey",
+            fontFamily: "Noto Sans",
+        }, 
+        '& .MuiOutlinedInput-root': {
+            '&:hover fieldset': {
+              borderColor: 'white',
+            },
+            '&.Mui-focused fieldset': {
+              borderColor: 'white',
+            },
+        },
+        '& .MuiFormLabel-root': {
+            '&.Mui-focused': {
+              color: 'white',
+            },
+        },
+        '& label': {
+            fontFamily: "Noto Sans",
+            color: "grey"
+        },
+        '& div': {
+            color: "white",
+            fontFamily: "Noto Sans"
+        },
     },
 })(TextField);
 
@@ -98,66 +121,69 @@ const ResetPassword = () => {
     }
 
     return (
-        loading ? <PageLoader tip="Loading..." /> 
-        : <div className="tw-flex tw-flex-col tw-items-center tw-justify-center tw-h-screen tw-mx-5">
-            <img src={iplLogo} style={{width: 150}} />
-            <Typography variant="overline" style={{ fontSize: 20, fontWeight: 500}}>
-                Reset Password
-            </Typography>
-            <form className={classes.form} onSubmit={resetPasswordAndSave}>
-                <CustomTextField
-                    variant="outlined"
-                    margin="normal"
-                    className="tw-mb-3"
-                    required
-                    fullWidth
-                    id="password"
-                    label="New Password"
-                    name="password"
-                    type={showPassword ? "text" : "password"}
-                    autoComplete="current-password"
-                    value={inputs.password}
-                    onChange={handleInputs}
-                    InputProps={{
-                        endAdornment: (
-                            <InputAdornment>
-                                <IconButton
-                                    aria-label="toggle password visibility"
-                                    onClick={togglePasswordVisibility}
-                                >
-                                    {showPassword ? <Visibility /> : <VisibilityOff />}
-                                </IconButton>
-                            </InputAdornment>
-                        )
-                    }}
-                />
-                {severity !== "success" ?
-                    <Button
-                        type="submit"
+        loading ? <PageLoader tip="Loading..." color="white" /> 
+        : <div className="tw-bg-black tw-flex tw-flex-col tw-items-center tw-justify-center tw-h-screen">
+            <div className="tw-w-full tw-mx-5 tw-flex tw-flex-col tw-items-center tw-justify-center">
+                <img src={iplLogo} style={{width: 150}} />
+                <Typography className="tw-font-noto tw-uppercase tw-text-white" style={{ fontSize: 20, fontWeight: 500 }}>
+                    Reset Password
+                </Typography>
+                <br/>
+                <form className="tw-w-full tw-font-noto tw-flex tw-items-center tw-justify-center tw-flex-col" onSubmit={resetPasswordAndSave}>
+                    <CustomTextField
+                        variant="outlined"
+                        margin="normal"
+                        className="tw-mb-3"
+                        required
                         fullWidth
-                        variant="contained"
-                        style={{ background: "linear-gradient(44deg, #250c51, #605317)", color: "white" }}
-                        className={classes.submit}
-                    >
-                        <Typography variant="overline" className="tw-flex tw-items-center tw-justify-center tw-gap-2" style={{ fontSize: "medium" }}>
-                            Reset Password <Loop className="tw-text-2xl" />
-                        </Typography>
-                    </Button> :
-                    <Tag className="tw-rounded-3xl" color="blue-inverse">
-                        <Typography variant="body2" className="tw-flex tw-items-center tw-justify-center" style={{ fontSize: "medium" }}>
-                            Redirecting you to login page in {secs} seconds.
-                        </Typography>
-                    </Tag>
-                }
-            </form>
-            <br/>
-            <Credits />
-            
-            <Snackbar open={!isEmpty(error)} autoHideDuration={3000} onClose={handleClose} anchorOrigin={{ vertical: "top", horizontal: "right" }}>
-                <MuiAlert className="tw-rounded-3xl" variant="filled" onClose={handleClose} severity={severity}>
-                    {error}
-                </MuiAlert>
-            </Snackbar>
+                        id="password"
+                        label="New Password"
+                        name="password"
+                        type={showPassword ? "text" : "password"}
+                        autoComplete="current-password"
+                        value={inputs.password}
+                        onChange={handleInputs}
+                        InputProps={{
+                            endAdornment: (
+                                <InputAdornment>
+                                    <IconButton
+                                        aria-label="toggle password visibility"
+                                        onClick={togglePasswordVisibility}
+                                    >
+                                        {showPassword ? <Visibility className="tw-text-white" /> : <VisibilityOff className="tw-text-white" />}
+                                    </IconButton>
+                                </InputAdornment>
+                            )
+                        }}
+                    />
+                    {severity !== "success" ?
+                        <Button
+                            type="submit"
+                            fullWidth
+                            variant="contained"
+                            style={{ background: "#f5f7ff", color: "black" }}
+                            className={classes.submit}
+                        >
+                            <Typography className="tw-font-noto tw-py-2 tw-font-bold tw-flex tw-items-center tw-justify-center tw-gap-2" style={{ fontSize: "medium" }}>
+                                Reset Password <Loop className="tw-text-2xl" />
+                            </Typography>
+                        </Button> :
+                        <Tag className="tw-rounded-3xl" color="blue-inverse">
+                            <Typography variant="body2" className="tw-flex tw-font-noto tw-items-center tw-justify-center" style={{ fontSize: "medium" }}>
+                                Redirecting you to login page in {secs} seconds.
+                            </Typography>
+                        </Tag>
+                    }
+                </form>
+                <br/>
+                <Credits />
+                
+                <Snackbar open={!isEmpty(error)} autoHideDuration={3000} onClose={handleClose} anchorOrigin={{ vertical: "top", horizontal: "right" }}>
+                    <MuiAlert className="tw-rounded-3xl" variant="filled" onClose={handleClose} severity={severity}>
+                        {error}
+                    </MuiAlert>
+                </Snackbar>
+            </div>
         </div>
     );
 }

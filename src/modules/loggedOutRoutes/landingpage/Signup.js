@@ -22,10 +22,33 @@ const useStyles = makeStyles((theme) => ({
 
 const CustomTextField = withStyles({
     root: {
-      '& fieldset': {
-        borderWidth: 2,
-        borderRadius: "40px"
-      }
+        '& fieldset': {
+            borderWidth: 2,
+            borderRadius: "40px",
+            borderColor: "grey",
+            fontFamily: "Noto Sans",
+        }, 
+        '& .MuiOutlinedInput-root': {
+            '&:hover fieldset': {
+              borderColor: 'white',
+            },
+            '&.Mui-focused fieldset': {
+              borderColor: 'white',
+            },
+        },
+        '& .MuiFormLabel-root': {
+            '&.Mui-focused': {
+              color: 'white',
+            },
+        },
+        '& label': {
+            fontFamily: "Noto Sans",
+            color: "grey"
+        },
+        '& div': {
+            color: "white",
+            fontFamily: "Noto Sans"
+        },
     },
 })(TextField);
 
@@ -76,13 +99,14 @@ const Signup = (props) => {
     };
 
     return (
-        loading ? <PageLoader tip="Creating your account..." /> 
+        loading ? <PageLoader tip="Creating your account..." color="white" /> 
         : <>
             <img src={iplLogo} style={{width: 150}}/>
-            <Typography variant="overline" style={{ fontSize: 20, fontWeight: 500}}>
-                Sign up
+            <Typography className="tw-font-noto tw-uppercase tw-text-white" style={{ fontSize: 20, fontWeight: 500 }}>
+                Sign Up
             </Typography>
-            <form className={classes.form} onSubmit={signUpUser}>
+            <br/>
+            <form className="tw-w-full tw-font-noto" onSubmit={signUpUser}>
                 <CustomTextField
                     variant="outlined"
                     required
@@ -127,7 +151,7 @@ const Signup = (props) => {
                                     aria-label="toggle password visibility"
                                     onClick={togglePasswordVisibility}
                                 >
-                                    {showPassword ? <Visibility /> : <VisibilityOff />}
+                                    {showPassword ? <Visibility className="tw-text-white" /> : <VisibilityOff className="tw-text-white" />}
                                 </IconButton>
                             </InputAdornment>
                         )
@@ -138,16 +162,16 @@ const Signup = (props) => {
                     type="submit"
                     fullWidth
                     variant="contained"
-                    style={{ background: "linear-gradient(44deg, #250c51, #605317)", color: "white" }}
+                    style={{ background: "#f5f7ff", color: "black" }}
                     className={classes.submit}
                 >
-                    <Typography variant="overline" className="tw-flex tw-items-center tw-justify-center tw-gap-2" style={{ fontSize: "medium" }}>
+                    <Typography className="tw-font-noto tw-py-2 tw-font-bold tw-flex tw-items-center tw-justify-center tw-gap-2" style={{ fontSize: "medium" }}>
                         Sign Up <LockOpen className="tw-text-2xl" />
                     </Typography>
                 </Button>
                 <div className="tw-flex tw-justify-center tw-mt-2">
                     <div onClick={toggleSignup} className="tw-cursor-pointer">
-                        <Tag className="tw-rounded-3xl" color="blue-inverse">Sign Into Existing Account</Tag>
+                        <Tag className="tw-rounded-3xl tw-font-noto tw-font-semibold" color="blue-inverse">Sign Into Existing Account</Tag>
                     </div>
                 </div>
             </form>
