@@ -110,7 +110,6 @@ const Signin = (props) => {
             <form className="tw-w-full tw-font-noto" onSubmit={signInUser}>
                 <CustomTextField
                     variant="outlined"
-                    className={"tw-mb-0 sm:tw-mb-3"}
                     required
                     fullWidth
                     id="email"
@@ -153,7 +152,7 @@ const Signin = (props) => {
                     fullWidth
                     variant="contained"
                     style={{ background: "#f5f7ff", color: "black" }}
-                    className={classes.submit}
+                    className={"tw-rounded-[40px] tw-my-1 dark:tw-text-black dark:tw-bg-[#f5f7ff]"}
                 >
                     <Typography className="tw-font-noto tw-py-2 tw-font-bold tw-flex tw-items-center tw-justify-center tw-gap-2" style={{ fontSize: "medium" }}>
                         Sign In <Lock className="tw-text-2xl" />
