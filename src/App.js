@@ -19,7 +19,7 @@ const App = () => {
 		<Router>
 			<LoadingScreen
 				loading={loading}
-				bgColor="rgb(17,24,39)"
+				bgColor="black"
 				spinnerColor="#fff"
 				textColor="#fff"
 				text="Loading your details. Please wait..."
