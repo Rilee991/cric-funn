@@ -113,10 +113,11 @@ const MatchCard = (props) => {
 		oddsParams["team2Perc"] = getPerc(odds[1].price, odds[0].price);
 		oddsParams["team2Logo"] = TEAM_PROPS[odds[1].name]?.logo || teamInfo[1].img;
     }
+	// `linear-gradient(130deg, ${oddsParams["team1Color"]}, ${oddsParams["team2Color"]}`
 
     return (
 		<>
-			<Card style={{ boxShadow: "5px 5px 20px", background: `linear-gradient(130deg, ${oddsParams["team1Color"]}, ${oddsParams["team2Color"]}` }} className="tw-mt-2 tw-mb-10 xl:tw-w-[70%] tw-rounded-[40px]">
+			<Card style={{ boxShadow: "5px 5px 20px", background: "#1f0335" }} className="tw-mt-2 tw-mb-10 xl:tw-w-[70%] tw-rounded-[40px]">
 				<CardActionArea>
 					<CardContent>
 						<MatchPic posterSrc={poster ? "poster" : "single"} team1Logo={teamInfo[0].img} team2Logo={teamInfo[1].img} poster={poster} matchTime={matchTime} mobileView={mobileView}/>

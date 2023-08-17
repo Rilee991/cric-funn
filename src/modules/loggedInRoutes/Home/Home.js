@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
 
 const Home = ({ handleSelectedNav }) => {
 	const contextConsumer = useContext(ContextProvider);
-	const { matches = [] } = contextConsumer;
+	const { matches = [], loggedInUserDetails: { username } } = contextConsumer;
 	const [relevantMatches, setRelevantMatches] = useState([]);
 	const [loading, setLoading] = useState(false);
 
@@ -33,10 +33,17 @@ const Home = ({ handleSelectedNav }) => {
 
 		setRelevantMatches(relevantMatches);
 		setLoading(false);
-	}, [matches.length])
+	}, [matches.length]);
+
+	const hour = new Date().getHours();
+	const greeting = hour >= 0 && hour < 5 ? `Sleep you fucking dumbass!` : (hour >= 5 && hour < 12 ? `Good Morning, ${username}!` 
+		: (hour >= 12 && hour < 17 ? `Good Afternoon, Master ${username}!` : (`Good Evening, Sir ${username}!`)));
 
 	return (
 		<div className="tw-w-full">
+			<div className={`tw-flex tw-items-center tw-font-noto tw-italic ${window.screen.width > 460 ? "tw-text-4xl" : "tw-text-2xl"}`}>
+				{greeting}
+			</div>
 			{ loading ? <PageLoader tip="Loading matches..." />: 
 				relevantMatches.length ? relevantMatches.map((match, index) => (
 					<MatchCard key={index} match={match}/>
