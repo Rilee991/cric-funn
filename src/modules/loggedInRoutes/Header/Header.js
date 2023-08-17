@@ -61,12 +61,17 @@ const Header = (props) => {
   	return (
 		<div className={classes.root}>
 			<CssBaseline />
-			<AppBar position="fixed" className={`${classes.appBar} tw-z-[10000] tw-w-full`}>
-				<Toolbar className={"tw-flex tw-flex-row-reverse tw-justify-between"} style={{ "background": "linear-gradient(0deg, #1b004a, #50045a)"}}>
+			<AppBar position="fixed" className={`${classes.appBar} tw-shadow-none tw-bg-transparent tw-z-[10000] tw-w-full`}>
+				<Toolbar className={"tw-flex tw-flex-row-reverse tw-justify-between"} style={{ "background": "transparent"}}>
+					{/* <div className="tw-flex tw-items-center tw-gap-1">
+						<div>
+							{getCricFunnLogo()}
+						</div>
+					</div> */}
 					<div className="tw-flex tw-items-center tw-justify-center">
 						{isBday && 
 							<div className="tw-flex">
-								<IOSSwitch checked={toggleConfetti} onChange={() => setToggleConfetti(prev => !prev)} name="checkedB" />
+								<IOSSwitch className="tw-w-8 tw-h-8" checked={toggleConfetti} onChange={() => setToggleConfetti(prev => !prev)} name="checkedB" />
 							</div>
 						}
 						<IconButton
@@ -77,7 +82,7 @@ const Header = (props) => {
 							className={`${classes.notificationButton} tw-m-0 tw-p-2`}
 						>
 							<Badge component="button" badgeContent={totalNotifs} classes={{ badge: classes.customBadge }}>
-								<OfflineBolt />
+								<OfflineBolt className="tw-w-7 tw-h-7"/>
 							</Badge>
 						</IconButton>
 						<IconButton
@@ -87,13 +92,8 @@ const Header = (props) => {
 							onClick={handleDrawerToggle}
 							className={`${classes.menuButton} tw-m-0 tw-p-2`}
 						>
-							<Reorder />
+							<Reorder className="tw-w-7 tw-h-7" />
 						</IconButton>
-					</div>
-					<div className="tw-flex tw-items-center tw-gap-1">
-						<div>
-							{getCricFunnLogo()}
-						</div>
 					</div>
 				</Toolbar>
 			</AppBar>
