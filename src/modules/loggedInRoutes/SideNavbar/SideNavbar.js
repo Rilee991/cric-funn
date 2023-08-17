@@ -1,12 +1,13 @@
 import React from 'react'
 import { Divider, SwipeableDrawer, Hidden, List, ListItem, ListItemIcon, ListItemText, makeStyles, Typography } from '@material-ui/core';
 import { Link } from 'react-router-dom';
-import { AttachMoney } from '@material-ui/icons';
+import { BsCurrencyExchange } from 'react-icons/bs';
 import { sum } from 'lodash';
 
+import cricFunnLogo from '../../../res/images/logo.png';
 import { CONFIGURATION_DOCS } from '../../../global/enums';
 
-const drawerWidth = 240;
+const drawerWidth = 340;
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
@@ -33,6 +34,7 @@ const useStyles = makeStyles((theme) => ({
   toolbar: theme.mixins.gutters,
   drawerPaper: {
     width: drawerWidth,
+    borderRight: "2px solid darkgrey",
     background: "black"//"linear-gradient(45deg, #1634d6, black)"
   },
   content: {
@@ -61,13 +63,22 @@ const SideNavbar = (props) => {
         return 100-Math.min(100,credits);
     }
 
+    const getCricFunnLogo = () => (
+		<Link href="/">
+		  <img src={cricFunnLogo} width={100} height={70}/>
+		</Link>
+	);
+
     const getDrawerItems = () => (
         <div className="tw-flex tw-flex-col tw-z-0 tw-h-screen tw-justify-between">
             <div>
-                <div className="tw-flex tw-justify-center tw-h-[62px] tw-items-center">
-                    <Typography style={{fontSize: 18}}>
+                <div className="tw-flex tw-h-[62px] tw-items-center">
+                    {/* <Typography style={{fontSize: 18}}>
                         <b>MENU</b>
-                    </Typography>
+                    </Typography> */}
+                    <div>
+                        {getCricFunnLogo()}
+                    </div>
                 </div>
                 <Divider />
                 <div>
@@ -94,7 +105,7 @@ const SideNavbar = (props) => {
             <div>
                 <ListItem style={{ borderRadius: "40px" }} className={`tw-mb-1 tw-cursor-default`} button>
                     <ListItemIcon className="tw-text-white">
-                        <AttachMoney />
+                        <BsCurrencyExchange className="tw-w-5 tw-h-5" />
                     </ListItemIcon>
                     <ListItemText className={"tw-text-white"}>
                         <p className="tw-text-sm tw-leading-4 tw-text-gray-400">
