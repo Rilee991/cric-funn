@@ -35,6 +35,9 @@ const LandingPage = () => {
     return (
         <Grid container component="main" className="tw-h-screen tw-bg-black-app">
 			<CssBaseline />
+			<div className="tw-text-white-app tw-absolute tw-top-0 tw-left-0 tw-ml-1 tw-mt-1">
+				#JustForFun
+			</div>
 			<Grid item xs={false} sm={4} md={7}>
 				<div className="tw-hidden sm:tw-flex tw-w-full tw-h-full">
 					{ window.screen.width > 960 ? 
