@@ -126,11 +126,10 @@ const ForgotPassword = (props) => {
                     type="submit"
                     fullWidth
                     variant="contained"
-                    style={{ background: "#f5f7ff", color: "black" }}
-                    className={classes.submit}
+                    className={"tw-rounded-[40px] tw-my-1 tw-bg-white-app tw-text-black-app"}
                 >
                     <Typography className="tw-font-noto tw-py-2 tw-font-bold tw-flex tw-items-center tw-justify-center tw-gap-2" style={{ fontSize: "medium" }}>
-                        Send Mail <LabelImportant className="tw-text-2xl" />
+                        Send Mail <LabelImportant className="tw-text-2xl tw-text-black-app" />
                     </Typography>
                 </Button>
                 <div className="tw-flex tw-justify-center tw-mt-2">

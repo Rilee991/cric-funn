@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react'
 import { Button, TextField, Typography, Snackbar, InputAdornment, IconButton, makeStyles, withStyles } from '@material-ui/core';
-import { LockOpen, Visibility, VisibilityOff } from '@material-ui/icons';
+import { SportsBaseball, Visibility, VisibilityOff } from '@material-ui/icons';
 import MuiAlert from '@material-ui/lab/Alert';
 import { isEmpty } from 'lodash';
 import { Tag } from 'antd';
@@ -13,11 +13,7 @@ import { ContextProvider } from '../../../global/Context';
 const useStyles = makeStyles((theme) => ({
     form: {
       width: '100%', // Fix IE 11 issue.
-    },
-    submit: {
-      margin: theme.spacing(1, 0, 1),
-      borderRadius: "40px"
-    },
+    }
 }));
 
 const CustomTextField = withStyles({
@@ -134,7 +130,7 @@ const Signup = (props) => {
                 />
                 <CustomTextField
                     variant="outlined"
-                    className="tw-mt-3"
+                    className="tw-mt-3 tw-mb-2"
                     required
                     fullWidth
                     id="password"
@@ -163,10 +159,10 @@ const Signup = (props) => {
                     fullWidth
                     variant="contained"
                     style={{ background: "#f5f7ff", color: "black" }}
-                    className={classes.submit}
+                    className={"tw-rounded-[40px] tw-my-1 tw-bg-white-app tw-text-black-app"}
                 >
                     <Typography className="tw-font-noto tw-py-2 tw-font-bold tw-flex tw-items-center tw-justify-center tw-gap-2" style={{ fontSize: "medium" }}>
-                        Sign Up <LockOpen className="tw-text-2xl" />
+                        Sign Up <SportsBaseball className="tw-text-2xl tw-text-black-app" />
                     </Typography>
                 </Button>
                 <div className="tw-flex tw-justify-center tw-mt-2">

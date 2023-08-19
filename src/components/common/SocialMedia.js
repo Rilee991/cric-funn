@@ -1,6 +1,8 @@
 import React from 'react';
 import { Facebook, LinkedIn } from '@material-ui/icons';
 
+import xImg from '../../res/images/x.png';
+
 const SocialMedia = () => {
     const openWindow = (url) => {
         window.open(url,'_blank');
@@ -9,13 +11,13 @@ const SocialMedia = () => {
     return (
         <div className="tw-flex tw-items-center tw-justify-center tw-gap-2">
             <div className="tw-cursor-pointer" onClick={() => openWindow(`https://www.facebook.com/StoneCypher33`)}>
-                <Facebook htmlColor="#fff" fontSize="large" />
+                <Facebook className="tw-text-white-app" fontSize="large" />
             </div>
             <div className="tw-cursor-pointer" onClick={() => openWindow(`https://www.linkedin.com/in/rohit-kumar-a92418141/`)}>
-                <LinkedIn htmlColor="#fff" fontSize="large" />
+                <LinkedIn className="tw-text-white-app" fontSize="large" />
             </div>
             <div className="tw-cursor-pointer" onClick={() => openWindow(`https://twitter.com/IamRohitKumar22`)}>
-                <img className="tw-w-11 tw-h-11" src="https://vectorseek.com/wp-content/uploads/2023/07/Twitter-X-Logo-Vector-01-2.jpg" />
+                <img className="tw-w-[26.25px] tw-h-[26.25px]" src={xImg} />
             </div>
         </div>
     );

@@ -151,8 +151,7 @@ const Signin = (props) => {
                     type="submit"
                     fullWidth
                     variant="contained"
-                    style={{ background: "#f5f7ff", color: "black" }}
-                    className={"tw-rounded-[40px] tw-my-1 dark:tw-text-black dark:tw-bg-[#f5f7ff]"}
+                    className={"tw-rounded-[40px] tw-my-1 tw-bg-white-app tw-text-black-app"}
                 >
                     <Typography className="tw-font-noto tw-py-2 tw-font-bold tw-flex tw-items-center tw-justify-center tw-gap-2" style={{ fontSize: "medium" }}>
                         Sign In <Lock className="tw-text-2xl" />

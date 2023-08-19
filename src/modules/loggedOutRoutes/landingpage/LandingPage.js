@@ -33,7 +33,7 @@ const LandingPage = () => {
     }
 
     return (
-        <Grid container component="main" className="tw-h-screen tw-bg-black">
+        <Grid container component="main" className="tw-h-screen tw-bg-black-app">
 			<CssBaseline />
 			<Grid item xs={false} sm={4} md={7}>
 				<div className="tw-hidden sm:tw-flex tw-w-full tw-h-full">

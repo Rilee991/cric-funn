@@ -162,10 +162,10 @@ const ResetPassword = () => {
                             fullWidth
                             variant="contained"
                             style={{ background: "#f5f7ff", color: "black" }}
-                            className={classes.submit}
+                            className={"tw-rounded-[40px] tw-my-1 tw-bg-white-app tw-text-black-app"}
                         >
                             <Typography className="tw-font-noto tw-py-2 tw-font-bold tw-flex tw-items-center tw-justify-center tw-gap-2" style={{ fontSize: "medium" }}>
-                                Reset Password <Loop className="tw-text-2xl" />
+                                Reset Password <Loop className="tw-text-2xl tw-text-black-app" />
                             </Typography>
                         </Button> :
                         <Tag className="tw-rounded-3xl" color="blue-inverse">
