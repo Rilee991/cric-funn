@@ -8,6 +8,10 @@ module.exports = {
     extend: {
       fontFamily: {
         noto: ["Noto Sans", "sans-serif"]
+      },
+      colors: {
+        'black-app': "#171616",
+        'white-app': "#f5f7ff"
       }
     },
     screens: {
