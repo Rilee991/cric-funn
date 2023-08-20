@@ -18,11 +18,10 @@ if(firebase.apps.length) {
     app = firebase.initializeApp(firebaseConfig);
 }
 
-const firebaseNotifs = firebase.messaging(app);
 const db = firebase.firestore();
 const auth = firebase.auth();
 const storage = firebase.storage();
 const logger = firebase.analytics(app);
 logger.setAnalyticsCollectionEnabled(true);
 
-export { db, auth, storage, firebaseNotifs, logger, firebase };
+export { db, auth, storage, logger, firebase };
