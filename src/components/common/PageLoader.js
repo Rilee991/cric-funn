@@ -21,7 +21,7 @@ const PageLoader = (props) => {
                     <b>{tip || "Loading..."}</b>
                 </Typography>
             </div>
-            <Copyright />
+            <Copyright textColor={color} />
         </div>
     );
 }
