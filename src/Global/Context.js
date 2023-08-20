@@ -19,7 +19,7 @@ export const ContextProvider = createContext();
 const Context = (props) => {
     const [loggedInUserDetails, setLoggedInUserDetails] = useState({});
     const [matches, setMatches] = useState([]);
-    const [configurations, setConfigurations] = useState([]);
+    const [configurations, setConfigurations] = useState({});
     const [loading, setLoading] = useState(true);
     const [mobileView, setMobileView] = useState(false);
     const [notifications, setNotifications] = useState([]);
@@ -783,8 +783,10 @@ const Context = (props) => {
                     isRewardClaimed = true
                 } = userSnap.docs[0].data();
                 const configs = await getConfigurations();
+                console.log("setting configs 1: ", configs);
                 setConfigurations(configs);
                 const matches = await updateAndGetMatches(username);
+                console.log("setting configs 2: ", configurations);
                 const updatedDetails = await updateUserDetails(username, points, bets, matches);
                 setMatches(matches);
                 setLoggedInUserDetails({

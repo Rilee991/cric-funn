@@ -59,6 +59,7 @@ const SideNavbar = (props) => {
     }
 
     const getRemainingCredits = () => {
+        console.log("getRemainingCredits configurations::",configurations);
         const credits = sum(Object.values(configurations[CONFIGURATION_DOCS.CREDITS]));
         return 100-Math.min(100,credits);
     }
