@@ -161,8 +161,8 @@ const Signup = (props) => {
                     style={{ background: "#f5f7ff", color: "black" }}
                     className={"tw-rounded-[40px] tw-my-1 tw-bg-white-app tw-text-black-app"}
                 >
-                    <Typography className="tw-font-noto tw-py-2 tw-font-bold tw-flex tw-items-center tw-justify-center tw-gap-2" style={{ fontSize: "medium" }}>
-                        Sign Up <SportsBaseball className="tw-text-2xl tw-text-black-app" />
+                    <Typography className="tw-font-noto tw-py-2 tw-font-bold tw-flex tw-items-center tw-justify-center" style={{ fontSize: "medium" }}>
+                        Sign Up <SportsBaseball className="tw-text-2xl tw-ml-2 tw-text-black-app" />
                     </Typography>
                 </Button>
                 <div className="tw-flex tw-justify-center tw-mt-2">

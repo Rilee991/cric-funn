@@ -153,8 +153,8 @@ const Signin = (props) => {
                     variant="contained"
                     className={"tw-rounded-[40px] tw-my-1 tw-bg-white-app tw-text-black-app"}
                 >
-                    <Typography className="tw-font-noto tw-py-2 tw-font-bold tw-flex tw-items-center tw-justify-center tw-gap-2" style={{ fontSize: "medium" }}>
-                        Sign In <Lock className="tw-text-2xl" />
+                    <Typography className="tw-font-noto tw-py-2 tw-font-bold tw-flex tw-items-center tw-justify-center" style={{ fontSize: "medium" }}>
+                        Sign In <Lock className="tw-text-2xl tw-ml-2" />
                     </Typography>
                 </Button>
                 <div className="tw-flex tw-justify-between tw-mt-2">
