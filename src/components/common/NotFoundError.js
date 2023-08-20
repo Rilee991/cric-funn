@@ -6,8 +6,8 @@ import notFound404Img from '../../res/images/404img.png';
 
 const NotFoundError = () => {
     return (
-        <div className="tw-bg-black tw-flex tw-items-center tw-justify-center tw-h-auto tw-min-h-screen tw-py-12">
-            <div className="tw-bg-gray-300 tw-border-hidden tw-border tw-rounded-md tw-flex tw-items-center tw-justify-center tw-mx-4 md:tw-w-2/3">
+        <div className="tw-bg-black-app tw-flex tw-items-center tw-justify-center tw-h-auto tw-min-h-screen tw-py-12">
+            <div className="tw-bg-[#a3b3cb] tw-border-hidden tw-border tw-rounded-md tw-flex tw-items-center tw-justify-center tw-mx-4 md:tw-w-2/3">
                 <div className="tw-flex tw-flex-col tw-items-center tw-py-16">
                     <img className="tw-px-4 tw-block" src={notFound404Img} />
                     <h1 className="tw-px-4 tw-pt-8 tw-pb-4 tw-text-center tw-text-black tw-text-3xl tw-font-bold tw-leading-10">Looks like you've found the doorway to the great nothing!</h1>
