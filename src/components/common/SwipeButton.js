@@ -83,7 +83,7 @@ class SwipeButton extends Component {
 	}
 
 	getText = () => {
-		return window.screen.width < 530 ? 'EXECUTE' : this.props.text || 'EXECUTE';
+		return window.innerWidth < 530 ? 'EXECUTE' : this.props.text || 'EXECUTE';
 	}
 
 	componentWillUnmount() {
@@ -104,7 +104,7 @@ class SwipeButton extends Component {
 					</div>
 					{this.props.loading ? <CircularProgress className="tw-w-14 tw-h-14" /> : 
 						(this.state.unlocked ? <Check className="tw-w-14 tw-h-14 tw-text-yellow-500" /> : 
-							<div className={`rsbcText ${window.screen.width < 530 ? 'tw-ml-7' : ''}`}>
+							<div className={`rsbcText ${window.innerWidth < 530 ? 'tw-ml-7' : ''}`}>
 								<div className="rsbcanimation">
 									{this.getText()}
 								</div>
