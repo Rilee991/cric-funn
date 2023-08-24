@@ -98,7 +98,7 @@ const LoggedInRoutes = () => {
     }].map((item, idx) => ({ ...item, id: idx+1 }));
 
     return (
-        <div className="tw-flex tw-flex-col tw-bg-blue-100">
+        <div className="tw-flex tw-flex-col tw-bg-black-app">
             {isBday && toggleConfetti && <Confetti width={width} height={height + scrollY} className="tw-z-[10000]" numberOfPieces={500} />}
             {isBday && <BirthdayModal claimReward={claimReward} isRewardClaimed={isRewardClaimed} width={width} open={openBdayModal} closeDialog={() => setOpenBdayModal(false)} />}
             <div>
@@ -125,7 +125,7 @@ const LoggedInRoutes = () => {
                         notifications={notifications}
                     />
                 </div>
-                <div className={`tw-py-6 md:tw-px-14 tw-w-full tw-min-h-screen`}>
+                <div className={`tw-py-6 md:tw-px-14 tw-w-full tw-min-h-screen xl:tw-w-[70%] lg:tw-w-[80%] `}>
                     <Switch>
                         <Route exact path="/">
                             <Home handleSelectedNav={handleSelectedNav} />
