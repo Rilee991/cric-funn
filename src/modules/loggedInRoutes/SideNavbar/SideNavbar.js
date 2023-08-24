@@ -6,6 +6,7 @@ import { sum } from 'lodash';
 
 import cricFunnLogo from '../../../res/images/logo.png';
 import { CONFIGURATION_DOCS } from '../../../global/enums';
+import { CloseRounded } from '@material-ui/icons';
 
 const drawerWidth = 340;
 const useStyles = makeStyles((theme) => ({
@@ -34,7 +35,6 @@ const useStyles = makeStyles((theme) => ({
   toolbar: theme.mixins.gutters,
   drawerPaper: {
     width: drawerWidth,
-    borderRight: "2px solid darkgrey",
     background: "black"//"linear-gradient(45deg, #1634d6, black)"
   },
   content: {
@@ -71,28 +71,31 @@ const SideNavbar = (props) => {
 	);
 
     const getDrawerItems = () => (
-        <div className="tw-flex tw-flex-col tw-z-0 tw-h-screen tw-justify-between">
-            <div>
-                <div className="tw-flex tw-h-[62px] tw-items-center">
+        <div className="tw-flex tw-flex-col tw-z-10 tw-h-screen tw-justify-between">
+            <div className="tw-ml-[4vw]">
+                <div className="tw-flex tw-h-[62px] tw-items-center tw-px-4 tw-justify-between">
                     {/* <Typography style={{fontSize: 18}}>
                         <b>MENU</b>
                     </Typography> */}
-                    <div>
+                    {/* <div className="tw-px-4 tw-flex tw-items-center tw-justify-evenly"> */}
                         {getCricFunnLogo()}
-                    </div>
+                        <div className={`tw-text-white tw-block md:tw-hidden`} onClick={() => setIsNavOpen(false)}>
+                            <CloseRounded />
+                        </div>
+                    {/* </div> */}
                 </div>
                 <Divider />
                 <div>
                     <List>
                         {navItems.map((item, index) => (
                             <Link to={item.to} key={item.id} onClick={() => onClickNavItem(item)}>
-                                <ListItem style={{ borderLeft: navSelected == item.id ? "5px solid darkslateblue" : "", borderRight: navSelected == item.id ? "5px solid darkslateblue" : "", borderRadius: "40px" }} className={`${item.disabled ? "hover:tw-bg-red-800" : "hover:tw-bg-purple-800"} tw-mb-1`} button key={item.name}>
+                                <ListItem style={{ borderLeft: navSelected == item.id ? "2px solid white" : "", background: navSelected == item.id ? "linear-gradient(45deg, black, #1504b3)" : "", borderRadius: "0px 40px 40px 0px" }} className={`${item.disabled ? "hover:tw-bg-[#5a0404]" : "hover:tw-bg-[#232121]"} tw-mb-1`} button key={item.name}>
                                     <ListItemIcon className="tw-text-white">
                                         {item.icon}
                                     </ListItemIcon>
-                                    <ListItemText className={item.disabled ? "tw-text-gray-300" : "tw-text-white"}>
-                                        <p className={item.subText ? "tw-leading-4" : ""}>{item.name}</p>
-                                        {item.subText ? <p className="tw-text-sm tw-leading-4 tw-text-gray-400">
+                                    <ListItemText className={`${item.disabled ? "tw-text-gray-400" : "tw-text-white"}`}>
+                                        <p className={`${item.subText ? "tw-leading-[1.4rem]" : ""} tw-text-lg tw-font-noto ${navSelected == item.id ? "tw-font-semibold" : ""}`}>{item.name}</p>
+                                        {item.subText ? <p className="tw-text-base tw-leading-4 tw-text-gray-500">
                                             {item.subText}
                                         </p> : null }
                                     </ListItemText>
@@ -109,7 +112,7 @@ const SideNavbar = (props) => {
                         <BsCurrencyExchange className="tw-w-5 tw-h-5" />
                     </ListItemIcon>
                     <ListItemText className={"tw-text-white"}>
-                        <p className="tw-text-sm tw-leading-4 tw-text-gray-400">
+                        <p className="tw-text-sm tw-leading-4 tw-text-gray-400 tw-font-noto">
                             Credits Left Today: <b>{getRemainingCredits()}</b>
                         </p>
                     </ListItemText>
