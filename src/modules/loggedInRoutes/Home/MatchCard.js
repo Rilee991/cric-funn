@@ -2,7 +2,7 @@ import React, { useState, useContext, useEffect } from 'react';
 import { Card, CardActionArea, CardActions, CardContent, Button, Typography } from '@material-ui/core';
 import { FlashOnOutlined, VisibilityOutlined } from '@material-ui/icons';
 import Alert from '@material-ui/lab/Alert';
-import { find, get, isEmpty } from 'lodash';
+import { find, get, isEmpty, startCase } from 'lodash';
 import moment from 'moment';
 
 import { ContextProvider } from '../../../global/Context';
@@ -117,20 +117,20 @@ const MatchCard = (props) => {
 
     return (
 		<>
-			<Card style={{ boxShadow: "5px 5px 20px", background: "#1f0335" }} className="tw-mt-2 tw-mb-10 xl:tw-w-[70%] tw-rounded-[40px]">
+			<Card style={{ boxShadow: "5px 5px 20px" }} className="tw-mt-2 tw-bg-[#340043] tw-mb-10 tw-rounded-[40px]">
 				<CardActionArea>
 					<CardContent>
 						<MatchPic posterSrc={poster ? "poster" : "single"} team1Logo={teamInfo[0].img} team2Logo={teamInfo[1].img} poster={poster} matchTime={matchTime} mobileView={mobileView}/>
-						<Typography className="-tw-mt-5 tw-text-white" variant={"button"} style={{fontSize: 20}} component="h2">
-							<b>{get(matchTitle.split(","),'[0]','No Title')}</b>
+						<Typography className="-tw-mt-5 tw-leading-[1.3] tw-text-white tw-font-noto" style={{fontSize: 20}} component="h2">
+							<b>{startCase(get(matchTitle.split(","),'[0]','No Title'))}</b>
 						</Typography>
-						<Typography variant={"button"} style={{fontSize: 13}} className="tw-text-[#aeff71]" component="p">
+						<Typography style={{fontSize: window.innerWidth <= 640 ? "15px" : "18px" }} className="tw-text-[#aeff71] tw-font-noto tw-mt-1" component="p">
 							<b>{venue}</b>
 						</Typography>
-						<Typography variant={"button"} style={{fontSize: 13}} className="tw-text-[#15ffe0de]" component="p">
-							<b>	{getFormattedTimeISOString(matchTime)}</b>
+						<Typography style={{fontSize: window.innerWidth <= 640 ? "13px" : "16px" }} className="tw-text-[#15ffe0de] tw-font-noto tw-mt-1" component="p">
+							<b>Starts at {getFormattedTimeISOString(matchTime)}</b>
 						</Typography>
-						<Typography variant={"button"} style={{fontSize: 13}} className="tw-text-[#b7e7ff]" component="p">
+						<Typography style={{fontSize: window.innerWidth <= 640 ? "15px" : "18px" }} className="tw-text-[#b7e7ff] tw-font-noto tw-mt-1 tw-mb-3" component="p">
 							<b>{status}</b>
 						</Typography>
 						{!isEmpty(odds) ?
@@ -146,7 +146,7 @@ const MatchCard = (props) => {
 								bgImg2={oddsParams.team2Logo}
 							/>
 							: <div className="tw-bg-indigo-950 tw-h-[5vh] tw-mt-2 tw-rounded-[20px] tw-flex tw-justify-center tw-items-center tw-text-white">
-								<Typography variant={"button"} style={{fontSize: 13}} component="p">
+								<Typography style={{fontSize: 13}} component="p" variant={"button"} className="tw-font-noto">
 									<b>Odds updation in progress...</b>
 								</Typography>
 							</div>
@@ -156,18 +156,18 @@ const MatchCard = (props) => {
 
 				<CardActions className="tw-flex tw-justify-center tw-px-4 tw-pt-0">
 					<Button size="small" className="tw-w-1/2 tw-rounded-[40px]" style={{ background: bettingOn ? "linear-gradient(0deg, #1b004a, #50045a)" : 'grey', color: "white" }} variant="contained" disabled={bettingOn ? false : true} onClick={() => handleOnClickLetsBet()}>
-						<Typography variant="overline">
+						<Typography variant="overline" className="tw-font-noto tw-font-semibold tw-text-base tw-leading-8">
 							{"Fire Up"} <FlashOnOutlined />
 						</Typography>
 					</Button>
 					<Button size="small" className="tw-w-1/2 tw-rounded-[40px]" style={{ background: canViewBets ? "linear-gradient(0deg, #1b004a, #50045a)" : 'grey', color: "white" }} variant="contained" disabled={canViewBets ? false : true} onClick={() => handleOnClickViewBets(matchId)}>
-						<Typography variant="overline">
+						<Typography variant="overline" className="tw-font-noto tw-font-semibold tw-text-base tw-leading-8">
 							{mobileView ? "View" : "View Bets"} <VisibilityOutlined />
 						</Typography>
 					</Button>
 				</CardActions>
 
-				<Alert style={{ background: severity }} variant="filled" className="tw-rounded-[40px]">
+				<Alert style={{ background: severity }} variant="filled" className="tw-rounded-[40px] tw-font-noto">
 					<b>{message}</b>
 				</Alert>
 			</Card>
