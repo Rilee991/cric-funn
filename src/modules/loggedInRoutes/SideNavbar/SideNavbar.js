@@ -79,7 +79,7 @@ const SideNavbar = (props) => {
                     </Typography> */}
                     {/* <div className="tw-px-4 tw-flex tw-items-center tw-justify-evenly"> */}
                         {getCricFunnLogo()}
-                        <div className={`tw-text-white tw-block md:tw-hidden`} onClick={() => setIsNavOpen(false)}>
+                        <div className={`tw-text-white tw-cursor-pointer tw-block md:tw-hidden`} onClick={() => setIsNavOpen(false)}>
                             <CloseRounded />
                         </div>
                     {/* </div> */}
