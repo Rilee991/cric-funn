@@ -18,7 +18,8 @@ const useStyles = makeStyles((theme) => ({
 		[theme.breakpoints.up('md')]: {
 			width: `calc(100% - ${drawerWidth}px)`,
 			marginLeft: drawerWidth,
-		}
+		},
+		background: "linear-gradient(2deg, black, #10007e)"
 	},
 	menuButton: {
 		marginRight: theme.spacing(2),
@@ -61,13 +62,13 @@ const Header = (props) => {
   	return (
 		<div className={classes.root}>
 			<CssBaseline />
-			<AppBar position="fixed" className={`${classes.appBar} tw-shadow-none tw-bg-transparent tw-z-[1] tw-w-full`}>
-				<Toolbar className={"tw-flex tw-flex-row-reverse tw-justify-between"} style={{ "background": "transparent"}}>
-					{/* <div className="tw-flex tw-items-center tw-gap-1">
+			<AppBar position="fixed" className={`${classes.appBar} tw-shadow-none tw-z-[1] tw-w-full`}>
+				<Toolbar className={"tw-flex tw-justify-between"} style={{ "background": "transparent"}}>
+					<div className="tw-flex tw-items-center tw-gap-1">
 						<div>
 							{getCricFunnLogo()}
 						</div>
-					</div> */}
+					</div>
 					<div className="tw-flex tw-items-center tw-justify-center">
 						{isBday && 
 							<div className="tw-flex">
