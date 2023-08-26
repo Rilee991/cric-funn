@@ -70,25 +70,25 @@ const ViewBetsDialog = (props) => {
             <TableContainer component={Paper} className="tw-rounded-bl-[30px] tw-rounded-br-[30px] tw-overflow-scroll">
                 <Table aria-label="caption table">
                     <caption className="tw-p-2">
-                        <Typography variant="overline">
+                        <Typography variant="overline" className="tw-font-noto">
                             Sorted By Points {isAdmin ? `- Seen By (${Object.keys(seenBy).join(", ")})` : ""}
                         </Typography>
                     </caption>
                     <TableHead>
                         <TableRow className="tw-bg-black">
-                            <TableCell className="tw-text-white tw-p-3" variant="head">PLAYER</TableCell>
-                            <TableCell className="tw-text-white tw-p-3" align="center" variant="head">TEAM</TableCell>
-                            <TableCell className="tw-text-white tw-p-3" align="center" variant="head">POINTS</TableCell>
-                            <TableCell className="tw-text-white tw-p-3" align="center" variant="head">TIME</TableCell>
+                            <TableCell className="tw-text-white tw-p-3 tw-font-noto" variant="head">PLAYER</TableCell>
+                            <TableCell className="tw-text-white tw-p-3 tw-font-noto" align="center" variant="head">TEAM</TableCell>
+                            <TableCell className="tw-text-white tw-p-3 tw-font-noto" align="center" variant="head">POINTS</TableCell>
+                            <TableCell className="tw-text-white tw-p-3 tw-font-noto" align="center" variant="head">TIME</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
                         {betsData.map((eachBet) => (
                             <TableRow key={eachBet.username} className="tw-bg-[aliceblue]">
-                                <TableCell className="tw-p-3" component="th" scope="row">{eachBet.username}</TableCell>
-                                <TableCell className="tw-p-3" align="center"><Tag className="tw-rounded-3xl" color={getColor(eachBet)}>{eachBet.betTeam}</Tag></TableCell>
-                                <TableCell className="tw-p-3" align="center">{eachBet.betPoints}</TableCell>
-                                <TableCell className="tw-p-3" align="center">{getFormattedTime(eachBet.betTime.seconds)}</TableCell>
+                                <TableCell className="tw-p-3 tw-font-noto" component="th" scope="row">{eachBet.username}</TableCell>
+                                <TableCell className="tw-p-3 tw-font-noto" align="center"><Tag className="tw-rounded-3xl" color={getColor(eachBet)}>{eachBet.betTeam}</Tag></TableCell>
+                                <TableCell className="tw-p-3 tw-font-noto" align="center">{eachBet.betPoints}</TableCell>
+                                <TableCell className="tw-p-3 tw-font-noto" align="center">{getFormattedTime(eachBet.betTime.seconds)}</TableCell>
                             </TableRow>
                         ))}
                     </TableBody>
@@ -100,7 +100,7 @@ const ViewBetsDialog = (props) => {
     return (
         <Dialog open={open} onClose={closeDialog} maxWidth="xl">
             <DialogTitle className="tw-p-2" style={{ borderRadius: "40px 40px 0px 0px", background: "linear-gradient(353deg, black, #0c4371)" }}>
-                <Typography variant="button" style={{fontSize: 14 }} className="tw-flex tw-justify-between tw-text-white">
+                <Typography variant="button" style={{fontSize: 14 }} className="tw-flex tw-font-noto tw-justify-between tw-text-white">
                     <b>{team1Abbreviation} v/s {team2Abbreviation}</b>
                     <IconButton
                         aria-label="toggle password visibility"

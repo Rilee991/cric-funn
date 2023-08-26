@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Switch, Route } from 'react-router-dom';
-import { AlternateEmail } from '@material-ui/icons';
 import { find } from 'lodash';
 import moment from 'moment';
 import Confetti from 'react-confetti';
@@ -50,8 +49,8 @@ const LoggedInRoutes = () => {
 
     const navItems = [{
         name: <div className="tw-flex tw-items-center">
-            <div>
-                <AlternateEmail className="tw-w-1/5"/>{`${username}`}
+            <div className="tw-flex">
+                <span className="tw-text-xl">{`@`}</span><span>{`${username}`}</span>
             </div>
         </div>,
         to: "/",
