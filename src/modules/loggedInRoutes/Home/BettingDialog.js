@@ -22,10 +22,18 @@ const useStyles = makeStyles((theme) => ({
 
 const CustomTextField = withStyles({
     root: {
-      '& fieldset': {
-        borderWidth: 2,
-        borderRadius: "40px"
-      }
+        '& fieldset': {
+            borderWidth: 2,
+            borderRadius: "40px",
+            borderColor: "grey",
+            fontFamily: "Noto Sans",
+        },
+        '& label': {
+            fontFamily: "Noto Sans",
+        },
+        '& div': {
+            fontFamily: "Noto Sans"
+        },
     },
 })(TextField);
 
@@ -129,9 +137,9 @@ const BettingDialog = (props) => {
                         required
                         className="tw-rounded-[40px] tw-mb-3"
                     >
-                        <MenuItem value="" disabled><Typography variant="overline">Select Team</Typography></MenuItem>
-                        <MenuItem value={team1} style={{ justifyContent: "center", marginBottom: "1px", borderRadius: "40px", color:"white", background: `linear-gradient(172deg, ${oddsParams.team1Color || "blue"}, #0c0000)`, width: "100%" }}><Typography variant="button">{team1}</Typography></MenuItem>
-                        <MenuItem value={team2} style={{ justifyContent: "center", borderRadius: "40px", color:"white", background: `linear-gradient(172deg, ${oddsParams.team2Color || "red"}, #0c0000)`, width: "100%" }}><Typography variant="button">{team2}</Typography></MenuItem>
+                        <MenuItem value="" disabled><Typography variant="overline" className="tw-font-noto">Select Team</Typography></MenuItem>
+                        <MenuItem value={team1} style={{ justifyContent: "center", marginBottom: "1px", borderRadius: "40px", color:"white", background: `linear-gradient(172deg, ${oddsParams.team1Color || "blue"}, #0c0000)`, width: "100%" }}><Typography variant="button" className="tw-font-noto">{team1}</Typography></MenuItem>
+                        <MenuItem value={team2} style={{ justifyContent: "center", borderRadius: "40px", color:"white", background: `linear-gradient(172deg, ${oddsParams.team2Color || "red"}, #0c0000)`, width: "100%" }}><Typography variant="button" className="tw-font-noto">{team2}</Typography></MenuItem>
                     </Select>
                     <CustomTextField
                         fullWidth
@@ -150,7 +158,7 @@ const BettingDialog = (props) => {
                             {"Go For Glory!"}
                         </Typography>
                     </Button> */}
-                    <SwipeButton loading={loading} disabled={disabledSave} color='#5e9d0b' text='SLIDE TO EXECUTE' onSuccess={() => betInTheMatch()} />
+                    <SwipeButton loading={loading} disabled={disabledSave} color='#969dd1' text='SLIDE TO EXECUTE' onSuccess={() => betInTheMatch()} />
                     {/* <Alert severity="warning" variant="filled" className="tw-rounded-[40px] tw-flex tw-justify-center" classes={{ icon: classes.customIcon }}>
                         <Typography variant="body">
                             <b>{allInEnabled ? "Warning! You're going ALL IN! Shout victory is mine! " : ""}Once bet cannot be edited.</b>
@@ -164,7 +172,7 @@ const BettingDialog = (props) => {
     return (
         <Dialog open={open} onClose={closeDialog} maxWidth="xl">
             <DialogTitle className="tw-p-2" style={{ borderRadius: "40px 40px 0px 0px", background: "linear-gradient(353deg, black, #0c4371)" }}>
-                <Typography variant="button" style={{fontSize: 14 }} className="tw-flex tw-justify-between tw-text-white">
+                <Typography variant="button" style={{fontSize: 14 }} className="tw-flex tw-justify-between tw-text-white tw-font-noto">
                     <b>{team1Abbreviation} v/s {team2Abbreviation}</b>
                     <IconButton
                         aria-label="toggle password visibility"
@@ -178,7 +186,7 @@ const BettingDialog = (props) => {
             <div className="tw-flex tw-justify-between tw-p-1" style={{ background: "linear-gradient(180deg, black, #199309)" }}>
                  <div>
                      <Tag color={points - selectedPoints < 500 ? "red-inverse" : "geekblue"} className="tw-rounded-3xl">
-                         <Typography variant="button" style={{fontSize: 11}}>
+                         <Typography variant="button" style={{fontSize: 12}} className="tw-font-noto">
                              <b>Pts Left: {points - selectedPoints}</b><br/>
                          </Typography>
                      </Tag>
@@ -186,7 +194,7 @@ const BettingDialog = (props) => {
                  <div className="tw-cursor-pointer glow-on-hover" onClick={() => onClickAllIn()}>
                      <Tag color={allInEnabled ? "green-inverse" : "green"} className="tw-rounded-3xl">
                          <Typography variant="button" style={{fontSize: 12}}>
-                             <b className="tw-flex tw-items-center tw-justify-between">Go All In {allInEnabled ? <CheckCircle className="tw-h-5" /> : <CheckCircleOutline className="tw-h-5" />} </b>
+                             <b className="tw-flex tw-items-center tw-justify-between tw-font-noto">Go All In {allInEnabled ? <CheckCircle className="tw-h-5" /> : <CheckCircleOutline className="tw-h-5" />} </b>
                          </Typography>
                      </Tag>
                  </div>
