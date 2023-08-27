@@ -185,7 +185,7 @@ const PointsTimelineCompare = (props) => {
         <Card style={{ boxShadow: "5px 5px 20px" }} className="tw-mt-2 tw-mb-10 tw-w-full tw-rounded-[40px]">
             <CardActionArea style={{ background: "linear-gradient(179deg, rgb(10, 8, 82), rgb(0, 0, 0))" }}>
                 <CardContent style={{ "background": "linear-gradient(179deg, #0a0852, rgb(0 0 0))"}} className="tw-rounded-[40px] tw-flex tw-flex-col tw-items-center tw-p-2">
-                    <Typography className="tw-flex tw-items-center tw-gap-2 tw-text-white tw-font-mono tw-italic" variant={"button"} style={{fontSize: 20}} component="p">
+                    <Typography className="tw-flex tw-items-center tw-gap-2 tw-text-white tw-font-noto tw-italic" variant={"button"} style={{fontSize: 20}} component="p">
                         <b>{"Scores Timeline"}</b>
                     </Typography>
                 </CardContent>
