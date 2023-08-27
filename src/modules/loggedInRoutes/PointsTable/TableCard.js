@@ -64,16 +64,18 @@ const TableCard = (props) => {
 
     return (
         <Card style={{ boxShadow: "5px 5px 20px" }} className="tw-mt-2 tw-mb-10 xl:tw-w-[70%] md:tw-w-[90%] tw-rounded-[40px]">
-            <CardActionArea style={{ background: "linear-gradient(44deg, rgb(37, 12, 81), rgb(96, 83, 23))" }}>
-                <CardContent style={{ "background": "linear-gradient(44deg, #250c51, #605317)"}} className="tw-rounded-[40px] tw-flex tw-flex-col tw-items-center tw-p-2">
-                    <Typography className="tw-flex tw-items-center tw-gap-2 tw-text-white tw-font-mono tw-italic" variant={"button"} style={{fontSize: 20}} component="p">
+            <CardActionArea >
+                <CardContent style={{ "background": "linear-gradient(2deg, black, #10007e)"}} className="tw-flex tw-flex-col tw-items-center tw-p-2">
+                    <Typography className="tw-flex tw-font-noto tw-items-center tw-gap-2 tw-text-white tw-italic" variant={"button"} style={{fontSize: 20}} component="p">
                         <b>{title || "No title"}</b>
                     </Typography>
                 </CardContent>
                 <Divider />
                 <TableContainer component={Paper}>
 					<Table style={{ minWidth: "100%" }} aria-label="customized table caption">
-						<caption style={{ background: "linear-gradient(45deg, #13606a, #303848)", color: "aliceblue" }}><Typography variant="overline">{caption || "Enjoy your life dumbass!"}</Typography></caption>
+						<caption style={{ background: "linear-gradient(2deg, black, #10007e)", color: "aliceblue" }}>
+                            <Typography variant="overline" className="tw-font-noto">{caption || "Enjoy your life dumbass!"}</Typography>
+                        </caption>
 						<TableHead>
 							<TableRow>
                                 {cols && cols.length ? cols.map((colName, idx) => 
@@ -90,17 +92,17 @@ const TableCard = (props) => {
                             {data && data.length ? data.map((eachRow,idx) => (
                                 <StyledTableRow key={eachRow.player} style={{background: eachRow.color }}>
                                     <StyledTableCell component="th" scope="row">
-                                        <Typography variant="button" className="tw-font-bold">
+                                        <Typography className="tw-font-bold tw-font-noto">
                                             <Badge badgeContent={idx+1} color={eachRow.badgeColor} component="animate" anchorOrigin={{vertical: 'top',horizontal: 'left'}}>
                                                 {eachRow.player}
                                             </Badge>
                                         </Typography>
                                     </StyledTableCell>
-                                    <StyledTableCell align="center">{eachRow.bets}</StyledTableCell>
-                                    <StyledTableCell align="center">{eachRow["w-l-i"]}</StyledTableCell>
-                                    <StyledTableLastCell align="center">{eachRow.points}</StyledTableLastCell>
+                                    <StyledTableCell align="center" className="tw-font-noto">{eachRow.bets}</StyledTableCell>
+                                    <StyledTableCell align="center" className="tw-font-noto">{eachRow["w-l-i"]}</StyledTableCell>
+                                    <StyledTableLastCell align="center" className="tw-font-noto">{eachRow.points}</StyledTableLastCell>
                                 </StyledTableRow>
-                            )) : "No players present."}
+                            )) : <div className="tw-font-noto">No players present.</div>}
 						</TableBody>
 					</Table>
 				</TableContainer>

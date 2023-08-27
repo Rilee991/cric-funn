@@ -47,8 +47,8 @@ export default function PointsTable() {
 					<TopperCard topperDetails={tableData?.data?.[0]} />
 					<TableCard tableData={tableData} />
 				</> :
-				<Alert style={{ alignItems: "center" }} severity={"info"} variant="filled" className="tw-rounded-[40px]">
-					<Typography gutterBottom variant="button" style={{fontSize: 15, lineHeight: "28px", }} component="p">
+				<Alert style={{ alignItems: "center" }} severity={"info"} variant="filled" className="tw-rounded-[40px] tw-mt-10">
+					<Typography className="tw-font-noto" gutterBottom variant="button" style={{fontSize: 15, lineHeight: "28px", }} component="p">
 						<b>Points table details doesn't exists.</b>
 					</Typography>
 				</Alert> 
