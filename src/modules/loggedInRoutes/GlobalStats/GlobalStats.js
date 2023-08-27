@@ -1,9 +1,9 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { startCase } from 'lodash';
 
-import LoadingComponent from '../../../components/common/LoadingComponent';
 import StatsTable from '../../../components/common/StatsTable';
 import { ContextProvider } from '../../../global/Context';
+import PageLoader from '../../../components/common/PageLoader';
 
 const GlobalStats = () => {
     const contextConsumer = useContext(ContextProvider);
@@ -24,7 +24,7 @@ const GlobalStats = () => {
 
     return (
         <>
-            {loading ? <LoadingComponent /> : 
+            {loading ? <PageLoader tip="Loading please wait" color="black" /> : 
                 Object.keys(globalStats).map((statName) => (
                     statName ?
                         <StatsTable

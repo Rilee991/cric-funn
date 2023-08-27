@@ -80,22 +80,22 @@ const StatsTable = (props) => {
 
     return (
         <Card style={{ boxShadow: "5px 5px 20px" }} className={`tw-mt-2 tw-mb-10 ${fullWidth ? "tw-w-full" : "xl:tw-w-[70%] md:tw-w-[90%]"} tw-rounded-[40px]`}>
-            <CardActionArea style={{ background: "linear-gradient(179deg, rgb(3 70 77), rgb(85 7 76))" }}>
-                <CardContent style={{ "background": "linear-gradient(179deg, rgb(3 70 77), rgb(85 7 76))"}} className="tw-rounded-[40px] tw-flex tw-flex-col tw-items-center tw-p-2">
-                    <Typography className="tw-flex tw-items-center tw-gap-2 tw-text-white tw-font-mono tw-italic" variant={"button"} style={{fontSize: 20}} component="p">
+            <CardActionArea>
+                <CardContent style={{ "background": "linear-gradient(1deg, black, #075904)"}} className="tw-flex tw-flex-col tw-items-center tw-p-2">
+                    <Typography className="tw-flex tw-items-center tw-font-noto tw-gap-2 tw-text-white tw-italic" variant={"button"} style={{fontSize: 20}} component="p">
                         <b>{title || "No title"}</b>
                     </Typography>
                 </CardContent>
                 <Divider />
                 <TableContainer component={Paper}>
 					<Table style={{ minWidth: "100%" }} aria-label="customized table caption">
-						<caption><Typography variant="overline">{caption || "Enjoy your life dumbass!"}</Typography></caption>
+						<caption><Typography className="tw-font-noto" variant="overline">{caption || "Enjoy your life dumbass!"}</Typography></caption>
 						<TableHead>
 							<TableRow>
                                 {cols && cols.length ? cols.map((colName, idx) =>
                                     <> { idx != cols.length-1 ? 
-                                        <StyledTableCell align="center"><Typography variant="button">{upperCase(colName)}</Typography></StyledTableCell>
-                                        : <StyledTableLastCell align="center"><Typography variant="button">{upperCase(colName)}</Typography></StyledTableLastCell>}
+                                        <StyledTableCell align="center"><Typography variant="button" className="tw-font-noto">{upperCase(colName)}</Typography></StyledTableCell>
+                                        : <StyledTableLastCell align="center"><Typography variant="button" className="tw-font-noto">{upperCase(colName)}</Typography></StyledTableLastCell>}
                                     </>
                                 ) : null }
 							</TableRow>
