@@ -7,7 +7,8 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        noto: ["Noto Sans", "sans-serif"]
+        noto: ["Noto Sans", "sans-serif"],
+        autography: ["Mrs Saint Delafield", "cursive"]
       },
       colors: {
         'black-app': "#171616",
