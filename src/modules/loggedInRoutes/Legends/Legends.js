@@ -7,6 +7,10 @@ import { VerticalTimeline, VerticalTimelineElement } from 'react-vertical-timeli
 import 'react-vertical-timeline-component/style.min.css';
 
 import hallOfFame from '../../../res/images/hof.png';
+import broly from '../../../res/images/broly.png';
+import ashu from '../../../res/images/ashu.png';
+import desmond from '../../../res/images/desmond.png';
+import cypher from '../../../res/images/cyphernew.png';
 
 // import { Navigation, Pagination, EffectFade, Keyboard } from "swiper";
 // import { Swiper, SwiperSlide } from "swiper/react";
@@ -36,7 +40,7 @@ const Legends = () => {
         bgImage: "https://thumbs.gfycat.com/RichMinorBluet-size_restricted.gif",
         bgColor: "#8f8fff",
         title: "Cypher33, Undisputed Universal Champion",
-        poster: "https://i.redd.it/0m7fklo24ac81.jpg",
+        poster: cypher,
         period: "2022 - 2023",
         isChampCard: true,
         date: moment("2023-05-30 02:30:30").toISOString(),
@@ -45,7 +49,7 @@ const Legends = () => {
         bgImage: "https://i.pinimg.com/originals/10/be/be/10bebe36032915cf79ae1096ebde66f3.gif",
         bgColor: "#1f9395",
         title: "Ashu, Universal Heavyweight Champion",
-        poster: "https://i.redd.it/0m7fklo24ac81.jpg",
+        poster: ashu,
         period: "2020 - 2021",
         isChampCard: true,
         date: moment("2023-05-30 02:30:30").toISOString(),
@@ -54,7 +58,7 @@ const Legends = () => {
         bgImage: "https://media.tenor.com/ETGlhu0YplsAAAAM/wrestle-mania36-wwe.gif",
         bgColor: "#00dae5",
         title: "Desmond, Universal Champion",
-        poster: "https://i.redd.it/0m7fklo24ac81.jpg",
+        poster: desmond,
         period: "2018 - 2020",
         isChampCard: true,
         date: moment("2023-05-30 02:30:30").toISOString(),
@@ -63,7 +67,7 @@ const Legends = () => {
         bgImage: "https://i.gifer.com/QjrR.gif",
         bgColor: "#d7b60c",
         title: "Broly, Inaugural Universal Champion",
-        poster: "https://i.redd.it/0m7fklo24ac81.jpg",
+        poster: broly,
         period: "2017 - 2018",
         isChampCard: true,
         date: moment("2023-05-30 02:30:30").toISOString(),
