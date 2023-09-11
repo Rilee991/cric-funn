@@ -18,18 +18,18 @@ const BorderLinearProgress = withStyles((theme) => ({
     },
 }))(LinearProgress);
 
-const StatsCardV2 = () => {
+const StatsCardV2 = (props) => {
     return (
-        <Card style={{ boxShadow: "5px 5px 20px", height: "auto" }} className="tw-mt-2 tw-w-52 tw-mb-10 tw-rounded-[20px]">
+        <Card style={{ boxShadow: "1px 1px 10px", height: "auto" }} className="tw-mt-2 tw-w-52 tw-rounded-[20px]">
             <CardActionArea>
-                <CardContent className="tw-flex tw-h-24 tw-flex-col tw-bg-[url(https://cdn-icons-png.flaticon.com/512/5971/5971593.png))] tw-justify-between tw-bg-no-repeat tw-bg-contain tw-bg-right">
+                <CardContent style={{ background: `url(${props.background})` }} className="tw-flex tw-h-24 tw-flex-col tw-justify-between tw-bg-no-repeat tw-bg-contain tw-bg-right">
                     <div className="tw-flex tw-items-center tw-justify-between">
-                        <div>
-                            <div className="tw-flex tw-items-center tw-justify-center tw-text-4xl tw-italic">
-                                56
+                        <div className="tw-flex tw-flex-col tw-items-start tw-justify-center">
+                            <div className="tw-flex tw-leading-7 tw-items-center tw-justify-center tw-text-4xl tw-italic tw-font-bold">
+                                {props.text || "-"}
                             </div>
-                            <div>
-                                Played
+                            <div className="tw-flex tw-items-center tw-justify-center tw-italic">
+                                {props.title || "NA"}
                             </div>
                         </div>
                     </div>
