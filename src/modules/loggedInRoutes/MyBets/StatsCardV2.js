@@ -20,11 +20,11 @@ const BorderLinearProgress = withStyles((theme) => ({
 
 const StatsCardV2 = (props) => {
     return (
-        <Card style={{ boxShadow: "1px 1px 10px", height: "auto" }} className="tw-mt-2 tw-w-52 tw-rounded-[20px]">
+        <Card style={{ boxShadow: "1px 1px 10px", height: "auto", background: props.bgColor || "linear-gradient(62deg, black, #f5dc25)" }} className="tw-mt-2 tw-w-full tw-rounded-[20px]">
             <CardActionArea>
                 <CardContent style={{ background: `url(${props.background})` }} className="tw-flex tw-h-24 tw-flex-col tw-justify-between tw-bg-no-repeat tw-bg-contain tw-bg-right">
                     <div className="tw-flex tw-items-center tw-justify-between">
-                        <div className="tw-flex tw-flex-col tw-items-start tw-justify-center">
+                        <div className="tw-flex tw-flex-col tw-items-start tw-justify-center tw-text-white">
                             <div className="tw-flex tw-leading-7 tw-items-center tw-justify-center tw-text-4xl tw-italic tw-font-bold">
                                 {props.text || "-"}
                             </div>
