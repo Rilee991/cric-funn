@@ -33,9 +33,9 @@ const StatsCardV2 = (props) => {
                             </div>
                         </div>
                     </div>
-                    <div>
-                        <BorderLinearProgress variant="determinate" value={50} />
-                    </div>
+                    {props.barPercent != null && <div>
+                        <BorderLinearProgress variant="determinate" value={props.barPercent || 0} />
+                    </div> }
                 </CardContent>
             </CardActionArea>
         </Card>
