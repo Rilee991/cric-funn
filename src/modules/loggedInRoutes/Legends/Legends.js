@@ -27,7 +27,7 @@ const Legends = () => {
     // SiKongregate SiAnsible SiBlazemeter SiCodio SiDeepnote SiSparkar
     const width = window.innerWidth;
     const legends = [{
-        bgImage: "https://media.tenor.com/RhRpOYBCi9QAAAAd/wrestlemania-wwe.gif",
+        bgImage: "https://firebasestorage.googleapis.com/v0/b/cric-funn.appspot.com/o/gifs%2Fkelly1.gif?alt=media&token=d8bcd02a-70b8-43db-9a43-26c02b07d7ff",
         bgColor: "#7177ff",
         title: "Kelly, Undisputed Universal Champion",
         poster: "https://firebasestorage.googleapis.com/v0/b/cric-funn.appspot.com/o/profilePictures%2Fpappu.png?alt=media&token=f2464040-b336-4425-a911-f508cec8d8ee",
@@ -37,7 +37,7 @@ const Legends = () => {
         thumbnail: <SiKongregate />
     }, 
     {
-        bgImage: "https://thumbs.gfycat.com/RichMinorBluet-size_restricted.gif",
+        bgImage: "https://firebasestorage.googleapis.com/v0/b/cric-funn.appspot.com/o/gifs%2Fcypher1.gif?alt=media&token=724ec903-04cb-410a-adae-87b1be5c975d",
         bgColor: "#8f8fff",
         title: "Cypher33, Undisputed Universal Champion",
         poster: cypher,
@@ -46,7 +46,7 @@ const Legends = () => {
         date: moment("2023-05-30 02:30:30").toISOString(),
         thumbnail: <SiCodio />
     }, {
-        bgImage: "https://i.pinimg.com/originals/10/be/be/10bebe36032915cf79ae1096ebde66f3.gif",
+        bgImage: "https://firebasestorage.googleapis.com/v0/b/cric-funn.appspot.com/o/gifs%2Fashu1.gif?alt=media&token=0e550152-4855-4fcb-a2f0-59bf67a64bae",
         bgColor: "#1f9395",
         title: "Ashu, Universal Heavyweight Champion",
         poster: ashu,
@@ -55,7 +55,7 @@ const Legends = () => {
         date: moment("2023-05-30 02:30:30").toISOString(),
         thumbnail: <SiAnsible />
     }, {
-        bgImage: "https://media.tenor.com/ETGlhu0YplsAAAAM/wrestle-mania36-wwe.gif",
+        bgImage: "https://firebasestorage.googleapis.com/v0/b/cric-funn.appspot.com/o/gifs%2Fdesmond1.gif?alt=media&token=480a75a6-445a-461b-a11f-b5fc9f166f48",
         bgColor: "#00dae5",
         title: "Desmond, Universal Champion",
         poster: desmond,
@@ -64,8 +64,8 @@ const Legends = () => {
         date: moment("2023-05-30 02:30:30").toISOString(),
         thumbnail: <SiDisroot />
     }, {
-        bgImage: "https://i.gifer.com/QjrR.gif",
-        bgColor: "#d7b60c",
+        bgImage: "https://firebasestorage.googleapis.com/v0/b/cric-funn.appspot.com/o/gifs%2Fbroly1.gif?alt=media&token=12ce8750-c784-48be-a7f7-6cc5a5250302",
+        bgColor: "#0cd7a2",
         title: "Broly, Inaugural Universal Champion",
         poster: broly,
         period: "2017 - 2018",
@@ -103,7 +103,7 @@ const Legends = () => {
                             backgroundSize: "100% 100%", backgroundPosition: "center", backgroundColor: legend.bgColor, 
                             backgroundBlendMode: "darken", backgroundRepeat: "no-repeat", margin: width < 500 ? 0 : "" }}
                         contentArrowStyle={{ borderRight: `7px solid  ${legend.bgColor}` }}
-                        iconStyle={{ background: legend.bgColor, color: '#fff', zIndex: 0 }}
+                        iconStyle={{ background: legend.bgColor, color: '#fff', zIndex: 1 }}
                         icon={legend.thumbnail || <SiZig />}
                     >
                         {getChild(legend)}

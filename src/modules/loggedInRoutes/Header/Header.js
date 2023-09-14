@@ -62,7 +62,7 @@ const Header = (props) => {
   	return (
 		<div className={classes.root}>
 			<CssBaseline />
-			<AppBar position="fixed" className={`${classes.appBar} tw-shadow-none tw-z-[1] tw-w-full`}>
+			<AppBar position="fixed" className={`${classes.appBar} tw-shadow-none tw-z-[10] tw-w-full`}>
 				<Toolbar className={"tw-flex tw-justify-between"} style={{ "background": "transparent"}}>
 					<div className="tw-flex tw-items-center tw-gap-1">
 						<div>

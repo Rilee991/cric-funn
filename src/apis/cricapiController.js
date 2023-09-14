@@ -6,7 +6,7 @@ import { clearTable, createMatch, getMatchById, updateMatchById } from "./matchC
 import { CONFIGURATION_DOCS } from '../global/enums';
 
 const API_KEY = "e62a5cb2-1135-40ee-9a7b-99d14472d7ee";
-const SERIES_ID = "78373c2a-5f35-4287-a155-a51e3f8572ff";
+const SERIES_ID = "830af3da-5a0b-4b83-8d73-9800089be118";
 
 export const getMatchDetailsById = async (id, username, setConfigurations) => {
     try {
