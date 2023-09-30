@@ -22,6 +22,7 @@ https://cric-funn.web.app
 2. Make a new cric-funn logo
 3. Make jsconfig for src folder
 12. Explore push-notifications
+18. Tracking usage time
 
 #### COMPLETED:
 1. Need to delete all unused resources
