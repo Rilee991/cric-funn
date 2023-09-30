@@ -23,6 +23,7 @@ https://cric-funn.web.app
 3. Make jsconfig for src folder
 12. Explore push-notifications
 18. Tracking usage time
+19. Debugging crashing issue on start sometimes
 
 #### COMPLETED:
 1. Need to delete all unused resources
