@@ -10,8 +10,6 @@ import { RiDashboard2Line } from 'react-icons/ri';
 import { FaHistory, FaMedal, FaSolarPanel } from 'react-icons/fa';
 import { MdOutlineQueryStats } from 'react-icons/md';
 
-// http://api.weatherstack.com/current?access_key=f44f0188e69910c683149ae9d0e413b3&query=Rourkela
-
 import NotFoundError from '../../components/common/NotFoundError';
 import { Header, SideNavbar, Notifications, Home, MyBets, MyStats, GlobalStats, PointsTable, ControlPanel, Legends } from './index';
 import { ContextProvider } from '../../global/Context';

@@ -24,6 +24,7 @@ https://cric-funn.web.app
 12. Explore push-notifications
 18. Tracking usage time
 19. Debugging crashing issue on start sometimes
+20. Include weather info - // http://api.weatherstack.com/current?access_key=f44f0188e69910c683149ae9d0e413b3&query=Rourkela
 
 #### COMPLETED:
 1. Need to delete all unused resources
