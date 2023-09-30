@@ -6,3 +6,7 @@ export const CONFIGURATION_DOCS = {
     CREDITS: `CREDITS`,
     BACKUPS: `BACKUPS`
 };
+export const SESSION_STORAGE = {
+    START_TIME: 'startTime',
+    DEVICE_INFO: 'deviceInfo'
+};
