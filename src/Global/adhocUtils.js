@@ -121,3 +121,80 @@ export const formatMatch = (match) => {
     delete match["fantasyEnabled"];
     delete match["hasSquad"];
 }
+
+export const formatWcMatch = (match) => {
+    let names = match.name.split(" vs");
+    let team1 = names[0];
+    let team2 = names[1].split(", ")[0].slice(1);
+
+    if(match.teamInfo) {
+        if(match.teamInfo.length == 2) {
+            if(match.teamInfo[0].name != team1) {
+                const temp = match.teamInfo[0];
+                match.teamInfo[0] = match.teamInfo[1];
+                match.teamInfo[1] = temp;
+            }
+        } else {
+            match.teamInfo.push({ name: match.teamInfo[0].name != team1 ? team1 : team2, shortname: match.teamInfo[0].name != team1 ? team1 : team2, img: "https://assets.stickpng.com/images/580b57fcd9996e24bc43c53e.png" });
+            if(match.teamInfo[0].name != team1) {
+                const temp = match.teamInfo[0];
+                match.teamInfo[0] = match.teamInfo[1];
+                match.teamInfo[1] = temp;
+            }
+        }
+    } else {
+        match.teamInfo = [{
+            name: team1, shortname: TEAM_PROPS[team1]?.abbr || getTeamAbbr(team1), img: TEAM_PROPS[team1]?.logo || DEFAULT_TEAM_LOGO
+        }, {
+            name: team2, shortname: TEAM_PROPS[team2]?.abbr || getTeamAbbr(team2), img: TEAM_PROPS[team2]?.logo || DEFAULT_TEAM_LOGO
+        }];
+    }
+
+    if(match.teams && match.teams[0] != team1) {
+        const temp = match.teams[0];
+        match.teams[0] = match.teams[1];
+        match.teams[1] = temp;
+    }
+
+    // Only for wc...
+    const q1Team = "Netherlands", q2Team = "Sri Lanka";
+
+    if(TEAM_PROPS[match.teamInfo[0].name]) {
+        match.teamInfo[0].img = TEAM_PROPS[match.teamInfo[0].name].logo;
+    } else if(match.teamInfo[0].name == "Q1") {
+        match.teamInfo[0].name = team1 = q1Team;
+        match.teamInfo[0].shortname = TEAM_PROPS[q1Team].abbr;
+        match.teamInfo[0].img = TEAM_PROPS[q1Team].logo;
+        match.name = match.name.replace("Q1", q1Team);
+    } else if(match.teamInfo[0].name == "Q2") {
+        match.teamInfo[0].name = team1 = q2Team;
+        match.teamInfo[0].shortname = TEAM_PROPS[q2Team].abbr;
+        match.teamInfo[0].img = TEAM_PROPS[q2Team].logo;
+        match.name = match.name.replace("Q2", q2Team);
+    }
+
+    if(TEAM_PROPS[match.teamInfo[1].name]) {
+        match.teamInfo[1].img = TEAM_PROPS[match.teamInfo[1].name].logo;
+    } else if(match.teamInfo[1].name == "Q1") {
+        match.teamInfo[1].name = team2 = q1Team;
+        match.teamInfo[1].shortname = TEAM_PROPS[q1Team].abbr;
+        match.teamInfo[1].img = TEAM_PROPS[q1Team].logo;
+        match.name = match.name.replace("Q1", q1Team);
+    } else if(match.teamInfo[1].name == "Q2") {
+        match.teamInfo[1].name = team2 = q2Team;
+        match.teamInfo[1].shortname = TEAM_PROPS[q2Team].abbr;
+        match.teamInfo[1].img = TEAM_PROPS[q2Team].logo;
+        match.name = match.name.replace("Q2", q2Team);
+    }
+
+    match.team1 = team1;
+    match.team2 = team2;
+    match.team1Abbreviation = match.teamInfo[0].shortname;
+    match.team2Abbreviation = match.teamInfo[1].shortname;
+    match.poster = matchPostersMapping[`${match.team1Abbreviation}-${match.team2Abbreviation}`] || matchPostersMapping[`${match.team2Abbreviation}-${match.team1Abbreviation}`] || "";
+    match.dateTimeGMT = match.dateTimeGMT + "Z";
+
+    delete match["bbbEnabled"];
+    delete match["fantasyEnabled"];
+    delete match["hasSquad"];
+}

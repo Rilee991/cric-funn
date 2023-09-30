@@ -91,5 +91,55 @@ export const TEAM_PROPS = {
         color: "darkblue",
         abbr: "WSH",
         logo: "https://sportavideos.blob.core.windows.net/splcms2/TeamsUpload/7/Team_logo.png"
+    },
+    "England": {
+        color: "#b8b0b0",
+        abbr: "ENG",
+        logo: "https://cdn.pixabay.com/animation/2022/08/14/03/55/03-55-37-522_512.gif"
+    },
+    "New Zealand": {
+        color: "#64626d",
+        abbr: "NZ",
+        logo: "https://cdn.pixabay.com/animation/2022/09/01/03/09/03-09-33-701_512.gif"
+    },
+    "Pakistan": {
+        color: "#529d6f",
+        abbr: "PAK",
+        logo: "https://cdn.pixabay.com/animation/2022/09/06/03/13/03-13-18-245_512.gif"
+    },
+    "Netherlands": {
+        color: "#e49332",
+        abbr: "NED",
+        logo: "https://cdn.pixabay.com/animation/2022/09/01/03/09/03-09-29-548_512.gif"
+    },
+    "Bangladesh": {
+        color: "#1ab998",
+        abbr: "BAN",
+        logo: "https://cdn.pixabay.com/animation/2022/08/01/03/43/03-43-08-674_512.gif"
+    },
+    "Afghanistan": {
+        color: "#1b6dfd",
+        abbr: "AFG",
+        logo: "https://cdn.pixabay.com/animation/2022/07/31/19/29/19-29-18-923_512.gif"
+    },
+    "South Africa": {
+        color: "#2beda8",
+        abbr: "RSA",
+        logo: "https://cdn.pixabay.com/animation/2022/09/13/17/55/17-55-25-289_512.gif"
+    },
+    "Sri Lanka": {
+        color: "#8181ef",
+        abbr: "SL",
+        logo: "https://cdn.pixabay.com/animation/2022/09/13/17/55/17-55-37-830_512.gif"
+    },
+    "India": {
+        color: "#1790d8",
+        abbr: "IND",
+        logo: "https://cdn.pixabay.com/animation/2022/08/21/20/03/20-03-41-348_512.gif"
+    },
+    "Australia": {
+        color: "#d7b817",
+        abbr: "AUS",
+        logo: "https://cdn.pixabay.com/animation/2022/08/01/03/42/03-42-57-408_512.gif"
     }
 }

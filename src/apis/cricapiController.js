@@ -1,12 +1,12 @@
 import { get } from "lodash";
 
-import { formatMatch } from "../global/adhocUtils";
+import { formatMatch, formatWcMatch } from "../global/adhocUtils";
 import { updateConfigurations } from "./configurationsController";
 import { clearTable, createMatch, getMatchById, updateMatchById } from "./matchController";
 import { CONFIGURATION_DOCS } from '../global/enums';
 
 const API_KEY = "e62a5cb2-1135-40ee-9a7b-99d14472d7ee";
-const SERIES_ID = "830af3da-5a0b-4b83-8d73-9800089be118";
+const SERIES_ID = "bd830e89-3420-4df5-854d-82cfab3e1e04";
 
 export const getMatchDetailsById = async (id, username, setConfigurations) => {
     try {
@@ -40,7 +40,8 @@ export const saveMatchesToDb = async (username, setConfigurations) => {
         const matchesPromise = [];
 
         for(const match of matchList) {
-            formatMatch(match);
+            // formatMatch(match);
+            formatWcMatch(match); //Only for WC
             matchesPromise.push(createMatch(match.id, match));
         }
 
