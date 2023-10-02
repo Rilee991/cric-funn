@@ -3,15 +3,17 @@ import { Typography, Card, CardActionArea, CardContent, Divider, Button, CardAct
 
 import { syncDbWithNewMatches, saveMatchesToDb } from '../../../apis/cricapiController';
 import { dumpUsers } from '../../../apis/userController';
+import { updateCredits } from '../../../apis/configurationsController';
 
 const Shortcuts = (props) => {
-    const { setLoading, setMessage, setTip, setSeverity } = props;
+    const { setLoading, setMessage, setTip, setSeverity, loggedInUserDetails, configurations, setConfigurations } = props;
 
     const syncMatches = async () => {
         setTip("Syncing new matches...");
         setLoading(true);
         try {
-            await syncDbWithNewMatches();
+            const { configDocId, currentHits } = await syncDbWithNewMatches(loggedInUserDetails.username);
+            await updateCredits(configDocId, loggedInUserDetails.username, currentHits, configurations, setConfigurations);
             setMessage("Synced matches successfully!");
             setSeverity("success");
         } catch (e) {
@@ -40,7 +42,8 @@ const Shortcuts = (props) => {
         setTip("Cascading new matches...");
         setLoading(true);
         try {
-            await saveMatchesToDb();
+            const { configDocId, currentHits } = await saveMatchesToDb();
+            await updateCredits(configDocId, loggedInUserDetails.username, currentHits, configurations, setConfigurations);
             setMessage("Matches cascaded successfully!");
             setSeverity("success");
         } catch (e) {

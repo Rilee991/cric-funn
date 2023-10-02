@@ -1,39 +1,60 @@
-import { get } from "lodash";
 import moment from "moment";
 
 import { db } from "../config";
 import { getFirebaseCurrentTime } from "../global/adhocUtils";
-import { CONFIGURATION_COLLECTION, CONFIGURATION_DOCS } from "../global/enums";
+import { CONFIGURATION_COLLECTION } from "../global/enums";
 
 export const getConfigurations = async () => {
-    const resp = await db.collection(CONFIGURATION_COLLECTION).get();
-    const configs = {};
-    const date = moment().format("DD-MM-YYYY");
+    const now = moment();
+    const resp = await db.collection(CONFIGURATION_COLLECTION).doc(`${now.format("YYYY-MM-DD")}`).get();
+    const defaultConfigsObj = {
+        createdAt: getFirebaseCurrentTime(),
+        createdBy: "getConfigurations",
+        updatedAt: getFirebaseCurrentTime(),
+        updatedBy: "getConfigurations",
+        creditsData: {},
+        appData: {},
+        totalHits: 0
+    };
 
-    resp.docs.forEach(doc => {
-        let data = doc.data();
-        if(doc.id == CONFIGURATION_DOCS.CREDITS) {
-            data = get(data, `${date.slice(3)}.${date.slice(0,2)}.data`, {});
-        }
-        configs[doc.id] = data;
-    });
+    if(!resp.exists) {
+        await db.collection(CONFIGURATION_COLLECTION).doc(`${now.format("YYYY-MM-DD")}`).set(defaultConfigsObj);
+
+        return defaultConfigsObj;
+    }
+    
+    const configs = resp.data();
+
+    configs["creditsData"] = configs["creditsData"] || {};
+    configs["appData"] = configs["appData"] || {};
+    configs["totalHits"] = configs["totalHits"] || 0;
 
     return configs;
 }
 
-export const updateConfigurations = async (id, username, data, setConfigurations) => {
-    const ref = db.collection(CONFIGURATION_COLLECTION).doc(id);
-    const date = moment().format("DD-MM-YYYY");
-    const firebaseDate = getFirebaseCurrentTime();
-    if(id == CONFIGURATION_DOCS.CREDITS) {
-        await ref.update({
-            [`${date.slice(3)}.${date.slice(0,2)}.data.${username}`]: data,
-            [`${date.slice(3)}.${date.slice(0,2)}.updatedAt`]: firebaseDate,
-            [`${date.slice(3)}.${date.slice(0,2)}.updatedBy`]: username
-        });
-        setConfigurations(prev => {
-            prev[CONFIGURATION_DOCS.CREDITS][`${username}`] = data;
-            return  prev;
-        });
-    }
+export const updateCredits = async (docId, username, totalHits, configurations, setConfigurations) => {
+    const creditsData = configurations["creditsData"];
+    creditsData[username] = creditsData[username] ? creditsData[username]+1 : 1;
+
+    setConfigurations(config => ({ ...config, creditsData, totalHits }));
+
+    await db.collection(CONFIGURATION_COLLECTION).doc(docId).update({
+        updatedAt: getFirebaseCurrentTime(),
+        updatedBy: `updateCredits_${username}`,
+        creditsData,
+        totalHits
+    });
+}
+
+export const updateAppData = async (docId, username, appDataObj, configurations, setConfigurations) => {
+    const appData = configurations["appData"];
+    appData[username] = appDataObj;
+
+    setConfigurations(config => ({ ...config, appData }));
+
+    await db.collection(CONFIGURATION_COLLECTION).doc(docId).update({
+        updatedAt: getFirebaseCurrentTime(),
+        updatedBy: `updateCredits_${username}`,
+        appData
+    });
 }

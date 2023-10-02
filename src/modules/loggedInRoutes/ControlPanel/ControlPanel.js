@@ -10,7 +10,7 @@ import { ContextProvider } from '../../../global/Context';
 
 const ControlPanel = () => {
     const contextConsumer = useContext(ContextProvider);
-    const { getPointsTableData, resetUserDetails, syncUserDetails } = contextConsumer;
+    const { getPointsTableData, resetUserDetails, syncUserDetails, loggedInUserDetails, configurations, setConfigurations } = contextConsumer;
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState("");
     const [tip, setTip] = useState("loading");
@@ -45,7 +45,7 @@ const ControlPanel = () => {
 
     return (
         <Spin spinning={loading} tip={tip} indicator={<Loading3QuartersOutlined spin style={{ fontSize: 28, color: "#3f067a" }} />} style={{ color: "#3f067a", textTransform: "capitalize" }}>
-            <Shortcuts setLoading={setLoading} setMessage={setMessage} setTip={setTip} setSeverity={setSeverity} />
+            <Shortcuts setLoading={setLoading} configurations={configurations} setConfigurations={setConfigurations} loggedInUserDetails={loggedInUserDetails} setMessage={setMessage} setTip={setTip} setSeverity={setSeverity} />
             <UserControlTable
                 tableDetails={{ ...pointsTableDetails, title: "User Controls" }}
                 resetUserDetails={resetUserDetails}

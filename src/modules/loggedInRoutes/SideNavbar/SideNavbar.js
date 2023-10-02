@@ -2,10 +2,8 @@ import React from 'react'
 import { Divider, SwipeableDrawer, Hidden, List, ListItem, ListItemIcon, ListItemText, makeStyles, Typography } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import { BsCurrencyExchange } from 'react-icons/bs';
-import { sum } from 'lodash';
 
 import cricFunnLogo from '../../../res/images/logo.png';
-import { CONFIGURATION_DOCS } from '../../../global/enums';
 import { CloseRounded } from '@material-ui/icons';
 
 const drawerWidth = 340;
@@ -59,9 +57,9 @@ const SideNavbar = (props) => {
     }
 
     const getRemainingCredits = () => {
-        console.log("getRemainingCredits configurations::",configurations);
-        const credits = sum(Object.values(configurations[CONFIGURATION_DOCS.CREDITS]));
-        return 100-Math.min(100,credits);
+        const totalHits = configurations["totalHits"];
+
+        return 100-Math.min(100,totalHits);
     }
 
     const getCricFunnLogo = () => (

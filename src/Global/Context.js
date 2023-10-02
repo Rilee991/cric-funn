@@ -10,8 +10,7 @@ import { getUserByKey, getUserByUsername, createUser, updateUserByEmail, updateU
 import { getMatchById, getMatches, updateMatchById } from '../apis/matchController';
 import { getMatchDetailsById } from '../apis/cricapiController';
 import { DEFAULT_PENALTY_POINTS, DEFAULT_PENALTY_TEAM } from '../configs/matchConfigs';
-import { getConfigurations, updateConfigurations } from '../apis/configurationsController';
-import { CONFIGURATION_DOCS } from './enums';
+import { getConfigurations, updateCredits } from '../apis/configurationsController';
 
 const admin = require('firebase');
 export const ContextProvider = createContext();
@@ -730,7 +729,8 @@ const Context = (props) => {
                 }
 
                 if(isEmpty(match.matchWinner) && moment(match.dateTimeGMT).add(winnerEtaParams.value, winnerEtaParams.unit) <= moment()) {
-                    const matchDetails = await getMatchDetailsById(match.id, username, setConfigurations);
+                    const { matchDetails, configDocId, currentHits } = await getMatchDetailsById(match.id);
+                    await updateCredits(configDocId, username, currentHits, configurations, setConfigurations);
 
                     if(!isEmpty(matchDetails?.matchWinner)) {
                         matchPromises.push(updateMatchById(match.id, {
@@ -783,8 +783,8 @@ const Context = (props) => {
                     isRewardClaimed = true
                 } = userSnap.docs[0].data();
                 const configs = await getConfigurations();
-                console.log("setting configs 1: ", configs);
                 setConfigurations(configs);
+                console.log("setting configs 1: ", configs);
                 const matches = await updateAndGetMatches(username);
                 console.log("setting configs 2: ", configurations);
                 const updatedDetails = await updateUserDetails(username, points, bets, matches);
@@ -811,9 +811,10 @@ const Context = (props) => {
     return (
         <ContextProvider.Provider
             value={{ loggedInUserDetails, loading, mobileView, notifications, matches, width, height, scrollY, configurations,
+
                 signUp, signIn, sendResetPasswordEmail, resetPassword, logout, clearNotifications, betOnMatch, updateSeenBets,
                 viewBetsData, getPointsTableData, resetUserDetails, syncUserDetails, getTeamWiseStats, getAllUsersData,
-                claimReward
+                claimReward, setConfigurations
             }}
         >
             {props.children}

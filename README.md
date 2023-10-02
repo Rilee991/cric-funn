@@ -42,3 +42,4 @@ new logic - fetch matches from db and sync results to db on each refresh for onl
 15. Making a configurations table to store common items like credits, backups etc.
 16. Making functionality for saving backups and restoring
 17. Make go all in badge as stylish to highlight to user
+21. Refactoring configurations workflow
