@@ -47,14 +47,11 @@ export const updateCredits = async (docId, username, totalHits, configurations, 
 }
 
 export const updateAppData = async (docId, username, appDataObj, configurations, setConfigurations) => {
-    const appData = configurations["appData"];
-    appData[username] = appDataObj;
-
-    setConfigurations(config => ({ ...config, appData }));
+    setConfigurations(config => ({ ...config, appData: appDataObj }));
 
     await db.collection(CONFIGURATION_COLLECTION).doc(docId).update({
         updatedAt: getFirebaseCurrentTime(),
         updatedBy: `updateCredits_${username}`,
-        appData
+        appData: appDataObj
     });
 }
