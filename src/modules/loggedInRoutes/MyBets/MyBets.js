@@ -73,7 +73,7 @@ export default function MyBets() {
     });
 
     last5ResultsString = last5ResultsString.slice(-5);
-    accuracy = (round(winBets/(winBets+lostBets),2) * 100).toFixed(0) || 0;
+    accuracy = (round(winBets/((winBets+lostBets)||1),2) * 100).toFixed(0) || 0;
     avgBettingPoints = round(totalPointsBet/(totalBets || 1),2) || 0;
 
     const shareTitle = `*${upperCase(username)}'s Statistics*\n-------------------------`;
@@ -106,22 +106,22 @@ export default function MyBets() {
                 {/* <StatsCard bets={bets} mobileView={mobileView} username={username} points={points}/> */}
                 <Grid container spacing={2} className="tw-mb-10">
                     <Grid item xs={6} sm={6} md={3} className="tw-flex tw-justify-center tw-items-center">
-                        <StatsCardV2 barPercent={playedPercent} bgColor="linear-gradient(62deg, black, #cbb300)" background={"https://cdn-icons-png.flaticon.com/512/5971/5971593.png"} text={winBets+lostBets} title="Played" />
+                        <StatsCardV2 barPercent={playedPercent} bgColor="linear-gradient(62deg, black, #cbb300)" background={"https://cdn-icons-png.flaticon.com/512/5971/5971593.png"} text={totalBets.toString()} title="Played" />
                     </Grid>
                     <Grid item xs={6} sm={3} md={3} className="tw-flex tw-justify-center tw-items-center">
-                        <StatsCardV2 barPercent={100-playedPercent} bgColor="linear-gradient(62deg, black, #bf01a0)" background={"https://cdn-icons-png.flaticon.com/512/3761/3761701.png"} text={finedBets} title="Missed" />
+                        <StatsCardV2 barPercent={100-playedPercent} bgColor="linear-gradient(62deg, black, #bf01a0)" background={"https://cdn-icons-png.flaticon.com/512/3761/3761701.png"} text={finedBets.toString()} title="Missed" />
                     </Grid>
                     <Grid item xs={6} sm={6} md={3} className="tw-flex tw-justify-center tw-items-center">
-                        <StatsCardV2 barPercent={100-winPercent} bgColor="linear-gradient(62deg, black, #c10404)" background={bowledImg} text={lostBets} title="Lost" />
+                        <StatsCardV2 barPercent={100-winPercent} bgColor="linear-gradient(62deg, black, #c10404)" background={bowledImg} text={lostBets.toString()} title="Lost" />
                     </Grid>
                     <Grid item xs={6} sm={6} md={3} className="tw-flex tw-justify-center tw-items-center">
-                        <StatsCardV2 barPercent={winPercent} bgColor="linear-gradient(62deg, black, #56bc00)" background={"https://pngimg.com/d/cricket_PNG106.png"} text={winBets} title="Won" />
+                        <StatsCardV2 barPercent={winPercent} bgColor="linear-gradient(62deg, black, #56bc00)" background={"https://pngimg.com/d/cricket_PNG106.png"} text={winBets.toString()} title="Won" />
                     </Grid>
                     <Grid item xs={6} sm={6} md={3} className="tw-flex tw-justify-center tw-items-center">
                         <StatsCardV2 barPercent={accuracy} bgColor="linear-gradient(62deg, black, #01b9bf)" background={"https://www.freeiconspng.com/uploads/white-spider-web-png-9.png"} text={accuracy+"%"} title="Accuracy" />
                     </Grid>
                     <Grid item xs={6} sm={3} md={3} className="tw-flex tw-justify-center tw-items-center">
-                        <StatsCardV2 bgColor="linear-gradient(62deg, black, #0103bf)" background={"https://pngimg.com/d/speedometer_PNG49.png"} text={avgBettingPoints} title="Avg Pts Per Match" />
+                        <StatsCardV2 bgColor="linear-gradient(62deg, black, #0103bf)" background={"https://pngimg.com/d/speedometer_PNG49.png"} text={avgBettingPoints.toString()} title="Avg Pts Per Match" />
                     </Grid>
                     <Grid item xs={12} sm={6} md={6} className="tw-flex tw-justify-center tw-items-center">
                         <StatsCardV2 barPercent={formPercent} bgColor="linear-gradient(62deg, black, #acff2d)" background={"https://static.vecteezy.com/system/resources/previews/008/505/869/original/candlestick-graph-bar-design-stock-market-business-concept-png.png"} text={getRecentForm(last5ResultsString)} title="Recent Form" />
