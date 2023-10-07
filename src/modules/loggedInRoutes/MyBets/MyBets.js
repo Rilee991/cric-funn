@@ -85,7 +85,7 @@ export default function MyBets() {
     const lossBetsWidth = 100-winBetsWidth;
     const notBetsDone = bets.length == 0;
 
-    const playedPercent = round((totalBets)/(totalBets+finedBetsWidth),2)*100;
+    const playedPercent = round((totalBets)/(totalBets+finedBets),2)*100;
     const winPercent = round(winBets/(winBets+lostBets),2)*100;
     const formPercent = round(sumBy(last5ResultsString, ch => ch === "W")/5,2)*100;
 

@@ -31,7 +31,7 @@ const Home = ({ handleSelectedNav }) => {
 			moment(match.dateTimeGMT) >= moment().subtract(2, "days")
 		);
 
-		setRelevantMatches(relevantMatches);
+		setRelevantMatches(relevantMatches.splice(0,8));
 		setLoading(false);
 	}, [matches.length]);
 
