@@ -1,6 +1,6 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
-import { isEmpty } from 'lodash';
+import { get, isEmpty } from 'lodash';
 import LoadingScreen from 'react-loading-screen';
 
 import cricFunnLogo from './res/images/logo.png';
@@ -37,6 +37,7 @@ const App = () => {
 				setDate(now);
 				const appDataObj = configurations["appData"];
 				const deviceInfo = getDeviceInfo();
+				const prevTimeSpent = get(appDataObj, `${username}.timeSpent`, 0);
 
 				if(appDataObj[username]) {
 					const isUniqueDevice = appDataObj[username]["devices"].filter(devInfo => devInfo.deviceId == deviceInfo.deviceId).length == 0;
@@ -45,13 +46,13 @@ const App = () => {
 					}
 
 					appDataObj[username] = {
-						timeSpent: secondsSpent,
+						timeSpent: prevTimeSpent + secondsSpent,
 						devices: appDataObj[username]["devices"]
 					};
 				} else {
 					appDataObj[username] = {
 						username,
-						timeSpent: secondsSpent,
+						timeSpent: prevTimeSpent + secondsSpent,
 						devices: [{ ...deviceInfo }]
 					}
 				}

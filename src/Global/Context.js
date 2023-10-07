@@ -717,6 +717,7 @@ const Context = (props) => {
 
     const updateAndGetMatches = async (username) => {
         try {
+            const configObj = {};
             const dbMatches = await getMatches();
             const matchPromises = [], matches = [];
 
@@ -730,7 +731,8 @@ const Context = (props) => {
 
                 if(isEmpty(match.matchWinner) && moment(match.dateTimeGMT).add(winnerEtaParams.value, winnerEtaParams.unit) <= moment()) {
                     const { matchDetails, configDocId, currentHits } = await getMatchDetailsById(match.id);
-                    await updateCredits(configDocId, username, currentHits, configurations, setConfigurations);
+                    configObj[configDocId] = currentHits;
+                    // await updateCredits(configDocId, username, currentHits, configurations, setConfigurations);
 
                     if(!isEmpty(matchDetails?.matchWinner)) {
                         matchPromises.push(updateMatchById(match.id, {
@@ -753,7 +755,7 @@ const Context = (props) => {
 
             await Promise.all(matchPromises);
 
-            return matches;
+            return { matches, configObj };
         } catch (e) {
             console.log(e);
         }
@@ -784,9 +786,14 @@ const Context = (props) => {
                 } = userSnap.docs[0].data();
                 const configs = await getConfigurations();
                 setConfigurations(configs);
-                console.log("setting configs 1: ", configs);
-                const matches = await updateAndGetMatches(username);
-                console.log("setting configs 2: ", configurations);
+                const { matches, configObj } = await updateAndGetMatches();
+                if(!isEmpty(configObj)) {
+                    Object.keys(configObj).map(docId => {
+                        console.log(configurations);
+                        updateCredits(docId, username, configObj[docId], configs, setConfigurations)
+                        .then(() => console.log("Updation done")).catch(err => console.log(err));
+                    });
+                }
                 const updatedDetails = await updateUserDetails(username, points, bets, matches);
                 setMatches(matches);
                 setLoggedInUserDetails({
