@@ -22,8 +22,6 @@ https://cric-funn.web.app
 2. Make a new cric-funn logo
 3. Make jsconfig for src folder
 12. Explore push-notifications
-18. Tracking usage time
-19. Debugging crashing issue on start sometimes
 20. Include weather info - // http://api.weatherstack.com/current?access_key=f44f0188e69910c683149ae9d0e413b3&query=Rourkela
 
 #### COMPLETED:
@@ -42,4 +40,6 @@ new logic - fetch matches from db and sync results to db on each refresh for onl
 15. Making a configurations table to store common items like credits, backups etc.
 16. Making functionality for saving backups and restoring
 17. Make go all in badge as stylish to highlight to user
+18. Tracking usage time
+19. Debugging crashing issue on start sometimes
 21. Refactoring configurations workflow
