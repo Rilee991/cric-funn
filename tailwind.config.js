@@ -6,6 +6,9 @@ module.exports = {
   important: true,
   theme: {
     extend: {
+      animation: {
+        'spin-slow': 'spin 3s linear infinite'
+      },
       fontFamily: {
         noto: ["Noto Sans", "sans-serif"],
         autography: ["Mrs Saint Delafield", "cursive"]
