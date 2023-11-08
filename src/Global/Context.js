@@ -789,7 +789,6 @@ const Context = (props) => {
                 const { matches, configObj } = await updateAndGetMatches();
                 if(!isEmpty(configObj)) {
                     Object.keys(configObj).map(docId => {
-                        console.log(configurations);
                         updateCredits(docId, username, configObj[docId], configs, setConfigurations)
                         .then(() => console.log("Updation done")).catch(err => console.log(err));
                     });

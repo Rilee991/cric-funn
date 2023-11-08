@@ -1,6 +1,8 @@
 import React, { Component } from 'react' 
-import { Check, NavigateNext } from '@material-ui/icons';
-import { CircularProgress } from '@material-ui/core';
+// import { CircularProgress } from '@material-ui/core';
+import { GoSync } from 'react-icons/go';
+import { TiTick } from 'react-icons/ti';
+import { SiMediafire } from 'react-icons/si';
 
 import './SwipeButton.css'
 
@@ -100,10 +102,10 @@ class SwipeButton extends Component {
 						style={{ background: this.props.disabled ? "grey" : this.props.color }}
 						onTouchStart={this.startDrag}
 					>
-						<NavigateNext className="tw-text-white tw-h-full tw-w-6" />
+						<SiMediafire className="tw-text-[#fffc00] tw-h-full tw-w-6" />
 					</div>
-					{this.props.loading ? <CircularProgress className="tw-w-14 tw-h-14" /> : 
-						(this.state.unlocked ? <Check className="tw-w-14 tw-h-14 tw-text-yellow-500" /> : 
+					{this.props.loading ? <GoSync className="tw-w-14 tw-animate-spin-slow tw-h-14" /> : 
+						(this.state.unlocked ? <TiTick className="tw-w-14 tw-h-14 tw-text-[#6c5be1]" /> : 
 							<div className={`rsbcText ${window.innerWidth < 530 ? 'tw-ml-7' : ''}`}>
 								<div className="rsbcanimation tw-font-noto">
 									{this.getText()}

@@ -47,7 +47,7 @@ const BettingDialog = (props) => {
     const { team1Abbreviation, team2Abbreviation, teams, id: matchId, odds } = matchDetails;
     const team1 = teams[0], team2 = teams[1];
     const [selectedTeam, setSelectedTeam] = useState("");
-    const [selectedPoints, setSelectedPoints] = useState("");
+    const [selectedPoints, setSelectedPoints] = useState(0);
     const [error, setError] = useState("");
     const [disabledSave, setDisableSave] = useState(true);
     const [allInEnabled, setAllInEnabled] = useState(false);
@@ -105,11 +105,13 @@ const BettingDialog = (props) => {
             }
 
             await betOnMatch(betObject);
+            setSelectedTeam("");
+            setSelectedPoints(0);
         }
         setLoading(false);
         setTimeout(() => {
             closeDialog();
-        },5000);
+        },1000);
     }
 
     const onClickAllIn = () => {
@@ -158,7 +160,7 @@ const BettingDialog = (props) => {
                             {"Go For Glory!"}
                         </Typography>
                     </Button> */}
-                    <SwipeButton loading={loading} disabled={disabledSave} color='#969dd1' text='SLIDE TO EXECUTE' onSuccess={() => betInTheMatch()} />
+                    <SwipeButton loading={loading} disabled={disabledSave} color='#6c5be1' text='SLIDE TO EXECUTE' onSuccess={() => betInTheMatch()} />
                     {/* <Alert severity="warning" variant="filled" className="tw-rounded-[40px] tw-flex tw-justify-center" classes={{ icon: classes.customIcon }}>
                         <Typography variant="body">
                             <b>{allInEnabled ? "Warning! You're going ALL IN! Shout victory is mine! " : ""}Once bet cannot be edited.</b>
