@@ -44,15 +44,15 @@ const Home = ({ handleSelectedNav }) => {
 			<div className={`tw-flex tw-items-center tw-text-black-app tw-font-noto tw-italic ${window.innerWidth > 460 ? "tw-text-4xl" : "tw-text-2xl"}`}>
 				{greeting}
 			</div>
-			{ loading ? <PageLoader tip="Loading matches..." />: 
-				relevantMatches.length ? relevantMatches.map((match, index) => (
+			{ loading ? (<PageLoader tip="Loading matches..." />) : 
+				(relevantMatches.length ? (relevantMatches.map((match, index) => (
 					<MatchCard key={index} match={match}/>
-				)) 
-				: <Alert classes={{ standardSuccess: classes.infoAlertSettings, icon: classes.contentColorSettings, message: classes.contentColorSettings }} className="tw-rounded-[40px] tw-mt-2 tw-flex tw-justify-center lg:tw-w-[70%] tw-items-center tw-text-[aliceblue]">
+				)) )
+				: (<Alert classes={{ standardSuccess: classes.infoAlertSettings, icon: classes.contentColorSettings, message: classes.contentColorSettings }} className="tw-rounded-[40px] tw-mt-2 tw-flex tw-justify-center lg:tw-w-[70%] tw-items-center tw-text-[aliceblue]">
 					<Typography variant={"button"} style={{fontSize: 15}} component="p">
 						<b>No matches found</b>
 					</Typography>
-				</Alert>
+				</Alert>))
 			}
 		</div>
 	);
