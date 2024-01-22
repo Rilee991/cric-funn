@@ -23,6 +23,7 @@ https://cric-funn.web.app
 3. Make jsconfig for src folder
 12. Explore push-notifications
 20. Include weather info - // http://api.weatherstack.com/current?access_key=f44f0188e69910c683149ae9d0e413b3&query=Rourkela
+22. Implement vibration on betting
 
 #### COMPLETED:
 1. Need to delete all unused resources

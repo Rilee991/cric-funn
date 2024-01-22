@@ -5,7 +5,7 @@ import { clearTable, createMatch, getMatchById, updateMatchById } from "./matchC
 import moment from "moment";
 
 const API_KEY = "e62a5cb2-1135-40ee-9a7b-99d14472d7ee";
-const SERIES_ID = "bd830e89-3420-4df5-854d-82cfab3e1e04";
+const SERIES_ID = "5f09d66b-284c-4a0e-994f-5a8d6c0212f0";
 
 export const getMatchDetailsById = async (id) => {
     try {

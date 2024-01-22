@@ -13,6 +13,7 @@ import LoggedOutRoutes from './modules/loggedOutRoutes/LoggedOutRoutes';
 import { updateAppData } from './apis/configurationsController';
 import moment from 'moment';
 import md5 from 'md5';
+import { TRACKER_TIME_INTERVAL } from './global/enums';
 
 const App = () => {
 	const contextConsumer = useContext(ContextProvider);
@@ -32,8 +33,7 @@ const App = () => {
 			const currentTime = Date.now();
 			const secondsSpent = Math.floor((currentTime-startTime)/1000);
 			setTimeSpent(secondsSpent);
-
-			if(date != now || secondsSpent%20 == 0) {
+			if(date != now || secondsSpent%TRACKER_TIME_INTERVAL == 0) {
 				setDate(now);
 				const appDataObj = configurations["appData"];
 				const deviceInfo = getDeviceInfo();
@@ -46,13 +46,13 @@ const App = () => {
 					}
 
 					appDataObj[username] = {
-						timeSpent: prevTimeSpent + secondsSpent,
+						timeSpent: prevTimeSpent + TRACKER_TIME_INTERVAL,
 						devices: appDataObj[username]["devices"]
 					};
 				} else {
 					appDataObj[username] = {
 						username,
-						timeSpent: prevTimeSpent + secondsSpent,
+						timeSpent: prevTimeSpent + TRACKER_TIME_INTERVAL,
 						devices: [{ ...deviceInfo }]
 					}
 				}

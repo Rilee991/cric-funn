@@ -9,6 +9,7 @@ import './SwipeButton.css'
 const slider = React.createRef();
 const container = React.createRef();
 const isTouchDevice = 'ontouchstart' in document.documentElement || navigator.maxTouchPoints > 0;
+const vibration = navigator.vibrate || navigator.webkitVibrate || navigator.mozVibrate || navigator.msVibrate;
 
 class SwipeButton extends Component {
 	state = {};
@@ -82,6 +83,7 @@ class SwipeButton extends Component {
 		this.setState({
 			unlocked: true
 		});
+		vibration && vibration(1000);
 	}
 
 	getText = () => {
