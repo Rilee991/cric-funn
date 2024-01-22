@@ -7,3 +7,4 @@ export const SESSION_STORAGE = {
     TIME_SPENT: 'timeSpent',
     DEVICE_INFO: 'deviceInfo'
 };
+export const TRACKER_TIME_INTERVAL = 30;

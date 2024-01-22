@@ -193,6 +193,8 @@ export const formatWcMatch = (match) => {
     match.team2Abbreviation = match.teamInfo[1].shortname;
     match.poster = matchPostersMapping[`${match.team1Abbreviation}-${match.team2Abbreviation}`] || matchPostersMapping[`${match.team2Abbreviation}-${match.team1Abbreviation}`] || "";
     match.dateTimeGMT = match.dateTimeGMT + "Z";
+    match.createdAt = getFirebaseCurrentTime();
+    match.updatedAt = getFirebaseCurrentTime();
 
     delete match["bbbEnabled"];
     delete match["fantasyEnabled"];
