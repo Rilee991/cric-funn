@@ -14,7 +14,17 @@ const useStyles = makeStyles((theme) => ({
     contentColorSettings: {
         color: "aliceblue !important"
     }
-}))
+}));
+
+const NoMatchesFound = () => (
+	<div className="tw-w-full tw-grid tw-place-content-center tw-text-center">
+		<img src="https://png.pngtree.com/png-clipart/20221127/ourmid/pngtree-cricket-wickets-ball-png-image_6483453.png" alt="no data found" />
+		<Typography className="tw-grid tw-place-content-center" style={{fontSize: 15}} component="p">
+			<b>404! No matches found...</b>
+			<b>Undisputed Universal Champion: @kelly</b>
+		</Typography>
+	</div>
+);
 
 const Home = ({ handleSelectedNav }) => {
 	const contextConsumer = useContext(ContextProvider);
@@ -48,11 +58,7 @@ const Home = ({ handleSelectedNav }) => {
 				(relevantMatches.length ? (relevantMatches.map((match, index) => (
 					<MatchCard key={index} match={match}/>
 				)) )
-				: (<Alert classes={{ standardSuccess: classes.infoAlertSettings, icon: classes.contentColorSettings, message: classes.contentColorSettings }} className="tw-rounded-[40px] tw-mt-2 tw-flex tw-justify-center lg:tw-w-[70%] tw-items-center tw-text-[aliceblue]">
-					<Typography variant={"button"} style={{fontSize: 15}} component="p">
-						<b>No matches found</b>
-					</Typography>
-				</Alert>))
+				: (<NoMatchesFound />))
 			}
 		</div>
 	);

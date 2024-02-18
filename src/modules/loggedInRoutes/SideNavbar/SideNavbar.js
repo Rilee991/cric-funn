@@ -111,7 +111,7 @@ const SideNavbar = (props) => {
                     </ListItemIcon>
                     <ListItemText className={"tw-text-white"}>
                         <p className="tw-text-sm tw-leading-4 tw-text-gray-400 tw-font-noto">
-                            Credits Left Today: <b>{getRemainingCredits()}</b>
+                            Credits remaining today: <b>{getRemainingCredits()}</b>
                         </p>
                     </ListItemText>
                 </ListItem>

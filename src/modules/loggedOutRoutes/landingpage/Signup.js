@@ -49,7 +49,6 @@ const CustomTextField = withStyles({
 })(TextField);
 
 const Signup = (props) => {
-    const classes = useStyles();
     const { handleToggle } = props;
     const contextConsumer = useContext(ContextProvider) || {};
     const { signUp } = contextConsumer;
