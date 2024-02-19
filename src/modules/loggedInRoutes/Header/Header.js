@@ -37,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
 
 const Header = (props) => {
 	const { setIsNavOpen, setIsNotificationsOpen, totalNotifs = 0, clearNotifications, isBday, toggleConfetti,
-		setToggleConfetti
+		setToggleConfetti, isOnline
 	} = props;
 	const classes = useStyles();
 
@@ -60,8 +60,8 @@ const Header = (props) => {
 	);
 
   	return (
-		<div className={classes.root}>
-			<CssBaseline />
+		<React.Fragment>
+			{/* <CssBaseline /> */}
 			<AppBar position="fixed" className={`${classes.appBar} tw-shadow-none tw-z-[10] tw-w-full`}>
 				<Toolbar className={"tw-flex tw-justify-between"} style={{ "background": "transparent"}}>
 					<div className="tw-flex tw-items-center tw-gap-1">
@@ -86,7 +86,7 @@ const Header = (props) => {
 								<OfflineBolt className="tw-w-7 tw-h-7"/>
 							</Badge>
 						</IconButton>
-						<IconButton
+						{isOnline && <IconButton
 							color="inherit"
 							aria-label="open drawer"
 							edge="start"
@@ -94,11 +94,11 @@ const Header = (props) => {
 							className={`${classes.menuButton} tw-m-0 tw-p-2`}
 						>
 							<Reorder className="tw-w-7 tw-h-7" />
-						</IconButton>
+						</IconButton>}
 					</div>
 				</Toolbar>
 			</AppBar>
-		</div>
+		</React.Fragment>
 	);
 }
 

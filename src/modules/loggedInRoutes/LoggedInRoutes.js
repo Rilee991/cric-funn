@@ -14,6 +14,7 @@ import NotFoundError from '../../components/common/NotFoundError';
 import { Header, SideNavbar, Notifications, Home, MyBets, MyStats, GlobalStats, PointsTable, ControlPanel, Legends } from './index';
 import { ContextProvider } from '../../global/Context';
 import BirthdayModal from './BirthdayModal/BirthdayModal';
+import useOnline from '../../hooks/useOnline';
 
 const LoggedInRoutes = () => {
     const contextConsumer = useContext(ContextProvider);
@@ -94,63 +95,72 @@ const LoggedInRoutes = () => {
         icon: <IoMdLogOut className="tw-h-7 tw-w-7" />
     }].map((item, idx) => ({ ...item, id: idx+1 }));
 
+	const isOnline = useOnline();
+
     return (
-        <div className="tw-flex tw-flex-col tw-bg-white-app">
+        <div className="tw-bg-white-app">
             {isBday && toggleConfetti && <Confetti width={width} height={height + scrollY} className="tw-z-[10000]" numberOfPieces={500} />}
             {isBday && <BirthdayModal claimReward={claimReward} isRewardClaimed={isRewardClaimed} width={width} open={openBdayModal} closeDialog={() => setOpenBdayModal(false)} />}
-            <div>
-                <Header totalNotifs={notifications.length} clearNotifications={clearNotifications} setToggleConfetti={setToggleConfetti}
+            <div className="tw-h-16">
+                <Header isOnline={isOnline} totalNotifs={notifications.length} clearNotifications={clearNotifications} setToggleConfetti={setToggleConfetti}
                     setIsNavOpen={setIsNavOpen} setIsNotificationsOpen={setIsNotificationsOpen} isBday={isBday} toggleConfetti={toggleConfetti}
                 />
             </div>
-            <div className="tw-flex">
-                <div>
-                    <SideNavbar
-                        setIsNavOpen={setIsNavOpen}
-                        isNavOpen={isNavOpen}
-                        setIsNotificationsOpen={setIsNotificationsOpen}
-                        isNotificationsOpen={isNotificationsOpen}
-                        navItems={navItems}
-                        navSelected={navSelected}
-                        setNavSelected={setNavSelected}
-                        mobileView={mobileView}
-                        configurations={configurations}
-                    />
-                    <Notifications
-                        setIsNotificationsOpen={setIsNotificationsOpen}
-                        isNotificationsOpen={isNotificationsOpen}
-                        notifications={notifications}
-                    />
+            {isOnline ?
+                <div className="tw-flex">
+                    <div>
+                        <SideNavbar
+                            setIsNavOpen={setIsNavOpen}
+                            isNavOpen={isNavOpen}
+                            setIsNotificationsOpen={setIsNotificationsOpen}
+                            isNotificationsOpen={isNotificationsOpen}
+                            navItems={navItems}
+                            navSelected={navSelected}
+                            setNavSelected={setNavSelected}
+                            mobileView={mobileView}
+                            configurations={configurations}
+                        />
+                        <Notifications
+                            setIsNotificationsOpen={setIsNotificationsOpen}
+                            isNotificationsOpen={isNotificationsOpen}
+                            notifications={notifications}
+                        />
+                    </div>
+                    <div className={`tw-pb-6 md:tw-px-14 tw-w-full tw-min-h-screen xl:tw-w-[60%] lg:tw-w-[80%] `}>
+                        <Switch>
+                            <Route exact path="/">
+                                <Home handleSelectedNav={handleSelectedNav} />
+                            </Route> 
+                            <Route exact path="/my-bets">
+                                <MyBets /> 
+                            </Route>
+                            <Route exact path="/my-stats">
+                                <MyStats exact />
+                            </Route>
+                            {!isGlobalStatsDisabled && <Route exact path="/global-stats">
+                                <GlobalStats />
+                            </Route> }
+                            <Route exact path="/points-table">
+                                <PointsTable />
+                            </Route>
+                            <Route exact path="/hall-of-fame">
+                                <Legends />
+                            </Route>
+                            {isAdmin && <Route exact path="/control-panel">
+                                <ControlPanel />
+                            </Route> }
+                            <Route>
+                                <NotFoundError />
+                            </Route>
+                        </Switch>
+                    </div>
                 </div>
-                <div className={`tw-py-6 tw-mt-10 md:tw-px-14 tw-w-full tw-min-h-screen xl:tw-w-[60%] lg:tw-w-[80%] `}>
-                    <Switch>
-                        <Route exact path="/">
-                            <Home handleSelectedNav={handleSelectedNav} />
-                        </Route> 
-                        <Route exact path="/my-bets">
-                            <MyBets /> 
-                        </Route>
-                        <Route exact path="/my-stats">
-                            <MyStats exact />
-                        </Route>
-                        {!isGlobalStatsDisabled && <Route exact path="/global-stats">
-                            <GlobalStats />
-                        </Route> }
-                        <Route exact path="/points-table">
-                            <PointsTable />
-                        </Route>
-                        <Route exact path="/hall-of-fame">
-                            <Legends />
-                        </Route>
-                        {isAdmin && <Route exact path="/control-panel">
-                            <ControlPanel />
-                        </Route> }
-                        <Route>
-                            <NotFoundError />
-                        </Route>
-                    </Switch>
-                </div>
-            </div>
+            :  <div className="tw-grid tw-place-items-center">
+                <img src="https://cdni.iconscout.com/illustration/premium/thumb/no-internet-connection-8316263-6632283.png?f=webp" alt="No connection" />
+                <div className="tw-font-bold tw-text-red-600">It seems you're not connected to the internet!</div>
+                <div>Please fix your connection.</div>
+                <div className="tw-text-green-800 tw-font-semibold">Content will be updated automatically.</div>
+            </div>}
         </div> 
 	);
 }
