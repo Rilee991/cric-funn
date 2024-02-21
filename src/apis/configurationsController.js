@@ -46,7 +46,7 @@ export const updateCredits = async (docId, username, totalHits, configurations, 
     });
 }
 
-export const updateAppData = async (docId, username, appDataObj, configurations, setConfigurations) => {
+export const updateAppData = async (docId, username, appDataObj, setConfigurations) => {
     setConfigurations(config => ({ ...config, appData: appDataObj }));
 
     await db.collection(CONFIGURATION_COLLECTION).doc(docId).update({

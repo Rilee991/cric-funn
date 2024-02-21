@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Switch, Route } from 'react-router-dom';
-import { find } from 'lodash';
+import { find, get } from 'lodash';
 import moment from 'moment';
 import Confetti from 'react-confetti';
 import { IoMdLogOut } from 'react-icons/io';
@@ -9,18 +9,20 @@ import { GiStarSwirl } from 'react-icons/gi';
 import { RiDashboard2Line } from 'react-icons/ri';
 import { FaHistory, FaMedal, FaSolarPanel } from 'react-icons/fa';
 import { MdOutlineQueryStats } from 'react-icons/md';
+import md5 from 'md5';
 
 import NotFoundError from '../../components/common/NotFoundError';
 import { Header, SideNavbar, Notifications, Home, MyBets, MyStats, GlobalStats, PointsTable, ControlPanel, Legends } from './index';
 import { ContextProvider } from '../../global/Context';
 import BirthdayModal from './BirthdayModal/BirthdayModal';
 import useOnline from '../../hooks/useOnline';
+import { updateAppData } from '../../apis/configurationsController';
 
 const LoggedInRoutes = () => {
     const contextConsumer = useContext(ContextProvider);
     const { mobileView, logout, notifications = [], clearNotifications, width, height, scrollY, claimReward,
         loggedInUserDetails: { isAdmin, username, points, dob = "18-07-3212", isRewardClaimed = true },
-        configurations = {}
+        configurations = {}, setConfigurations
     } = contextConsumer;
     const [isNavOpen, setIsNavOpen] = useState(false);
     const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
@@ -31,7 +33,90 @@ const LoggedInRoutes = () => {
 
     useEffect(() => {
         handleSelectedNav();
+        const startTime = Date.now();
+        const docId = moment().format("YYYY-MM-DD");
+        const appDataObj = configurations["appData"];
+        const deviceInfo = getDeviceInfo();
+        const prevTimeSpent = get(appDataObj, `${username}.timeSpent`, 0);
+
+        const timer = setInterval(() => {
+            const timeSpent = parseInt(((Date.now()-startTime)/1000).toFixed(0));
+
+            if(appDataObj[username]) {
+                const isUniqueDevice = appDataObj[username]["devices"].filter(devInfo => devInfo.deviceId == deviceInfo.deviceId).length == 0;
+                if(isUniqueDevice) {
+                    appDataObj[username]["devices"].push(deviceInfo);
+                }
+
+                appDataObj[username] = {
+                    timeSpent: prevTimeSpent + timeSpent,
+                    devices: appDataObj[username]["devices"]
+                };
+            } else {
+                appDataObj[username] = {
+                    timeSpent: prevTimeSpent,
+                    devices: [{ ...deviceInfo }]
+                }
+            }
+
+            if(timeSpent%3 == 0) {
+                Object.keys(appDataObj[username]).forEach(key => {
+                    localStorage.setItem(key, JSON.stringify(appDataObj[username][key]));
+                });
+            }
+
+            if(timeSpent%9 == 0) {
+                appDataObj[username] = {
+                    timeSpent: parseInt(localStorage.getItem("timeSpent")),
+                    devices: JSON.parse(localStorage.getItem("devices"))
+                };
+                updateAppData(docId, username, appDataObj, setConfigurations)
+                .catch(e => console.log(e));
+            }
+        }, 3000);
+
+        return () => {
+            clearInterval(timer);
+        }
     },[]);
+
+    const generateDeviceId = () => {
+		const fingerprintAttributes = {
+			userAgent: navigator.userAgent,
+			screenResolution: `${window.screen.width}x${window.screen.height}`,
+			platform: navigator.maxTouchPoints,
+			hardwareConcurrency: navigator.hardwareConcurrency
+		};
+
+		const attrString = Object.values(fingerprintAttributes).join(",");
+		const hash = md5(attrString);
+
+		return hash;
+	}
+
+    const getDeviceInfo = () => {
+		const keys = ["userAgent", "platform", "maxTouchPoints", "language", "screenResolution", "hardwareConcurrency", "deviceMemory", "appVersion"];
+		const deviceInfo = { deviceId: generateDeviceId() };
+
+		for(const key of keys) {
+			if(key === "geolocation") {
+				navigator.geolocation.getCurrentPosition((pos) => {
+					deviceInfo[key] = { latitude: pos.coords.latitude, longitude: pos.coords.longitude,
+						altitude: pos.coords.altitude, timestamp: pos.timestamp, speed: pos.coords.speed,
+						accuracy: pos.coords.altitude
+					};
+				}, (error) => {
+					deviceInfo[key] = error.message;
+				}, { enableHighAccuracy: true, maximumAge: 0, timeout: 5000 });
+			} else if(key === "screenResolution") {
+				deviceInfo[key] = `${window.screen.width}x${window.screen.height}`;
+			} else {
+				deviceInfo[key] = navigator[key];
+			}
+		}
+
+		return deviceInfo;
+	}
 
     const handleSelectedNav = () => {
         const location = window.location.pathname.split("/")[1];
