@@ -1,15 +1,14 @@
 import React, { Component } from 'react' 
 // import { CircularProgress } from '@material-ui/core';
 import { GoSync } from 'react-icons/go';
-import { TiTick } from 'react-icons/ti';
-import { SiMediafire } from 'react-icons/si';
+import { FaAngleRight } from 'react-icons/fa';
 
 import './SwipeButton.css'
+import { BsCheck2 } from 'react-icons/bs';
 
 const slider = React.createRef();
 const container = React.createRef();
 const isTouchDevice = 'ontouchstart' in document.documentElement || navigator.maxTouchPoints > 0;
-const vibration = navigator.vibrate || navigator.webkitVibrate || navigator.mozVibrate || navigator.msVibrate;
 
 class SwipeButton extends Component {
 	state = {};
@@ -83,7 +82,8 @@ class SwipeButton extends Component {
 		this.setState({
 			unlocked: true
 		});
-		vibration && vibration(1000);
+
+		navigator.vibrate(1000);
 	}
 
 	getText = () => {
@@ -94,20 +94,20 @@ class SwipeButton extends Component {
 		this.unmounted = true;
 	}
 
-	render() { 
+	render() {
 		return (
 			<div className='tw-mb-2 ReactSwipeButton'>
-				<div className={'tw-flex tw-items-center tw-justify-start rsbContainer ' + (this.state.unlocked ? 'rsbContainerUnlocked' : '')} ref={container}>
+				<div style={{ background: `${(this.props.loading || this.state.unlocked) ? "#b4b4b4" : "linear-gradient(5deg, black, #7D7D7F)"}`}} className={`tw-flex tw-items-center tw-justify-start rsbContainer ${(this.state.unlocked ? 'rsbContainerUnlocked' : '')}`} ref={container}>
 					<div className='rsbcSlider tw-flex tw-items-center tw-justify-center' 
 						ref={slider} 
 						onMouseDown={this.startDrag} 
-						style={{ background: this.props.disabled ? "grey" : this.props.color }}
+						style={{ background: this.props.disabled ? "#D0D0D1" : "white" }}
 						onTouchStart={this.startDrag}
 					>
-						<SiMediafire className="tw-text-[#fffc00] tw-h-full tw-w-6" />
+						<FaAngleRight className="tw-text-black-app tw-h-full tw-w-3" />
 					</div>
-					{this.props.loading ? <GoSync className="tw-w-14 tw-animate-spin-slow tw-h-14" /> : 
-						(this.state.unlocked ? <TiTick className="tw-w-14 tw-h-14 tw-text-[#6c5be1]" /> : 
+					{this.props.loading ? <GoSync className="tw-w-8 tw-animate-spin-slow tw-h-14 tw-text-black-app" /> : 
+						(this.state.unlocked ? <BsCheck2 className="tw-w-14 tw-h-14 tw-text-black-app" /> : 
 							<div className={`rsbcText ${window.innerWidth < 530 ? 'tw-ml-7' : ''}`}>
 								<div className="rsbcanimation tw-font-noto">
 									{this.getText()}
