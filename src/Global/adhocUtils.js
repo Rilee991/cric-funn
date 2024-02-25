@@ -104,6 +104,14 @@ export const formatMatch = (match) => {
         }];
     }
 
+    if(match?.teamInfo[0]?.img?.includes("?w=")) {
+        match.teamInfo[0].img = match.teamInfo[0].img.replace(/(\?|&)w=\d+/, '$1w=500');
+    }
+
+    if(match?.teamInfo[1]?.img?.includes("?w=")) {
+        match.teamInfo[1].img = match.teamInfo[1].img.replace(/(\?|&)w=\d+/, '$1w=500');
+    }
+
     if(match.teams && match.teams[0] != team1) {
         const temp = match.teams[0];
         match.teams[0] = match.teams[1];
