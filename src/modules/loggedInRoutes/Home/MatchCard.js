@@ -139,7 +139,7 @@ const MatchCard = (props) => {
 								width1={`${oddsParams.team1Perc}%`}
 								text1={`${mobileView ? oddsParams.team1Abbr : odds[0].name}: ${odds[0].price}`}
 								bgImg1={oddsParams.team1Logo}
-								fontSize={mobileView ? 13 : 16}
+								fontSize={mobileView ? 18 : 17}
 								color2={oddsParams.team2Color}
 								width2={`${oddsParams.team2Perc}%`}
 								text2={`${mobileView ? oddsParams.team2Abbr : odds[1].name}: ${odds[1].price}`}

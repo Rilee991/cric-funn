@@ -42,7 +42,7 @@ const LoggedInRoutes = () => {
         const timer = setInterval(() => {
             const timeSpent = parseInt(((Date.now()-startTime)/1000).toFixed(0));
 
-            if(appDataObj[username]) {
+            if(appDataObj?.[username]) {
                 const isUniqueDevice = appDataObj[username]["devices"].filter(devInfo => devInfo.deviceId == deviceInfo.deviceId).length == 0;
                 if(isUniqueDevice) {
                     appDataObj[username]["devices"].push(deviceInfo);

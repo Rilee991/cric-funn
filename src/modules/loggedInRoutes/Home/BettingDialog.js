@@ -160,7 +160,7 @@ const BettingDialog = (props) => {
                             {"Go For Glory!"}
                         </Typography>
                     </Button> */}
-                    <SwipeButton loading={loading} disabled={disabledSave} color='#6c5be1' text='SLIDE TO EXECUTE' onSuccess={() => betInTheMatch()} />
+                    <SwipeButton loading={loading} disabled={disabledSave} color='#6c5be1' text='Slide to confirm' onSuccess={() => betInTheMatch()} />
                     {/* <Alert severity="warning" variant="filled" className="tw-rounded-[40px] tw-flex tw-justify-center" classes={{ icon: classes.customIcon }}>
                         <Typography variant="body">
                             <b>{allInEnabled ? "Warning! You're going ALL IN! Shout victory is mine! " : ""}Once bet cannot be edited.</b>
