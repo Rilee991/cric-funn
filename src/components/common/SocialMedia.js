@@ -17,7 +17,7 @@ const SocialMedia = () => {
                 <LinkedIn className="tw-text-white-app" fontSize="large" />
             </div>
             <div className="tw-cursor-pointer" onClick={() => openWindow(`https://twitter.com/IamRohitKumar22`)}>
-                <img className="tw-w-[26.25px] tw-h-[26.25px]" src={xImg} />
+                <img alt="X logo" className="tw-w-[26.25px] tw-h-[26.25px]" src={xImg} />
             </div>
         </div>
     );

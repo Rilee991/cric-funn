@@ -63,17 +63,17 @@ const StyledTableRow = withStyles((theme) => ({
 
 const StatsTable = (props) => {
     const { tableDetails = {}, rankPalette = true, fullWidth = false } = props;
-    const { title, cols = [], data = [], caption, dangerCols = [] } = tableDetails;
+    const { title, cols = [], data = [], caption } = tableDetails;
 
     function getColor(rank, isOut) {
         if(rankPalette) {
             if(isOut) return "linear-gradient(1deg, rgb(245 26 26), rgb(0 0 0))";
-            if(rank == 2) return "linear-gradient(1deg, rgb(213 206 0), rgb(85 13 121))";
-            else if(rank == 1)  return "linear-gradient(1deg, rgb(3 255 255), rgb(20 6 128))";
-            else if(rank%2 == 0) return "rgb(84 98 133)";
+            if(rank === 2) return "linear-gradient(1deg, rgb(213 206 0), rgb(85 13 121))";
+            else if(rank === 1)  return "linear-gradient(1deg, rgb(3 255 255), rgb(20 6 128))";
+            else if(rank%2 === 0) return "rgb(84 98 133)";
             else return "rgb(104 121 164)";
         } else {
-            if(rank%2 == 0) return "rgb(5 61 58)";
+            if(rank%2 === 0) return "rgb(5 61 58)";
             else return "rgb(4 90 86)";
         }
 	}
@@ -93,7 +93,7 @@ const StatsTable = (props) => {
 						<TableHead>
 							<TableRow>
                                 {cols && cols.length ? cols.map((colName, idx) =>
-                                    <> { idx != cols.length-1 ? 
+                                    <> { idx !== cols.length-1 ? 
                                         <StyledTableCell align="center"><Typography variant="button" className="tw-font-noto">{upperCase(colName)}</Typography></StyledTableCell>
                                         : <StyledTableLastCell align="center"><Typography variant="button" className="tw-font-noto">{upperCase(colName)}</Typography></StyledTableLastCell>}
                                     </>
@@ -105,7 +105,7 @@ const StatsTable = (props) => {
                             {data.map((eachRow,idx) => (
                                 <StyledTableRow key={eachRow.player} style={{ background: getColor(idx+1) }}>
                                     {cols.map((colName,jdx) => (
-                                        <> { jdx != cols.length-1 ? 
+                                        <> { jdx !== cols.length-1 ? 
                                             <StyledTableCell align="center"><Typography variant="button">{eachRow[colName]}</Typography></StyledTableCell>
                                             : <StyledTableLastCell align="center"><Typography variant="button">{eachRow[colName]}</Typography></StyledTableLastCell>}
                                         </>

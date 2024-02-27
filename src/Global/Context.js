@@ -146,7 +146,7 @@ const Context = (props) => {
         let result = [];
         const userDocs = await getUsers();
 
-        userDocs.docs.map(user => {
+        userDocs.docs.forEach(user => {
             const userData = user.data();
             const { bets = [], username, isDummyUser = false } = userData;
             if(!isDummyUser) {

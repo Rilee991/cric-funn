@@ -1,5 +1,4 @@
 import firebase from 'firebase';
-import moment from 'moment';
 
 const firebaseConfig = {
     apiKey: "AIzaSyBFK-Ls496ycWWk5LCbxsN_CrEc234uJWc",
@@ -22,6 +21,7 @@ const db = firebase.firestore();
 const auth = firebase.auth();
 const storage = firebase.storage();
 const logger = firebase.analytics(app);
+const remoteConfig = firebase.remoteConfig();
 logger.setAnalyticsCollectionEnabled(true);
 
-export { db, auth, storage, logger, firebase };
+export { db, auth, storage, logger, firebase, remoteConfig };

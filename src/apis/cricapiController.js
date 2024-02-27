@@ -65,7 +65,7 @@ export const syncDbWithNewMatches = async () => {
                 // formatMatch(match);
                 formatWcMatch(match);
                 matchesPromise.push(createMatch(match.id, match));
-            } else if(dbMatch.exists && matchData.name.length != match.name.length) {
+            } else if(dbMatch.exists && matchData.name.length !== match.name.length) {
                 // formatMatch(match);
                 formatWcMatch(match);
                 matchesPromise.push(updateMatchById(match.id, match));

@@ -13,7 +13,7 @@ export const getPointsTimeLineComparison = async () => {
             const userJourney = [{ match, points }];
             const { bets = [], username } = userDoc.data();
 
-            bets.map(bet => {
+            bets.forEach(bet => {
                 if(bet.betWon) {
                     if(bet.isNoResult) {
                         points += parseInt(bet.selectedPoints);
