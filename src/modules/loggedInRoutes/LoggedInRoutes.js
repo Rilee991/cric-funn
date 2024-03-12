@@ -129,7 +129,7 @@ const LoggedInRoutes = () => {
         }
     }
 
-    const isGlobalStatsDisabled = !isAdmin && moment().isBefore(moment("01-05-2024"));
+    const isGlobalStatsDisabled = moment().isBefore(moment("05-01-2024"));
 
     const navItems = [{
         name: <div className="tw-flex tw-items-center">

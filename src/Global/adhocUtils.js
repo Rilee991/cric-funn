@@ -122,7 +122,9 @@ export const formatMatch = (match) => {
     match.team2 = team2;
     match.team1Abbreviation = match.teamInfo[0].shortname;
     match.team2Abbreviation = match.teamInfo[1].shortname;
-    match.poster = matchPostersMapping[`${match.team1Abbreviation}-${match.team2Abbreviation}`] || matchPostersMapping[`${match.team2Abbreviation}-${match.team1Abbreviation}`] || "";
+    const key1 = `${match.team1Abbreviation}-${match.team2Abbreviation}`;
+    const key2 = `${match.team2Abbreviation}-${match.team1Abbreviation}`;
+    match.poster = matchPostersMapping[key1] || matchPostersMapping[key2] || "";
     match.dateTimeGMT = match.dateTimeGMT + "Z";
 
     delete match["bbbEnabled"];
