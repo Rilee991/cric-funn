@@ -5,13 +5,13 @@ const IOSSwitch = withStyles((theme) => ({
         width: 42,
         height: 26,
         padding: 0,
-        margin: theme.spacing(1),
+        margin: theme.spacing(1)
     },
     switchBase: {
         padding: 1,
         '&$checked': {
             transform: 'translateX(16px)',
-            color: theme.palette.common.white,
+            color: "#ffefef",
             '& + $track': {
                 backgroundColor: '#52d869',
                 opacity: 1,
@@ -46,7 +46,7 @@ const IOSSwitch = withStyles((theme) => ({
                 switchBase: classes.switchBase,
                 thumb: classes.thumb,
                 track: classes.track,
-                checked: classes.checked,
+                checked: classes.checked
             }}
             {...props}
         />
