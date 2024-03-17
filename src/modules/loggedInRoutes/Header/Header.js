@@ -72,7 +72,7 @@ const Header = (props) => {
 					<div className="tw-flex tw-items-center tw-justify-center">
 						{isBday && 
 							<div className="tw-flex">
-								<IOSSwitch className="tw-w-8 tw-h-8" checked={toggleConfetti} onChange={() => setToggleConfetti(prev => !prev)} name="checkedB" />
+								<IOSSwitch checked={toggleConfetti} onChange={() => setToggleConfetti(prev => !prev)} name="checkedB" />
 							</div>
 						}
 						<IconButton
