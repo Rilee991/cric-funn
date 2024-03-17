@@ -42,10 +42,10 @@ const CoundownRenderer = ({ days, hours, minutes, seconds, completed, ...props }
                     <span id="seconds">{seconds}</span>Seconds
                 </li>
             </ul>
-            <div className="tw-grid tw-place-content-center">
+            <div className="tw-flex tw-flex-col tw-items-center">
                 <span className="tw-text-xl ">To go for</span>
                 <br/>
-                <img src={"https://www.wwe.com/f/styles/og_image/public/all/2023/10/Road_to_WrestleMania_Logo--f3cb0721e33bff4bc015a9a278f87494.png"} alt="Ipl t20 logo" className="tw-w-40" />
+                <img src={"https://www.wwe.com/f/styles/og_image/public/all/2023/10/Road_to_WrestleMania_Logo--f3cb0721e33bff4bc015a9a278f87494.png"} alt="Ipl t20 logo" className="tw-w-full sm:tw-w-2/3" />
             </div>
         </div>
     );
