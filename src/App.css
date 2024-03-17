@@ -76,3 +76,34 @@ body {
     50% { background-position: 400% 0; }
     100% { background-position: 0 0; }
 }
+
+
+.container {
+  color: #333;
+  margin: 0 auto;
+  padding: 0.5rem;
+  text-align: center;
+}
+
+.count-down2 {
+  font-size: 24px;
+  font-weight: bold;
+  font-family: "Courier New", Courier, monospace;
+}
+
+h1 {
+  font-weight: normal;
+}
+
+li {
+  display: inline-block;
+  /* font-size: 1.5em; */
+  list-style-type: none;
+  padding: 9px;
+  text-transform: uppercase;
+}
+
+li span {
+  display: block;
+  font-size: 3.5rem;
+}

@@ -10,6 +10,7 @@ import { RiDashboard2Line } from 'react-icons/ri';
 import { FaHistory, FaMedal, FaSolarPanel } from 'react-icons/fa';
 import { MdOutlineQueryStats } from 'react-icons/md';
 import md5 from 'md5';
+import CountDown from 'count-down-react';
 
 import NotFoundError from '../../components/common/NotFoundError';
 import { Header, SideNavbar, Notifications, Home, MyBets, MyStats, GlobalStats, PointsTable, ControlPanel, Legends } from './index';
@@ -17,6 +18,38 @@ import { ContextProvider } from '../../global/Context';
 import BirthdayModal from './BirthdayModal/BirthdayModal';
 import useOnline from '../../hooks/useOnline';
 import { updateAppData } from '../../apis/configurationsController';
+import NoConnection from '../../components/common/NoConnection';
+import cricFunnLogo from '../../res/images/logo.png';
+
+const CoundownRenderer = ({ days, hours, minutes, seconds, completed, ...props }) => {
+    return (
+        <div className="container">
+            <div className="tw-flex tw-place-content-center">
+                <img src={cricFunnLogo} alt="Ipl t20 logo" className="tw-w-40 tw-border-r-4 tw-border-black-app tw-p-3" />
+                <img src={"https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/377bb3e8-ff8c-4984-8530-64b9afb9d321/dff9nq3-9bd05d41-c893-44ea-af84-f18493cbd3e4.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzM3N2JiM2U4LWZmOGMtNDk4NC04NTMwLTY0YjlhZmI5ZDMyMVwvZGZmOW5xMy05YmQwNWQ0MS1jODkzLTQ0ZWEtYWY4NC1mMTg0OTNjYmQzZTQucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.BUTDCeXxdiYd5Tf0EQYbaGvq6fQ1q9LMW5bMZztAAVo"} alt="Ipl t20 logo" className="tw-w-40" />
+            </div>
+            <ul>
+                <li>
+                    <span id="days">{days}</span>days
+                </li>
+                <li>
+                    <span id="hours">{hours}</span>Hours
+                </li>
+                <li>
+                    <span id="minutes">{minutes}</span>Minutes
+                </li>
+                <li>
+                    <span id="seconds">{seconds}</span>Seconds
+                </li>
+            </ul>
+            <div className="tw-grid tw-place-content-center">
+                <span className="tw-text-xl ">To go for</span>
+                <br/>
+                <img src={"https://www.wwe.com/f/styles/og_image/public/all/2023/10/Road_to_WrestleMania_Logo--f3cb0721e33bff4bc015a9a278f87494.png"} alt="Ipl t20 logo" className="tw-w-40" />
+            </div>
+        </div>
+    );
+};
 
 const LoggedInRoutes = () => {
     const contextConsumer = useContext(ContextProvider);
@@ -181,6 +214,8 @@ const LoggedInRoutes = () => {
     }].map((item, idx) => ({ ...item, id: idx+1 }));
 
 	const isOnline = useOnline();
+    const date = Date.now() + (new Date("03-22-2024") - new Date());
+    const isDatePassed = (date - new Date()) < 0;
 
     return (
         <div className="tw-bg-white-app">
@@ -211,41 +246,39 @@ const LoggedInRoutes = () => {
                             notifications={notifications}
                         />
                     </div>
-                    <div className={`tw-pb-6 md:tw-px-14 tw-w-full tw-min-h-screen xl:tw-w-[60%] lg:tw-w-[80%] `}>
-                        <Switch>
-                            <Route exact path="/">
-                                <Home handleSelectedNav={handleSelectedNav} />
-                            </Route> 
-                            <Route exact path="/my-bets">
-                                <MyBets /> 
-                            </Route>
-                            <Route exact path="/my-stats">
-                                <MyStats exact />
-                            </Route>
-                            {!isGlobalStatsDisabled && <Route exact path="/global-stats">
-                                <GlobalStats />
-                            </Route> }
-                            <Route exact path="/points-table">
-                                <PointsTable />
-                            </Route>
-                            <Route exact path="/hall-of-fame">
-                                <Legends />
-                            </Route>
-                            {isAdmin && <Route exact path="/control-panel">
-                                <ControlPanel />
-                            </Route> }
-                            <Route>
-                                <NotFoundError />
-                            </Route>
-                        </Switch>
-                    </div>
+                    {!isDatePassed ? 
+                        <CountDown date={date} renderer={CoundownRenderer} /> :
+                        <div className={`tw-pb-6 md:tw-px-14 tw-w-full tw-min-h-screen xl:tw-w-[60%] lg:tw-w-[80%] `}>
+                            <Switch>
+                                <Route exact path="/">
+                                    <Home handleSelectedNav={handleSelectedNav} />
+                                </Route> 
+                                <Route exact path="/my-bets">
+                                    <MyBets /> 
+                                </Route>
+                                <Route exact path="/my-stats">
+                                    <MyStats exact />
+                                </Route>
+                                {!isGlobalStatsDisabled && <Route exact path="/global-stats">
+                                    <GlobalStats />
+                                </Route> }
+                                <Route exact path="/points-table">
+                                    <PointsTable />
+                                </Route>
+                                <Route exact path="/hall-of-fame">
+                                    <Legends />
+                                </Route>
+                                {isAdmin && <Route exact path="/control-panel">
+                                    <ControlPanel />
+                                </Route> }
+                                <Route>
+                                    <NotFoundError />
+                                </Route>
+                            </Switch>
+                        </div>
+                    }
                 </div>
-            :  <div className="tw-grid tw-place-items-center">
-                <img src="https://cdni.iconscout.com/illustration/premium/thumb/no-internet-connection-8316263-6632283.png?f=webp" alt="No connection" />
-                <div className="tw-font-bold tw-text-red-600">It seems you're not connected to the internet!</div>
-                <div>Please fix your connection.</div>
-                <div className="tw-text-green-800 tw-font-semibold">Content will be updated automatically.</div>
-            </div>}
+            :  <NoConnection />}
         </div> 
 	);
 }
