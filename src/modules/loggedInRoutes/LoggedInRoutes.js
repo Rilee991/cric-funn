@@ -219,7 +219,7 @@ const LoggedInRoutes = () => {
 
     return (
         <div className="tw-bg-white-app">
-            {(isBday || !isDatePassed) && toggleConfetti && <Confetti width={width} height={height + scrollY} className="tw-z-[10000]" numberOfPieces={500} />}
+            {(isBday || !isDatePassed) && toggleConfetti && <Confetti width={width} height={height + scrollY} className="tw-z-[10000]" numberOfPieces={width <= 600 ? 200: 500} />}
             {isBday && <BirthdayModal claimReward={claimReward} isRewardClaimed={isRewardClaimed} width={width} open={openBdayModal} closeDialog={() => setOpenBdayModal(false)} />}
             <div className="tw-h-16">
                 <Header isOnline={isOnline} totalNotifs={notifications.length} clearNotifications={clearNotifications} setToggleConfetti={setToggleConfetti}
