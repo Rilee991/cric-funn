@@ -83,6 +83,7 @@ body {
   margin: 0 auto;
   padding: 0.5rem;
   text-align: center;
+  height: 100vh;
 }
 
 .count-down2 {
