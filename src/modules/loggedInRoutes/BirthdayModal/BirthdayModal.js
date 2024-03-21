@@ -48,9 +48,9 @@ const BirthdayModal = (props) => {
                 <div>
                     <img src="https://tipsmake.com/data/images/the-animation-of-happy-birthday-adds-meaning-picture-15-XfzccofXT.gif" />
                 </div>
-                {!isRewardClaimed && <div className="tw-flex tw-justify-center">
+                {/* {!isRewardClaimed && <div className="tw-flex tw-justify-center">
                     <img src="https://cdn.icon-icons.com/icons2/3582/PNG/512/reward_lottery_money_cash_prize_icon_225876.png" width="30%" />
-                </div> }
+                </div> } */}
                 
                 <DialogContentText className={`tw-flex tw-gap-2 tw-items-center tw-justify-end ${width > 500 ? "" : "tw-flex-col"}`}>
                     <Button size="large" className="tw-rounded-[40px]" style={{ background: "linear-gradient(0deg, #1b004a, #50045a)", color: "white" }} variant="contained" onClick={() => handleOnClickLetsBet()}>
@@ -58,11 +58,11 @@ const BirthdayModal = (props) => {
 							{playAudio ? <>Playing <PauseCircleOutline/> </> : <>Stopped <PlayCircleOutlineOutlined/> </>}
 						</Typography>
 					</Button>
-                    {!isRewardClaimed && <Button size="large" className="tw-rounded-[40px]" style={{ background: "url(https://i.pinimg.com/originals/6b/e8/9b/6be89b96350815f624315e0096b72cbc.gif)", backgroundSize: "contain", backgroundColor: "#8b1b93", backgroundPosition: "center", color: "white" }} variant="contained" onClick={() => handleOnClickClaimReward()}>
+                    {/* {!isRewardClaimed && <Button size="large" className="tw-rounded-[40px]" style={{ background: "url(https://i.pinimg.com/originals/6b/e8/9b/6be89b96350815f624315e0096b72cbc.gif)", backgroundSize: "contain", backgroundColor: "#8b1b93", backgroundPosition: "center", color: "white" }} variant="contained" onClick={() => handleOnClickClaimReward()}>
 						<Typography variant="overline">
 							{"Claim Reward"} <Redeem />
 						</Typography>
-					</Button>}
+					</Button>} */}
                 </DialogContentText>
             </DialogContent>
             <audio autoPlay src={birthdaySong} loop ref={audioRef}></audio>

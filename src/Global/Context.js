@@ -42,7 +42,7 @@ const Context = (props) => {
             const points = DEFAULT_USER_PARAMS.STARTING_POINTS, image = DEFAULT_USER_PARAMS.PROFILE_PICTURE, bets = DEFAULT_USER_PARAMS.STARTING_BETS;
 
             await createUser(username, { username, email, password, image, points, bets, isDummyUser: true, 
-                isAdmin: false, isChampion: false, dob: "", isRewardClaimed: false
+                isAdmin: false, isChampion: false, dob: "", isRewardClaimed: false, showWishModal: false
             });
         } catch (error) {
             console.log(error);
@@ -55,9 +55,9 @@ const Context = (props) => {
         try {
             await auth.signInWithEmailAndPassword(email, password);
             const records = await getUserByKey("email", email);
-            const { username, image, points, bets = [], isAdmin = false, isChampion = false, isOut = false, dob, isRewardClaimed = true } = records.docs[0].data();
+            const { username, image, points, bets = [], isAdmin = false, isChampion = false, isOut = false, dob, isRewardClaimed = true, showWishModal = false } = records.docs[0].data();
 
-            setLoggedInUserDetails({ username, email, image, points, bets, isAdmin, isChampion, isOut, isRewardClaimed, dob });
+            setLoggedInUserDetails({ username, email, image, points, bets, isAdmin, isChampion, isOut, isRewardClaimed, dob, showWishModal });
         } catch (error) {
             console.log(error);
             throw new Error(error);
@@ -446,6 +446,16 @@ const Context = (props) => {
         }
     }
 
+    const wishModalSeen = async () => {
+        try {
+            await updateUserByUsername(loggedInUserDetails.username, { showWishModal: false });
+            setLoggedInUserDetails(prev => ({ ...prev, showWishModal: false }));
+        } catch (error) {
+            console.log(error);
+            throw new Error(error);
+        }
+    }
+
     const getTeamWiseStats = async () => {
         let penalizedPts = 0, betsPenalized = 0, result = [];
         const { bets = [] } = loggedInUserDetails;
@@ -782,7 +792,7 @@ const Context = (props) => {
             if(user) {
                 const userSnap = await getUserByKey("email", user.email);
                 const { username, email, image, points, bets, isAdmin = false, isChampion = false, isOut = false, dob,
-                    isRewardClaimed = true
+                    isRewardClaimed = true, showWishModal = false
                 } = userSnap.docs[0].data();
                 const configs = await getConfigurations();
                 setConfigurations(configs);
@@ -805,7 +815,8 @@ const Context = (props) => {
                     isAdmin,
                     isChampion,
                     isRewardClaimed,
-                    isOut: updatedDetails.latestIsOut
+                    isOut: updatedDetails.latestIsOut,
+                    showWishModal
                 });
             } else {
                 setLoggedInUserDetails({});
@@ -820,7 +831,7 @@ const Context = (props) => {
 
                 signUp, signIn, sendResetPasswordEmail, resetPassword, logout, clearNotifications, betOnMatch, updateSeenBets,
                 viewBetsData, getPointsTableData, resetUserDetails, syncUserDetails, getTeamWiseStats, getAllUsersData,
-                claimReward, setConfigurations
+                claimReward, setConfigurations, wishModalSeen
             }}
         >
             {props.children}

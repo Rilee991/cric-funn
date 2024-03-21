@@ -20,8 +20,16 @@ import useOnline from '../../hooks/useOnline';
 import { updateAppData } from '../../apis/configurationsController';
 import NoConnection from '../../components/common/NoConnection';
 import cricFunnLogo from '../../res/images/logo.png';
+import PageLoader from '../../components/common/PageLoader';
+import WishModal from './WishModal/WishModal';
 
 const CoundownRenderer = ({ days, hours, minutes, seconds, completed, ...props }) => {
+    if(completed) {
+        return <div className="tw-flex tw-justify-center tw-items-center xl:tw-w-[60%] lg:tw-w-[80%] tw-w-full">
+            <PageLoader tip="Loading matches! Gear up..." />;
+        </div>
+    }
+
     return (
         <div className="container">
             <div className="tw-flex tw-place-content-center">
@@ -54,8 +62,8 @@ const CoundownRenderer = ({ days, hours, minutes, seconds, completed, ...props }
 const LoggedInRoutes = () => {
     const contextConsumer = useContext(ContextProvider);
     const { mobileView, logout, notifications = [], clearNotifications, width, height, scrollY, claimReward,
-        loggedInUserDetails: { isAdmin, username, points, dob = "18-07-3212", isRewardClaimed = true },
-        configurations = {}, setConfigurations
+        loggedInUserDetails: { isAdmin, username, points, dob = "18-07-3212", isRewardClaimed = true, showWishModal = false },
+        configurations = {}, setConfigurations, wishModalSeen
     } = contextConsumer;
     const [isNavOpen, setIsNavOpen] = useState(false);
     const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
@@ -63,6 +71,7 @@ const LoggedInRoutes = () => {
     const [toggleConfetti, setToggleConfetti] = useState(true);
     const [isBday, setIsBday] = useState(dob && dob.slice(0,5) == moment().format("DD-MM"));
     const [openBdayModal, setOpenBdayModal] = useState(isBday);
+    const [openWishModal, setOpenWishModal] = useState(showWishModal)
 
     useEffect(() => {
         handleSelectedNav();
@@ -214,13 +223,15 @@ const LoggedInRoutes = () => {
     }].map((item, idx) => ({ ...item, id: idx+1 }));
 
 	const isOnline = useOnline();
-    const date = Date.now() + (new Date("03-22-2024") - new Date());
+    const date = Date.now() + (new Date("03-22-2024 00:00:00") - new Date());
     const isDatePassed = (date - new Date()) < 0;
 
     return (
         <div className="tw-bg-white-app">
             {(isBday || !isDatePassed) && toggleConfetti && <Confetti width={width} height={height + scrollY} className="tw-z-[10000]" numberOfPieces={width <= 600 ? 200: 500} />}
             {isBday && <BirthdayModal claimReward={claimReward} isRewardClaimed={isRewardClaimed} width={width} open={openBdayModal} closeDialog={() => setOpenBdayModal(false)} />}
+            {openWishModal && <WishModal wishModalSeen={wishModalSeen} username={username} open={openWishModal} closeDialog={() => setOpenWishModal(false)} />}
+
             <div className="tw-h-16">
                 <Header isOnline={isOnline} totalNotifs={notifications.length} clearNotifications={clearNotifications} setToggleConfetti={setToggleConfetti}
                     setIsNavOpen={setIsNavOpen} setIsNotificationsOpen={setIsNotificationsOpen} isBday={(isBday || !isDatePassed)} toggleConfetti={toggleConfetti}
@@ -247,7 +258,9 @@ const LoggedInRoutes = () => {
                         />
                     </div>
                     {!isDatePassed ? 
-                        <CountDown date={date} renderer={CoundownRenderer} /> :
+                        <CountDown date={date} renderer={CoundownRenderer}
+                            updateFrequency={({ minutes, seconds }) => 1000 }
+                        /> :
                         <div className={`tw-pb-6 md:tw-px-14 tw-w-full tw-min-h-screen xl:tw-w-[60%] lg:tw-w-[80%] `}>
                             <Switch>
                                 <Route exact path="/">
