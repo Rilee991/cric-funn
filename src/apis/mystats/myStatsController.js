@@ -14,6 +14,8 @@ export const getPointsTimeLineComparison = async () => {
             const { bets = [], username } = userDoc.data();
 
             bets.forEach(bet => {
+                if(bet.isSettled === false) return;
+
                 if(bet.betWon) {
                     if(bet.isNoResult) {
                         points += parseInt(bet.selectedPoints);
