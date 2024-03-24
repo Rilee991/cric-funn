@@ -68,6 +68,8 @@ const SideNavbar = (props) => {
 		</Link>
 	);
 
+    const filteredNavItems = navItems.filter(item => item.hidden !== true);
+
     const getDrawerItems = () => (
         <div className="tw-flex tw-flex-col tw-z-10 tw-h-screen tw-justify-between">
             <div className="tw-ml-[4vw]">
@@ -85,7 +87,7 @@ const SideNavbar = (props) => {
                 <Divider />
                 <div>
                     <List>
-                        {navItems.map((item, index) => (
+                        {filteredNavItems.map((item, index) => (
                             <Link to={item.to} key={item.id} onClick={() => onClickNavItem(item)}>
                                 <ListItem style={{ borderLeft: navSelected == item.id ? "2px solid white" : "", background: navSelected == item.id ? "linear-gradient(45deg, black, #1504b3)" : "", borderRadius: "0px 40px 40px 0px" }} className={`${item.disabled ? "hover:tw-bg-[#5a0404]" : "hover:tw-bg-[#232121]"} tw-mb-1`} button key={item.name}>
                                     <ListItemIcon className="tw-text-white">

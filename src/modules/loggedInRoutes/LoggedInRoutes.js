@@ -214,7 +214,8 @@ const LoggedInRoutes = () => {
         name: "Control Panel",
         to: "/control-panel",
         icon: <FaSolarPanel className="tw-h-6 tw-w-6" />,
-        component: <ControlPanel />
+        component: <ControlPanel />,
+        hidden: isAdmin ? false : true
     }, {
         name: "Logout",
         to: "/",
