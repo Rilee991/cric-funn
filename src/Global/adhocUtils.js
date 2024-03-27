@@ -20,7 +20,7 @@ export const getFormattedTimeISOString = (date) => {
 }
 
 export function getMsgForUpcomingBets(startTime, endTime) {
-    return (`Betting for this match will be OPENED from - ${startTime.format("LLL")} TO ${endTime.format("LLL")}`);
+    return (`Betting window will be OPENED from - ${startTime.format("LLL")} TO ${endTime.format("LLL")}`);
 }
 
 export function getMsgForOpenBets(endTime) {
@@ -28,23 +28,23 @@ export function getMsgForOpenBets(endTime) {
 }
 
 export function getMsgForInProgressBets(points, team) {
-    return (`You've bet ${points} POINTS on this match. Betting Team: ${team}`);
+    return (`You've bet ${points} POINTS. Betting Team: ${team}`);
 }
 
 export function getMsgForNoResultBets(points, team) {
-    return (`Betting is CLOSED. Match ended in NO RESULT. You've recieved ${points} POINTS on this match. Betting Team: ${team}`);
+    return (`Betting is CLOSED. Match ended in NO RESULT. You've recieved ${points} POINTS back. Betting Team: ${team}`);
 }
 
 export function getMsgForClosedBets() {
-    return (`Betting for this match is CLOSED. You DID NOT bet.`);
+    return (`Betting is CLOSED. You DID NOT bet.`);
 }
 
 export function getMsgForWonBets(points, team) {
-    return (`Betting CLOSED. You WON ${points} POINTS on this match. Betting Team: ${team}`);
+    return (`Betting CLOSED. You WON ${points} POINTS. Betting Team: ${team}`);
 }
 
 export function getMsgForLostBets(points, team) {
-    return (`Betting CLOSED. You LOST ${points} POINTS on this match. Betting Team: ${team}`);
+    return (`Betting CLOSED. You LOST ${points} POINTS. Betting Team: ${team}`);
 }
 
 export const getWinningAmount = (amount, odds = 1) => {

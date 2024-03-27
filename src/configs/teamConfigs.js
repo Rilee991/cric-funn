@@ -62,6 +62,11 @@ export const TEAM_PROPS = {
         abbr: "RCB",
         logo: rcbLogo
     },
+    "Royal Challengers Bengaluru": {
+        color: "#850000",
+        abbr: "RCB",
+        logo: rcbLogo
+    },
     "Texas Super Kings": {
         color: "#c5a804",
         abbr: "TSK",

@@ -34,7 +34,7 @@ const MatchCard = (props) => {
 	
 	const [bettingOn, setBettingOn] = useState((moment() >= betStartTime && moment() <= betEndTime) && (bettingDoneByUser == false));
 	const [canViewBets, setCanViewBets] = useState(moment() > betEndTime);
-	const [message, setMessage] = useState(moment() >= betEndTime ? `Betting for this match is CLOSED.` : `Betting for this match will be OPENED from ${betStartTime.format("LLL")} to ${betEndTime.format("LLL")}`);
+	const [message, setMessage] = useState(moment() >= betEndTime ? `Betting window is CLOSED.` : `Betting window will be OPENED from ${betStartTime.format("LLL")} to ${betEndTime.format("LLL")}`);
 	const [severity, setSeverity] = useState(ALERT_CONFIGS.INFO);
 
     useEffect(()=> {
