@@ -100,8 +100,8 @@ const ViewBetsDialog = (props) => {
     return (
         <Dialog open={open} onClose={closeDialog} maxWidth="xl">
             <DialogTitle className="tw-p-2" style={{ borderRadius: "40px 40px 0px 0px", background: "linear-gradient(353deg, black, #0c4371)" }}>
-                <Typography variant="button" style={{fontSize: 14 }} className="tw-flex tw-font-noto tw-justify-between tw-text-white">
-                    <b>{team1Abbreviation} v/s {team2Abbreviation}</b>
+                <Typography style={{fontSize: 14 }} className="tw-flex tw-font-noto tw-justify-between tw-text-white">
+                    <b>#{team1Abbreviation}vs{team2Abbreviation}</b>
                     <IconButton
                         aria-label="toggle password visibility"
                         onClick={closeDialog}
