@@ -54,7 +54,7 @@ const Header = (props) => {
 	}
 
 	const getCricFunnLogo = () => (
-		<Link href="/">
+		<Link to="/">
 		  <img src={cricFunnLogo} width={100} height={70}/>
 		</Link>
 	);

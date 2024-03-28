@@ -8,7 +8,7 @@ import * as d3 from 'd3-shape';
 import { isEmpty } from 'lodash';
 
 const PointsTimelineCompare = (props) => {
-    const { usersPointsTimeline = [], nodeId, title = "Graph" } = props;
+    const { usersPointsTimeline = [], nodeId, title = "Graph", xLabel = "xlabel", yLabel = "ylabel" } = props;
 
     useEffect(() => {
         if(isEmpty(usersPointsTimeline))  return;
@@ -49,7 +49,7 @@ const PointsTimelineCompare = (props) => {
 
         const xAxisLabel = am5.Label.new(root, {
             rotation: 0,
-            text: "Matches",
+            text: xLabel,
             x: am5.p50,
             centerY: am5.p50,
             fill: am5.color("#fff")
@@ -90,7 +90,7 @@ const PointsTimelineCompare = (props) => {
 
         const yAxisLabel = am5.Label.new(root, {
             rotation: -90,
-            text: "Score",
+            text: yLabel,
             y: am5.p50,
             centerX: am5.p50,
             fill: am5.color("#fff")

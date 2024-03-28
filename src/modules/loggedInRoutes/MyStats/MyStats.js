@@ -101,14 +101,14 @@ const MyStats = () => {
                         <b>Loading graph details.</b>
                     </Typography>
                 </Alert> : 
-                <PointsTimelineCompare nodeId={"ptsTimelineCompare"} title={"Points vs Matches"} usersPointsTimeline={usersPointsTimelineData} /> 
+                <PointsTimelineCompare nodeId={"ptsTimelineCompare"} xLabel={"Matches"} yLabel={"Score"} title={"Points vs Matches"} usersPointsTimeline={usersPointsTimelineData} /> 
             }
             { timelineLoading ?  <Alert severity="info" variant="filled" className="tw-mt-2 tw-rounded-[40px] tw-w-full tw-flex tw-justify-center">
                     <Typography variant="body">
                         <b>Loading graph details.</b>
                     </Typography>
                 </Alert> : 
-                <PointsTimelineCompare nodeId={"betsTimelineCompare"} title={"Bets vs Matches"} usersPointsTimeline={usersBetTimelineData} /> 
+                <PointsTimelineCompare nodeId={"betsTimelineCompare"} xLabel={"Matches"} yLabel={"Bet score"} title={"Bets vs Matches"} usersPointsTimeline={usersBetTimelineData} /> 
             }
             {/* <BetTimeDistChart betTimeDist={betTimeDist} betTimePtsDist={betTimePtsDist} username={username} /> */}
             {isTeamWiseDataLoading ? <div>Loading table, please wait...</div> :
