@@ -8,12 +8,12 @@ import * as d3 from 'd3-shape';
 import { isEmpty } from 'lodash';
 
 const PointsTimelineCompare = (props) => {
-    const { usersPointsTimeline = [] } = props;
+    const { usersPointsTimeline = [], nodeId, title = "Graph" } = props;
 
     useEffect(() => {
         if(isEmpty(usersPointsTimeline))  return;
 
-        const root = am5.Root.new("ptsTimelineCompare");
+        const root = am5.Root.new(nodeId);
         root.setThemes([am5themes_Animated.new(root), am5themes_Responsive.new(root)]);
     
         const chart = root.container.children.push(am5xy.XYChart.new(root, {
@@ -186,11 +186,11 @@ const PointsTimelineCompare = (props) => {
             <CardActionArea style={{ background: "linear-gradient(179deg, rgb(10, 8, 82), rgb(0, 0, 0))" }}>
                 <CardContent style={{ "background": "linear-gradient(179deg, #0a0852, rgb(0 0 0))"}} className="tw-rounded-[40px] tw-flex tw-flex-col tw-items-center tw-p-2">
                     <Typography className="tw-flex tw-items-center tw-gap-2 tw-text-white tw-font-noto tw-italic" variant={"button"} style={{fontSize: 20}} component="p">
-                        <b>{"Scores Timeline"}</b>
+                        <b>{title}</b>
                     </Typography>
                 </CardContent>
                 <Divider />
-                <div id="ptsTimelineCompare" style={{ width: "100%", height: "500px" }}></div>
+                <div id={nodeId} style={{ width: "100%", height: "500px" }}></div>
             </CardActionArea>
         </Card>
     );

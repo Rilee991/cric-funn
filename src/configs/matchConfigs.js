@@ -32,7 +32,7 @@ export const matchPostersMapping = {
     "MI-CSK": "https://cdorg.b-cdn.net/wp-content/uploads/2022/03/IPL-Match-33-MI-vs-CSK-768x360.jpg",
     "MI-KKR": "https://cdorg.b-cdn.net/wp-content/uploads/2022/03/IPL-Match-56-MI-vs-KKR-768x360.jpg",
     "MI-PBKS": "https://cdorg.b-cdn.net/wp-content/uploads/2022/03/IPL-Match-23-MI-vs-PK-768x360.jpg",
-    "MI-RR": "https://cdorg.b-cdn.net/wp-content/uploads/2022/03/IPL-Match-9-MI-vs-RR-768x360",
+    "MI-RR": "https://cdorg.b-cdn.net/wp-content/uploads/2022/03/IPL-Match-9-MI-vs-RR-768x360.jpg",
     "MI-SRH": "https://cdorg.b-cdn.net/wp-content/uploads/2022/03/IPL-Match-65-MI-vs-SH-768x360.jpg",
     "PBKS-DC": "https://cdorg.b-cdn.net/wp-content/uploads/2022/03/IPL-Match-64-PK-vs-DC-768x360.jpg",
     "PBKS-GT": "https://cdorg.b-cdn.net/wp-content/uploads/2022/03/IPL-Match-16-PK-vs-GT-768x360.jpg",

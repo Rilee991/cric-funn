@@ -6,11 +6,13 @@ export const getPointsTimeLineComparison = async () => {
     try {
         const users = await getUserByKey("isDummyUser", false);
         const docs = users.docs;
-        const resp = [];
+        const timelineComparision = [];
+        const betsComparision = [];
 
         for(const userDoc of docs) {
             let points = DEFAULT_USER_PARAMS.STARTING_POINTS, match = 0;
             const userJourney = [{ match, points }];
+            const betJourney = [{ match, points: 0 }];
             const { bets = [], username } = userDoc.data();
 
             bets.forEach(bet => {
@@ -28,12 +30,14 @@ export const getPointsTimeLineComparison = async () => {
 
                 match++;
                 userJourney.push({ points, match });
+                betJourney.push({ points: parseInt(bet.selectedPoints), match });
             });
 
-            resp.push({ player: username, journey: userJourney });
+            timelineComparision.push({ player: username, journey: userJourney });
+            betsComparision.push({ player: username, journey: betJourney });
         };
 
-        return resp;
+        return { timelineComparision, betsComparision };
     } catch (error) {
         throw new Error(error);
     }
