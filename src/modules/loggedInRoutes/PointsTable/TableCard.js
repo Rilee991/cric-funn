@@ -81,7 +81,7 @@ const TableCard = (props) => {
                                 {cols && cols.length ? cols.map((colName, idx) => 
                                     <>
                                         { idx != cols.length-1 ? 
-                                            <StyledTableCell align="center"><Typography variant="button">{colName}</Typography></StyledTableCell>
+                                            <StyledTableCell align="center" className={idx === 2 ? "tw-p-0" : ""}><Typography variant="button">{colName}</Typography></StyledTableCell>
                                         : <StyledTableLastCell align="center"><Typography variant="button">{colName}</Typography></StyledTableLastCell>}
                                     </>
                                 ) : null }
@@ -99,7 +99,7 @@ const TableCard = (props) => {
                                         </Typography>
                                     </StyledTableCell>
                                     <StyledTableCell align="center" className="tw-font-noto">{eachRow.bets}</StyledTableCell>
-                                    <StyledTableCell align="center" className="tw-font-noto tw-w-full tw-p-0">{eachRow["w-l-i"]}</StyledTableCell>
+                                    <StyledTableCell align="center" className="tw-font-noto tw-w-1/5 tw-p-0">{eachRow["w-l-i"]}</StyledTableCell>
                                     <StyledTableLastCell align="center" className="tw-font-noto">{eachRow.points}</StyledTableLastCell>
                                 </StyledTableRow>
                             )) : <div className="tw-font-noto">No players present.</div>}
