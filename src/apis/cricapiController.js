@@ -14,6 +14,13 @@ export const getMatchDetailsById = async (id) => {
         const resp = await fetch(url);
         const data = await resp.json();
         const matchDetails = data.data;
+
+        if(matchDetails?.status.includes("won")) {
+            matchDetails["matchWinner"] = matchDetails.status.includes(matchDetails.teams[0]) ? matchDetails.teams[0]:
+                matchDetails.teams[1];
+            matchDetails["matchEnded"] = true;
+        }
+
         const currentHits = get(data, "info.hitsToday", 0);
 
         return { matchDetails, configDocId: now.format("YYYY-MM-DD"), currentHits };
