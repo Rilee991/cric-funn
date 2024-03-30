@@ -85,7 +85,7 @@ const ViewBetsDialog = (props) => {
                     <TableBody>
                         {betsData.map((eachBet) => (
                             <TableRow key={eachBet.username} className="tw-bg-[aliceblue]">
-                                <TableCell className="tw-p-3 tw-font-noto" component="th" scope="row">{eachBet.username}</TableCell>
+                                <TableCell className={`tw-p-3 tw-font-noto ${eachBet.isHighest ? "tw-text-[#188b60] tw-font-bold" : ""}`} scope="row">{eachBet.username}</TableCell>
                                 <TableCell className="tw-p-3 tw-font-noto" align="center"><Tag className="tw-rounded-3xl" color={getColor(eachBet)}>{eachBet.betTeam}</Tag></TableCell>
                                 <TableCell className="tw-p-3 tw-font-noto" align="center">{eachBet.betPoints}</TableCell>
                                 <TableCell className="tw-p-3 tw-font-noto" align="center">{getFormattedTime(eachBet.betTime.seconds)}</TableCell>
