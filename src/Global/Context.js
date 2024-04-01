@@ -229,14 +229,14 @@ const Context = (props) => {
             let mostBetsDone = [], mostBetsWon = [], mostBetsLost = [], mostBetsPenalized = [], maxAvgBetsPoints = [],
                 mostPointsWon = [], mostPointsLost = [], mostPointsPenalized = [], longestWinningStreak = [], longestLosingStreak = [],
                 longestPenalizedStreak = [], earliestBetsTime = [], mostPointsBetInAMatch = [], leastPointsBetInAMatch = [], betPtsDistribution = [], 
-                timeSeriesPts = [], bettingOddsDistribution = [], betPtsSplitDistribution = [];
+                timeSeriesPts = [], bettingOddsDistribution = [], betPtsSplitDistribution = [], winsSplitDistribution = [];
 
             const allUsersSnap = await getUserByKey("isDummyUser", false);
             const allUsersDocs = allUsersSnap.docs;
 
             const allUsersData = allUsersDocs.map(eachUserDoc => {
                 const eachUserData = eachUserDoc.data();
-                const userSplitData = { }, username = eachUserData.username, bets = eachUserData.bets, 
+                const userSplitData = {}, winSplitData = {}, username = eachUserData.username, bets = eachUserData.bets, 
                     currPts = [{ match: 0, [username]: DEFAULT_USER_PARAMS.STARTING_POINTS }];
                 let currPtsLen = 1;
 
@@ -256,10 +256,17 @@ const Context = (props) => {
                         betsDone++;
                         pointsBet += parseInt(bet.selectedPoints);
                         
-                        if(userSplitData[`${lKey}-${rKey}`])
+                        if(userSplitData[`${lKey}-${rKey}`]) {
                             userSplitData[`${lKey}-${rKey}`] += bet.selectedPoints;
-                        else
+                        } else {
                             userSplitData[`${lKey}-${rKey}`] = bet.selectedPoints;
+                        }
+
+                        if(winSplitData[`${lKey}-${rKey}`]) {
+                            winSplitData[`${lKey}-${rKey}`] += bet.betWon ? 1 : 0;
+                        } else {
+                            winSplitData[`${lKey}-${rKey}`] = bet.betWon ? 1 : 0;
+                        }
 
                         longestPenalizStreak = Math.max(longestPenalizStreak, currentPenalizStreak);
                         currentPenalizStreak = 0;
@@ -309,6 +316,11 @@ const Context = (props) => {
                             userSplitData[`${lKey}-${rKey}`] += 0;
                         else
                             userSplitData[`${lKey}-${rKey}`] = 0;
+                        
+                        if(winSplitData[`${lKey}-${rKey}`])
+                            winSplitData[`${lKey}-${rKey}`] += 0;
+                        else
+                            winSplitData[`${lKey}-${rKey}`] = 0;
 
                         if(parseInt(bet.selectedPoints) == 50) {
                             betsPenalized++;
@@ -349,6 +361,7 @@ const Context = (props) => {
                 longestLosingStreak.push({ username, longestLoseStreak });
                 longestPenalizedStreak.push({ username, longestPenalizStreak });
                 betPtsSplitDistribution.push({ ...userSplitData, username });
+                winsSplitDistribution.push({ ...winSplitData, username });
 
                 return bets;
             });
@@ -408,6 +421,7 @@ const Context = (props) => {
             longestLosingStreak = sortBy(longestLosingStreak, ["longestLoseStreak"]).reverse();
             longestPenalizedStreak = sortBy(longestPenalizedStreak, ["longestPenalizStreak"]).reverse();
             betPtsSplitDistribution = sortBy(betPtsSplitDistribution, ["username"]);
+            winsSplitDistribution = sortBy(winsSplitDistribution, ["username"]);
             
             const totalBetPoints = betPtsDistribution.reduce((acc, val) => acc+val.points, 0);
             betPtsDistribution.forEach(dist => dist["ptsPercent"] = ((dist["points"]/totalBetPoints)*100).toFixed(2));
@@ -424,11 +438,11 @@ const Context = (props) => {
             // mostBetsDone(done), mostBetsWon(done), mostBetsLost(done), mostBetsPenalized(done),highestAvgBetPointsOverall(done)
 
             const globalStats = { 
-                mostBetsDone: { data: mostBetsDone, cols: Object.keys(mostBetsDone[0]), caption: "Most number of bets done. Penalized bets is not included in it." }, 
+                mostBetsDone: { data: mostBetsDone, cols: Object.keys(mostBetsDone[0]), caption: "Most number of bets done. Penalized bets is not included." }, 
                 mostBetsWon: { data: mostBetsWon, cols: Object.keys(mostBetsWon[0]), caption: "Most number of bets won." }, 
                 mostBetsLost: { data: mostBetsLost, cols: Object.keys(mostBetsLost[0]), caption: "Most number of bets lost." },
                 // mostBetsPenalized: { data: mostBetsPenalized, cols: Object.keys(mostBetsPenalized[0]), caption: "Most number of bets penalized." },
-                maxAvgBetsPoints: { data: maxAvgBetsPoints, cols: Object.keys(maxAvgBetsPoints[0]), caption: "Most points bet per match. Penalized points is not included in it." },
+                maxAvgBetsPoints: { data: maxAvgBetsPoints, cols: Object.keys(maxAvgBetsPoints[0]), caption: "Most points bet per match. Penalized points is not included." },
                 mostPointsWon: { data: mostPointsWon, cols: Object.keys(mostPointsWon[0]), caption: "Most points won over the season." },
                 mostPointsLost: { data: mostPointsLost, cols: Object.keys(mostPointsLost[0]), caption: "Most points lost over the season." },
                 // mostPointsPenalized: { data: mostPointsPenalized, cols: Object.keys(mostPointsPenalized[0]), caption: "Most points penalized over the season." },
@@ -441,10 +455,9 @@ const Context = (props) => {
                 betPtsDistribution: { data: betPtsDistribution, cols: ["username", "points", "ptsPercent"], caption: "Most points bet this season."},
                 bettingOddsDistribution: { data: bettingOddsDistribution, cols: Object.keys(bettingOddsDistribution[0]), caption: "Betting trends based on odds" },
                 longestReignInRankings: { data: rankMatchArray, cols: ["username", "1", "2", "3", "4", "5", "6", "7", "avgRank"], caption: "Longest reign at a particular rank." },
-                betPtsSplitDistribution: { data: betPtsSplitDistribution, cols: [...new Set(["username", ...betPtsSplitDistribution.flatMap(Object.keys)])], caption: "Points bet in 10 match splits." },
+                betPtsSplitDistribution: { data: betPtsSplitDistribution, cols: [...new Set(["username", ...betPtsSplitDistribution.flatMap(Object.keys)])], hyphendCols: [1,2,3,4,5,6,7,8], caption: "Points bet in 10 match splits." },
+                winsSplitDistribution: { data: winsSplitDistribution, cols: [...new Set(["username", ...winsSplitDistribution.flatMap(Object.keys)])], hyphendCols: [1,2,3,4,5,6,7,8], caption: "Wins in 10 match splits." },
             };
-
-            console.log(globalStats.longestReignInRankings, "betPtsSplitDistribution:", globalStats.betPtsSplitDistribution);
 
             return { globalStats, timeSeriesPts };
         } catch (err) {

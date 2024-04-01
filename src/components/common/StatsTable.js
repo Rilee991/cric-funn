@@ -63,7 +63,7 @@ const StyledTableRow = withStyles((theme) => ({
 
 const StatsTable = (props) => {
     const { tableDetails = {}, rankPalette = true, fullWidth = false } = props;
-    const { title, cols = [], data = [], caption } = tableDetails;
+    const { title, cols = [], data = [], caption, hyphendCols = [] } = tableDetails;
 
     function getColor(rank, isOut) {
         if(rankPalette) {
@@ -77,6 +77,12 @@ const StatsTable = (props) => {
             else return "rgb(4 90 86)";
         }
 	}
+
+    const getColName = (colName, idx) => {
+        if(hyphendCols.includes(idx))
+            return upperCase(colName).split(" ").join("-");
+        return upperCase(colName);
+    }
 
     return (
         <Card style={{ boxShadow: "5px 5px 20px" }} className={`tw-mt-2 tw-mb-10 ${fullWidth ? "tw-w-full" : "xl:tw-w-[70%] md:tw-w-[90%]"} tw-rounded-[40px]`}>
@@ -94,8 +100,8 @@ const StatsTable = (props) => {
 							<TableRow>
                                 {cols && cols.length ? cols.map((colName, idx) =>
                                     <> { idx !== cols.length-1 ? 
-                                        <StyledTableCell align="center"><Typography variant="button" className="tw-font-noto">{upperCase(colName)}</Typography></StyledTableCell>
-                                        : <StyledTableLastCell align="center"><Typography variant="button" className="tw-font-noto">{upperCase(colName)}</Typography></StyledTableLastCell>}
+                                        <StyledTableCell align="center"><Typography variant="button" className="tw-font-noto">{getColName(colName, idx)}</Typography></StyledTableCell>
+                                        : <StyledTableLastCell align="center"><Typography variant="button" className="tw-font-noto">{getColName(colName, idx)}</Typography></StyledTableLastCell>}
                                     </>
                                 ) : null }
 							</TableRow>
