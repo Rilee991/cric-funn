@@ -69,12 +69,12 @@ export const syncDbWithNewMatches = async () => {
             const dbMatch = await getMatchById(match.id);
             const matchData = dbMatch.data();
             if(!dbMatch.exists) {
-                // formatMatch(match);
-                formatWcMatch(match);
+                formatMatch(match);
+                // formatWcMatch(match);
                 matchesPromise.push(createMatch(match.id, match));
             } else if(dbMatch.exists && matchData.name.length !== match.name.length) {
-                // formatMatch(match);
-                formatWcMatch(match);
+                formatMatch(match);
+                // formatWcMatch(match);
                 matchesPromise.push(updateMatchById(match.id, match));
             }
         }

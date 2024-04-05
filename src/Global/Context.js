@@ -230,6 +230,23 @@ const Context = (props) => {
                 mostPointsWon = [], mostPointsLost = [], mostPointsPenalized = [], longestWinningStreak = [], longestLosingStreak = [],
                 longestPenalizedStreak = [], earliestBetsTime = [], mostPointsBetInAMatch = [], leastPointsBetInAMatch = [], betPtsDistribution = [], 
                 timeSeriesPts = [], bettingOddsDistribution = [], betPtsSplitDistribution = [], winsSplitDistribution = [];
+            let maxBreachedPts = 0;
+            const landmarkColsMapping = {
+                "5000": [3750, 4000, 4200, 4500, 4800, 4900],
+                "8000": [4000, 4500, 5000, 6500, 7000, 7500],
+                "10000": [4000, 5000, 6500, 7500, 8500, 9500],
+                "20000": [5000, 8000, 10000, 13000, 15000, 19000],
+                "30000": [5000, 10000, 15000, 18000, 25000, 29000],
+                "50000": [10000, 15000, 20000, 30000, 40000, 48000],
+                "100000": [10000, 20000, 30000, 50000, 70000, 90000],
+                "150000": [20000, 50000, 70000, 100000, 130000, 145000],
+                // "200000": [3750, 4000, 4200, 4500, 4800, 5000],
+                // "350000": [3750, 4000, 4200, 4500, 4800, 5000],
+                // "500000": [3750, 4000, 4200, 4500, 4800, 5000],
+                // "800000": [3750, 4000, 4200, 4500, 4800, 5000],
+                // "1000000": [3750, 4000, 4200, 4500, 4800, 5000],
+                // "1500000": [3750, 4000, 4200, 4500, 4800, 5000],
+            };
 
             const allUsersSnap = await getUserByKey("isDummyUser", false);
             const allUsersDocs = allUsersSnap.docs;
@@ -333,6 +350,7 @@ const Context = (props) => {
                         }
                     }
 
+                    maxBreachedPts = Math.max(maxBreachedPts, currPts[currPtsLen-1][username]);
                     bet.betTime = moment.unix(bet.betTime.seconds).format("DD MMM, hh:mm A");
                     bet.username = username;
                     bet.diff = diff;
@@ -366,16 +384,38 @@ const Context = (props) => {
                 return bets;
             });
 
-            const rankDays = {}, avgRankParams = {};
+            const rankDays = {}, avgRankParams = {}, userLandmarkObj = {};
+            let landmarkCols = [];
+            Object.keys(landmarkColsMapping).forEach(key => {
+                if(parseInt(key) <= maxBreachedPts) {
+                    landmarkCols = landmarkColsMapping[key];
+                }
+            });
 
             timeSeriesPts.forEach((matchPoint, mIdx) => {
                 if(mIdx == 0) return;
                 const matchNum = matchPoint["match"];
                 delete matchPoint["match"];
 
-                const sortedList = Object.keys(Object.fromEntries(Object.entries(matchPoint).sort((a,b) => b[1] - a[1])));
+                const usersList = Object.keys(Object.fromEntries(Object.entries(matchPoint).sort((a,b) => b[1] - a[1])));
 
-                sortedList.forEach((username, idx) => {
+                usersList.forEach((username, idx) => {
+                    if(userLandmarkObj[username]) {
+                        landmarkCols.forEach(col => {
+                            if(userLandmarkObj[username][col] === "-" && matchPoint[username] > col) {
+                                userLandmarkObj[username][col] = matchNum;
+                            }
+                        });
+                    } else {
+                        userLandmarkObj[username] = {};
+                        landmarkCols.forEach(col => userLandmarkObj[username] = {...userLandmarkObj[username], [col]: "-"});
+                        landmarkCols.forEach(col => {
+                            if(userLandmarkObj[username][col] === "-" && matchPoint[username] > col) {
+                                userLandmarkObj[username][col] = matchNum;
+                            }
+                        });
+                    }
+
                     if(rankDays[username]) {
                         if(rankDays[username][idx+1]) {
                             rankDays[username] = { ...rankDays[username], [idx+1]: rankDays[username][idx+1] + 1 };
@@ -394,11 +434,15 @@ const Context = (props) => {
                 matchPoint["match"] = matchNum;
             })
 
-            let rankMatchArray = [];
+            let rankMatchArray = [], userLandmarks = [];
 
             Object.keys(rankDays).forEach(user => {
                 const avgRank = parseFloat(avgRankParams[user]["totalRank"]/(avgRankParams[user]["totalMatches"] || 1)).toFixed(2);
                 rankMatchArray.push({ username: user, ...rankDays[user], avgRank });
+            });
+
+            Object.keys(userLandmarkObj).forEach(user => {
+                userLandmarks.push({ username: user, ...userLandmarkObj[user] });
             });
 
             mostBetsDone = sortBy(mostBetsDone, ["betsDone"]).reverse();
@@ -457,6 +501,7 @@ const Context = (props) => {
                 longestReignInRankings: { data: rankMatchArray, cols: ["username", "1", "2", "3", "4", "5", "6", "7", "avgRank"], caption: "Longest reign at a particular rank." },
                 betPtsSplitDistribution: { data: betPtsSplitDistribution, cols: [...new Set(["username", ...betPtsSplitDistribution.flatMap(Object.keys)])], hyphendCols: [1,2,3,4,5,6,7,8], caption: "Points bet in 10 match splits." },
                 winsSplitDistribution: { data: winsSplitDistribution, cols: [...new Set(["username", ...winsSplitDistribution.flatMap(Object.keys)])], hyphendCols: [1,2,3,4,5,6,7,8], caption: "Wins in 10 match splits." },
+                matchesTakenToReach: { data: userLandmarks, cols: ["username", ...landmarkCols], caption: "Matches taken by users to reach particular scores."},
             };
 
             return { globalStats, timeSeriesPts };

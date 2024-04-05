@@ -171,7 +171,7 @@ const LoggedInRoutes = () => {
         }
     }
 
-    const isGlobalStatsDisabled = moment().isBefore(moment("05-01-2024"));
+    const isGlobalStatsDisabled = moment().isBefore(moment("05-04-2024"));
 
     const navItems = [{
         name: <div className="tw-flex tw-items-center">
@@ -197,7 +197,7 @@ const LoggedInRoutes = () => {
         name: "Global Stats",
         to: "/global-stats",
         icon: <MdOutlineQueryStats className="tw-h-6 tw-w-6" />,
-        subText: isGlobalStatsDisabled ? "Enabling on 1st May" : "",
+        subText: isGlobalStatsDisabled ? "Enabling on 4th May" : "",
         disabled: isGlobalStatsDisabled,
         component: <GlobalStats />
     }, {

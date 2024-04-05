@@ -26,11 +26,9 @@ const GlobalStats = () => {
         <>
             {loading ? <PageLoader tip="Loading please wait" color="black" /> : 
                 Object.keys(globalStats).map((statName) => (
-                    statName ?
-                        <StatsTable
-                            tableDetails={{ ...globalStats[statName], title: startCase(statName) }}
-                        />
-                    : null
+                    <StatsTable key={statName}
+                        tableDetails={{ ...globalStats[statName], title: startCase(statName) }}
+                    />
                 ))
             }
         </>
