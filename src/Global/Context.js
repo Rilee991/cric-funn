@@ -536,6 +536,12 @@ const Context = (props) => {
         const teamAttributes = {};
         
         matches.forEach(match => {
+            if(match.team1 === "Royal Challengers Bangalore")
+                match.team1 = "Royal Challengers Bengaluru";
+
+            if(match.team2 === "Royal Challengers Bangalore")
+                match.team2 = "Royal Challengers Bengaluru";
+
             if(isEmpty(teamAttributes[match.team1])) {
                 teamAttributes[match.team1] = {
                     abbr: match.team1Abbreviation

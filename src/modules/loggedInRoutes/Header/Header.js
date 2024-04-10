@@ -83,7 +83,7 @@ const Header = (props) => {
 							className={`${classes.notificationButton} tw-m-0 tw-p-2`}
 						>
 							<Badge component="button" badgeContent={totalNotifs} classes={{ badge: classes.customBadge }}>
-								<OfflineBolt className="tw-w-7 tw-h-7"/>
+								<i className="pi pi-bell tw-text-2xl" />
 							</Badge>
 						</IconButton>
 						{isOnline && <IconButton
@@ -93,7 +93,7 @@ const Header = (props) => {
 							onClick={handleDrawerToggle}
 							className={`${classes.menuButton} tw-m-0 tw-p-2`}
 						>
-							<Reorder className="tw-w-7 tw-h-7" />
+							<i className="pi pi-bars tw-text-2xl" />
 						</IconButton>}
 					</div>
 				</Toolbar>

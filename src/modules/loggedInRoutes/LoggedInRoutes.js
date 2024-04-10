@@ -181,46 +181,46 @@ const LoggedInRoutes = () => {
         </div>,
         to: "/",
         subText: `${points} Points`,
-        icon: <SiTencentqq className="tw-h-6 tw-w-6" />,
+        icon: <i className="pi pi-user tw-text-2xl" />,
         component: <Home handleSelectedNav={handleSelectedNav} />
     }, {
         name: "My Bets",
         to: "/my-bets",
-        icon: <FaHistory className="tw-h-6 tw-w-6" />,
+        icon: <i className="pi pi-history tw-text-2xl" />,
         component: <MyBets />
     }, {
         name: "My Stats",
         to: "/my-stats",
-        icon: <RiDashboard2Line className="tw-h-6 tw-w-6" />,
+        icon: <i className="pi pi-gauge tw-text-2xl" />,
         component: <MyStats />
     }, {
         name: "Global Stats",
         to: "/global-stats",
-        icon: <MdOutlineQueryStats className="tw-h-6 tw-w-6" />,
+        icon: <i className="pi pi-globe tw-text-2xl" />,
         subText: isGlobalStatsDisabled ? "Enabling on 4th May" : "",
         disabled: isGlobalStatsDisabled,
         component: <GlobalStats />
     }, {
         name: "Points Table",
         to: "/points-table",
-        icon: <FaMedal className="tw-h-6 tw-w-6" />,
+        icon: <i className="pi pi-trophy tw-text-2xl" />,
         component: <PointsTable />
     }, {
         name: "Hall of Fame",
         to: "/hall-of-fame",
-        icon: <GiStarSwirl className="tw-h-6 tw-w-6" />,
+        icon: <i className="pi pi-sparkles tw-text-2xl" />,
         component: <Legends />
     }, {
         name: "Control Panel",
         to: "/control-panel",
-        icon: <FaSolarPanel className="tw-h-6 tw-w-6" />,
+        icon: <i className="pi pi-cog tw-text-2xl" />,
         component: <ControlPanel />,
         hidden: isAdmin ? false : true
     }, {
         name: "Logout",
         to: "/",
         onClick: () => logout(),
-        icon: <IoMdLogOut className="tw-h-7 tw-w-7" />
+        icon: <i className="pi pi-sign-out tw-text-2xl" />
     }].map((item, idx) => ({ ...item, id: idx+1 }));
 
 	const isOnline = useOnline();

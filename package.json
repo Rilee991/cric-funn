@@ -25,6 +25,7 @@
     "moment": "^2.29.1",
     "postcss": "^8.4.5",
     "postcss-cli": "^9.1.0",
+    "primeicons": "^7.0.0",
     "react": "^17.0.1",
     "react-confetti": "^6.1.0",
     "react-confetti-boom": "^1.0.0",
