@@ -91,6 +91,7 @@ const BettingDialog = (props) => {
                 isBetDone: true,
                 isNoResult: false,
                 isSettled: false,
+                isAllIn: allInEnabled,
                 matchId,
                 selectedPoints: parseInt(selectedPoints),
                 selectedTeam,
