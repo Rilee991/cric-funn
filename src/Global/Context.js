@@ -227,10 +227,10 @@ const Context = (props) => {
 
     const getAllUsersData = async () => {
         try {
-            let mostBetsDone = [], mostBetsWon = [], mostBetsLost = [], maxConsistencyScore = [], mostBetsPenalized = [], maxAvgBetsPoints = [],
+            let mostBetsDone = [], mostBetsWon = [], mostBetsLost = [], mostImpactfulPlayer = [], mostBetsPenalized = [], maxAvgBetsPoints = [],
                 mostPointsWon = [], mostPointsLost = [], mostPointsPenalized = [], longestWinningStreak = [], longestLosingStreak = [],
                 longestPenalizedStreak = [], earliestBetsTime = [], mostPointsBetInAMatch = [], leastPointsBetInAMatch = [], betPtsDistribution = [], 
-                timeSeriesPts = [], bettingOddsDistribution = [], betPtsSplitDistribution = [], winsSplitDistribution = [];
+                timeSeriesPts = [], bettingOddsDistribution = [], betPtsSplitDistribution = [], winsSplitDistribution = [], betTimeAnalysis = [];
             let maxBreachedPts = 0;
             const landmarkColsMapping = {
                 "5000": [3750, 4000, 4200, 4500, 4800, 4900],
@@ -248,6 +248,7 @@ const Context = (props) => {
                 // "1000000": [3750, 4000, 4200, 4500, 4800, 5000],
                 // "1500000": [3750, 4000, 4200, 4500, 4800, 5000],
             };
+            console.log(matches);
 
             const allUsersSnap = await getUserByKey("isDummyUser", false);
             const allUsersDocs = allUsersSnap.docs;
@@ -256,7 +257,8 @@ const Context = (props) => {
             const allUsersData = allUsersDocs.map(eachUserDoc => {
                 const eachUserData = eachUserDoc.data();
                 const userSplitData = {}, winSplitData = {}, username = eachUserData.username, bets = eachUserData.bets, 
-                    currPts = [{ match: 0, [username]: DEFAULT_USER_PARAMS.STARTING_POINTS }];
+                    currPts = [{ match: 0, [username]: DEFAULT_USER_PARAMS.STARTING_POINTS }],
+                    betTimeAnalysisObj = { "4pmTo7pm": 0, "7_30pmTo10_30pm": 0, "10_30pmTo5am": 0, "5amTo4pm": 0 };
                 let currPtsLen = 1;
 
                 let betsDone = 0, betsWon = 0, betsLost = 0, betsPenalized = 0, pointsBet = 0, pointsWon = 0, pointsLost = 0,
@@ -273,6 +275,17 @@ const Context = (props) => {
                     const rKey = Math.floor(idx/10)*10+10;
 
                     if(bet.isBetDone) {
+                        const betTime = new Date(bet.betTime * 1000);
+                        const hour = betTime.getHours();
+                        const mins = betTime.getMinutes();
+                        if(hour >= 19 && mins >= 30 && hour <= 22 && mins < 30)
+                            betTimeAnalysisObj["7_30pmTo10_30pm"]++;
+                        else if(hour >= 16 && hour <= 18 && mins <= 59 )
+                            betTimeAnalysisObj["4pmTo7pm"]++;
+                        else if(hour >= 5 && hour < 16 && mins <= 59)
+                            betTimeAnalysisObj["5amTo4pm"]++;
+                        else
+                            betTimeAnalysisObj["10_30pmTo5am"]++;
                         betsDone++;
                         pointsBet += parseInt(bet.selectedPoints);
                         
@@ -376,7 +389,7 @@ const Context = (props) => {
                 const avgPtsFluctuations = round(pointsFluctuations/totalBets, 2) || 0;
                 const sqDiff = pointsArr.map((elem) => Math.pow(elem - avgPtsFluctuations, 2));
                 const avgSqDiff = (sqDiff.reduce((sum, elem) => sum + elem, 0))/(totalBets || 1);
-                const consistencyScore = parseFloat(Math.sqrt(avgSqDiff).toFixed(2));
+                const impactScore = parseFloat(Math.sqrt(avgSqDiff).toFixed(2));
 
                 betPtsDistribution.push({ username, points: pointsBet });
                 timeSeriesPts = merge(timeSeriesPts, currPts);
@@ -392,7 +405,7 @@ const Context = (props) => {
                 mostBetsPenalized.push({ username, betsPenalized, penalizedPercent: round(betsPenalized/(relevantBets || 1),2) || 0 });
                 maxAvgBetsPoints.push({ username, avgBetPoints: round(pointsBet/betsDone, 2) || 0 });
                 mostPointsWon.push({ username, pointsWon });
-                maxConsistencyScore.push({ username, consistencyScore });
+                mostImpactfulPlayer.push({ username, impactScore });
                 mostPointsLost.push({ username, pointsLost });
                 mostPointsPenalized.push({ username, pointsPenalized });
                 longestWinningStreak.push({ username, longestWinStreak });
@@ -400,6 +413,7 @@ const Context = (props) => {
                 longestPenalizedStreak.push({ username, longestPenalizStreak });
                 betPtsSplitDistribution.push({ ...userSplitData, username });
                 winsSplitDistribution.push({ ...winSplitData, username });
+                betTimeAnalysis.push({ username, ...betTimeAnalysisObj });
 
                 return bets;
             });
@@ -526,7 +540,7 @@ const Context = (props) => {
             mostPointsPenalized = sortBy(mostPointsPenalized, ["pointsPenalized"]).reverse();
             longestWinningStreak = sortBy(longestWinningStreak, ["longestWinStreak"]).reverse();
             longestLosingStreak = sortBy(longestLosingStreak, ["longestLoseStreak"]).reverse();
-            maxConsistencyScore = sortBy(maxConsistencyScore, ["consistencyScore"]).reverse();
+            mostImpactfulPlayer = sortBy(mostImpactfulPlayer, ["impactScore"]).reverse();
             longestPenalizedStreak = sortBy(longestPenalizedStreak, ["longestPenalizStreak"]).reverse();
             betPtsSplitDistribution = sortBy(betPtsSplitDistribution, ["username"]);
             winsSplitDistribution = sortBy(winsSplitDistribution, ["username"]);
@@ -555,11 +569,12 @@ const Context = (props) => {
                 mostPointsWon: { data: mostPointsWon, cols: Object.keys(mostPointsWon[0]), caption: "Most points won over the season." },
                 mostPointsLost: { data: mostPointsLost, cols: Object.keys(mostPointsLost[0]), caption: "Most points lost over the season." },
                 // mostPointsPenalized: { data: mostPointsPenalized, cols: Object.keys(mostPointsPenalized[0]), caption: "Most points penalized over the season." },
-                mostConsistentPlayer: { data: maxConsistencyScore, cols: Object.keys(maxConsistencyScore[0]), caption: "Consistency score over the season." },
+                mostImpactfulPlayer: { data: mostImpactfulPlayer, cols: Object.keys(mostImpactfulPlayer[0]), caption: "Impact score over the season." },
                 longestWinningStreak: { data: longestWinningStreak, cols: Object.keys(longestWinningStreak[0]), caption: "Most consecutive wins." },
                 longestLosingStreak: { data: longestLosingStreak, cols: Object.keys(longestLosingStreak[0]), caption: "Most consecutive loses." },
                 // longestPenalizedStreak: { data: longestPenalizedStreak, cols: Object.keys(longestPenalizedStreak[0]), caption: "Most consecutive penalties." },
                 earliestBetsTime: { data: earliestBetsTime, cols: ["username", "time"], caption: "Earliest bets done over a day."},
+                betTimeAnalysis: { data: betTimeAnalysis, cols: ["username", "7_30pmTo10_30pm", "10_30pmTo5am", "5amTo4pm", "4pmTo7pm"], caption: "Betting done across time period."},
                 mostPointsBetInAMatch: { data: mostPointsBetInAMatch, cols: ["username", "betWon", mobileView ? "team" : "selectedTeam", "selectedPoints", "betTime"], caption: "Max points bet in a match over the season." },
                 leastPointsBetInAMatch: { data: leastPointsBetInAMatch, cols: ["username", "betWon", mobileView ? "team" : "selectedTeam", "selectedPoints", "betTime"], caption: "Min points bet in a match over the season." },
                 betPtsDistribution: { data: betPtsDistribution, cols: ["username", "points", "ptsPercent"], caption: "Most points bet this season."},
