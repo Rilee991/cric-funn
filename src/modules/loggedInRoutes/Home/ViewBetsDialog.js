@@ -71,7 +71,7 @@ const ViewBetsDialog = (props) => {
                 <Table aria-label="caption table">
                     <caption className="tw-p-2">
                         <Typography variant="overline" className="tw-font-noto">
-                            Sorted By Points {isAdmin ? `- Seen By (${Object.keys(seenBy).join(", ")})` : ""}
+                            Sorted By Points {`- Seen by (${Object.keys(seenBy).join(", ")})`}
                         </Typography>
                     </caption>
                     <TableHead>
