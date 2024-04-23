@@ -22,6 +22,7 @@ import NoConnection from '../../components/common/NoConnection';
 import cricFunnLogo from '../../res/images/logo.png';
 import PageLoader from '../../components/common/PageLoader';
 import WishModal from './WishModal/WishModal';
+import Gallery from './Gallery/Gallery';
 
 const CoundownRenderer = ({ days, hours, minutes, seconds, completed, ...props }) => {
     if(completed) {
@@ -62,7 +63,7 @@ const CoundownRenderer = ({ days, hours, minutes, seconds, completed, ...props }
 const LoggedInRoutes = () => {
     const contextConsumer = useContext(ContextProvider);
     const { mobileView, logout, notifications = [], clearNotifications, width, height, scrollY, claimReward,
-        loggedInUserDetails: { isAdmin, username, points, dob = "18-07-3212", isRewardClaimed = true, showWishModal = false },
+        loggedInUserDetails: { isAdmin, username, points, dob = "18-07-3212", isRewardClaimed = true, showWishModal = false, isDummyUser = true },
         configurations = {}, setConfigurations, wishModalSeen
     } = contextConsumer;
     const [isNavOpen, setIsNavOpen] = useState(false);
@@ -71,7 +72,7 @@ const LoggedInRoutes = () => {
     const [toggleConfetti, setToggleConfetti] = useState(true);
     const [isBday, setIsBday] = useState(dob && dob.slice(0,5) == moment().format("DD-MM"));
     const [openBdayModal, setOpenBdayModal] = useState(isBday);
-    const [openWishModal, setOpenWishModal] = useState(showWishModal)
+    const [openWishModal, setOpenWishModal] = useState(showWishModal);
 
     useEffect(() => {
         handleSelectedNav();
@@ -209,7 +210,14 @@ const LoggedInRoutes = () => {
         name: "Hall of Fame",
         to: "/hall-of-fame",
         icon: <i className="pi pi-sparkles tw-text-2xl" />,
-        component: <Legends />
+        component: <Legends />,
+        hidden: isDummyUser ? true : false
+    }, {
+        name: "Gallery",
+        to: "/gallery",
+        icon: <i className="pi pi-images tw-text-2xl" />,
+        component: <Gallery />,
+        hidden: isDummyUser ? true : false
     }, {
         name: "Control Panel",
         to: "/control-panel",
@@ -279,9 +287,12 @@ const LoggedInRoutes = () => {
                                 <Route exact path="/points-table">
                                     <PointsTable />
                                 </Route>
-                                <Route exact path="/hall-of-fame">
+                                {!isDummyUser && <Route exact path="/hall-of-fame">
                                     <Legends />
-                                </Route>
+                                </Route>}
+                                {!isDummyUser && <Route exact path="/gallery">
+                                    <Gallery />
+                                </Route>}
                                 {isAdmin && <Route exact path="/control-panel">
                                     <ControlPanel />
                                 </Route> }
