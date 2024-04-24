@@ -248,7 +248,6 @@ const Context = (props) => {
                 // "1000000": [3750, 4000, 4200, 4500, 4800, 5000],
                 // "1500000": [3750, 4000, 4200, 4500, 4800, 5000],
             };
-            console.log(matches);
 
             const allUsersSnap = await getUserByKey("isDummyUser", false);
             const allUsersDocs = allUsersSnap.docs;
@@ -266,7 +265,7 @@ const Context = (props) => {
                     longestPenalizStreak = 0, currentPenalizStreak = 0, betOnTeamsLikelyToWin = 0, betOnTeamsLikelyToLose = 0,
                     pointsFluctuations = 0, pointsArr = [];
 
-                bets.map((bet, idx) => {
+                bets.forEach((bet, idx) => {
                     const betTime = moment.unix(bet.betTime.seconds);
                     const startOfDay = moment(betTime).startOf('day');
                     const diff = betTime.diff(startOfDay).valueOf();
@@ -378,6 +377,7 @@ const Context = (props) => {
                     }
 
                     maxBreachedPts = Math.max(maxBreachedPts, currPts[currPtsLen-1][username]);
+                    bet.rawBetTime = bet.betTime.seconds;
                     bet.betTime = moment.unix(bet.betTime.seconds).format("DD MMM, hh:mm A");
                     bet.username = username;
                     bet.diff = diff;
@@ -402,7 +402,7 @@ const Context = (props) => {
                 mostBetsDone.push({ username, betsDone });
                 mostBetsWon.push({ username, betsWon, winPercent: (round(betsWon/(relevantBets || 1),4).toFixed(4)*100).toFixed(2) });
                 mostBetsLost.push({ username, betsLost, lossPercent: (round(betsLost/(relevantBets || 1),4)*100).toFixed(2) });
-                mostBetsPenalized.push({ username, betsPenalized, penalizedPercent: round(betsPenalized/(relevantBets || 1),2) || 0 });
+                mostBetsPenalized.push({ username, betsPenalized, penalizedPercent: (round(betsPenalized/(relevantBets || 1),4)*100).toFixed(2) });
                 maxAvgBetsPoints.push({ username, avgBetPoints: round(pointsBet/betsDone, 2) || 0 });
                 mostPointsWon.push({ username, pointsWon });
                 mostImpactfulPlayer.push({ username, impactScore });
@@ -550,34 +550,32 @@ const Context = (props) => {
             betPtsDistribution = sortBy(betPtsDistribution, ["points"]).reverse();
             const allBetsData = flattenDeep(allUsersData);
             earliestBetsTime = sortBy(allBetsData, ["diff"]).slice(0,5).map(eachBet => ({...eachBet, time: moment().startOf('day').add(eachBet.diff/1000,"seconds").format("hh:mm: A")}));
-            mostPointsBetInAMatch = sortBy(allBetsData, ["selectedPoints"]).reverse().slice(0,5);
-            leastPointsBetInAMatch = sortBy(allBetsData, ["selectedPoints"]).slice(0,5);
+            mostPointsBetInAMatch = orderBy(allBetsData, ["selectedPoints", "rawBetTime"], ["desc", "desc"]).slice(0,6);
+            leastPointsBetInAMatch = orderBy(allBetsData, ["selectedPoints", "rawBetTime"], ["asc", "desc"]).slice(0,6);
 
             bettingOddsDistribution = sortBy(bettingOddsDistribution, ["betOnTeamsLikelyToWin"]).reverse();
-
-            // earlierBetsDone, longestWinningStreak(done), longestLosingStreak(done), longestPenalizedStreak(done),
-            // mostPointsBetInAMatch, mostPointsWonOverall(done), mostPointsLostOverall(done), mostPointsPenalizedOverall(done) 
-            // mostBetsDone(done), mostBetsWon(done), mostBetsLost(done), mostBetsPenalized(done),highestAvgBetPointsOverall(done)
 
             const globalStats = { 
                 mostBetsDone: { data: mostBetsDone, cols: Object.keys(mostBetsDone[0]), caption: "Most number of bets done. Penalized bets is not included." }, 
                 mostBetsWon: { data: mostBetsWon, cols: Object.keys(mostBetsWon[0]), caption: "Most number of bets won." }, 
                 mostBetsLost: { data: mostBetsLost, cols: Object.keys(mostBetsLost[0]), caption: "Most number of bets lost." },
-                // mostBetsPenalized: { data: mostBetsPenalized, cols: Object.keys(mostBetsPenalized[0]), caption: "Most number of bets penalized." },
+                mostBetsPenalized: { data: mostBetsPenalized, cols: Object.keys(mostBetsPenalized[0]), caption: "Most number of bets penalized." },
                 maxAvgBetsPoints: { data: maxAvgBetsPoints, cols: Object.keys(maxAvgBetsPoints[0]), caption: "Most points bet per match. Penalized points is not included." },
-                betsDiversity: { data: betsDiversity, cols: ["username", "majorityBets", "majorityBetWins", "majorityBetWinsPercent", , "minorityBets", "minorityBetWins", "minorityBetWinsPercent"], caption: "A majority bet is a bet where atleast 50% people selected the same team." },
-                mostPointsWon: { data: mostPointsWon, cols: Object.keys(mostPointsWon[0]), caption: "Most points won over the season." },
-                mostPointsLost: { data: mostPointsLost, cols: Object.keys(mostPointsLost[0]), caption: "Most points lost over the season." },
-                // mostPointsPenalized: { data: mostPointsPenalized, cols: Object.keys(mostPointsPenalized[0]), caption: "Most points penalized over the season." },
-                mostImpactfulPlayer: { data: mostImpactfulPlayer, cols: Object.keys(mostImpactfulPlayer[0]), caption: "Impact score over the season." },
-                longestWinningStreak: { data: longestWinningStreak, cols: Object.keys(longestWinningStreak[0]), caption: "Most consecutive wins." },
-                longestLosingStreak: { data: longestLosingStreak, cols: Object.keys(longestLosingStreak[0]), caption: "Most consecutive loses." },
-                // longestPenalizedStreak: { data: longestPenalizedStreak, cols: Object.keys(longestPenalizedStreak[0]), caption: "Most consecutive penalties." },
-                earliestBetsTime: { data: earliestBetsTime, cols: ["username", "time"], caption: "Earliest bets done over a day."},
-                betTimeAnalysis: { data: betTimeAnalysis, cols: ["username", "7_30pmTo10_30pm", "10_30pmTo5am", "5amTo4pm", "4pmTo7pm"], caption: "Betting done across time period."},
                 mostPointsBetInAMatch: { data: mostPointsBetInAMatch, cols: ["username", "betWon", mobileView ? "team" : "selectedTeam", "selectedPoints", "betTime"], caption: "Max points bet in a match over the season." },
                 leastPointsBetInAMatch: { data: leastPointsBetInAMatch, cols: ["username", "betWon", mobileView ? "team" : "selectedTeam", "selectedPoints", "betTime"], caption: "Min points bet in a match over the season." },
                 betPtsDistribution: { data: betPtsDistribution, cols: ["username", "points", "ptsPercent"], caption: "Most points bet this season."},
+                mostPointsWon: { data: mostPointsWon, cols: Object.keys(mostPointsWon[0]), caption: "Most points won over the season." },
+                mostPointsLost: { data: mostPointsLost, cols: Object.keys(mostPointsLost[0]), caption: "Most points lost over the season." },
+                earliestBetsTime: { data: earliestBetsTime, cols: ["username", "time"], caption: "Earliest bets done over a day."},
+                betTimeAnalysis: { data: betTimeAnalysis, cols: ["username", "7_30pmTo10_30pm", "10_30pmTo5am", "5amTo4pm", "4pmTo7pm"], caption: "Betting done across time period."},
+                betsDiversity: { data: betsDiversity, cols: ["username", "majorityBets", "majorityBetWins", "majorityBetWinsPercent", , "minorityBets", "minorityBetWins", "minorityBetWinsPercent"], caption: "A majority bet is a bet where atleast 50% people selected the same team." },
+                
+                longestWinningStreak: { data: longestWinningStreak, cols: Object.keys(longestWinningStreak[0]), caption: "Most consecutive wins." },
+                longestLosingStreak: { data: longestLosingStreak, cols: Object.keys(longestLosingStreak[0]), caption: "Most consecutive loses." },
+                
+                // mostPointsPenalized: { data: mostPointsPenalized, cols: Object.keys(mostPointsPenalized[0]), caption: "Most points penalized over the season." },
+                mostImpactfulPlayer: { data: mostImpactfulPlayer, cols: Object.keys(mostImpactfulPlayer[0]), caption: "Impact score over the season." },
+                // longestPenalizedStreak: { data: longestPenalizedStreak, cols: Object.keys(longestPenalizedStreak[0]), caption: "Most consecutive penalties." },
                 bettingOddsDistribution: { data: bettingOddsDistribution, cols: Object.keys(bettingOddsDistribution[0]), caption: "Betting trends based on odds" },
                 longestReignInRankings: { data: rankMatchArray, cols: ["username", "1", "2", "3", "4", "5", "6", "7", "avgRank"], caption: "Longest reign at a particular rank." },
                 betPtsSplitDistribution: { data: betPtsSplitDistribution, cols: [...new Set(["username", ...betPtsSplitDistribution.flatMap(Object.keys)])], hyphendCols: [1,2,3,4,5,6,7,8], caption: "Points bet in 10 match splits." },
