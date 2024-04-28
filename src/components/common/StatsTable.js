@@ -68,8 +68,8 @@ const StatsTable = (props) => {
     function getColor(rank, isOut) {
         if(rankPalette) {
             if(isOut) return "linear-gradient(1deg, rgb(245 26 26), rgb(0 0 0))";
-            if(rank === 2) return "linear-gradient(1deg, rgb(213 206 0), rgb(85 13 121))";
-            else if(rank === 1)  return "linear-gradient(1deg, rgb(3 255 255), rgb(20 6 128))";
+            if(rank === 2) return "linear-gradient(359deg, rgb(0 77 133), rgb(173 31 244))";
+            else if(rank === 1)  return "linear-gradient(179deg, rgb(10 232 1), rgb(0 0 0))";
             else if(rank%2 === 0) return "rgb(84 98 133)";
             else return "rgb(104 121 164)";
         } else {

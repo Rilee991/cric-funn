@@ -714,7 +714,7 @@ const Context = (props) => {
             userDetails = userDetails.data();
 
             let settledBets = 0, unsettledBets = 0;
-            let { bets = [], points = 0 } = userDetails;
+            let { bets = [], points = 0, isOut: currIsOut } = userDetails;
 
             for(const match of matches) {
                 const betEndTime = getBetEndTime(match.dateTimeGMT);
@@ -725,7 +725,7 @@ const Context = (props) => {
 
                     if(betIndex == -1) {
                         // Missed
-                        const updatedInfo = updateMissingBet(bets, points, match);
+                        const updatedInfo = updateMissingBet(bets, points, match, currIsOut);
                         points = updatedInfo.points;
                         settledBets++;
                     } else {
@@ -746,7 +746,7 @@ const Context = (props) => {
                 }
             }
 
-            const isOut = unsettledBets == 0 && points == 0;
+            const isOut = currIsOut || (unsettledBets == 0 && points == 0);
 
             if(settledBets) {
                 await updateUserByUsername(username, {
@@ -765,9 +765,9 @@ const Context = (props) => {
         }
     }
 
-    const updateMissingBet = (bets, points, match) => {
+    const updateMissingBet = (bets, points, match, isOut) => {
         const { id: matchId, team1, team2, team1Abbreviation, team2Abbreviation, odds = [] } = match;
-        const selectedPoints = points < DEFAULT_PENALTY_POINTS ? points : DEFAULT_PENALTY_POINTS;
+        const selectedPoints = isOut === true ? 0 : DEFAULT_PENALTY_POINTS;
         points -= selectedPoints;
 
         bets.push({
@@ -831,7 +831,7 @@ const Context = (props) => {
         return { points, notify };
     }
 
-    const updateUserDetails = async (username, points, bets, matches) => {
+    const updateUserDetails = async (username, points, bets, matches, currIsOut) => {
         let settledBets = 0, unsettledBets = 0, notifications = [];
 
         for(const match of matches) {
@@ -843,7 +843,7 @@ const Context = (props) => {
 
                 if(betIndex == -1) {
                     // Missed
-                    const updatedInfo = updateMissingBet(bets, points, match);
+                    const updatedInfo = updateMissingBet(bets, points, match, currIsOut);
                     points = updatedInfo.points;
                     notifications.push(updatedInfo.notify);
                     settledBets++;
@@ -868,7 +868,7 @@ const Context = (props) => {
             }
         }
 
-        const isOut = unsettledBets == 0 && points == 0;
+        const isOut = currIsOut || (unsettledBets == 0 && points <= 0);
 
         if(settledBets) {
             setNotifications(notifications);
@@ -962,7 +962,7 @@ const Context = (props) => {
                         .then(() => console.log("Updation done")).catch(err => console.log(err));
                     });
                 }
-                const updatedDetails = await updateUserDetails(username, points, bets, matches);
+                const updatedDetails = await updateUserDetails(username, points, bets, matches, isOut);
                 setMatches(matches);
                 setLoggedInUserDetails({
                     username,
