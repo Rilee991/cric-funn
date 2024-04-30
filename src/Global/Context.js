@@ -230,7 +230,8 @@ const Context = (props) => {
             let mostBetsDone = [], mostBetsWon = [], mostBetsLost = [], mostImpactfulPlayer = [], mostBetsPenalized = [], maxAvgBetsPoints = [],
                 mostPointsWon = [], mostPointsLost = [], mostPointsPenalized = [], longestWinningStreak = [], longestLosingStreak = [],
                 longestPenalizedStreak = [], earliestBetsTime = [], mostPointsBetInAMatch = [], leastPointsBetInAMatch = [], betPtsDistribution = [], 
-                timeSeriesPts = [], bettingOddsDistribution = [], betPtsSplitDistribution = [], winsSplitDistribution = [], betTimeAnalysis = [];
+                timeSeriesPts = [], bettingOddsDistribution = [], betPtsSplitDistribution = [], winsSplitDistribution = [], betTimeAnalysis = [],
+                extremeBets = [];
             let maxBreachedPts = 0;
             const landmarkColsMapping = {
                 "5000": [3750, 4000, 4200, 4500, 4800, 4900],
@@ -263,7 +264,8 @@ const Context = (props) => {
                 let betsDone = 0, betsWon = 0, betsLost = 0, betsPenalized = 0, pointsBet = 0, pointsWon = 0, pointsLost = 0,
                     pointsPenalized = 0, longestWinStreak = 0, currentWinStreak = 0, longestLoseStreak = 0, currentLoseStreak = 0,
                     longestPenalizStreak = 0, currentPenalizStreak = 0, betOnTeamsLikelyToWin = 0, betOnTeamsLikelyToLose = 0,
-                    pointsFluctuations = 0, pointsArr = [];
+                    pointsFluctuations = 0, pointsArr = [], 
+                    extremeBetsObj = { maxBet: Number.MIN_VALUE, minBet: Number.MAX_VALUE, maxBetTeam: "", minBetTeam: ""};
 
                 bets.forEach((bet, idx) => {
                     const betTime = moment.unix(bet.betTime.seconds);
@@ -352,6 +354,16 @@ const Context = (props) => {
                             currPtsLen++;
                         }
                         bet.team = bet.selectedTeam == bet.team1 ? bet.team1Abbreviation : bet.team2Abbreviation;
+
+                        if(extremeBetsObj.maxBet <= bet.selectedPoints) {
+                            extremeBetsObj.maxBet = bet.selectedPoints;
+                            extremeBetsObj.maxBetTeam = bet.team;
+                        }
+
+                        if(extremeBetsObj.minBet >= bet.selectedPoints) {
+                            extremeBetsObj.minBet = bet.selectedPoints;
+                            extremeBetsObj.minBetTeam = bet.team;
+                        }
                     } else {
                         if(userSplitData[`${lKey}-${rKey}`])
                             userSplitData[`${lKey}-${rKey}`] += 0;
@@ -382,6 +394,15 @@ const Context = (props) => {
                     bet.username = username;
                     bet.diff = diff;
                     bet.betWon = bet.betWon ? "Yes" : "No";
+                });
+
+
+                extremeBets.push({
+                    username,
+                    minBet: extremeBetsObj.minBet,
+                    minBetTeam: extremeBetsObj.minBetTeam,
+                    maxBet: extremeBetsObj.maxBet,
+                    maxBetTeam: extremeBetsObj.maxBetTeam
                 });
 
                 const relevantBets = betsWon + betsLost;
@@ -561,8 +582,9 @@ const Context = (props) => {
                 mostBetsLost: { data: mostBetsLost, cols: Object.keys(mostBetsLost[0]), caption: "Most number of bets lost." },
                 mostBetsPenalized: { data: mostBetsPenalized, cols: Object.keys(mostBetsPenalized[0]), caption: "Most number of bets penalized." },
                 maxAvgBetsPoints: { data: maxAvgBetsPoints, cols: Object.keys(maxAvgBetsPoints[0]), caption: "Most points bet per match. Penalized points is not included." },
-                mostPointsBetInAMatch: { data: mostPointsBetInAMatch, cols: ["username", "betWon", mobileView ? "team" : "selectedTeam", "selectedPoints", "betTime"], caption: "Max points bet in a match over the season." },
+                extremeBets: { data: extremeBets, cols: Object.keys(extremeBets[0]), caption: "Highest and lowest bets done over the season." },
                 leastPointsBetInAMatch: { data: leastPointsBetInAMatch, cols: ["username", "betWon", mobileView ? "team" : "selectedTeam", "selectedPoints", "betTime"], caption: "Min points bet in a match over the season." },
+                mostPointsBetInAMatch: { data: mostPointsBetInAMatch, cols: ["username", "betWon", mobileView ? "team" : "selectedTeam", "selectedPoints", "betTime"], caption: "Max points bet in a match over the season." },
                 betPtsDistribution: { data: betPtsDistribution, cols: ["username", "points", "ptsPercent"], caption: "Most points bet this season."},
                 mostPointsWon: { data: mostPointsWon, cols: Object.keys(mostPointsWon[0]), caption: "Most points won over the season." },
                 mostPointsLost: { data: mostPointsLost, cols: Object.keys(mostPointsLost[0]), caption: "Most points lost over the season." },
