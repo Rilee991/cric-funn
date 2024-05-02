@@ -570,9 +570,10 @@ const Context = (props) => {
             betPtsDistribution.forEach(dist => dist["ptsPercent"] = ((dist["points"]/totalBetPoints)*100).toFixed(2));
             betPtsDistribution = sortBy(betPtsDistribution, ["points"]).reverse();
             const allBetsData = flattenDeep(allUsersData);
-            earliestBetsTime = sortBy(allBetsData, ["diff"]).slice(0,5).map(eachBet => ({...eachBet, time: moment().startOf('day').add(eachBet.diff/1000,"seconds").format("hh:mm: A")}));
-            mostPointsBetInAMatch = orderBy(allBetsData, ["selectedPoints", "rawBetTime"], ["desc", "desc"]).slice(0,6);
-            leastPointsBetInAMatch = orderBy(allBetsData, ["selectedPoints", "rawBetTime"], ["asc", "desc"]).slice(0,6);
+            const betsWithoutPenalty = allBetsData.filter(bet => bet.isBetDone === true);
+            earliestBetsTime = sortBy(betsWithoutPenalty, ["diff"]).slice(0,5).map(eachBet => ({...eachBet, time: moment().startOf('day').add(eachBet.diff/1000,"seconds").format("hh:mm: A")}));
+            mostPointsBetInAMatch = orderBy(betsWithoutPenalty, ["selectedPoints", "rawBetTime"], ["desc", "desc"]).slice(0,6);
+            leastPointsBetInAMatch = orderBy(betsWithoutPenalty, ["selectedPoints", "rawBetTime"], ["asc", "desc"]).slice(0,6);
 
             bettingOddsDistribution = sortBy(bettingOddsDistribution, ["betOnTeamsLikelyToWin"]).reverse();
 
