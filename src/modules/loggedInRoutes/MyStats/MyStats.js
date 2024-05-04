@@ -9,11 +9,12 @@ import BetTimeDistChart from './BetTimeDistChart';
 import StatsTable from '../../../components/common/StatsTable';
 import PointsTimelineCompare from './PointsTimelineCompare';
 import { getPointsTimeLineComparison } from '../../../apis/mystats/myStatsController';
+import { updateConfig } from '../../../apis/configurationsController';
 
 const MyStats = () => {
     const contextConsumer = useContext(ContextProvider);
-    const { getTeamWiseStats, loggedInUserDetails } = contextConsumer;
-    const { bets = [] } = loggedInUserDetails;
+    const { getTeamWiseStats, loggedInUserDetails, configurations = {}, setConfigurations } = contextConsumer;
+    const { bets = [], username } = loggedInUserDetails;
     const [timelineLoading, setTimelineLoading] = useState(false);
     const [isTeamWiseDataLoading, setIsTeamWiseDataLoading] = useState(false);
     const [usersPointsTimelineData, setUsersPointsTimelineData] = useState([]);
@@ -26,6 +27,7 @@ const MyStats = () => {
     useEffect(() => {
         getTimeLineDetails();
         getTeamWisePtsData();
+        updateConfig(configurations, username, "MyStats", setConfigurations);
 	}, []);
 
     const getTeamWisePtsData = async () => {

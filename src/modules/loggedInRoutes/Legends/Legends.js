@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext, useEffect } from 'react';
 import { CardContent, Typography } from '@material-ui/core';
 import moment from 'moment';
 import { startCase } from 'lodash';
@@ -11,19 +11,16 @@ import broly from '../../../res/images/broly.png';
 import ashu from '../../../res/images/ashu.png';
 import desmond from '../../../res/images/desmond.png';
 import cypher from '../../../res/images/cyphernew.png';
-
-// import { Navigation, Pagination, EffectFade, Keyboard } from "swiper";
-// import { Swiper, SwiperSlide } from "swiper/react";
-
-// import styles from './customswiper.scss';
-
-// import 'swiper/swiper-bundle.css';
-// import 'swiper/modules/navigation/navigation.min.css';
-// import 'swiper/modules/pagination/pagination.min.css';
-// import 'swiper/modules/scrollbar/scrollbar.min.css';
-// import 'swiper/modules/effect-fade/effect-fade.min.css';
+import { ContextProvider } from '../../../global/Context';
+import { updateConfig } from '../../../apis/configurationsController';
 
 const Legends = () => {
+    const contextConsumer = useContext(ContextProvider);
+    const { loggedInUserDetails: { username }, configurations = {}, setConfigurations } = contextConsumer;
+
+    useEffect(() => {
+        updateConfig(configurations, username, "HallOfFame", setConfigurations);
+    },[]);
     // SiKongregate SiAnsible SiBlazemeter SiCodio SiDeepnote SiSparkar
     const width = window.innerWidth;
     const legends = [{

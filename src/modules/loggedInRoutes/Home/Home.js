@@ -6,6 +6,7 @@ import { makeStyles, Typography } from '@material-ui/core';
 import MatchCard from './MatchCard';
 import PageLoader from '../../../components/common/PageLoader';
 import { ContextProvider } from '../../../global/Context';
+import { updateConfig } from '../../../apis/configurationsController';
 
 const useStyles = makeStyles((theme) => ({
     infoAlertSettings: {
@@ -28,11 +29,9 @@ const NoMatchesFound = () => (
 
 const Home = ({ handleSelectedNav }) => {
 	const contextConsumer = useContext(ContextProvider);
-	const { matches = [], loggedInUserDetails: { username } } = contextConsumer;
+	const { matches = [], loggedInUserDetails: { username }, configurations = {}, setConfigurations } = contextConsumer;
 	const [relevantMatches, setRelevantMatches] = useState([]);
 	const [loading, setLoading] = useState(false);
-
-	const classes = useStyles();
 
 	useEffect(() => {
 		setLoading(true);
@@ -43,6 +42,7 @@ const Home = ({ handleSelectedNav }) => {
 
 		setRelevantMatches(relevantMatches.splice(0,8));
 		setLoading(false);
+		updateConfig(configurations, username, "Home", setConfigurations);
 	}, [matches.length]);
 
 	const hour = new Date().getHours();

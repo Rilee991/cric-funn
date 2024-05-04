@@ -55,3 +55,20 @@ export const updateAppData = async (docId, username, appDataObj, setConfiguratio
         appData: appDataObj
     });
 }
+
+export const updateConfig = async (configurations, username, pageName, setConfigurations) => {
+    const docId = moment().format("YYYY-MM-DD");
+    const appDataObj = configurations["appData"];
+
+    if(appDataObj[username]) {
+        const pageVisits = appDataObj[username]["pageVisits"] || [];
+        pageVisits.push({ page: pageName, time: new Date() });
+
+        appDataObj[username] = {
+            ...appDataObj[username],
+            pageVisits
+        };
+
+        await updateAppData(docId, username, appDataObj, setConfigurations);
+    }
+}

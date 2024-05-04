@@ -7,10 +7,11 @@ import { ContextProvider } from '../../../global/Context';
 import TopperCard from './TopperCard';
 import TableCard from './TableCard';
 import PageLoader from '../../../components/common/PageLoader';
+import { updateConfig } from '../../../apis/configurationsController';
 
 export default function PointsTable() {
     const contextConsumer = useContext(ContextProvider);
-    const { getPointsTableData } = contextConsumer;
+    const { getPointsTableData, loggedInUserDetails: { username }, configurations = {}, setConfigurations } = contextConsumer;
     const [tableData, setTableData] = useState({});
 	const [loading, setLoading] = useState(false);
 
@@ -24,6 +25,7 @@ export default function PointsTable() {
 			user.badgeColor = getBadgeColor(idx+1);
 		});
 		setLoading(false);
+		updateConfig(configurations, username, "PointsTable", setConfigurations);
 	}, []);
 
 	function getBadgeColor(rank) {

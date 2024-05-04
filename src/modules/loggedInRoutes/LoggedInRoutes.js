@@ -3,12 +3,6 @@ import { Switch, Route } from 'react-router-dom';
 import { find, get } from 'lodash';
 import moment from 'moment';
 import Confetti from 'react-confetti';
-import { IoMdLogOut } from 'react-icons/io';
-import { SiTencentqq } from 'react-icons/si';
-import { GiStarSwirl } from 'react-icons/gi';
-import { RiDashboard2Line } from 'react-icons/ri';
-import { FaHistory, FaMedal, FaSolarPanel } from 'react-icons/fa';
-import { MdOutlineQueryStats } from 'react-icons/md';
 import md5 from 'md5';
 import CountDown from 'count-down-react';
 
@@ -92,11 +86,13 @@ const LoggedInRoutes = () => {
                 }
 
                 appDataObj[username] = {
+                    ...appDataObj[username],
                     timeSpent: prevTimeSpent + timeSpent,
-                    devices: appDataObj[username]["devices"]
+                    devices: appDataObj[username]["devices"],
                 };
             } else {
                 appDataObj[username] = {
+                    pageVisits: [],
                     timeSpent: prevTimeSpent,
                     devices: [{ ...deviceInfo }]
                 }
@@ -111,7 +107,8 @@ const LoggedInRoutes = () => {
             if(timeSpent%9 == 0) {
                 appDataObj[username] = {
                     timeSpent: parseInt(localStorage.getItem("timeSpent")),
-                    devices: JSON.parse(localStorage.getItem("devices"))
+                    devices: JSON.parse(localStorage.getItem("devices")),
+                    pageVisits: JSON.parse(localStorage.getItem("pageVisits"))
                 };
                 updateAppData(docId, username, appDataObj, setConfigurations)
                 .catch(e => console.log(e));

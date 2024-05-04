@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useContext, useEffect } from 'react';
 import { Accordion, Typography, AccordionDetails, AccordionSummary } from '@material-ui/core';
 import { SiZig } from 'react-icons/si';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { VerticalTimeline, VerticalTimelineElement } from 'react-vertical-timeline-component';
 
 import 'react-vertical-timeline-component/style.min.css';
+import { ContextProvider } from '../../../global/Context';
+import { updateConfig } from '../../../apis/configurationsController';
 
 const WrestleMania = ({ section }) => {
     return (
@@ -49,6 +51,12 @@ const WrestleMania = ({ section }) => {
 
 const Gallery = () => {
     const [expanded, setExpanded] = React.useState(0);
+    const contextConsumer = useContext(ContextProvider);
+    const { loggedInUserDetails: { username }, configurations = {}, setConfigurations } = contextConsumer;
+
+    useEffect(() => {
+        updateConfig(configurations, username, "Gallery", setConfigurations);
+    },[]);
 
     const handleChange = (panel) => (event, isExpanded) => {
         setExpanded(isExpanded ? panel : false);

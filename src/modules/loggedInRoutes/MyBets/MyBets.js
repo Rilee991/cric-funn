@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { Card, CardActionArea, CardContent, Typography, Grid } from '@material-ui/core';
 import { find, round, sumBy, upperCase } from 'lodash';
 
@@ -9,11 +9,16 @@ import PageLoader from '../../../components/common/PageLoader';
 import StatsCardV2 from './StatsCardV2';
 import bowledImg from '../../../res/images/wkt.png';
 import { CheckOutlined, CloseOutlined, HourglassEmptyOutlined, PriorityHighOutlined } from '@material-ui/icons';
+import { updateConfig } from '../../../apis/configurationsController';
 
 export default function MyBets() {
     const contextConsumer = useContext(ContextProvider);
-    const { loggedInUserDetails = {}, mobileView, loading, matches = [] } = contextConsumer;
+    const { loggedInUserDetails = {}, mobileView, loading, matches = [], configurations = {}, setConfigurations } = contextConsumer;
     const { bets = [], username = "", points = "" } = loggedInUserDetails;
+
+    useEffect(() => {
+        updateConfig(configurations, username, "MyBets", setConfigurations);
+    },[]);
 
     bets.map(bet => {
         const match = find(matches, { id: bet.matchId });
