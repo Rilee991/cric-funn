@@ -268,6 +268,8 @@ const Context = (props) => {
                     extremeBetsObj = { maxBet: Number.MIN_VALUE, minBet: Number.MAX_VALUE, maxBetTeam: "", minBetTeam: ""};
 
                 bets.forEach((bet, idx) => {
+                    if(bet.isSettled === false) return;
+
                     const betTime = moment.unix(bet.betTime.seconds);
                     const startOfDay = moment(betTime).startOf('day');
                     const diff = betTime.diff(startOfDay).valueOf();
