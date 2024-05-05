@@ -46,7 +46,7 @@ const Home = ({ handleSelectedNav }) => {
 	}, [matches.length]);
 
 	const hour = new Date().getHours();
-	const greeting = hour >= 0 && hour < 5 ? `Sleep you fucking dumbass!` : (hour >= 5 && hour < 12 ? `Good Morning, ${username}!` 
+	const greeting = hour >= 0 && hour < 5 ? `Soja be ghusri!` : (hour >= 5 && hour < 12 ? `Good Morning, Sir ${username}!` 
 		: (hour >= 12 && hour < 17 ? `Good Afternoon, Master ${username}!` : (`Good Evening, Sir ${username}!`)));
 
 	return (

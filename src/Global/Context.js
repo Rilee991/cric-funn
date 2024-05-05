@@ -268,8 +268,6 @@ const Context = (props) => {
                     extremeBetsObj = { maxBet: Number.MIN_VALUE, minBet: Number.MAX_VALUE, maxBetTeam: "", minBetTeam: ""};
 
                 bets.forEach((bet, idx) => {
-                    if(bet.isSettled === false) return;
-
                     const betTime = moment.unix(bet.betTime.seconds);
                     const startOfDay = moment(betTime).startOf('day');
                     const diff = betTime.diff(startOfDay).valueOf();
@@ -322,6 +320,8 @@ const Context = (props) => {
                             }
                         }
 
+                        bet.team = bet.selectedTeam == bet.team1 ? bet.team1Abbreviation : bet.team2Abbreviation;
+
                         if(bet.isSettled) {
                             if(!matchesByUserBet[bet.matchId]) {
                                 matchesByUserBet[bet.matchId] = { [username]: { win: bet.betWon }  };
@@ -353,18 +353,17 @@ const Context = (props) => {
 
                                 currPts.push({ match: idx+1, [username]: currPts[currPtsLen-1][username]-parseInt(bet.selectedPoints) });
                             }
+
+                            if(extremeBetsObj.maxBet <= bet.selectedPoints) {
+                                extremeBetsObj.maxBet = bet.selectedPoints;
+                                extremeBetsObj.maxBetTeam = bet.team;
+                            }
+
+                            if(extremeBetsObj.minBet >= bet.selectedPoints) {
+                                extremeBetsObj.minBet = bet.selectedPoints;
+                                extremeBetsObj.minBetTeam = bet.team;
+                            }
                             currPtsLen++;
-                        }
-                        bet.team = bet.selectedTeam == bet.team1 ? bet.team1Abbreviation : bet.team2Abbreviation;
-
-                        if(extremeBetsObj.maxBet <= bet.selectedPoints) {
-                            extremeBetsObj.maxBet = bet.selectedPoints;
-                            extremeBetsObj.maxBetTeam = bet.team;
-                        }
-
-                        if(extremeBetsObj.minBet >= bet.selectedPoints) {
-                            extremeBetsObj.minBet = bet.selectedPoints;
-                            extremeBetsObj.minBetTeam = bet.team;
                         }
                     } else {
                         if(userSplitData[`${lKey}-${rKey}`])
@@ -572,7 +571,7 @@ const Context = (props) => {
             betPtsDistribution.forEach(dist => dist["ptsPercent"] = ((dist["points"]/totalBetPoints)*100).toFixed(2));
             betPtsDistribution = sortBy(betPtsDistribution, ["points"]).reverse();
             const allBetsData = flattenDeep(allUsersData);
-            const betsWithoutPenalty = allBetsData.filter(bet => bet.isBetDone === true);
+            const betsWithoutPenalty = allBetsData.filter(bet => bet.isBetDone === true && bet.isSettled === true);
             earliestBetsTime = sortBy(betsWithoutPenalty, ["diff"]).slice(0,5).map(eachBet => ({...eachBet, time: moment().startOf('day').add(eachBet.diff/1000,"seconds").format("hh:mm: A")}));
             mostPointsBetInAMatch = orderBy(betsWithoutPenalty, ["selectedPoints", "rawBetTime"], ["desc", "desc"]).slice(0,6);
             leastPointsBetInAMatch = orderBy(betsWithoutPenalty, ["selectedPoints", "rawBetTime"], ["asc", "desc"]).slice(0,6);
