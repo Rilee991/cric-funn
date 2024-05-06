@@ -63,7 +63,7 @@ export const updateConfig = async (configurations, username, pageName, setConfig
 
     if(appDataObj[username]) {
         const pageVisits = appDataObj[username]["pageVisits"] || [];
-        pageVisits.push({ page: pageName, time: moment().add(330, "minutes").toDate() });
+        pageVisits.push({ page: pageName, time: moment().add(330, "minutes").format("YYYY-MM-DD HH:mm:ss") });
 
         appDataObj[username] = {
             ...appDataObj[username],
