@@ -8,7 +8,7 @@ import * as d3 from 'd3-shape';
 import { isEmpty } from 'lodash';
 
 const PointsTimelineCompare = (props) => {
-    const { usersPointsTimeline = [], nodeId, title = "Graph", xLabel = "xlabel", yLabel = "ylabel" } = props;
+    const { usersPointsTimeline = [], nodeId, title = "Graph", xLabel = "xlabel", yLabel = "ylabel", valueYField = "points", valueXField = "match" } = props;
 
     useEffect(() => {
         if(isEmpty(usersPointsTimeline))  return;
@@ -103,8 +103,8 @@ const PointsTimelineCompare = (props) => {
                 name: eachUserTimeline.player.toUpperCase(),
                 xAxis: xAxis,
                 yAxis: yAxis,
-                valueYField: "points",
-                valueXField: "match",
+                valueYField,
+                valueXField,
                 minDistance: 0,
                 curveFactory: d3.curveNatural
             }));

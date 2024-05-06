@@ -1,3 +1,4 @@
+import { get } from "lodash";
 import moment from "moment";
 
 import { db } from "../config";
@@ -71,4 +72,30 @@ export const updateConfig = async (configurations, username, pageName, setConfig
 
         await updateAppData(docId, username, appDataObj, setConfigurations);
     }
+}
+
+export const getTimeSpentData = async () => {
+    const resp = await db.collection(CONFIGURATION_COLLECTION).get();
+    const configs = resp.docs.filter(doc => doc.id >= moment("2024-03-22").format("YYYY-MM-DD") && doc.id <= moment().format("YYYY-MM-DD")).map(doc => ({ ...doc.data(), id: doc.id }));
+    const timeSpentByPlayer = [];
+    const players = ["ashu", "desmond", "kelly", "SD", "Broly", "Himanshu sahu", "Cypher33"];
+
+    for(const player of players) {
+        let day = 0, timeSpent = 0;
+        const timeJourney = [{ day, timeSpent }];
+
+        for(const config of configs) {
+            const playerConfig = config["appData"][player];
+
+            const dayTimeSpent = parseInt(get(playerConfig, 'timeSpent', 0));
+            day++;
+            timeSpent += dayTimeSpent;
+
+            timeJourney.push({ day, timeSpent: dayTimeSpent });
+        }
+
+        timeSpentByPlayer.push({ player, journey: timeJourney });
+    }
+
+    return timeSpentByPlayer;
 }
