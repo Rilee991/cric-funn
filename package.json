@@ -23,6 +23,7 @@
     "mailchecker": "^5.0.7",
     "md5": "^2.3.0",
     "moment": "^2.29.1",
+    "moment-timezone": "^0.5.45",
     "postcss": "^8.4.5",
     "postcss-cli": "^9.1.0",
     "primeicons": "^7.0.0",

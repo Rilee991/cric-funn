@@ -1,5 +1,5 @@
 import { get } from "lodash";
-import moment from "moment";
+import moment from "moment-timezone";
 
 import { db } from "../config";
 import { getFirebaseCurrentTime } from "../global/adhocUtils";
@@ -58,12 +58,12 @@ export const updateAppData = async (docId, username, appDataObj, setConfiguratio
 }
 
 export const updateConfig = async (configurations, username, pageName, setConfigurations) => {
-    const docId = moment().format("YYYY-MM-DD");
+    const docId = moment().tz("Asia/Kolkata").format("YYYY-MM-DD");
     const appDataObj = configurations["appData"];
 
     if(appDataObj[username]) {
         const pageVisits = appDataObj[username]["pageVisits"] || [];
-        pageVisits.push({ page: pageName, time: moment().add(330, "minutes").format("YYYY-MM-DD HH:mm:ss") });
+        pageVisits.push({ page: pageName, time: moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss") });
 
         appDataObj[username] = {
             ...appDataObj[username],
