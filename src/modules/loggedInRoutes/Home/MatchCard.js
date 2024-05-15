@@ -23,7 +23,7 @@ const MatchCard = (props) => {
 	const { bets = [], points, username = "", isAdmin = false } = loggedInUserDetails;
 	const { match = {} } = props;
 
-	const { dateTimeGMT: matchTime, id: matchId, name: matchTitle, status, venue, odds = [], poster = "", teamInfo= [] } = match;
+	const { dateTimeGMT: matchTime, id: matchId, name: matchTitle, status, venue, odds = [], poster = "", teamInfo= [], hasCustomHeader = false, customHeaderText = "" } = match;
 
 	const [bettingDoneByUser, setBettingDoneByUser] = useState(false);
 	const [openLetsBetDialogBox, setOpenLetsBetDialogBox] = useState(false);
@@ -115,8 +115,25 @@ const MatchCard = (props) => {
     }
 	// `linear-gradient(130deg, ${oddsParams["team1Color"]}, ${oddsParams["team2Color"]}`
 
+	const buildCustomHeader = () => {
+		return (
+			<Card style={{ boxShadow: "5px 5px 20px", backgroundRepeat:"no-repeat", backgroundSize: "inherit",height: "auto", backgroundBlendMode: "hard-light" }} className="tw-mt-2 tw-mb-10 tw-rounded-[40px]">
+				<CardActionArea>
+					<CardContent className="tw-flex tw-bg-indigo-950 tw-flex-col tw-items-center">
+						{/* <div style={{ padding: "10px", border: "2px solid white" }} className="tw-bg-indigo-950 tw-h-[5vh] tw-rounded-[20px] tw-flex tw-justify-center tw-items-center tw-text-white"> */}
+							<Typography className="tw-flex tw-items-center tw-font-noto tw-gap-2 tw-text-white" variant={"button"} style={{fontSize: 20}} component="p">
+								<b>{customHeaderText || "Matches"}</b> 
+							</Typography>
+						{/* </div> */}
+					</CardContent>
+				</CardActionArea>
+			</Card>
+		);
+	}
+
     return (
 		<>
+			{hasCustomHeader ? buildCustomHeader() : null}
 			<Card style={{ boxShadow: "5px 5px 20px" }} className="tw-mt-2 tw-bg-[#340043] tw-mb-10 tw-rounded-[40px]">
 				<CardActionArea>
 					<CardContent>
