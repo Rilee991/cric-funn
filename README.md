@@ -23,7 +23,9 @@ https://cric-funn.web.app
 3. Make jsconfig for src folder
 12. Explore push-notifications
 20. Include weather info - // http://api.weatherstack.com/current?access_key=f44f0188e69910c683149ae9d0e413b3&query=Rourkela
-23. Optimise my bets page to show only upto 6 bets and give load more btn
+24. Change UI library to shadcn
+25. Display name use instead of username
+26. Make use of profile page to show career stats.
 
 #### COMPLETED:
 1. Need to delete all unused resources
@@ -45,6 +47,7 @@ new logic - fetch matches from db and sync results to db on each refresh for onl
 19. Debugging crashing issue on start sometimes
 21. Refactoring configurations workflow
 22. Implement vibration on betting
+23. Optimise my bets page to show only upto 6 bets and give load more btn
 24. Test the time tracker feature properly
 25. Implement useOnline custom hook to show custom "no connection" page.
 26. Points table bug ashutosh still showing eliminated

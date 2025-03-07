@@ -63,11 +63,40 @@ const Gallery = () => {
     };
 
     const gallery = [{
-        title: "WrestleMania 24",
+        title: "WrestleMania 25",
         wmImage: "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/1f2e3247-62d6-4d91-8b66-596cdde4d62b/decfzk2-bfe338d1-df73-4136-a8e3-39a4a6ed3b84.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzFmMmUzMjQ3LTYyZDYtNGQ5MS04YjY2LTU5NmNkZGU0ZDYyYlwvZGVjZnprMi1iZmUzMzhkMS1kZjczLTQxMzYtYThlMy0zOWE0YTZlZDNiODQucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.hH9eh3faKC5msXFFF9c3p2vZpPqMG7RuspdmRR833pY",
         section: [{
-            title: "WrestleMania 24 - Official Poster (Pending)",
+            title: "WrestleMania 25 - Official Poster",
             bgImage: "https://cache.careers360.mobi/media/presets/860X430/article_images/2020/9/21/MHT-news.png",
+            bgColor: "#0cd7a2",
+            height: 450
+        }]
+    }, {
+        title: "WrestleMania 24",
+        wmImage: "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/377bb3e8-ff8c-4984-8530-64b9afb9d321/dff9nq3-9bd05d41-c893-44ea-af84-f18493cbd3e4.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzM3N2JiM2U4LWZmOGMtNDk4NC04NTMwLTY0YjlhZmI5ZDMyMVwvZGZmOW5xMy05YmQwNWQ0MS1jODkzLTQ0ZWEtYWY4NC1mMTg0OTNjYmQzZTQucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.BUTDCeXxdiYd5Tf0EQYbaGvq6fQ1q9LMW5bMZztAAVo",
+        section: [{
+            title: "WrestleMania 24 - Match 1, Official Poster",
+            bgImage: "https://firebasestorage.googleapis.com/v0/b/cric-funn.appspot.com/o/wm_gallery%2FWM24_Match1.png?alt=media&token=4a51c0af-bdde-4866-9d6f-d27b283f43d2",
+            bgColor: "#0cd7a2",
+            height: 450
+        }, {
+            title: "WrestleMania 24 - King of the Ring, Official Poster",
+            bgImage: "https://firebasestorage.googleapis.com/v0/b/cric-funn.appspot.com/o/wm_gallery%2FWM24_Match2.png?alt=media&token=8c6b2b30-8b0d-4391-a2de-e330d0261bff",
+            bgColor: "#0cd7a2",
+            height: 450
+        }, {
+            title: "WrestleMania 24 - Universal Championship, Official Poster",
+            bgImage: "https://firebasestorage.googleapis.com/v0/b/cric-funn.appspot.com/o/wm_gallery%2FWM24_MainEvent.png?alt=media&token=b997c777-99b5-42b5-a516-f1db71a3f40a",
+            bgColor: "#0cd7a2",
+            height: 450
+        }, {
+            title: "WrestleMania 24 - King Of the Ring Winner",
+            bgImage: "https://firebasestorage.googleapis.com/v0/b/cric-funn.appspot.com/o/wm_gallery%2FWM24_KOTR_Winner.png?alt=media&token=d26f9df2-f617-40ec-8518-11d3fcedcba1",
+            bgColor: "#0cd7a2",
+            height: 450
+        }, {
+            title: "WrestleMania 24 - Universal Championship Winner",
+            bgImage: "https://firebasestorage.googleapis.com/v0/b/cric-funn.appspot.com/o/wm_gallery%2FWM24_UC_Winner.png?alt=media&token=e2cccb73-ebc5-433e-b53c-f1f2e8b5f184",
             bgColor: "#0cd7a2",
             height: 450
         }]

@@ -7,15 +7,15 @@ const WishModal = (props) => {
     const messages = {
         "desmond": {
             title: "Be the champion that you were meant to be!",
-            lastChampDate: "Nov 2020 (4 yrs ago)"
+            lastChampDate: "Nov 2020 (5 yrs ago)"
         }, 
         "Broly": {
-            title: "It all started with you, make this WrestleMania end with you!",
-            lastChampDate: "Oct 2018 (6 yrs ago)"
+            title: "Carry forward the will of fire like you did in last year and defend the title with honor!",
+            lastChampDate: "You're the champ! Defend like it!"
         }, 
         "kelly": {
-            title: "You won when everybody ruled you out! Defend with honor!",
-            lastChampDate: "You're the champ! Defend like it!"
+            title: "You won when everybody ruled you out! Time to do it again!",
+            lastChampDate: "May 2024 (1 yr ago)"
         }, 
         "SD": {
             title: "Clinch your 1st title and make history!",
@@ -23,11 +23,11 @@ const WishModal = (props) => {
         }, 
         "ashu": {
             title: "Become the coolest champ again!",
-            lastChampDate: "Apr 2021 (3 yrs ago)"
+            lastChampDate: "Apr 2021 (4 yrs ago)"
         },
         "Cypher33": {
             title: "You always find your way to the top! Do it again!",
-            lastChampDate: "Jun 2023 (1 yr ago)"
+            lastChampDate: "Jun 2023 (2 yrs ago)"
         }
     }
 

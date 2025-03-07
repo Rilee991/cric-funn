@@ -46,7 +46,8 @@ export const dumpUsers = async () => {
 
         await db.collection(dumpTableName).doc(user.username).set(user);
         await db.collection(USER_COLLECTION).doc(doc.id).update({ bets: DEFAULT_USER_PARAMS.STARTING_BETS,
-            points: DEFAULT_USER_PARAMS.STARTING_POINTS, updatedAt: new Date(), updatedBy: "dumpUsers"
+            points: DEFAULT_USER_PARAMS.STARTING_POINTS, updatedAt: new Date(), updatedBy: "dumpUsers",
+            isOut: false, showWishModal: true, displayName: user.username
         });
     }
 }

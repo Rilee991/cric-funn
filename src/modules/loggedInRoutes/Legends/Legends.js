@@ -24,11 +24,20 @@ const Legends = () => {
     // SiKongregate SiAnsible SiBlazemeter SiCodio SiDeepnote SiSparkar
     const width = window.innerWidth;
     const legends = [{
+        bgImage: "https://firebasestorage.googleapis.com/v0/b/cric-funn.appspot.com/o/gifs%2Fbroly2.gif?alt=media&token=12ed3ddf-0f6f-4d1e-ada1-7d3f66c80c82",
+        bgColor: "#7177ff",
+        title: "Broly, Universal Champion",
+        poster: "https://firebasestorage.googleapis.com/v0/b/cric-funn.appspot.com/o/profilePictures%2FChamp_beria.png?alt=media&token=726d7092-67f4-43d5-9178-9e10c9609104",
+        period: "2024 - Present",
+        isChampCard: true,
+        date: moment("2023-05-30 02:30:30").toISOString(),
+        thumbnail: <SiBabel />
+    }, {
         bgImage: "https://firebasestorage.googleapis.com/v0/b/cric-funn.appspot.com/o/gifs%2Fkelly1.gif?alt=media&token=d8bcd02a-70b8-43db-9a43-26c02b07d7ff",
         bgColor: "#7177ff",
         title: "Kelly, Undisputed Universal Champion",
         poster: "https://firebasestorage.googleapis.com/v0/b/cric-funn.appspot.com/o/profilePictures%2Fpappu.png?alt=media&token=f2464040-b336-4425-a911-f508cec8d8ee",
-        period: "2023 - Present",
+        period: "2023 - 2024",
         isChampCard: true,
         date: moment("2023-05-30 02:30:30").toISOString(),
         thumbnail: <SiKongregate />

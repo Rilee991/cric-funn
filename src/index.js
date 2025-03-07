@@ -8,10 +8,10 @@ import 'primeicons/primeicons.css';
 import App from './App.js';
 
 ReactDOM.render(
-  <React.StrictMode>
+  // <React.StrictMode>
     <Context>
       <App />
-    </Context>
-  </React.StrictMode>,
+    </Context>,
+  // {/* </React.StrictMode>, */}
   document.getElementById('root')
 );

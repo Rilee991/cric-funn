@@ -22,8 +22,8 @@ export default function MyBets() {
 
     bets.map(bet => {
         const match = find(matches, { id: bet.matchId });
-        bet.team1Logo = match.teamInfo[0].img;
-        bet.team2Logo = match.teamInfo[1].img;
+        bet.team1Logo = match?.teamInfo[0].img;
+        bet.team2Logo = match?.teamInfo[1].img;
 
         if(bet.isBetDone) {
 			if(bet.isSettled) {

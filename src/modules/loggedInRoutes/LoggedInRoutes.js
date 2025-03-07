@@ -27,9 +27,9 @@ const CoundownRenderer = ({ days, hours, minutes, seconds, completed, ...props }
 
     return (
         <div className="container">
-            <div className="tw-flex tw-place-content-center">
+            <div className="tw-flex tw-place-content-center tw-gap-3">
                 <img src={cricFunnLogo} alt="Ipl t20 logo" className="tw-w-40 tw-border-r-4 tw-border-black-app tw-p-3" />
-                <img src={"https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/377bb3e8-ff8c-4984-8530-64b9afb9d321/dff9nq3-9bd05d41-c893-44ea-af84-f18493cbd3e4.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzM3N2JiM2U4LWZmOGMtNDk4NC04NTMwLTY0YjlhZmI5ZDMyMVwvZGZmOW5xMy05YmQwNWQ0MS1jODkzLTQ0ZWEtYWY4NC1mMTg0OTNjYmQzZTQucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.BUTDCeXxdiYd5Tf0EQYbaGvq6fQ1q9LMW5bMZztAAVo"} alt="Ipl t20 logo" className="tw-w-40" />
+                <img src={"https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/1f2e3247-62d6-4d91-8b66-596cdde4d62b/decfzk2-bfe338d1-df73-4136-a8e3-39a4a6ed3b84.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzFmMmUzMjQ3LTYyZDYtNGQ5MS04YjY2LTU5NmNkZGU0ZDYyYlwvZGVjZnprMi1iZmUzMzhkMS1kZjczLTQxMzYtYThlMy0zOWE0YTZlZDNiODQucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.hH9eh3faKC5msXFFF9c3p2vZpPqMG7RuspdmRR833pY"} alt="Ipl t20 logo" className="tw-w-40" />
             </div>
             <ul>
                 <li>
@@ -48,7 +48,7 @@ const CoundownRenderer = ({ days, hours, minutes, seconds, completed, ...props }
             <div className="tw-flex tw-flex-col tw-items-center">
                 <span className="tw-text-xl ">To go for</span>
                 <br/>
-                <img src={"https://www.wwe.com/f/styles/og_image/public/all/2023/10/Road_to_WrestleMania_Logo--f3cb0721e33bff4bc015a9a278f87494.png"} alt="Ipl t20 logo" className="tw-w-full sm:tw-w-2/3" />
+                <img src={"https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/bd931675-f863-457b-8dbf-81fdc58137fc/df0jn63-7d278969-b93b-4ae3-92be-d88e3c5f96dd.png/v1/fill/w_894,h_894/wwe_road_to_wrestlemania_38_logo_png_by_suplexcityeditions_df0jn63-pre.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9MTI4MCIsInBhdGgiOiJcL2ZcL2JkOTMxNjc1LWY4NjMtNDU3Yi04ZGJmLTgxZmRjNTgxMzdmY1wvZGYwam42My03ZDI3ODk2OS1iOTNiLTRhZTMtOTJiZS1kODhlM2M1Zjk2ZGQucG5nIiwid2lkdGgiOiI8PTEyODAifV1dLCJhdWQiOlsidXJuOnNlcnZpY2U6aW1hZ2Uub3BlcmF0aW9ucyJdfQ.WXa1IzRCfVLNGYFIoJRe0eigIYkBFJtR_rxSsI6_Zmc"} alt="Ipl t20 logo" className="tw-w-full sm:tw-w-2/3" />
             </div>
         </div>
     );
@@ -169,7 +169,7 @@ const LoggedInRoutes = () => {
         }
     }
 
-    const isGlobalStatsDisabled = moment().isBefore(moment("05-04-2024").add(12, "hours"));
+    const isGlobalStatsDisabled = moment().isBefore(moment("05-03-2025").add(12, "hours"));
 
     const navItems = [{
         name: <div className="tw-flex tw-items-center">
@@ -195,7 +195,7 @@ const LoggedInRoutes = () => {
         name: "Global Stats",
         to: "/global-stats",
         icon: <i className="pi pi-globe tw-text-2xl" />,
-        subText: isGlobalStatsDisabled ? "Live from Sat 12pm" : "",
+        subText: isGlobalStatsDisabled ? "Live on May 3, 12pm" : "",
         disabled: isGlobalStatsDisabled,
         component: <GlobalStats />
     }, {
@@ -229,7 +229,7 @@ const LoggedInRoutes = () => {
     }].map((item, idx) => ({ ...item, id: idx+1 }));
 
 	const isOnline = useOnline();
-    const date = Date.now() + (new Date("03-22-2024 00:00:00") - new Date());
+    const date = Date.now() + (new Date("03-22-2025 00:00:00") - new Date());
     const isDatePassed = (date - new Date()) < 0;
 
     return (
