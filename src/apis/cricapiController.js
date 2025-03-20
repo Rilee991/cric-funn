@@ -5,7 +5,7 @@ import { clearTable, createMatch, getMatchById, updateMatchById } from "./matchC
 import moment from "moment";
 
 const API_KEY = "e62a5cb2-1135-40ee-9a7b-99d14472d7ee";
-const SERIES_ID = "bedf8bb2-7a5b-4812-bd50-2ce0a468ffb9"; //71a7c7dc-3929-408c-9641-1da6d96f8894;
+const SERIES_ID = "d5a498c8-7596-4b93-8ab0-e0efc3345312"; //71a7c7dc-3929-408c-9641-1da6d96f8894;
 
 export const getMatchDetailsById = async (id) => {
     try {
@@ -42,7 +42,7 @@ export const saveMatchesToDb = async () => {
         const matchesPromise = [];
 
         for(const match of matchList) {
-            formatMatch(match);
+            formatMatch(match); // For IPL
             // formatWcMatch(match); //Only for WC
             matchesPromise.push(createMatch(match.id, match));
         }

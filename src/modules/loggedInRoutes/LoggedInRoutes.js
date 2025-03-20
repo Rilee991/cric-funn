@@ -17,6 +17,7 @@ import cricFunnLogo from '../../res/images/logo.png';
 import PageLoader from '../../components/common/PageLoader';
 import WishModal from './WishModal/WishModal';
 import Gallery from './Gallery/Gallery';
+import Career from './Career/Career';
 
 const CoundownRenderer = ({ days, hours, minutes, seconds, completed, ...props }) => {
     if(completed) {
@@ -26,12 +27,17 @@ const CoundownRenderer = ({ days, hours, minutes, seconds, completed, ...props }
     }
 
     return (
-        <div className="container">
+        <div className="container" style={{ 
+                background: 'url(https://media3.giphy.com/media/5JUo71ZxKREZPbZLuZ/giphy.gif?cid=6c09b9526p59k7qu890lc7i65mg7pvgfsbc1apm8sioz5dsv&ep=v1_gifs_search&rid=giphy.gif&ct=g)',
+                backgroundRepeat: "no-repeat",
+                backgroundSize: "100% 100%", 
+            }}
+        >
             <div className="tw-flex tw-place-content-center tw-gap-3">
                 <img src={cricFunnLogo} alt="Ipl t20 logo" className="tw-w-40 tw-border-r-4 tw-border-black-app tw-p-3" />
                 <img src={"https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/1f2e3247-62d6-4d91-8b66-596cdde4d62b/decfzk2-bfe338d1-df73-4136-a8e3-39a4a6ed3b84.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzFmMmUzMjQ3LTYyZDYtNGQ5MS04YjY2LTU5NmNkZGU0ZDYyYlwvZGVjZnprMi1iZmUzMzhkMS1kZjczLTQxMzYtYThlMy0zOWE0YTZlZDNiODQucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.hH9eh3faKC5msXFFF9c3p2vZpPqMG7RuspdmRR833pY"} alt="Ipl t20 logo" className="tw-w-40" />
             </div>
-            <ul>
+            <ul className="tw-text-white">
                 <li>
                     <span id="days">{days}</span>days
                 </li>
@@ -46,9 +52,17 @@ const CoundownRenderer = ({ days, hours, minutes, seconds, completed, ...props }
                 </li>
             </ul>
             <div className="tw-flex tw-flex-col tw-items-center">
-                <span className="tw-text-xl ">To go for</span>
-                <br/>
-                <img src={"https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/bd931675-f863-457b-8dbf-81fdc58137fc/df0jn63-7d278969-b93b-4ae3-92be-d88e3c5f96dd.png/v1/fill/w_894,h_894/wwe_road_to_wrestlemania_38_logo_png_by_suplexcityeditions_df0jn63-pre.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9MTI4MCIsInBhdGgiOiJcL2ZcL2JkOTMxNjc1LWY4NjMtNDU3Yi04ZGJmLTgxZmRjNTgxMzdmY1wvZGYwam42My03ZDI3ODk2OS1iOTNiLTRhZTMtOTJiZS1kODhlM2M1Zjk2ZGQucG5nIiwid2lkdGgiOiI8PTEyODAifV1dLCJhdWQiOlsidXJuOnNlcnZpY2U6aW1hZ2Uub3BlcmF0aW9ucyJdfQ.WXa1IzRCfVLNGYFIoJRe0eigIYkBFJtR_rxSsI6_Zmc"} alt="Ipl t20 logo" className="tw-w-full sm:tw-w-2/3" />
+                <span className="tw-text-xl tw-text-white">TO GO</span>
+            </div>
+            <div>
+                <div className="tw-flex tw-items-center tw-justify-center">
+                    <div className="tw-flex tw-justify-center">
+                        <img src={"https://firebasestorage.googleapis.com/v0/b/cric-funn.appspot.com/o/profilePictures%2FChamp_beria.png?alt=media&token=726d7092-67f4-43d5-9178-9e10c9609104"} alt="Ipl t20 logo" className="tw-h-80 tw-w-56" />
+                    </div>
+                    <div className="tw-flex tw-justify-center">
+                        <img src={"https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/bd931675-f863-457b-8dbf-81fdc58137fc/df0jn63-7d278969-b93b-4ae3-92be-d88e3c5f96dd.png/v1/fill/w_894,h_894/wwe_road_to_wrestlemania_38_logo_png_by_suplexcityeditions_df0jn63-pre.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9MTI4MCIsInBhdGgiOiJcL2ZcL2JkOTMxNjc1LWY4NjMtNDU3Yi04ZGJmLTgxZmRjNTgxMzdmY1wvZGYwam42My03ZDI3ODk2OS1iOTNiLTRhZTMtOTJiZS1kODhlM2M1Zjk2ZGQucG5nIiwid2lkdGgiOiI8PTEyODAifV1dLCJhdWQiOlsidXJuOnNlcnZpY2U6aW1hZ2Uub3BlcmF0aW9ucyJdfQ.WXa1IzRCfVLNGYFIoJRe0eigIYkBFJtR_rxSsI6_Zmc"} alt="Ipl t20 logo" className="tw-h-96 tw-w-96" />
+                    </div>
+                </div>
             </div>
         </div>
     );
@@ -72,7 +86,7 @@ const LoggedInRoutes = () => {
         handleSelectedNav();
         const startTime = Date.now();
         const docId = moment().format("YYYY-MM-DD");
-        const appDataObj = configurations["appData"];
+        const appDataObj = configurations["appData"] || {};
         const deviceInfo = getDeviceInfo();
         const prevTimeSpent = get(appDataObj, `${username}.timeSpent`, 0);
 
@@ -216,6 +230,12 @@ const LoggedInRoutes = () => {
         component: <Gallery />,
         hidden: isDummyUser ? true : false
     }, {
+        name: "Career",
+        to: "/career",
+        icon: <i className="pi pi-warehouse tw-text-2xl" />,
+        component: <Career />,
+        hidden: isDummyUser ? true : false
+    }, {
         name: "Control Panel",
         to: "/control-panel",
         icon: <i className="pi pi-cog tw-text-2xl" />,
@@ -289,6 +309,9 @@ const LoggedInRoutes = () => {
                                 </Route>}
                                 {!isDummyUser && <Route exact path="/gallery">
                                     <Gallery />
+                                </Route>}
+                                {!isDummyUser && <Route exact path="/career">
+                                    <Career />
                                 </Route>}
                                 {isAdmin && <Route exact path="/control-panel">
                                     <ControlPanel />

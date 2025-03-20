@@ -1,4 +1,4 @@
-import { ceil } from "lodash";
+import { ceil, random } from "lodash";
 import moment from "moment";
 
 import { matchPostersMapping } from "../configs/matchConfigs";
@@ -20,11 +20,11 @@ export const getFormattedTimeISOString = (date) => {
 }
 
 export function getMsgForUpcomingBets(startTime, endTime) {
-    return (`Betting window will be OPENED from - ${startTime.format("LLL")} TO ${endTime.format("LLL")}`);
+    return (`Window OPENS from - ${startTime.format("LLL")} TO ${endTime.format("LLL")}`);
 }
 
 export function getMsgForOpenBets(endTime) {
-    return (`Betting is OPENED TILL - ${endTime.format("LLL")}.`);
+    return (`OPENED TILL - ${endTime.format("LLL")}.`);
 }
 
 export function getMsgForInProgressBets(points, team) {
@@ -32,19 +32,35 @@ export function getMsgForInProgressBets(points, team) {
 }
 
 export function getMsgForNoResultBets(points, team) {
-    return (`Betting is CLOSED. Match ended in NO RESULT. You've recieved ${points} POINTS back. Betting Team: ${team}`);
+    return (`CLOSED. Match ended in NO RESULT. You've recieved ${points} POINTS back. Betting Team: ${team}`);
 }
 
 export function getMsgForClosedBets() {
-    return (`Betting is CLOSED. You DID NOT bet.`);
+    return (`CLOSED. Miss karke lun le lia.`);
 }
 
 export function getMsgForWonBets(points, team) {
-    return (`Betting CLOSED. You WON ${points} POINTS. Betting Team: ${team}`);
+    const messages = [
+        `Aaj win hai bhai!!🥳🥳 ${points} - ${team}`,
+        `Aaj sirf win milega, lun lene ka kaam doosre karenge! ${points} - ${team}`,
+        `Aaj lun hai... Par kisi aur ka, apne ko toh win mila hai.🥳🥳🥳🥳 ${points} - ${team}`
+    ];
+
+    return messages[random(0, messages.length-1)];
 }
 
 export function getMsgForLostBets(points, team) {
-    return (`Betting CLOSED. You LOST ${points} POINTS. Betting Team: ${team}`);
+    const messages = [
+        `Mubarak ho! Aaj ${points} points ka lun hua hai ${team} par🤣.`,
+        `Chhud gaye guru😭😭! ${points} ka ghata bhenchod. Kasam khaa dobara ${team} pe ni lagayega.`,
+        `Aaj lun hai! ${points} points ${team} par lanat bhej diya.`,
+        `Is match mein sirf ek cheez mili hai tumhe… aur wo win nahi hai🤣🤣! ${points} - ${team}`,
+        `Muft ka chandan ghis mere nandan! Brruaahhhh! ${points} - ${team}`,
+        `Khada hun aaj bhi wahi, lagi teri hi ass hai... ${points} - ${team}`,
+        `Life me sirf lun hi lena hai ya kabhi win bhi karoge? ${points} - ${team}`
+    ];
+
+    return messages[random(0, messages.length-1)];
 }
 
 export const getWinningAmount = (amount, odds = 1) => {

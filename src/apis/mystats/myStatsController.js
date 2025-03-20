@@ -10,10 +10,14 @@ export const getPointsTimeLineComparison = async () => {
         const betsComparision = [];
 
         for(const userDoc of docs) {
+            const { bets = [], username } = userDoc.data();
             let points = DEFAULT_USER_PARAMS.STARTING_POINTS, match = 0;
+
+            if(username === 'kelly')
+                points = 3450;
+
             const userJourney = [{ match, points }];
             const betJourney = [{ match, points: 0 }];
-            const { bets = [], username } = userDoc.data();
 
             bets.forEach(bet => {
                 if(bet.isSettled === false) return;

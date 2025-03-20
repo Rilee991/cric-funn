@@ -15,7 +15,8 @@ const StyledTableCell = withStyles((theme) => ({
       borderRightWidth: 2,
       borderRightColor: theme.palette.grey[300],
       borderRightStyle: "solid",
-      borderBottom: "2px solid " + theme.palette.grey[300]
+      borderBottom: "2px solid " + theme.palette.grey[300],
+      minWidth: 120
     },
     body: {
       fontSize: 14,

@@ -6,7 +6,7 @@ import moment from 'moment';
 import { auth } from '../config';
 import { getBetEndTime, getDefaultMatchOdds, getFirebaseCurrentTime, getToppgerBgImage, getWinnerEtaParams, getWinningAmount } from './adhocUtils';
 import { DEFAULT_USER_PARAMS } from '../configs/userConfigs';
-import { getUserByKey, getUserByUsername, createUser, updateUserByEmail, updateUserByUsername, getUsers } from '../apis/userController';
+import { getUserByKey, getUserByUsername, createUser, updateUserByEmail, updateUserByUsername, getUsers, getCareerByUsername } from '../apis/userController';
 import { getMatchById, getMatches, updateMatchById } from '../apis/matchController';
 import { getMatchDetailsById } from '../apis/cricapiController';
 import { DEFAULT_PENALTY_POINTS, DEFAULT_PENALTY_TEAM } from '../configs/matchConfigs';
@@ -223,6 +223,57 @@ const Context = (props) => {
         result = orderBy(result, ["points", "won", "bets", "player"], ["desc", "desc", "asc", "asc"]);
 
         return { data: result, cols: ["player", "bets", "w-l-i", "points"], caption: "Penalised bets not included in bet count.", title: "Points Table" };
+    }
+
+    const getCareerData = async (username) => {
+        const userDocs = await getCareerByUsername(username);
+        const yearWiseDataObj = userDocs.data();
+        const result = [];
+        const totalObj = { season: "Total", played: 0, win: 0, loss: 0, miss: 0, maxPoints: 0, avgBetPoints: 0,
+            maxWinStreak: 0, maxLoseStreak: 0, maxPointsBetInAMatch: 0, leastPointsBetInAMatch: 0
+        };
+
+        Object.keys(yearWiseDataObj).forEach(year => {
+            const data = yearWiseDataObj[year];
+
+            result.push({
+                season: year,
+                played: data.play,
+                "w-l-m": `${data.win}-${data.loss}-${data.miss}`,
+                winPercent: round((data.win * 100)/(data.play || 1), 2),
+                lossPercent: round((data.loss * 100)/(data.play || 1), 2),
+                maxPoints: data.maxPoints,
+                avgBetPoints: data.avgBetPoints,
+                maxWinStreak: data.maxWinStreak,
+                maxLoseStreak: data.maxLoseStreak,
+                maxPointsBetInAMatch: data.maxPointsBetInAMatch,
+                leastPointsBetInAMatch: data.leastPointsBetInAMatch,
+                betTimeAnalysis: data.betTimeAnalysis
+            });
+
+            totalObj.played += data.play;
+            totalObj.win += data.win;
+            totalObj.loss += data.loss;
+            totalObj.miss += data.miss;
+            totalObj.maxPoints = Math.max(totalObj.maxPoints, data.maxPoints);
+            totalObj.avgBetPoints += data.avgBetPoints * data.play;
+            totalObj.maxWinStreak = Math.max(totalObj.maxWinStreak, data.maxWinStreak);
+            totalObj.maxLoseStreak = Math.max(totalObj.maxLoseStreak, data.maxLoseStreak);
+            totalObj.maxPointsBetInAMatch = Math.max(totalObj.maxPointsBetInAMatch, data.maxPointsBetInAMatch);
+            totalObj.leastPointsBetInAMatch = Math.max(totalObj.leastPointsBetInAMatch, data.leastPointsBetInAMatch);
+        });
+
+        totalObj["winPercent"] = round((totalObj["win"] * 100)/(totalObj["played"] || 1), 2);
+        totalObj["lossPercent"] = round((totalObj["loss"] * 100)/(totalObj["played"] || 1), 2);
+        totalObj["avgBetPoints"] = round(totalObj["avgBetPoints"]/totalObj["played"], 2);
+        totalObj["w-l-m"] = `${totalObj.win}-${totalObj.loss}-${totalObj.miss}`;
+
+        result.push(totalObj);
+
+        return { data: result, cols: ["season", "played", "w-l-m", "winPercent", "lossPercent", "maxPoints", 
+            "avgBetPoints", "maxWinStreak", "maxLoseStreak"], 
+            caption: "Muft ka chandan ghis mere nandan", title: "Year on Year Comparision" 
+        };
     }
 
     const getAllUsersData = async () => {
@@ -1016,7 +1067,7 @@ const Context = (props) => {
 
                 signUp, signIn, sendResetPasswordEmail, resetPassword, logout, clearNotifications, betOnMatch, updateSeenBets,
                 viewBetsData, getPointsTableData, resetUserDetails, syncUserDetails, getTeamWiseStats, getAllUsersData,
-                claimReward, setConfigurations, wishModalSeen
+                claimReward, setConfigurations, wishModalSeen, getCareerData
             }}
         >
             {props.children}

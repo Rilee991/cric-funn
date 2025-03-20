@@ -1,9 +1,15 @@
 import { db } from "../config";
-import { USER_COLLECTION } from "../global/enums";
+import { USER_COLLECTION, CAREER_COLLECTION } from "../global/enums";
 import { DEFAULT_USER_PARAMS } from '../configs/userConfigs';
 
 export const getUserByUsername = async (username) => {
     const user = await db.collection(USER_COLLECTION).doc(username).get();
+
+    return user;
+}
+
+export const getCareerByUsername = async (username) => {
+    const user = await db.collection(CAREER_COLLECTION).doc(username).get();
 
     return user;
 }
