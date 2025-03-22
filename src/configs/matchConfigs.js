@@ -1,6 +1,11 @@
 export const DEFAULT_PENALTY_POINTS = 50;
-
 export const DEFAULT_PENALTY_TEAM = "Penalty";
+
+export const getPenaltyPoints = (points) => {
+    if(points === 0)
+        return DEFAULT_PENALTY_POINTS;
+    return Math.ceil(points * 0.05);
+}
 
 export const matchPostersMapping = {
     "CSK-DC": "https://cdorg.b-cdn.net/wp-content/uploads/2022/03/IPL-Match-55-CSK-vs-DC-768x360.jpg",

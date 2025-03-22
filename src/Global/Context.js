@@ -9,7 +9,7 @@ import { DEFAULT_USER_PARAMS } from '../configs/userConfigs';
 import { getUserByKey, getUserByUsername, createUser, updateUserByEmail, updateUserByUsername, getUsers, getCareerByUsername } from '../apis/userController';
 import { getMatchById, getMatches, updateMatchById } from '../apis/matchController';
 import { getMatchDetailsById } from '../apis/cricapiController';
-import { DEFAULT_PENALTY_POINTS, DEFAULT_PENALTY_TEAM } from '../configs/matchConfigs';
+import { DEFAULT_PENALTY_TEAM, getPenaltyPoints } from '../configs/matchConfigs';
 import { getConfigurations, updateCredits } from '../apis/configurationsController';
 
 const admin = require('firebase');
@@ -843,7 +843,7 @@ const Context = (props) => {
 
     const updateMissingBet = (bets, points, match, isOut) => {
         const { id: matchId, team1, team2, team1Abbreviation, team2Abbreviation, odds = [] } = match;
-        const selectedPoints = isOut === true ? 0 : DEFAULT_PENALTY_POINTS;
+        const selectedPoints = isOut === true ? 0 : getPenaltyPoints(points);
         points -= selectedPoints;
 
         bets.push({
@@ -852,6 +852,7 @@ const Context = (props) => {
             isBetDone: false,
             isNoResult: false,
             isSettled: true,
+            hasMissed: true,
             matchId: matchId,
             selectedPoints,
             selectedTeam: DEFAULT_PENALTY_TEAM,

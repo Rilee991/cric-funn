@@ -1,16 +1,18 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { ContextProvider } from '../../../global/Context';
 import StatsTable from '../../../components/common/StatsTable';
+import { updateConfig } from '../../../apis/configurationsController';
 
 const Career = () => {
 	const contextConsumer = useContext(ContextProvider);
-	const { loggedInUserDetails, getCareerData } = contextConsumer;
+	const { loggedInUserDetails, getCareerData, configurations = {}, setConfigurations } = contextConsumer;
     const [tableData, setTableData] = useState({});
 
     useEffect(async () => {
         if(loggedInUserDetails?.username) {
             const tableData = await getCareerData(loggedInUserDetails.username);
             setTableData(tableData);
+            updateConfig(configurations, loggedInUserDetails.username, "Career", setConfigurations);
         }
     }, [loggedInUserDetails?.username]);
 
