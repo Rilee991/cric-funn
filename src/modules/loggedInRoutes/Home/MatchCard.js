@@ -23,7 +23,7 @@ const MatchCard = (props) => {
 	const { bets = [], points, username = "", isAdmin = false } = loggedInUserDetails;
 	const { match = {} } = props;
 
-	const { dateTimeGMT: matchTime, id: matchId, name: matchTitle, status, venue, odds = [], poster = "", teamInfo= [], hasCustomHeader = false, customHeaderText = "" } = match;
+	const { dateTimeGMT: matchTime, id: matchId, name: matchTitle, status, venue, odds = [], poster = "", teamInfo= [], hasCustomHeader = false, customHeaderText = "", weather } = match;
 
 	const [bettingDoneByUser, setBettingDoneByUser] = useState(false);
 	const [openLetsBetDialogBox, setOpenLetsBetDialogBox] = useState(false);
@@ -147,6 +147,15 @@ const MatchCard = (props) => {
 						<Typography style={{fontSize: window.innerWidth <= 640 ? "13px" : "16px" }} className="tw-text-[#15ffe0de] tw-font-noto tw-mt-1" component="p">
 							<b>Starts at {getFormattedTimeISOString(matchTime)}</b>
 						</Typography>
+						{weather ? <Typography style={{fontSize: window.innerWidth <= 640 ? "13px" : "16px" }} className="tw-text-[#f7f9ffde] tw-font-noto tw-mt-1" component="p">
+							<b>Weather - {weather?.current.weather_descriptions.join(", ")}</b>
+							<br/>
+							<b>AQI - {weather?.current.air_quality.pm2_5}</b>
+							<br/>
+							<b>Observed at - {weather?.current.observation_time}</b>
+						</Typography> : null}
+
+	{/* console.log(weather, weather?.current.weather_descriptions, weather?.current.air_quality.pm2_5, weather?.current.observation_time); */}
 						<Typography style={{fontSize: window.innerWidth <= 640 ? "15px" : "18px" }} className="tw-text-[#b7e7ff] tw-font-noto tw-mt-1 tw-mb-3" component="p">
 							<b>{status}</b>
 						</Typography>
