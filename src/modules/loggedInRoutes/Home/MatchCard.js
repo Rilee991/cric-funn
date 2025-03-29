@@ -16,6 +16,7 @@ import { getBetEndTime, getBetStartTime, getFormattedTimeISOString, getMsgForClo
 } from '../../../global/adhocUtils';
 import { ALERT_CONFIGS } from '../../../configs/userConfigs';
 import { TEAM_PROPS } from '../../../configs/teamConfigs';
+import EditDialog from './EditDialog';
 
 const MatchCard = (props) => {
 	const contextConsumer = useContext(ContextProvider);
@@ -27,6 +28,7 @@ const MatchCard = (props) => {
 
 	const [bettingDoneByUser, setBettingDoneByUser] = useState(false);
 	const [openLetsBetDialogBox, setOpenLetsBetDialogBox] = useState(false);
+	const [openEditDialogBox, setOpenEditDialogBox] = useState(false);
 	const [openViewBetsDialogBox, setOpenViewBetsDialogBox] = useState(false);
 
 	const betStartTime = getBetStartTime(matchTime);
@@ -34,16 +36,19 @@ const MatchCard = (props) => {
 	
 	const [bettingOn, setBettingOn] = useState((moment() >= betStartTime && moment() <= betEndTime) && (bettingDoneByUser == false));
 	const [canViewBets, setCanViewBets] = useState(moment() > betEndTime);
+	const [canEdit, setCanEdit] = useState(false);
 	const [message, setMessage] = useState(moment() >= betEndTime ? `Betting window is CLOSED.` : `Betting window will be OPENED from ${betStartTime.format("LLL")} to ${betEndTime.format("LLL")}`);
 	const [severity, setSeverity] = useState(ALERT_CONFIGS.INFO);
 
+	const bet = find(bets, { "matchId": matchId }) || {};
+
     useEffect(()=> {
-		const bet = find(bets, { "matchId": matchId }) || {};
 		const { selectedPoints, isNoResult, isSettled, betWon, selectedTeam, odds: betOdds } = bet;
 		const bettingDone = isEmpty(bet) ? false : true;
 
 		setBettingDoneByUser(bettingDone);
 		setBettingOn(moment() >= betStartTime && moment() <= betEndTime && !bettingDone);
+		setCanEdit(bettingDone && moment() < betEndTime);
 		setCanViewBets(moment() > betEndTime);
 
 		if(moment() < betStartTime) {
@@ -78,14 +83,22 @@ const MatchCard = (props) => {
 				}
 			}
 		}
-    },[bets]);
+    },[bet]);
 
     const handleOnClickLetsBet = () => {
       setOpenLetsBetDialogBox(true);
     }
 
+	const handleOnClickEdit = () => {
+		setOpenEditDialogBox(true);
+	  }
+
 	const handleCloseLetsBet = () => {
 		setOpenLetsBetDialogBox(false);
+	}
+
+	const handleCloseEdit = () => {
+		setOpenEditDialogBox(false);
 	}
 
     const handleOnClickViewBets = () => {
@@ -186,6 +199,11 @@ const MatchCard = (props) => {
 							{"Fire Up"} <i className="pi pi-bolt tw-text-xl" />
 						</Typography>
 					</Button>
+					<Button size="small" className="tw-w-1/2 tw-rounded-[40px]" style={{ background: canEdit ? "linear-gradient(2deg, rgb(0 0 0), rgb(140 159 8))" : 'grey', color: "white" }} variant="contained" disabled={canEdit ? false : true} onClick={() => handleOnClickEdit()}>
+						<Typography variant="overline" className="tw-font-noto tw-font-semibold tw-text-base tw-leading-8 tw-flex tw-justify-center tw-items-center tw-gap-1">
+							{"Edit"} <i className="pi pi-pencil tw-text-lg" />
+						</Typography>
+					</Button>
 					<Button size="small" className="tw-w-1/2 tw-rounded-[40px]" style={{ background: canViewBets ? "linear-gradient(0deg, #1b004a, #50045a)" : 'grey', color: "white" }} variant="contained" disabled={canViewBets ? false : true} onClick={() => handleOnClickViewBets(matchId)}>
 						<Typography variant="overline" className="tw-font-noto tw-font-semibold tw-text-base tw-leading-8 tw-flex tw-justify-center tw-items-center tw-gap-1">
 							{mobileView ? "View" : "View Bets"} <i className="pi pi-eye tw-text-xl" />
@@ -206,6 +224,16 @@ const MatchCard = (props) => {
 				oddsParams={oddsParams}
 				handleClose={handleCloseLetsBet}
 			/>
+			
+			{openEditDialogBox ? <EditDialog
+				matchDetails={match}
+				open={openEditDialogBox}
+				betEndTime={betEndTime}
+				bet={bet}
+				points={points}
+				oddsParams={oddsParams}
+				handleClose={handleCloseEdit}
+			/> : null}
 
 			<ViewBetsDialog
 				matchDetails={match}

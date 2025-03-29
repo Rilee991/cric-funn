@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography, Dialog, DialogTitle, 
-    DialogContent, DialogContentText, IconButton } from '@material-ui/core';
+    DialogContent, DialogContentText, IconButton, Collapse } from '@material-ui/core';
 import moment from 'moment';
 import { Divider, Tag } from 'antd';
 import { Close } from '@material-ui/icons';
@@ -16,6 +16,7 @@ const ViewBetsDialog = (props) => {
 
     const { team1Abbreviation, team2Abbreviation, id: matchId, seenBy = {} } = matchDetails;
     const [betsData, setBetsData] = useState([]);
+    const [openUserIdx, setOpenUserIdx] = useState(-1);
 
     const closeDialog = () => {
         handleClose && handleClose();
@@ -65,6 +66,12 @@ const ViewBetsDialog = (props) => {
         return props ? props.color : "red";
     }
 
+    const getFormattedEditTime = (time) => {
+        if(!time)   return "NA";
+
+        return moment(time*1000).format("hh:mm A on Do");
+    }
+
     const getViewBetsTable = () => {   
         return (
             <TableContainer component={Paper} className="tw-rounded-bl-[30px] tw-rounded-br-[30px] tw-overflow-scroll">
@@ -83,16 +90,47 @@ const ViewBetsDialog = (props) => {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {betsData.map((eachBet) => (
-                            <TableRow key={eachBet.username} className="tw-bg-[aliceblue]">
-                                <TableCell className={`tw-p-3 tw-flex tw-gap-1 tw-font-noto ${eachBet.isHighest ? "tw-text-[#188b60] tw-font-bold" : ""}`} scope="row">
-                                    {eachBet.username}
-                                    {eachBet?.isAllIn === true ? <Tag color={"green-inverse"} className="tw-rounded-3xl tw-font-noto">ALL IN</Tag> : null}
-                                </TableCell>
-                                <TableCell className="tw-p-3 tw-font-noto" align="center"><Tag className="tw-rounded-3xl" color={getColor(eachBet)}>{eachBet.betTeam}</Tag></TableCell>
-                                <TableCell className="tw-p-3 tw-font-noto" align="center">{eachBet.betPoints}</TableCell>
-                                <TableCell className="tw-p-3 tw-font-noto" align="center">{getFormattedTime(eachBet.betTime.seconds)}</TableCell>
-                            </TableRow>
+                        {betsData.map((eachBet,i) => (
+                            <>
+                                <TableRow onClick={() => setOpenUserIdx(prev => prev === i ? -1 : i)} key={eachBet.username} className="tw-bg-[aliceblue] tw-cursor-pointer">
+                                    <TableCell className={`tw-p-3 tw-flex tw-gap-1 tw-font-noto ${eachBet.isHighest ? "tw-text-[#188b60] tw-font-bold" : ""}`} scope="row">
+                                        {eachBet.username}
+                                        {eachBet?.isAllIn === true ? <Tag color={"green-inverse"} className="tw-rounded-3xl tw-font-noto">ALL IN</Tag> : null}
+                                    </TableCell>
+                                    <TableCell className="tw-p-3 tw-font-noto" align="center"><Tag className="tw-rounded-3xl" color={getColor(eachBet)}>{eachBet.betTeam}</Tag></TableCell>
+                                    <TableCell className="tw-p-3 tw-font-noto" align="center">{eachBet.betPoints}</TableCell>
+                                    <TableCell className="tw-p-3 tw-font-noto" align="center">{getFormattedTime(eachBet.betTime.seconds)}</TableCell>
+                                </TableRow>
+                                <TableRow>
+                                    <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
+                                        <Collapse in={i === openUserIdx} timeout="auto" unmountOnExit>
+                                            <Typography variant="h6" gutterBottom component="div">
+                                                History
+                                            </Typography>
+                                            <Table size="small" aria-label="purchases">
+                                                <TableHead>
+                                                    <TableRow>
+                                                        <TableCell classes={{ head: "tw-p-0 tw-font-bold" }} align="left">TEAM</TableCell>
+                                                        <TableCell classes={{ head: "tw-p-0 tw-font-bold" }} align="left">BET</TableCell>
+                                                        <TableCell classes={{ head: "tw-p-0 tw-font-bold" }} align="center">TIME</TableCell>
+                                                    </TableRow>
+                                                </TableHead>
+                                                <TableBody>
+                                                    {eachBet?.editHistory?.map((historyRow) => (
+                                                        <TableRow>
+                                                            <TableCell component="th" scope="row" align="left">
+                                                                <Tag className="tw-rounded-3xl" color={TEAM_PROPS[historyRow.selectedTeam].color}>{TEAM_PROPS[historyRow.selectedTeam].abbr}</Tag>
+                                                            </TableCell>
+                                                            <TableCell align="left" classes={{ body: "tw-p-0" }}>{historyRow.selectedPoints}</TableCell>
+                                                            <TableCell align="center">{getFormattedEditTime(historyRow.editedAt.seconds)}</TableCell>
+                                                        </TableRow>
+                                                    )) || <div className="tw-font-medium tw-mt-2"> No historical record </div>}
+                                                </TableBody>
+                                            </Table>
+                                        </Collapse>
+                                    </TableCell>
+                                </TableRow>
+                            </>
                         ))}
                     </TableBody>
                 </Table>

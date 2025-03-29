@@ -37,28 +37,29 @@ const CustomTextField = withStyles({
     },
 })(TextField);
 
-const BettingDialog = (props) => {
-    const { matchDetails, open, handleClose, betEndTime, points, oddsParams } = props;
+const EditDialog = (props) => {
+    const { matchDetails, open, handleClose, betEndTime, points, oddsParams, bet } = props;
     const classes = useStyles();
 
     const contextConsumer = useContext(ContextProvider);
-    const { betOnMatch } = contextConsumer;
+    const { editBet } = contextConsumer;
 
     const { team1Abbreviation, team2Abbreviation, teams, id: matchId, odds } = matchDetails;
     const team1 = teams[0], team2 = teams[1];
-    const [selectedTeam, setSelectedTeam] = useState("");
-    const [selectedPoints, setSelectedPoints] = useState(0);
+    const [selectedTeam, setSelectedTeam] = useState(bet.selectedTeam);
+    const [selectedPoints, setSelectedPoints] = useState(bet.selectedPoints);
     const [error, setError] = useState("");
     const [disabledSave, setDisableSave] = useState(true);
     const [allInEnabled, setAllInEnabled] = useState(false);
     const [loading, setLoading] = useState(false);
+    const [reset, setReset] = useState(false);
 
     const closeDialog = () => {
         handleClose && handleClose();
     }
 
     useEffect(() => {
-        if(isEmpty(selectedTeam) || !selectedPoints || selectedPoints <= 0 || selectedPoints > points || selectedPoints.toString().includes(".")) {
+        if(isEmpty(selectedTeam) || !selectedPoints || selectedPoints <= 0 || selectedPoints > points || selectedPoints.toString().includes(".") || (bet.selectedTeam === selectedTeam && bet.selectedPoints === selectedPoints)) {
             setDisableSave(true);
         } else {
             setDisableSave(false);
@@ -82,44 +83,37 @@ const BettingDialog = (props) => {
 
     const betInTheMatch = async () => {
         setLoading(true);
+        console.log(betEndTime, moment(), betEndTime < moment());
+        let timeOut = 1000;
         if(betEndTime < moment()) {
-            setError("Betting is closed for this match.");
+            setError("Zyada siyana ban rha tha lode. Gand mein patrol aur kerosene ka mixture daal ke garam tawa pe baitha dunga. Bhag maderchod!");
+            setReset(true);
+            timeOut = 5000;
         } else {
             const betObject = {
+                ...bet,
                 betTime: getFirebaseCurrentTime(),
-                betWon: false,
-                isBetDone: true,
-                isNoResult: false,
-                isSettled: false,
                 isAllIn: allInEnabled,
-                matchId,
                 selectedPoints: parseInt(selectedPoints),
                 selectedTeam,
-                editHistory: [{ selectedTeam, selectedPoints: parseInt(selectedPoints), editedAt: getFirebaseCurrentTime()}],
-                team1,
-                team1Abbreviation,
-                team2,
-                team2Abbreviation,
-                odds: {
-                    [odds[0].name]: parseFloat(odds[0].price),
-                    [odds[1].name]: parseFloat(odds[1].price),
-                }
+                editHistory: [...bet.editHistory, { selectedTeam, selectedPoints: parseInt(selectedPoints), editedAt: getFirebaseCurrentTime() }],
             }
 
-            await betOnMatch(betObject);
+            await editBet(betObject);
             setSelectedTeam("");
             setSelectedPoints(0);
+            setReset(false);
         }
         setLoading(false);
         setTimeout(() => {
             closeDialog();
-        },1000);
+        }, timeOut);
     }
 
     const onClickAllIn = () => {
         if(allInEnabled) {
             setAllInEnabled(false);
-            setSelectedPoints("");
+            setSelectedPoints(0);
         } else {
             setAllInEnabled(true);
             setSelectedPoints(points);
@@ -162,7 +156,7 @@ const BettingDialog = (props) => {
                             {"Go For Glory!"}
                         </Typography>
                     </Button> */}
-                    <SwipeButton loading={loading} disabled={disabledSave} color='#6c5be1' text='Slide to confirm' onSuccess={() => betInTheMatch()} />
+                    {reset ? null : <SwipeButton loading={loading} disabled={disabledSave} color='#6c5be1' text='Slide to confirm' onSuccess={() => betInTheMatch()} />}
                     {/* <Alert severity="warning" variant="filled" className="tw-rounded-[40px] tw-flex tw-justify-center" classes={{ icon: classes.customIcon }}>
                         <Typography variant="body">
                             <b>{allInEnabled ? "Warning! You're going ALL IN! Shout victory is mine! " : ""}Once bet cannot be edited.</b>
@@ -173,11 +167,12 @@ const BettingDialog = (props) => {
         );
     }
 
+    // 3063
     return (
         <Dialog open={open} onClose={closeDialog} maxWidth="xl">
             <DialogTitle className="tw-p-2" style={{ borderRadius: "40px 40px 0px 0px", background: "linear-gradient(353deg, black, #0c4371)" }}>
                 <Typography variant="" style={{fontSize: 14 }} className="tw-flex tw-justify-between tw-text-white tw-font-noto">
-                    <b>#{team1Abbreviation}vs{team2Abbreviation}</b>
+                    <b>#{team1Abbreviation}vs{team2Abbreviation}(Edit)</b>
                     <IconButton
                         aria-label="toggle password visibility"
                         onClick={closeDialog}
@@ -191,7 +186,7 @@ const BettingDialog = (props) => {
                  <div>
                      <Tag color={points - selectedPoints < 500 ? "red-inverse" : "geekblue"} className="tw-rounded-3xl">
                          <Typography variant="button" style={{fontSize: 12}} className="tw-font-noto">
-                             <b>Pts Left: {points - selectedPoints}</b><br/>
+                             <b>Pts Left: {points + bet.selectedPoints - selectedPoints}</b><br/>
                          </Typography>
                      </Tag>
                  </div>
@@ -213,4 +208,4 @@ const BettingDialog = (props) => {
     );
 }
 
-export default BettingDialog;
+export default EditDialog;

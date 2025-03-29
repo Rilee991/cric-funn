@@ -125,6 +125,28 @@ const Context = (props) => {
         }
     }
 
+    const editBet = async (betDetails) => {
+        const { username, bets, points } = loggedInUserDetails;
+        try {
+            const index = bets.findIndex(bet => bet.matchId === betDetails.matchId);
+            const newPoints = points + parseInt(bets[index].selectedPoints) - betDetails.selectedPoints;
+            const newBets = bets;
+            newBets[index] = betDetails;
+
+            await updateUserByUsername(username, {
+                bets: newBets,
+                points: newPoints,
+                updatedBy: `${username}_editBet`,
+                updatedAt: getFirebaseCurrentTime()
+            });
+
+            setLoggedInUserDetails({ ...loggedInUserDetails, bets: newBets, points: newPoints });
+        } catch (error) {
+            console.log(error);
+            throw new Error(error);
+        }
+    }
+
     const updateSeenBets = async (id, username) => {
         try {
             const doc = await getMatchById(id);
@@ -162,6 +184,7 @@ const Context = (props) => {
                     result.push({
                         username,
                         betTime: betData.betTime,
+                        editHistory: betData.editHistory,
                         betPoints: parseInt(betData.selectedPoints),
                         betTeam: betData.team1 == betData.selectedTeam ? betData.team1Abbreviation : (betData.team2 == betData.selectedTeam ? betData.team2Abbreviation : DEFAULT_PENALTY_TEAM),
                         teamName: betData.selectedTeam,
@@ -1068,7 +1091,7 @@ const Context = (props) => {
 
                 signUp, signIn, sendResetPasswordEmail, resetPassword, logout, clearNotifications, betOnMatch, updateSeenBets,
                 viewBetsData, getPointsTableData, resetUserDetails, syncUserDetails, getTeamWiseStats, getAllUsersData,
-                claimReward, setConfigurations, wishModalSeen, getCareerData
+                claimReward, setConfigurations, wishModalSeen, getCareerData, editBet
             }}
         >
             {props.children}
