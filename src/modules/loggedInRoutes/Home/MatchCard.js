@@ -196,17 +196,17 @@ const MatchCard = (props) => {
 				<CardActions className="tw-flex tw-justify-center tw-px-4 tw-pt-0">
 					<Button size="small" className="tw-w-1/2 tw-rounded-[40px]" style={{ background: bettingOn ? "linear-gradient(0deg, #1b004a, #50045a)" : 'grey', color: "white" }} variant="contained" disabled={bettingOn ? false : true} onClick={() => handleOnClickLetsBet()}>
 						<Typography variant="overline" className="tw-font-noto tw-font-semibold tw-text-sm tw-leading-8 tw-flex tw-justify-center tw-items-center tw-gap-1">
-							{"Fire Up"} <i className="pi pi-bolt tw-text-xl" />
+							{"Fire Up"} <i className="pi pi-bolt tw-text-sm" />
 						</Typography>
 					</Button>
 					<Button size="small" className="tw-w-1/2 tw-rounded-[40px]" style={{ background: canEdit ? "linear-gradient(2deg, rgb(0, 0, 0), rgb(6 111 162))" : 'grey', color: "white" }} variant="contained" disabled={canEdit ? false : true} onClick={() => handleOnClickEdit()}>
 						<Typography variant="overline" className="tw-font-noto tw-font-semibold tw-text-sm tw-leading-8 tw-flex tw-justify-center tw-items-center tw-gap-1">
-							{"Edit"} <i className="pi pi-pencil tw-text-lg" />
+							{"Edit"} <i className="pi pi-pencil tw-text-sm" />
 						</Typography>
 					</Button>
 					<Button size="small" className="tw-w-1/2 tw-rounded-[40px]" style={{ background: canViewBets ? "linear-gradient(0deg, #1b004a, #50045a)" : 'grey', color: "white" }} variant="contained" disabled={canViewBets ? false : true} onClick={() => handleOnClickViewBets(matchId)}>
 						<Typography variant="overline" className="tw-font-noto tw-font-semibold tw-text-sm tw-leading-8 tw-flex tw-justify-center tw-items-center tw-gap-1">
-							{mobileView ? "View" : "View Bets"} <i className="pi pi-eye tw-text-xl" />
+							{mobileView ? "View" : "View Bets"} <i className="pi pi-eye tw-text-sm" />
 						</Typography>
 					</Button>
 				</CardActions>
