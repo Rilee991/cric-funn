@@ -96,7 +96,7 @@ const EditDialog = (props) => {
                 isAllIn: allInEnabled,
                 selectedPoints: parseInt(selectedPoints),
                 selectedTeam,
-                editHistory: [...bet.editHistory, { selectedTeam, selectedPoints: parseInt(selectedPoints), editedAt: getFirebaseCurrentTime() }],
+                editHistory: [...(bet?.editHistory || []), { selectedTeam, selectedPoints: parseInt(selectedPoints), editedAt: getFirebaseCurrentTime() }],
             }
 
             await editBet(betObject);

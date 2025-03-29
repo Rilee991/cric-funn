@@ -199,7 +199,7 @@ const MatchCard = (props) => {
 							{"Fire Up"} <i className="pi pi-bolt tw-text-xl" />
 						</Typography>
 					</Button>
-					<Button size="small" className="tw-w-1/2 tw-rounded-[40px]" style={{ background: canEdit ? "linear-gradient(2deg, rgb(0 0 0), rgb(140 159 8))" : 'grey', color: "white" }} variant="contained" disabled={canEdit ? false : true} onClick={() => handleOnClickEdit()}>
+					<Button size="small" className="tw-w-1/2 tw-rounded-[40px]" style={{ background: canEdit ? "linear-gradient(2deg, rgb(0, 0, 0), rgb(6 111 162))" : 'grey', color: "white" }} variant="contained" disabled={canEdit ? false : true} onClick={() => handleOnClickEdit()}>
 						<Typography variant="overline" className="tw-font-noto tw-font-semibold tw-text-base tw-leading-8 tw-flex tw-justify-center tw-items-center tw-gap-1">
 							{"Edit"} <i className="pi pi-pencil tw-text-lg" />
 						</Typography>
