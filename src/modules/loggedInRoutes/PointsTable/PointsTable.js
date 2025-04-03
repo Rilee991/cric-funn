@@ -21,7 +21,7 @@ export default function PointsTable() {
 		setTableData(tableData);
 		
 		tableData.data.map((user,idx) => {
-			user.color = getColor(idx+1, user.isOut);
+			user.color = getColor(idx+1, user.isOut, user.isChampion);
 			user.badgeColor = getBadgeColor(idx+1);
 		});
 		setLoading(false);
@@ -34,8 +34,9 @@ export default function PointsTable() {
 		else return "error";
 	}
 
-	function getColor(rank, isOut) {
+	function getColor(rank, isOut, isChampion) {
 		if(isOut) return "linear-gradient(1deg, rgb(245 26 26), rgb(0 0 0))";
+		if(isChampion)	return "radial-gradient(ellipse farthest-corner at right bottom, #FEDB37 0%, #FDB931 8%, #9f7928 30%, #8A6E2F 45%, transparent 80%), radial-gradient(ellipse farthest-corner at left top, #FFFFFF 0%, #FFFFAC 8%, #D1B464 25%, #5d4a1f 62.5%, #5d4a1f 100%)";
 		if(rank == 2) return "linear-gradient(1deg, rgb(79 32 173), rgb(45 17 17))";
 		else if(rank == 1)  return "linear-gradient(1deg, #6f9501, #e0b800)";
 		else if(rank%2 == 0) return "#447d3d";
