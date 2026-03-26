@@ -1,5 +1,5 @@
 import { db } from "../config";
-import { USER_COLLECTION, CAREER_COLLECTION } from "../global/enums";
+import { USER_COLLECTION, CAREER_COLLECTION } from "../global1/enums";
 import { DEFAULT_USER_PARAMS } from '../configs/userConfigs';
 
 export const getUserByUsername = async (username) => {

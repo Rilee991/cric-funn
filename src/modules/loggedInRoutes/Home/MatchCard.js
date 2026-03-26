@@ -5,7 +5,7 @@ import Alert from '@material-ui/lab/Alert';
 import { find, get, isEmpty, startCase } from 'lodash';
 import moment from 'moment';
 
-import { ContextProvider } from '../../../global/Context';
+import { ContextProvider } from '../../../global1/Context';
 
 import BettingDialog from './BettingDialog';
 import ViewBetsDialog from './ViewBetsDialog';
@@ -13,7 +13,7 @@ import MatchPic from '../../../components/common/MatchPic';
 import ComparisionBar from '../../../components/common/ComparisionBar';
 import { getBetEndTime, getBetStartTime, getFormattedTimeISOString, getMsgForClosedBets, getMsgForInProgressBets, 
 	getMsgForLostBets, getMsgForNoResultBets, getMsgForOpenBets, getMsgForUpcomingBets, getMsgForWonBets, getPerc
-} from '../../../global/adhocUtils';
+} from '../../../global1/adhocUtils';
 import { ALERT_CONFIGS } from '../../../configs/userConfigs';
 import { TEAM_PROPS } from '../../../configs/teamConfigs';
 import EditDialog from './EditDialog';

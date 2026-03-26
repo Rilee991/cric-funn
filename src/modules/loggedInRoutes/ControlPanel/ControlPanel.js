@@ -6,7 +6,7 @@ import { Loading3QuartersOutlined } from '@ant-design/icons';
 import Shortcuts from './Shortcuts';
 import Popup from '../../../components/common/Popup';
 import UserControlTable from './UserControlTable';
-import { ContextProvider } from '../../../global/Context';
+import { ContextProvider } from '../../../global1/Context';
 
 const ControlPanel = () => {
     const contextConsumer = useContext(ContextProvider);

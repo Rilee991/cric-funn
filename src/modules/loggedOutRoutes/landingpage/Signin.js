@@ -8,7 +8,7 @@ import { Tag } from 'antd';
 import iplLogo from '../../../res/images/logo.png';
 
 import PageLoader from '../../../components/common/PageLoader';
-import { ContextProvider } from '../../../global/Context';
+import { ContextProvider } from '../../../global1/Context';
 
 const useStyles = makeStyles((theme) => ({
     submit: {

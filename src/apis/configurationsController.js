@@ -2,8 +2,8 @@ import { get } from "lodash";
 import moment from "moment-timezone";
 
 import { db } from "../config";
-import { getFirebaseCurrentTime } from "../global/adhocUtils";
-import { CONFIGURATION_COLLECTION } from "../global/enums";
+import { getFirebaseCurrentTime } from "../global1/adhocUtils";
+import { CONFIGURATION_COLLECTION } from "../global1/enums";
 
 export const getConfigurations = async () => {
     const now = moment();

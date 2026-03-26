@@ -5,7 +5,7 @@ import moment from 'moment';
 import { Divider, Tag } from 'antd';
 import { Close } from '@material-ui/icons';
 
-import { ContextProvider } from '../../../global/Context';
+import { ContextProvider } from '../../../global1/Context';
 import { TEAM_PROPS } from '../../../configs/teamConfigs';
 import './Modal.css';
 

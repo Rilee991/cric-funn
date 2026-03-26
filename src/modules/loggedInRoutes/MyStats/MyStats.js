@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Alert } from '@material-ui/lab';
 import { Typography } from '@material-ui/core';
 
-import { ContextProvider } from '../../../global/Context';
+import { ContextProvider } from '../../../global1/Context';
 
 import StatsTable from '../../../components/common/StatsTable';
 import PointsTimelineCompare from './PointsTimelineCompare';

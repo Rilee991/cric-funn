@@ -1,11 +1,11 @@
 import { get } from "lodash";
 
-import { formatMatch, formatWcMatch } from "../global/adhocUtils";
+import { formatMatch, formatWcMatch } from "../global1/adhocUtils";
 import { clearTable, createMatch, getMatchById, updateMatchById } from "./matchController";
 import moment from "moment";
 
 const API_KEY = "e62a5cb2-1135-40ee-9a7b-99d14472d7ee";
-const SERIES_ID = "d5a498c8-7596-4b93-8ab0-e0efc3345312"; //71a7c7dc-3929-408c-9641-1da6d96f8894;
+const SERIES_ID = "87c62aac-bc3c-4738-ab93-19da0690488f"; //71a7c7dc-3929-408c-9641-1da6d96f8894;
 
 export const getMatchDetailsById = async (id) => {
     try {
@@ -51,6 +51,7 @@ export const saveMatchesToDb = async () => {
 
         return { configDocId: now.format("YYYY-MM-DD"), currentHits };
     } catch (error) {
+        console.log("error:", error);
         throw new Error(error);
     }
 }

@@ -8,7 +8,7 @@ import CountDown from 'count-down-react';
 
 import NotFoundError from '../../components/common/NotFoundError';
 import { Header, SideNavbar, Notifications, Home, MyBets, MyStats, GlobalStats, PointsTable, ControlPanel, Legends } from './index';
-import { ContextProvider } from '../../global/Context';
+import { ContextProvider } from '../../global1/Context';
 import BirthdayModal from './BirthdayModal/BirthdayModal';
 import useOnline from '../../hooks/useOnline';
 import { updateAppData } from '../../apis/configurationsController';
@@ -183,7 +183,7 @@ const LoggedInRoutes = () => {
         }
     }
 
-    const isGlobalStatsDisabled = moment().isBefore(moment("05-03-2025").add(12, "hours"));
+    const isGlobalStatsDisabled = moment().isBefore(moment("05-02-2026").add(12, "hours"));
 
     const navItems = [{
         name: <div className="tw-flex tw-items-center">
@@ -209,7 +209,7 @@ const LoggedInRoutes = () => {
         name: "Global Stats",
         to: "/global-stats",
         icon: <i className="pi pi-globe tw-text-2xl" />,
-        subText: isGlobalStatsDisabled ? "Live on May 3, 12pm" : "",
+        subText: isGlobalStatsDisabled ? "Live on May 2, 12pm" : "",
         disabled: isGlobalStatsDisabled,
         component: <GlobalStats />
     }, {
@@ -249,7 +249,7 @@ const LoggedInRoutes = () => {
     }].map((item, idx) => ({ ...item, id: idx+1 }));
 
 	const isOnline = useOnline();
-    const date = Date.now() + (new Date("03-22-2025 00:00:00") - new Date());
+    const date = Date.now() + (new Date("03-28-2026 00:00:00") - new Date());
     const isDatePassed = (date - new Date()) < 0;
 
     return (

@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { startCase } from 'lodash';
 
 import StatsTable from '../../../components/common/StatsTable';
-import { ContextProvider } from '../../../global/Context';
+import { ContextProvider } from '../../../global1/Context';
 import PageLoader from '../../../components/common/PageLoader';
 import { updateConfig } from '../../../apis/configurationsController';
 

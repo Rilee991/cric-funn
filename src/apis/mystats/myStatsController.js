@@ -1,6 +1,6 @@
 import { getUserByKey } from '../userController';
 import { DEFAULT_USER_PARAMS } from '../../configs/userConfigs';
-import { getWinningAmount } from '../../global/adhocUtils';
+import { getWinningAmount } from '../../global1/adhocUtils';
 
 export const getPointsTimeLineComparison = async () => {
     try {

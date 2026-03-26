@@ -6,7 +6,7 @@ import LoadingScreen from 'react-loading-screen';
 import cricFunnLogo from './res/images/logo.png';
 
 import './App.css';
-import { ContextProvider } from './global/Context';
+import { ContextProvider } from './global1/Context';
 
 import LoggedInRoutes from './modules/loggedInRoutes/LoggedInRoutes';
 import LoggedOutRoutes from './modules/loggedOutRoutes/LoggedOutRoutes';

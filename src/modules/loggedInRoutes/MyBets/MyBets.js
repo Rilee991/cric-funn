@@ -2,7 +2,7 @@ import React, { useContext, useEffect } from 'react';
 import { Card, CardActionArea, CardContent, Typography, Grid } from '@material-ui/core';
 import { find, round, sumBy, upperCase } from 'lodash';
 
-import { ContextProvider } from '../../../global/Context';
+import { ContextProvider } from '../../../global1/Context';
 import BetCard from './BetCard';
 import StatsCard from './StatsCard';
 import PageLoader from '../../../components/common/PageLoader';

@@ -5,7 +5,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { VerticalTimeline, VerticalTimelineElement } from 'react-vertical-timeline-component';
 
 import 'react-vertical-timeline-component/style.min.css';
-import { ContextProvider } from '../../../global/Context';
+import { ContextProvider } from '../../../global1/Context';
 import { updateConfig } from '../../../apis/configurationsController';
 
 const WrestleMania = ({ section }) => {
@@ -63,11 +63,35 @@ const Gallery = () => {
     };
 
     const gallery = [{
-        title: "WrestleMania 25",
+        title: "WrestleMania 26",
         wmImage: "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/1f2e3247-62d6-4d91-8b66-596cdde4d62b/decfzk2-bfe338d1-df73-4136-a8e3-39a4a6ed3b84.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzFmMmUzMjQ3LTYyZDYtNGQ5MS04YjY2LTU5NmNkZGU0ZDYyYlwvZGVjZnprMi1iZmUzMzhkMS1kZjczLTQxMzYtYThlMy0zOWE0YTZlZDNiODQucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.hH9eh3faKC5msXFFF9c3p2vZpPqMG7RuspdmRR833pY",
         section: [{
-            title: "WrestleMania 25 - Official Poster",
+            title: "WrestleMania 26 - Official Poster",
             bgImage: "https://cache.careers360.mobi/media/presets/860X430/article_images/2020/9/21/MHT-news.png",
+            bgColor: "#0cd7a2",
+            height: 450
+        }]
+    }, {
+        title: "WrestleMania 25",
+        wmImage: "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/88e30824-3c9a-4957-b6ab-394cb783aa20/dcr9xb7-d967da4e-6f22-41ef-aa9e-d665aa079866.png/v1/fill/w_587,h_350/wwe_wrestlemania_35_logo_by_darkvoidpictures_dcr9xb7-350t.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9NzA2IiwicGF0aCI6Ii9mLzg4ZTMwODI0LTNjOWEtNDk1Ny1iNmFiLTM5NGNiNzgzYWEyMC9kY3I5eGI3LWQ5NjdkYTRlLTZmMjItNDFlZi1hYTllLWQ2NjVhYTA3OTg2Ni5wbmciLCJ3aWR0aCI6Ijw9MTE4NSJ9XV0sImF1ZCI6WyJ1cm46c2VydmljZTppbWFnZS5vcGVyYXRpb25zIl19.h91m1ofg1lI4k6OkXUdny0o9KHV2tiGMFopfoUfdQP4",
+        section: [{
+            title: "WrestleMania 25 - Official Poster",
+            bgImage: "https://firebasestorage.googleapis.com/v0/b/cric-funn.appspot.com/o/wm_gallery%2FWM25_OpeningPoster.png?alt=media&token=2ae0d018-353b-4db9-8542-74068d4ea908",
+            bgColor: "#0cd7a2",
+            height: 450
+        }, {
+            title: "WrestleMania 25 - King of the Ring Winner",
+            bgImage: "https://firebasestorage.googleapis.com/v0/b/cric-funn.appspot.com/o/wm_gallery%2FWM25_KOTR.png?alt=media&token=3ee9296d-1ed8-4418-847a-7f23e3706b28",
+            bgColor: "#0cd7a2",
+            height: 450
+        }, {
+            title: "WrestleMania 25 - Universal Championship Winner",
+            bgImage: "https://firebasestorage.googleapis.com/v0/b/cric-funn.appspot.com/o/wm_gallery%2FWM25_Universal%20Champion.png?alt=media&token=ae3ad466-f02d-42f9-911d-86cb50eab8bd",
+            bgColor: "#0cd7a2",
+            height: 450
+        }, {
+            title: "WrestleMania 25 - Final Standings",
+            bgImage: "https://firebasestorage.googleapis.com/v0/b/cric-funn.appspot.com/o/wm_gallery%2FWM25_Final_Standings.png?alt=media&token=1de0efc4-570d-41a5-bf61-3830d860bfa7",
             bgColor: "#0cd7a2",
             height: 450
         }]

@@ -1,5 +1,5 @@
 import { db } from "../config";
-import { MATCH_COLLECTION } from "../global/enums";
+import { MATCH_COLLECTION } from "../global1/enums";
 
 export const getMatches = async () => {
     const matches = await db.collection(MATCH_COLLECTION).orderBy("dateTimeGMT").get();

@@ -7,8 +7,8 @@ import { isEmpty } from 'lodash';
 import moment from 'moment';
 import { Divider, Tag } from 'antd';
 
-import { ContextProvider } from '../../../global/Context';
-import { getFirebaseCurrentTime } from '../../../global/adhocUtils';
+import { ContextProvider } from '../../../global1/Context';
+import { getFirebaseCurrentTime } from '../../../global1/adhocUtils';
 import SwipeButton from '../../../components/common/SwipeButton';
 
 const useStyles = makeStyles((theme) => ({

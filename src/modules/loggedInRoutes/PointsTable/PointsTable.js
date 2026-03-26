@@ -3,7 +3,7 @@ import { Typography } from '@material-ui/core';
 import { isEmpty } from 'lodash';
 import { Alert } from '@material-ui/lab';
 
-import { ContextProvider } from '../../../global/Context';
+import { ContextProvider } from '../../../global1/Context';
 import TopperCard from './TopperCard';
 import TableCard from './TableCard';
 import PageLoader from '../../../components/common/PageLoader';

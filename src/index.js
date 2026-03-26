@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 import "./assets/index.css";
-import Context from './global/Context';
+import Context from './global1/Context.js';
 import 'primeicons/primeicons.css';
 
 import App from './App.js';

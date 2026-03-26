@@ -5,7 +5,7 @@ import { makeStyles, Typography } from '@material-ui/core';
 
 import MatchCard from './MatchCard';
 import PageLoader from '../../../components/common/PageLoader';
-import { ContextProvider } from '../../../global/Context';
+import { ContextProvider } from '../../../global1/Context';
 import { updateConfig } from '../../../apis/configurationsController';
 
 const useStyles = makeStyles((theme) => ({
@@ -22,7 +22,7 @@ const NoMatchesFound = () => (
 		<img src="https://png.pngtree.com/png-clipart/20221127/ourmid/pngtree-cricket-wickets-ball-png-image_6483453.png" alt="no data found" />
 		<Typography className="tw-grid tw-place-content-center" style={{fontSize: 15}} component="p">
 			<b>404! No matches found...</b>
-			<b>Undisputed Universal Champion: @Broly</b>
+			<b>Undisputed Universal Champion: @desmond</b>
 		</Typography>
 	</div>
 );

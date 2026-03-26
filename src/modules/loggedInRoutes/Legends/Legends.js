@@ -11,7 +11,7 @@ import broly from '../../../res/images/broly.png';
 import ashu from '../../../res/images/ashu.png';
 import desmond from '../../../res/images/desmond.png';
 import cypher from '../../../res/images/cyphernew.png';
-import { ContextProvider } from '../../../global/Context';
+import { ContextProvider } from '../../../global1/Context';
 import { updateConfig } from '../../../apis/configurationsController';
 
 const Legends = () => {
@@ -24,11 +24,20 @@ const Legends = () => {
     // SiKongregate SiAnsible SiBlazemeter SiCodio SiDeepnote SiSparkar
     const width = window.innerWidth;
     const legends = [{
+        bgImage: "https://firebasestorage.googleapis.com/v0/b/cric-funn.appspot.com/o/gifs%2Fdesmond2.gif?alt=media&token=76aa3854-090a-4c73-a016-f2f225b64a53",
+        bgColor: "#8f8fff",
+        title: "Desmond, Universal Heavyweight Champion",
+        poster: desmond,
+        period: "2025 - Present",
+        isChampCard: true,
+        date: moment("2023-05-30 02:30:30").toISOString(),
+        thumbnail: <SiBabel />
+    }, {
         bgImage: "https://firebasestorage.googleapis.com/v0/b/cric-funn.appspot.com/o/gifs%2Fbroly2.gif?alt=media&token=12ed3ddf-0f6f-4d1e-ada1-7d3f66c80c82",
         bgColor: "#7177ff",
         title: "Broly, Universal Champion",
         poster: "https://firebasestorage.googleapis.com/v0/b/cric-funn.appspot.com/o/profilePictures%2FChamp_beria.png?alt=media&token=726d7092-67f4-43d5-9178-9e10c9609104",
-        period: "2024 - Present",
+        period: "2024 - 2025",
         isChampCard: true,
         date: moment("2023-05-30 02:30:30").toISOString(),
         thumbnail: <SiBabel />

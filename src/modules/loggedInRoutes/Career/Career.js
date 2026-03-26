@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { ContextProvider } from '../../../global/Context';
+import { ContextProvider } from '../../../global1/Context';
 import StatsTable from '../../../components/common/StatsTable';
 import { updateConfig } from '../../../apis/configurationsController';
 
