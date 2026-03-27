@@ -74,7 +74,8 @@ const MatchCard = (props) => {
 						setMessage(getMsgForWonBets(Math.ceil(selectedPoints*betOdds[selectedTeam]), selectedTeam));
 						setSeverity(ALERT_CONFIGS.SUCCESS);
 					} else {
-						setMessage(getMsgForLostBets(selectedPoints, selectedTeam));
+						const message = username === "musu1511" ? `You lost ${selectedPoints} points on ${selectedTeam} team.` : getMsgForLostBets(selectedPoints, selectedTeam);
+						setMessage(message);
 						setSeverity(ALERT_CONFIGS.DANGER);
 					}
 				} else {

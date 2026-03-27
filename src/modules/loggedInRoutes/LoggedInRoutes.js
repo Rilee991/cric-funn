@@ -57,7 +57,7 @@ const CoundownRenderer = ({ days, hours, minutes, seconds, completed, ...props }
             <div>
                 <div className="tw-flex tw-items-center tw-justify-center">
                     <div className="tw-flex tw-justify-center">
-                        <img src={"https://firebasestorage.googleapis.com/v0/b/cric-funn.appspot.com/o/profilePictures%2FChamp_beria.png?alt=media&token=726d7092-67f4-43d5-9178-9e10c9609104"} alt="Ipl t20 logo" className="tw-h-80 tw-w-56" />
+                        <img src={"https://firebasestorage.googleapis.com/v0/b/cric-funn.appspot.com/o/profilePictures%2Fchamp_motlu.png?alt=media&token=effffba7-b7ae-4d15-9fb2-51b94e3ec06e"} alt="Ipl t20 logo" className="tw-h-80 tw-w-80" />
                     </div>
                     <div className="tw-flex tw-justify-center">
                         <img src={"https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/bd931675-f863-457b-8dbf-81fdc58137fc/df0jn63-7d278969-b93b-4ae3-92be-d88e3c5f96dd.png/v1/fill/w_894,h_894/wwe_road_to_wrestlemania_38_logo_png_by_suplexcityeditions_df0jn63-pre.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9MTI4MCIsInBhdGgiOiJcL2ZcL2JkOTMxNjc1LWY4NjMtNDU3Yi04ZGJmLTgxZmRjNTgxMzdmY1wvZGYwam42My03ZDI3ODk2OS1iOTNiLTRhZTMtOTJiZS1kODhlM2M1Zjk2ZGQucG5nIiwid2lkdGgiOiI8PTEyODAifV1dLCJhdWQiOlsidXJuOnNlcnZpY2U6aW1hZ2Uub3BlcmF0aW9ucyJdfQ.WXa1IzRCfVLNGYFIoJRe0eigIYkBFJtR_rxSsI6_Zmc"} alt="Ipl t20 logo" className="tw-h-96 tw-w-96" />
